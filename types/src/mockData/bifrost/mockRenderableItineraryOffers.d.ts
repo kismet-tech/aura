@@ -1,0 +1,13 @@
+import { RenderableItineraryHotelRoomOffer, RenderableItineraryOffer } from "../../models/RenderableItineraryOffer";
+export declare const mockRenderableItineraryHotelRoomOfferOne: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryHotelRoomOfferTwo: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryHotelRoomOfferThree: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryHotelRoomOfferFour: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryHotelRoomOfferFive: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryHotelRoomOfferSix: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryHotelRoomOfferSeven: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryHotelRoomOfferEight: RenderableItineraryHotelRoomOffer;
+export declare const mockRenderableItineraryOfferOne: RenderableItineraryOffer;
+export declare const mockRenderableItineraryOfferTwo: RenderableItineraryOffer;
+export declare const mockRenderableItineraryOfferThree: RenderableItineraryOffer;
+export declare const mockRenderableItineraryOfferFour: RenderableItineraryOffer;
