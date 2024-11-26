@@ -46,10 +46,6 @@ export function PendingItineraryPlanner({
               </TabsTrigger>
             </TabsList>
           </Tabs>
-          {/* <div className="flex space-x-2 border border-black rounded-md px-2 py-1">
-            <div>Itinerary</div>
-            <div>Customize</div>
-          </div> */}
           <NavigationButton onClick={() => {}} isEnabled={true}>
             Place hold
             <ArrowRight className="ml-2" />

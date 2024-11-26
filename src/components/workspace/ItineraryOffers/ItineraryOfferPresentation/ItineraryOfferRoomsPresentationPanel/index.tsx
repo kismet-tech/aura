@@ -11,10 +11,16 @@ import { HotelRoomCarouselItem } from "../../HotelRoomCarouselItem";
 
 export interface ItineraryOfferRoomsPresentationPanelProps {
   renderableItineraryOffer: RenderableItineraryOffer;
+  onClickHotelRoomCarouselItem: ({
+    hotelRoomId,
+  }: {
+    hotelRoomId: string;
+  }) => void;
 }
 
 export function ItineraryOfferRoomsPresentationPanel({
   renderableItineraryOffer,
+  onClickHotelRoomCarouselItem,
 }: ItineraryOfferRoomsPresentationPanelProps) {
   const hotelRoomOffers: RenderableItineraryHotelRoomOffer[] =
     renderableItineraryOffer.hotelRoomOffers;
@@ -40,7 +46,9 @@ export function ItineraryOfferRoomsPresentationPanel({
           return (
             <HotelRoomCarouselItem
               hotelRoomOffer={hotelRoomOffer}
-              onClick={() => {}}
+              onClick={({ hotelRoomId }: { hotelRoomId: string }) =>
+                onClickHotelRoomCarouselItem({ hotelRoomId })
+              }
             />
           );
         }}

@@ -3,19 +3,54 @@ import { RenderedCalendarDateFormat } from "./RenderedCalendarDateFormat";
 import { renderCalendarDate } from "./renderCalendarDate";
 import { RenderedCalendarDateRangeJoinFormat } from "./RenderedCalendarDateRangeJoinFormat";
 
+export interface RenderedCalendarDateCollapseStrategy {
+  collapseSameDay: boolean;
+  collapseSameMonth: boolean;
+}
+
 interface RenderCalendarDateRangeProps {
   calendarDateRange: CalendarDateRange;
   renderedCalendarDateFormat: RenderedCalendarDateFormat;
   renderedCalendarDateRangeJoinFormat: RenderedCalendarDateRangeJoinFormat;
-  collapse: boolean;
+  collapseStrategy: RenderedCalendarDateCollapseStrategy;
 }
 
 export const renderCalendarDateRange = ({
   calendarDateRange,
   renderedCalendarDateFormat,
   renderedCalendarDateRangeJoinFormat,
-  collapse,
+  collapseStrategy,
 }: RenderCalendarDateRangeProps): string => {
+  if (
+    collapseStrategy.collapseSameDay &&
+    calendarDateRange.startCalendarDate.year ===
+      calendarDateRange.endCalendarDate.year &&
+    calendarDateRange.startCalendarDate.month ===
+      calendarDateRange.endCalendarDate.month &&
+    calendarDateRange.startCalendarDate.day ===
+      calendarDateRange.endCalendarDate.day
+  ) {
+    const startDate = renderCalendarDate({
+      calendarDate: calendarDateRange.startCalendarDate,
+      format: renderedCalendarDateFormat,
+    });
+    return startDate;
+  }
+  if (
+    collapseStrategy.collapseSameMonth &&
+    calendarDateRange.startCalendarDate.year ===
+      calendarDateRange.endCalendarDate.year &&
+    calendarDateRange.startCalendarDate.month ===
+      calendarDateRange.endCalendarDate.month
+  ) {
+    const startDate = renderCalendarDate({
+      calendarDate: calendarDateRange.startCalendarDate,
+      format: renderedCalendarDateFormat,
+    });
+
+    return `${startDate} - ${calendarDateRange.endCalendarDate.day}`;
+  }
+
   const startDate = renderCalendarDate({
     calendarDate: calendarDateRange.startCalendarDate,
     format: renderedCalendarDateFormat,
@@ -25,10 +60,6 @@ export const renderCalendarDateRange = ({
     calendarDate: calendarDateRange.endCalendarDate,
     format: renderedCalendarDateFormat,
   });
-
-  if (collapse && startDate === endDate) {
-    return startDate;
-  }
 
   if (
     renderedCalendarDateRangeJoinFormat ===

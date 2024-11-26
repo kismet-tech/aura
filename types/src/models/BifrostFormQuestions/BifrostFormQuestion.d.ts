@@ -11,6 +11,7 @@ export declare enum FormQuestionType {
 export interface BaseRenderableBifrostFormQuestion {
     type: FormQuestionType;
     bifrostFormQuestionId: string;
+    chatLabel: string;
 }
 export interface SingleRenderableBifrostFormQuestion extends BaseRenderableBifrostFormQuestion {
     label: string;

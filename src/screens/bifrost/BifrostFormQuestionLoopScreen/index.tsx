@@ -1,49 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { ActiveBifrostFormQuestions } from "@/components/bifrostForm/ActiveBifrostFormQuestions";
-import { NavigationButton } from "@/components/atoms/NavigationButton";
+import { PendingItineraryPlannerHeader } from "@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeader";
+import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
+import { BifrostFormChatHistory } from "@/components/bifrostForm/BifrostFormChatHistory";
 
 export interface BifrostFormQuestionLoopScreenProps {
-  bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+  historicalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+  activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+  renderablePendingItinerary: RenderablePendingItinerary;
   setBifrostFormQuestionWithResponse: ({
     updatedBifrostFormQuestionWithResponse,
   }: {
     updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
   }) => void;
-  handleProgressForward: () => void;
 }
 
 export function BifrostFormQuestionLoopScreen({
-  bifrostFormQuestionsWithResponses,
+  historicalBifrostFormQuestionsWithResponses,
+  activeBifrostFormQuestionsWithResponses,
+  renderablePendingItinerary,
   setBifrostFormQuestionWithResponse,
-  handleProgressForward,
 }: BifrostFormQuestionLoopScreenProps) {
   const [allResponsesAreValid, setAllResponsesAreValid] = useState(false);
 
+  // Create a ref for the scrollable content
+  const scrollableRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to the bottom when the component mounts or when content changes
+  useEffect(() => {
+    if (scrollableRef.current) {
+      scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
+    }
+  }, [
+    historicalBifrostFormQuestionsWithResponses,
+    activeBifrostFormQuestionsWithResponses,
+  ]);
+
   return (
-    <div>
-      <div>
-        <ActiveBifrostFormQuestions
-          bifrostFormQuestionsWithResponses={bifrostFormQuestionsWithResponses}
-          setBifrostFormQuestionWithResponse={
-            setBifrostFormQuestionWithResponse
-          }
-          setAreAllResponsesValid={({
-            areAllResponsesValid,
-          }: {
-            areAllResponsesValid: boolean;
-          }) => {
-            setAllResponsesAreValid(areAllResponsesValid);
-          }}
+    <div className="flex flex-col flex-1 h-full overflow-hidden">
+      {/* Header */}
+      <div className="pb-4 flex-shrink-0">
+        <PendingItineraryPlannerHeader
+          renderablePendingItinerary={renderablePendingItinerary}
         />
       </div>
-      <div className="flex justify-end">
-        <NavigationButton
-          onClick={handleProgressForward}
-          isEnabled={allResponsesAreValid}
-        >
-          Start Planning
-        </NavigationButton>
+
+      {/* Scrollable Content */}
+      <div className="flex-grow overflow-y-auto min-h-0" ref={scrollableRef}>
+        <div className="space-y-4 p-4">
+          <BifrostFormChatHistory
+            bifrostFormQuestionsWithResponses={
+              historicalBifrostFormQuestionsWithResponses
+            }
+            guestFirstName={renderablePendingItinerary.guestFirstName}
+          />
+          <BifrostFormChatHistory
+            bifrostFormQuestionsWithResponses={
+              historicalBifrostFormQuestionsWithResponses
+            }
+            guestFirstName={renderablePendingItinerary.guestFirstName}
+          />
+          <ActiveBifrostFormQuestions
+            bifrostFormQuestionsWithResponses={
+              activeBifrostFormQuestionsWithResponses
+            }
+            setBifrostFormQuestionWithResponse={
+              setBifrostFormQuestionWithResponse
+            }
+            setAreAllResponsesValid={({
+              areAllResponsesValid,
+            }: {
+              areAllResponsesValid: boolean;
+            }) => {
+              setAllResponsesAreValid(areAllResponsesValid);
+            }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,10 @@
 import { CalendarDate } from "./core/date/CalendarDate";
 import { CalendarDateRange } from "./core/date/CalendarDateRange";
+export declare enum ItineraryOfferOriginatorType {
+    KISMET_AI = "KISMET_AI",
+    GUEST = "GUEST",
+    SALES_AGENT = "SALES_AGENT"
+}
 export interface RenderableItineraryOfferCriterion {
     criterionName: string;
     doesMatchCriterion: boolean;
@@ -28,6 +33,7 @@ export interface RenderableItineraryEventOffer {
 }
 export interface RenderableItineraryOffer {
     itineraryOfferId: string;
+    originatorType: ItineraryOfferOriginatorType;
     heroImageUrl: string;
     guestCount: number;
     startCalendarDate: CalendarDate;

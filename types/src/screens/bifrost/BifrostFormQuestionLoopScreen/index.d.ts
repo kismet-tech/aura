@@ -1,10 +1,12 @@
 import React from "react";
 import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 export interface BifrostFormQuestionLoopScreenProps {
-    bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+    historicalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+    activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+    renderablePendingItinerary: RenderablePendingItinerary;
     setBifrostFormQuestionWithResponse: ({ updatedBifrostFormQuestionWithResponse, }: {
         updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
     }) => void;
-    handleProgressForward: () => void;
 }
-export declare function BifrostFormQuestionLoopScreen({ bifrostFormQuestionsWithResponses, setBifrostFormQuestionWithResponse, handleProgressForward, }: BifrostFormQuestionLoopScreenProps): React.JSX.Element;
+export declare function BifrostFormQuestionLoopScreen({ historicalBifrostFormQuestionsWithResponses, activeBifrostFormQuestionsWithResponses, renderablePendingItinerary, setBifrostFormQuestionWithResponse, }: BifrostFormQuestionLoopScreenProps): React.JSX.Element;

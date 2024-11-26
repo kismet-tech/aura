@@ -1,0 +1,13 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "us-docker.pkg.dev/playgroundist/kismet-docker-repo/kismet-bifrost-storybook:latest",
+        "-f",
+        ".storybook/Dockerfile",
+        ".",
+      ]
+images:
+  - "us-docker.pkg.dev/playgroundist/kismet-docker-repo/kismet-bifrost-storybook:latest"

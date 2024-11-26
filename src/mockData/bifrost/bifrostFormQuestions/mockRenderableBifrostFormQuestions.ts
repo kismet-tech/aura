@@ -24,6 +24,7 @@ export const mockRenderableTextInputBifrostFormQuestionOne: RenderableTextInputB
     type: FormQuestionType.TEXT_INPUT,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.FIRST_NAME,
     label: "First",
+    chatLabel: "Can you please share your first name?",
     required: true,
   };
 
@@ -32,6 +33,7 @@ export const mockRenderableTextInputBifrostFormQuestionTwo: RenderableTextInputB
     type: FormQuestionType.TEXT_INPUT,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.LAST_NAME,
     label: "Last",
+    chatLabel: "Can you please share your last name?",
     required: true,
   };
 
@@ -40,6 +42,7 @@ export const mockRenderableEmailInputBifrostFormQuestionOne: RenderableEmailInpu
     type: FormQuestionType.EMAIL,
     bifrostFormQuestionId: FormQuestionType.EMAIL,
     label: "Email",
+    chatLabel: "What is your email?",
     required: true,
   };
 
@@ -48,6 +51,7 @@ export const mockRenderablePhoneInputBifrostFormQuestionOne: RenderablePhoneInpu
     type: FormQuestionType.PHONE,
     bifrostFormQuestionId: FormQuestionType.PHONE,
     label: "Phone",
+    chatLabel: "What is your phone number?",
     required: true,
   };
 
@@ -56,6 +60,7 @@ export const mockRenderableTextAreaBifrostFormQuestionOne: RenderableTextAreaBif
     type: FormQuestionType.TEXT_AREA,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.INQUIRY_DETAILS,
     label: "Inquiry details",
+    chatLabel: "Inquiry Details",
   };
 
 //////////////////////////////////////////////////
@@ -67,6 +72,7 @@ export const mockRenderableToggleButtonGroupBifrostFormQuestionOne: RenderableTo
     type: FormQuestionType.TOGGLE_BUTTON_GROUP,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.REASON_FOR_TRAVEL,
     label: "Dates",
+    chatLabel: "What is your reason for travel?",
     options: [
       {
         label: "Business",
@@ -89,6 +95,7 @@ export const mockRenderableToggleButtonGroupBifrostFormQuestionTwo: RenderableTo
     bifrostFormQuestionId:
       ReservedBifrostFormQuestionIds.ARE_ITINERARY_DATES_FLEXIBLE,
     label: "Dates",
+    chatLabel: "Are your dates flexible?",
     options: [
       {
         label: "my dates are firm",
@@ -114,6 +121,7 @@ export const mockRenderableSelectDateRangeBifrostFormQuestionOne: RenderableSele
     type: FormQuestionType.SELECT_DATE_RANGE,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.DATES,
     label: "Dates",
+    chatLabel: "What are your dates for travel?",
   };
 
 export const mockRenderableMultiSelectDateRangeBifrostFormQuestionOne: RenderableMultiSelectDateRangeBifrostFormQuestion =
@@ -121,6 +129,8 @@ export const mockRenderableMultiSelectDateRangeBifrostFormQuestionOne: Renderabl
     type: FormQuestionType.MULTI_SELECT_DATE_RANGE,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.POTENTIAL_DATES,
     label: "Potential dates",
+    chatLabel:
+      "Can you share any details related to the expected dates for your trip?",
   };
 
 //////////////////////////////////////////////////
@@ -132,6 +142,7 @@ export const mockRenderableSplitTextInputBifrostFormQuestionOne: RenderableSplit
     bifrostFormQuestionId: `${mockRenderableTextInputBifrostFormQuestionOne.bifrostFormQuestionId}-${mockRenderableTextInputBifrostFormQuestionTwo.bifrostFormQuestionId}`,
     type: FormQuestionType.SPLIT_TEXT_INPUT,
     label: "Contact info",
+    chatLabel: "Can you please share your first and last name?",
 
     left: mockRenderableTextInputBifrostFormQuestionOne,
     right: mockRenderableTextInputBifrostFormQuestionTwo,

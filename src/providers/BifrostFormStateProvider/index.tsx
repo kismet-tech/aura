@@ -10,6 +10,9 @@ import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handlers/han
 import { handleStepBackToPreviousBifrostFormApplicationStage } from "./handlers/handleStepBackToPreviousBifrostFormApplicationStage";
 import { handleProgressToNextBifrostFormApplicationStage } from "./handlers/handleProgressToNextBifrostFormApplicationStage";
 import { handleGetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleGetActiveBifrostFormQuestionsWithResponses";
+import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
+import { getRenderablePendingItinerary } from "./utilities/getRenderablePendingItinerary";
+import { getHistoricalBifrostFormQuestionsWithResponses } from "./utilities/getHistoricalBifrostFormQuestionsWithResponses";
 
 export const BifrostFormStateContext = createContext(
   {} as BifrostFormStateContextValue
@@ -73,7 +76,7 @@ export const BifrostFormStateProvider = ({
   );
 
   /////////////////////////
-  // Active Form Question
+  // Active Form Questions
   /////////////////////////
 
   const activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
@@ -99,6 +102,27 @@ export const BifrostFormStateProvider = ({
     []
   );
 
+  /////////////////////////
+  // Historical Form Questions
+  /////////////////////////
+  const historicalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
+    useMemo((): BifrostFormQuestionWithResponse[] => {
+      return getHistoricalBifrostFormQuestionsWithResponses({
+        activeBifrostFormQuestionIds,
+        bifrostFormQuestionsWithResponses,
+      });
+    }, [activeBifrostFormQuestionIds, bifrostFormQuestionsWithResponses]);
+
+  /////////////////////////
+  // Pending Itinerary
+  /////////////////////////
+
+  const renderablePendingItinerary: RenderablePendingItinerary = useMemo(() => {
+    return getRenderablePendingItinerary({
+      bifrostFormQuestionsWithResponses,
+    });
+  }, [bifrostFormQuestionsWithResponses]);
+
   const contextValue = useMemo(() => {
     const bifrostFormStateContextValue: BifrostFormStateContextValue = {
       /////////////////////////
@@ -119,6 +143,16 @@ export const BifrostFormStateProvider = ({
       /////////////////////////
       activeBifrostFormQuestionsWithResponses,
       setActiveBifrostFormQuestionsWithResponses,
+
+      /////////////////////////
+      // Historical Form Questions
+      /////////////////////////
+      historicalBifrostFormQuestionsWithResponses,
+
+      /////////////////////////
+      // Pending Itinerary
+      /////////////////////////
+      renderablePendingItinerary,
     };
 
     return bifrostFormStateContextValue;

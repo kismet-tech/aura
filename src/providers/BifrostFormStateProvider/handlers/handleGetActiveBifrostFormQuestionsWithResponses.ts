@@ -8,7 +8,7 @@ interface HandleGetActiveBifrostFormQuestionsWithResponsesProps {
 export const handleGetActiveBifrostFormQuestionsWithResponses = ({
   activeBifrostFormQuestionIds,
   bifrostFormQuestionsWithResponses,
-}: HandleGetActiveBifrostFormQuestionsWithResponsesProps) => {
+}: HandleGetActiveBifrostFormQuestionsWithResponsesProps): BifrostFormQuestionWithResponse[] => {
   return activeBifrostFormQuestionIds
     .filter((activeBifrostFormQuestionId) =>
       bifrostFormQuestionsWithResponses.find(

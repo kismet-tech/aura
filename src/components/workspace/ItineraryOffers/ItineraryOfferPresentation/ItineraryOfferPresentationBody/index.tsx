@@ -33,6 +33,7 @@ export function ItineraryOfferPresentationBody({
       <div className="pt-4">
         <ItineraryOfferRoomsPresentationPanel
           renderableItineraryOffer={renderableItineraryOffer}
+          onClickHotelRoomCarouselItem={() => {}}
         />
         <ItineraryOfferEventsPresentationPanel
           renderableItineraryOffer={renderableItineraryOffer}

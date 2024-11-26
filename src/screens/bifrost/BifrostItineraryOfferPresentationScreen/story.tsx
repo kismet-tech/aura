@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  mockBifrostFormQuestionWithTextResponseThree,
+  mockBifrostFormQuestionWithTextResponseFour,
   mockBifrostFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";

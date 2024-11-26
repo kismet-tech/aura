@@ -1,6 +1,7 @@
 import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { ReactNode } from "react";
 import { BifrostFormApplicationStage } from "./BifrostFormApplicationStage";
+import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 
 export interface BifrostFormStateProviderProps {
   children: ReactNode;
@@ -25,7 +26,7 @@ export interface BifrostFormStateContextValue {
   }) => void;
 
   /////////////////////////
-  // Active Form Question
+  // Active Form Questions
   /////////////////////////
   activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
   setActiveBifrostFormQuestionsWithResponses: ({
@@ -33,4 +34,15 @@ export interface BifrostFormStateContextValue {
   }: {
     updatedActiveBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
   }) => void;
+
+  /////////////////////////
+  // Historical Form Questions
+  /////////////////////////
+
+  historicalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+
+  /////////////////////////
+  // Pending Itinerary
+  /////////////////////////
+  renderablePendingItinerary: RenderablePendingItinerary;
 }

@@ -1,4 +1,5 @@
 import {
+  ItineraryOfferOriginatorType,
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryOffer,
   RenderableItineraryOfferCriterion,
@@ -151,6 +152,7 @@ export const mockRenderableItineraryHotelRoomOfferEight: RenderableItineraryHote
 
 export const mockRenderableItineraryOfferOne: RenderableItineraryOffer = {
   itineraryOfferId: `1234567890`,
+  originatorType: ItineraryOfferOriginatorType.KISMET_AI,
   heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
   guestCount: 5,
   startCalendarDate: {
@@ -184,6 +186,7 @@ export const mockRenderableItineraryOfferOne: RenderableItineraryOffer = {
 
 export const mockRenderableItineraryOfferTwo: RenderableItineraryOffer = {
   itineraryOfferId: `2384783921`,
+  originatorType: ItineraryOfferOriginatorType.KISMET_AI,
   heroImageUrl: `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
   guestCount: 10,
   startCalendarDate: {
@@ -217,6 +220,7 @@ export const mockRenderableItineraryOfferTwo: RenderableItineraryOffer = {
 
 export const mockRenderableItineraryOfferThree: RenderableItineraryOffer = {
   itineraryOfferId: `3428734783`,
+  originatorType: ItineraryOfferOriginatorType.KISMET_AI,
   heroImageUrl: `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
   guestCount: 8,
   startCalendarDate: {
@@ -249,6 +253,7 @@ export const mockRenderableItineraryOfferThree: RenderableItineraryOffer = {
 
 export const mockRenderableItineraryOfferFour: RenderableItineraryOffer = {
   itineraryOfferId: `4738293928`,
+  originatorType: ItineraryOfferOriginatorType.GUEST,
   heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
   guestCount: 20,
   startCalendarDate: {

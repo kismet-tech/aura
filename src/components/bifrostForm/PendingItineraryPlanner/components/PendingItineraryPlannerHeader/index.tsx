@@ -41,9 +41,12 @@ export function PendingItineraryPlannerHeader({
             renderablePendingItinerary.calendarDateRangeInItinerary,
           renderedCalendarDateFormat:
             RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
-          collapse: false,
           renderedCalendarDateRangeJoinFormat:
             RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+          collapseStrategy: {
+            collapseSameDay: true,
+            collapseSameMonth: false,
+          },
         })}
       </span>
     );
@@ -54,13 +57,13 @@ export function PendingItineraryPlannerHeader({
   }
 
   return (
-    <div>
+    <div className="bg-white">
       <div className="mb-4">
         <div className="flex justify-between items-center">
           <KismetSectionHeader>
             {renderablePendingItinerary.itineraryName}
           </KismetSectionHeader>
-          <ExpandCollapseButton
+          {/* <ExpandCollapseButton
             isCollapsed={false}
             onExpand={function (): void {
               throw new Error("Function not implemented.");
@@ -68,7 +71,7 @@ export function PendingItineraryPlannerHeader({
             onCollapse={function (): void {
               throw new Error("Function not implemented.");
             }}
-          />
+          /> */}
         </div>
       </div>
 

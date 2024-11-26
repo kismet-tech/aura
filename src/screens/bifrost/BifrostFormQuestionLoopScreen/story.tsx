@@ -1,7 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import {
-  mockBifrostFormQuestionWithTextResponseThree,
+  mockBifrostFormQuestionWithEmailResponseTwo,
+  mockBifrostFormQuestionWithPhoneNumberResponseTwo,
+  mockBifrostFormQuestionWithSplitTextResponseTwo,
+  mockBifrostFormQuestionWithTextResponseFour,
   mockBifrostFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
@@ -9,6 +12,8 @@ import {
   BifrostFormQuestionLoopScreen,
   BifrostFormQuestionLoopScreenProps,
 } from ".";
+import { mockRenderablePendingItineraryTwo } from "@/mockData/bifrost/mockRenderablePendingItineraries";
+import { AppViewport } from "@/components/atoms/AppViewport";
 
 const meta: Meta<typeof BifrostFormQuestionLoopScreen> = {
   title: "BifrostForm/Screens/BifrostFormQuestionLoopScreen",
@@ -20,21 +25,29 @@ type Story = StoryObj<typeof BifrostFormQuestionLoopScreen>;
 
 const StoryWrapper = () => {
   const [
-    bifrostFormQuestionsWithResponses,
-    setBifrostFormQuestionsWithResponses,
+    activeBifrostFormQuestionsWithResponses,
+    setActiveBifrostFormQuestionsWithResponses,
   ] = useState<BifrostFormQuestionWithResponse[]>([
     mockBifrostFormQuestionWithTextResponseTwo,
-    mockBifrostFormQuestionWithTextResponseThree,
+    mockBifrostFormQuestionWithTextResponseFour,
   ]);
 
+  const historicalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
+    [
+      mockBifrostFormQuestionWithSplitTextResponseTwo,
+      mockBifrostFormQuestionWithEmailResponseTwo,
+      mockBifrostFormQuestionWithPhoneNumberResponseTwo,
+    ];
+
   const dynamicArgs: BifrostFormQuestionLoopScreenProps = {
-    bifrostFormQuestionsWithResponses,
+    activeBifrostFormQuestionsWithResponses,
+    historicalBifrostFormQuestionsWithResponses,
     setBifrostFormQuestionWithResponse: ({
       updatedBifrostFormQuestionWithResponse,
     }: {
       updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
     }) => {
-      setBifrostFormQuestionsWithResponses(
+      setActiveBifrostFormQuestionsWithResponses(
         (
           previousBifrostFormQuestionWithResponses: BifrostFormQuestionWithResponse[]
         ) => {
@@ -56,22 +69,13 @@ const StoryWrapper = () => {
         }
       );
     },
-    handleProgressForward: () => {
-      console.log("Progressing forward");
-    },
+    renderablePendingItinerary: mockRenderablePendingItineraryTwo,
   };
 
   return (
-    <div
-      style={{
-        width: "50%",
-        margin: "0 auto",
-        border: "1px solid #ccc",
-        padding: "16px",
-      }}
-    >
+    <AppViewport>
       <BifrostFormQuestionLoopScreen {...dynamicArgs} />
-    </div>
+    </AppViewport>
   );
 };
 

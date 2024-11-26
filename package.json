@@ -5,7 +5,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "rollup-build-lib": "rollup -c",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "cloud_build_storybook": "gcloud builds submit --config '.storybook/cloudbuild.yaml' --project playgroundist",
+    "deploy_storybook": "yarn cloud_build_storybook && gcloud run deploy kismet-bifrost-storybook --region us-central1 --image us-docker.pkg.dev/playgroundist/kismet-docker-repo/kismet-bifrost-storybook:latest"
   },
   "author": "Julian Theoderik Trajanson",
   "license": "ISC",
@@ -52,6 +54,7 @@
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@fontsource/inter": "^5.1.0",
     "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-scroll-area": "^1.2.1",
     "@radix-ui/react-slot": "^1.1.0",

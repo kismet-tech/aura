@@ -10,4 +10,6 @@ export enum ReservedBifrostFormQuestionIds {
   // Dates
   DATES = "Dates",
   POTENTIAL_DATES = "Potential Dates",
+
+  COUNT_OF_ROOMS_NEEDED = "Count of Rooms Needed",
 }

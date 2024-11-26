@@ -2,6 +2,7 @@ import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItin
 
 export const mockRenderablePendingItineraryOne: RenderablePendingItinerary = {
   itineraryName: "Gustave’s Wedding Block",
+  guestFirstName: "Gustave",
   countOfHotelRoomsInItinerary: undefined,
   calendarDateRangeInItinerary: undefined,
   itineraryImageUrl:
@@ -10,6 +11,7 @@ export const mockRenderablePendingItineraryOne: RenderablePendingItinerary = {
 
 export const mockRenderablePendingItineraryTwo: RenderablePendingItinerary = {
   itineraryName: "Gustave’s Wedding Block",
+  guestFirstName: "Gustave",
   countOfHotelRoomsInItinerary: 12,
   calendarDateRangeInItinerary: {
     startCalendarDate: {

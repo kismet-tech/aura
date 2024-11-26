@@ -46,9 +46,12 @@ export function EventOfferCarouselItem({
             calendarDateRange: eventOffer.calendarDateRange,
             renderedCalendarDateFormat:
               RenderedCalendarDateFormat.ABBREVIATED_MONTH_DAY_OPTIONAL_YEAR,
-            collapse: true,
             renderedCalendarDateRangeJoinFormat:
               RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+            collapseStrategy: {
+              collapseSameDay: true,
+              collapseSameMonth: true,
+            },
           })}
         </div>
       </div>

@@ -5,11 +5,22 @@ export interface BaseBifrostFormQuestionWithResponse {
     bifrostFormQuestion: BifrostFormQuestion;
     responseData: BifrostFormQuestionResponse;
 }
-export interface BifrostFormQuestionWithTextResponse {
+export interface BifrostTextInputFormQuestionWithTextResponse {
     responseType: BifrostFormQuestionResponseType.TEXT;
-    bifrostFormQuestion: RenderableTextInputBifrostFormQuestion | RenderableTextAreaBifrostFormQuestion | RenderableToggleButtonGroupBifrostFormQuestion;
+    bifrostFormQuestion: RenderableTextInputBifrostFormQuestion;
     responseData: BifrostFormQuestionTextResponse;
 }
+export interface BifrostTextAreaFormQuestionWithTextResponse {
+    responseType: BifrostFormQuestionResponseType.TEXT;
+    bifrostFormQuestion: RenderableTextAreaBifrostFormQuestion;
+    responseData: BifrostFormQuestionTextResponse;
+}
+export interface BifrostToggleButtonGroupFormQuestionWithTextResponse {
+    responseType: BifrostFormQuestionResponseType.TEXT;
+    bifrostFormQuestion: RenderableToggleButtonGroupBifrostFormQuestion;
+    responseData: BifrostFormQuestionTextResponse;
+}
+export type BifrostFormQuestionWithTextResponse = BifrostTextInputFormQuestionWithTextResponse | BifrostTextAreaFormQuestionWithTextResponse | BifrostToggleButtonGroupFormQuestionWithTextResponse;
 export interface BifrostFormQuestionWithPhoneNumberResponse {
     responseType: BifrostFormQuestionResponseType.PHONE_NUMBER;
     bifrostFormQuestion: RenderablePhoneInputBifrostFormQuestion;

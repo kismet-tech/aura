@@ -1,5 +1,5 @@
 import {
-  mockBifrostFormQuestionWithTextResponseThree,
+  mockBifrostFormQuestionWithTextResponseFour,
   mockBifrostFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
@@ -11,6 +11,6 @@ export const getNextActiveBifrostFormQuestionsWithResponses = async (): Promise<
 > => {
   return [
     mockBifrostFormQuestionWithTextResponseTwo,
-    mockBifrostFormQuestionWithTextResponseThree,
+    mockBifrostFormQuestionWithTextResponseFour,
   ];
 };

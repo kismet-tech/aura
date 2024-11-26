@@ -1,9 +1,11 @@
 import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
+import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
+import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
+import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 import { getRoomCountFromRenderableItineraryOffer } from "@/utilities/entities/itineraryOffer/getRoomCountFromRenderableItineraryOffer";
 import { getTotalListPriceInCentsFromRenderableItineraryOffer } from "@/utilities/entities/itineraryOffer/getTotalListPriceInCentsFromRenderableItineraryOffer";
 import { getTotalOfferPriceInCentsFromRenderableItineraryOffer } from "@/utilities/entities/itineraryOffer/getTotalOfferPriceInCents";
 import { renderDiscount } from "@/utilities/entities/itineraryOffer/renderDiscount";
-import { renderCollapsedCompactCalendarDateRange } from "@/utilities/formatting/renderCollapsedCompactCalendarDateRange";
 import React from "react";
 
 export interface AlternativeItineraryOfferPreviewProps {
@@ -25,9 +27,19 @@ export function AlternativeItineraryOfferPreview({
     itineraryOfferName,
   } = renderableItineraryOffer;
 
-  const formattedDates: string = renderCollapsedCompactCalendarDateRange({
-    startCalendarDate,
-    endCalendarDate,
+  const formattedDates: string = renderCalendarDateRange({
+    calendarDateRange: {
+      startCalendarDate,
+      endCalendarDate,
+    },
+    renderedCalendarDateFormat:
+      RenderedCalendarDateFormat.ABBREVIATED_MONTH_DAY_OPTIONAL_YEAR,
+    renderedCalendarDateRangeJoinFormat:
+      RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+    collapseStrategy: {
+      collapseSameDay: true,
+      collapseSameMonth: true,
+    },
   });
 
   const { totalOfferPriceInCents } =

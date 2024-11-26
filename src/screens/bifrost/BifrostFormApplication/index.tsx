@@ -13,6 +13,8 @@ export function BifrostFormApplication() {
     activeBifrostFormQuestionsWithResponses,
     progressToNextBifrostFormApplicationStage,
     setBifrostFormQuestionWithResponse,
+    renderablePendingItinerary,
+    historicalBifrostFormQuestionsWithResponses,
   } = useBifrostFormState();
 
   let renderedScreen: JSX.Element;
@@ -42,8 +44,11 @@ export function BifrostFormApplication() {
   ) {
     renderedScreen = (
       <BifrostFormQuestionLoopScreen
-        bifrostFormQuestionsWithResponses={
+        activeBifrostFormQuestionsWithResponses={
           activeBifrostFormQuestionsWithResponses
+        }
+        historicalBifrostFormQuestionsWithResponses={
+          historicalBifrostFormQuestionsWithResponses
         }
         setBifrostFormQuestionWithResponse={({
           updatedBifrostFormQuestionWithResponse,
@@ -54,7 +59,7 @@ export function BifrostFormApplication() {
             updatedBifrostFormQuestionWithResponse,
           });
         }}
-        handleProgressForward={progressToNextBifrostFormApplicationStage}
+        renderablePendingItinerary={renderablePendingItinerary}
       />
     );
   } else if (

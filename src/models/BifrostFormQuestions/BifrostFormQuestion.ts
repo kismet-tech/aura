@@ -16,6 +16,7 @@ export enum FormQuestionType {
 export interface BaseRenderableBifrostFormQuestion {
   type: FormQuestionType;
   bifrostFormQuestionId: string;
+  chatLabel: string;
 }
 
 export interface SingleRenderableBifrostFormQuestion
