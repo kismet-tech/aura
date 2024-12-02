@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
-import { RenderableMultiSelectDateRangeBifrostFormQuestion } from "@/models/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableMultiSelectDateRangeBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { DateRangePicker } from "@/components/atoms/DateRangePicker";
 import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
 import { CalendarDate } from "@/models/core/date/CalendarDate";
@@ -31,6 +31,16 @@ export function MultiSelectDateRangeBifrostFormQuestion({
   setIsResponseValid,
 }: MultiSelectDateRangeBifrostFormQuestionProps) {
   const inputId: string = `MultiSelectDateRangeBifrostFormQuestion_${renderableMultiSelectDateRangeBifrostFormQuestion.bifrostFormQuestionId}`;
+
+  // Initialize calendarDateRanges with an empty object
+  // if no calendarDateRanges are provided for user to edit
+  useEffect(() => {
+    if (calendarDateRanges.length === 0) {
+      setCalendarDateRanges({
+        updatedCalendarDateRanges: [{}],
+      });
+    }
+  }, [calendarDateRanges, setCalendarDateRanges]);
 
   const areCalendarDateRangesValid = ({
     pendingCalendarDateRanges,

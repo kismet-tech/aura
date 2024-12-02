@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export const deepClone = (obj: any): any => {
+export const deepClone = <T>(obj: T): T => {
   if (obj === null || typeof obj !== "object") {
     return obj;
   }
 
   if (Array.isArray(obj)) {
-    return obj.map((item) => deepClone(item));
+    return obj.map((item) => deepClone(item)) as T;
   }
 
   const clonedObj: Record<string, any> = {};
@@ -17,5 +17,5 @@ export const deepClone = (obj: any): any => {
     }
   }
 
-  return clonedObj;
+  return clonedObj as T;
 };

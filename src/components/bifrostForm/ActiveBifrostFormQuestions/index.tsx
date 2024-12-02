@@ -1,7 +1,10 @@
-import { BifrostFormQuestionResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import React, { useCallback, useEffect, useState } from "react";
-import { RenderedBifrostFormQuestion } from "../bifrostFormQuestions/RenderedBifrostFormQuestion";
+import {
+  RenderedBifrostFormQuestion,
+  RenderedBifrostFormQuestionProps,
+} from "../bifrostFormQuestions/RenderedBifrostFormQuestion";
 import { updateBifrostFormQuestionWithResponse } from "@/utilities/bifrostFormQuestions/updateBifrostFormQuestionWithResponse";
 import { deepEqual } from "@/utilities/core/deepEqual";
 
@@ -21,7 +24,10 @@ export interface ActiveBifrostFormQuestionsProps {
 
 const MemoizedRenderedBifrostFormQuestion = React.memo(
   RenderedBifrostFormQuestion,
-  (prevProps, nextProps) => deepEqual(prevProps, nextProps)
+  (
+    prevProps: Readonly<RenderedBifrostFormQuestionProps>,
+    nextProps: Readonly<RenderedBifrostFormQuestionProps>
+  ): boolean => deepEqual(prevProps, nextProps)
 );
 
 export function ActiveBifrostFormQuestions({
@@ -66,17 +72,18 @@ export function ActiveBifrostFormQuestions({
   );
 
   const handleSetBifrostFormQuestionResponse = useCallback(
-    (index: number) =>
+    (
+        previousBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+      ) =>
       ({
-        bifrostFormQuestionResponse,
+        updatedBifrostFormQuestionResponse,
       }: {
-        bifrostFormQuestionResponse: BifrostFormQuestionResponse;
+        updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;
       }) => {
         const updatedBifrostFormQuestionWithResponse =
           updateBifrostFormQuestionWithResponse({
-            previousBifrostFormQuestionWithResponse:
-              bifrostFormQuestionsWithResponses[index],
-            bifrostFormQuestionResponse,
+            previousBifrostFormQuestionWithResponse,
+            updatedBifrostFormQuestionResponse,
           });
 
         setBifrostFormQuestionWithResponse({
@@ -106,7 +113,7 @@ export function ActiveBifrostFormQuestions({
                   bifrostFormQuestionWithResponse
                 }
                 setBifrostFormQuestionResponse={handleSetBifrostFormQuestionResponse(
-                  index
+                  bifrostFormQuestionWithResponse
                 )}
                 setIsResponseValid={({
                   isResponseValid,

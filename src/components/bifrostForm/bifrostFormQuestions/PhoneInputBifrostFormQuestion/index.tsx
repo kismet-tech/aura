@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
 import { Input } from "@/components/shadcn/input";
-import { RenderablePhoneInputBifrostFormQuestion } from "@/models/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderablePhoneInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { ValidationError } from "@/components/atoms/forms/ValidationError";
 
 export interface PhoneInputBifrostFormQuestionProps {

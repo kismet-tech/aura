@@ -2,7 +2,7 @@ import { ArrowLeftRight } from "lucide-react";
 import { AlternativeItineraryOfferPreview } from "../AlternativeItineraryOfferPreview";
 import React from "react";
 import { Carousel } from "@/components/displays/Carousel";
-import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
 
 export interface AlternativeItineraryOfferSelectorProps {
   renderableItineraryOffers: RenderableItineraryOffer[];
@@ -24,7 +24,7 @@ export function AlternativeItineraryOfferSelector({
         renderableItineraryOffer: RenderableItineraryOffer,
         itineraryOfferIndex: number
       ) => (
-        <div className="h-full cursor-pointer">
+        <div className="h-full cursor-pointer border border-gray-300 border-solid">
           <AlternativeItineraryOfferPreview
             onClick={() => {
               onSelectAlternativeItineraryOffer({

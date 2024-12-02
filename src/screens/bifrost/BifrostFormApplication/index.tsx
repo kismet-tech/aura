@@ -2,19 +2,25 @@ import { BifrostFooter } from "@/components/atoms/BifrostFooter";
 import { useBifrostFormState } from "@/providers/BifrostFormStateProvider/useBifrostFormState";
 import React from "react";
 import { BifrostFormLaunchScreen } from "../BifrostFormLaunchScreen";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { BifrostFormApplicationStage } from "@/providers/BifrostFormStateProvider/models/BifrostFormApplicationStage";
-import { BifrostFormQuestionLoopScreen } from "../BifrostFormQuestionLoopScreen";
+import { BifrostFormInteractiveLoopScreen } from "../BifrostFormInteractiveLoopScreen";
 import { BifrostItineraryOfferPresentationScreen } from "../BifrostItineraryOfferPresentationScreen";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
 
 export function BifrostFormApplication() {
   const {
     bifrostFormApplicationStage,
     activeBifrostFormQuestionsWithResponses,
-    progressToNextBifrostFormApplicationStage,
     setBifrostFormQuestionWithResponse,
     renderablePendingItinerary,
     historicalBifrostFormQuestionsWithResponses,
+    submitBifrostFormQuestion,
+    renderableItineraryOffersFromKismetAI,
+    customRenderableItineraryOfferFromGuest,
+    paymentsPageUrl,
+    updateItineraryOfferHotelRoomCount,
+    beginUserSession,
   } = useBifrostFormState();
 
   let renderedScreen: JSX.Element;
@@ -35,15 +41,17 @@ export function BifrostFormApplication() {
             updatedBifrostFormQuestionWithResponse,
           });
         }}
-        handleProgressForward={progressToNextBifrostFormApplicationStage}
+        handleProgressForward={() => {
+          beginUserSession();
+        }}
       />
     );
   } else if (
     bifrostFormApplicationStage ===
-    BifrostFormApplicationStage.QUESTION_LOOP_SCREEN
+    BifrostFormApplicationStage.INTERACTIVE_LOOP_SCREEN
   ) {
     renderedScreen = (
-      <BifrostFormQuestionLoopScreen
+      <BifrostFormInteractiveLoopScreen
         activeBifrostFormQuestionsWithResponses={
           activeBifrostFormQuestionsWithResponses
         }
@@ -60,21 +68,58 @@ export function BifrostFormApplication() {
           });
         }}
         renderablePendingItinerary={renderablePendingItinerary}
+        submitBifrostFormQuestion={submitBifrostFormQuestion}
       />
     );
   } else if (
     bifrostFormApplicationStage ===
     BifrostFormApplicationStage.ITINERARY_OFFER_PRESENTATION_SCREEN
   ) {
-    renderedScreen = <BifrostItineraryOfferPresentationScreen />;
+    renderableItineraryOffersFromKismetAI;
+    customRenderableItineraryOfferFromGuest;
+
+    const renderableItineraryOffers: RenderableItineraryOffer[] = [];
+    if (renderableItineraryOffersFromKismetAI) {
+      renderableItineraryOffers.push(...renderableItineraryOffersFromKismetAI);
+    }
+    if (customRenderableItineraryOfferFromGuest) {
+      renderableItineraryOffers.push(customRenderableItineraryOfferFromGuest);
+    }
+
+    renderedScreen = (
+      <BifrostItineraryOfferPresentationScreen
+        renderableItineraryOffers={renderableItineraryOffers}
+        renderablePendingItinerary={renderablePendingItinerary}
+        paymentsPageUrl={paymentsPageUrl}
+        onClickUpdateItineraryOfferHotelRoomCount={async ({
+          itineraryOfferId,
+          hotelRoomId,
+          updatedCountOffered,
+        }: {
+          itineraryOfferId: string;
+          hotelRoomId: string;
+          updatedCountOffered: number;
+        }): Promise<{ updatedItineraryOfferId: string }> => {
+          const { updatedItineraryOfferId } =
+            await updateItineraryOfferHotelRoomCount({
+              itineraryOfferId,
+              hotelRoomId,
+              updatedCountOffered,
+            });
+          return { updatedItineraryOfferId };
+        }}
+      />
+    );
   } else {
     renderedScreen = <></>;
   }
 
   return (
-    <div>
-      <div>{renderedScreen}</div>
-      <BifrostFooter />
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-auto">{renderedScreen}</div>
+      <div className="sticky bottom-0">
+        <BifrostFooter />
+      </div>
     </div>
   );
 }

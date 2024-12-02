@@ -5,7 +5,7 @@ import {
   MultiCalendarDateRangeBifrostFormQuestionChatHistoryElement,
   MultiCalendarDateRangeBifrostFormQuestionChatHistoryElementProps,
 } from ".";
-import { mockBifrostFormQuestionWithMultiCalendarDateRangeResponseOne } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
+import { mockBifrostFormQuestionWithMultiCalendarDateRangeResponseTwo } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 
 const meta: Meta<
   typeof MultiCalendarDateRangeBifrostFormQuestionChatHistoryElement
@@ -25,7 +25,7 @@ const StoryWrapper = () => {
     {
       guestFirstName: "Julian",
       bifrostFormQuestionWithMultiCalendarDateRangeResponse:
-        mockBifrostFormQuestionWithMultiCalendarDateRangeResponseOne,
+        mockBifrostFormQuestionWithMultiCalendarDateRangeResponseTwo,
       onClick: () => {
         console.log("onClick");
       },

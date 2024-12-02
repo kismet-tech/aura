@@ -2,7 +2,7 @@ import React from "react";
 import {
   RenderableItineraryOffer,
   RenderableItineraryOfferCriterion,
-} from "../../../../../models/RenderableItineraryOffer";
+} from "../../../../../models/bifrost/RenderableItineraryOffer";
 import { KismetHeader } from "../../../../atoms";
 
 export interface ItineraryOfferPresentationHeaderProps {

@@ -1,6 +1,6 @@
 import { KismetHeader } from "@/components/atoms";
 import React, { useState } from "react";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { ActiveBifrostFormQuestions } from "@/components/bifrostForm/ActiveBifrostFormQuestions";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 

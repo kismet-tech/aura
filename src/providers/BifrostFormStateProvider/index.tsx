@@ -3,16 +3,28 @@ import {
   BifrostFormStateContextValue,
   BifrostFormStateProviderProps,
 } from "./models/models";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { getUpdatedBifrostFormQuestionsWithResponses } from "./utilities/getUpdatedBifrostFormQuestionsWithResponses";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { BifrostFormApplicationStage } from "./models/BifrostFormApplicationStage";
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleSetActiveBifrostFormQuestionsWithResponses";
 import { handleStepBackToPreviousBifrostFormApplicationStage } from "./handlers/handleStepBackToPreviousBifrostFormApplicationStage";
-import { handleProgressToNextBifrostFormApplicationStage } from "./handlers/handleProgressToNextBifrostFormApplicationStage";
+// import { handleProgressToNextBifrostFormApplicationStage } from "./handlers/handleProgressToNextBifrostFormApplicationStage";
 import { handleGetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleGetActiveBifrostFormQuestionsWithResponses";
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { getRenderablePendingItinerary } from "./utilities/getRenderablePendingItinerary";
 import { getHistoricalBifrostFormQuestionsWithResponses } from "./utilities/getHistoricalBifrostFormQuestionsWithResponses";
+import { handleSetBifrostFormQuestionsWithResponses } from "./handlers/handleSetBifrostFormQuestionsWithResponses";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { handleSubmitBifrostFormQuestion } from "./handlers/handleSubmitActiveBifrostFormQuestions";
+import { handleBeginUserSession } from "./handlers/handleBeginUserSession";
+import { getPaymentsPageUrl } from "@/apis/apiConfig";
+import { handleGetHotelId } from "./handlers/handleGetHotelId";
+import { handleUpdateItineraryOfferHotelRoomCount } from "./handlers/handleUpdateItineraryOfferHotelRoomCount";
+import { handleSetBifrostFormQuestionWithResponse } from "./handlers/handleSetBifrostFormQuestionWithResponse";
+import {
+  mockBifrostFormQuestionWithSplitTextResponseOne,
+  mockBifrostFormQuestionWithEmailResponseOne,
+  mockBifrostFormQuestionWithPhoneNumberResponseOne,
+} from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 
 export const BifrostFormStateContext = createContext(
   {} as BifrostFormStateContextValue
@@ -20,7 +32,24 @@ export const BifrostFormStateContext = createContext(
 
 export const BifrostFormStateProvider = ({
   children,
+  bifrostApi,
 }: BifrostFormStateProviderProps) => {
+  /////////////////////////
+  /////////////////////////
+  /////////////////////////
+  // Internal State
+  /////////////////////////
+  /////////////////////////
+  /////////////////////////
+
+  const hotelId: string = useMemo((): string => {
+    return handleGetHotelId();
+  }, []);
+
+  const [userSessionId, setUserSessionId] = useState<string | undefined>(
+    undefined
+  );
+
   const [bifrostFormApplicationStage, setBifrostFormApplicationStage] =
     useState<BifrostFormApplicationStage>(
       BifrostFormApplicationStage.LAUNCH_SCREEN
@@ -29,27 +58,106 @@ export const BifrostFormStateProvider = ({
   const [
     bifrostFormQuestionsWithResponses,
     setBifrostFormQuestionsWithResponses,
-  ] = useState<BifrostFormQuestionWithResponse[]>([]);
+  ] = useState<BifrostFormQuestionWithResponse[]>([
+    mockBifrostFormQuestionWithSplitTextResponseOne,
+    mockBifrostFormQuestionWithEmailResponseOne,
+    mockBifrostFormQuestionWithPhoneNumberResponseOne,
+  ]);
 
   const [activeBifrostFormQuestionIds, setActiveBifrostFormQuestionIds] =
-    useState<string[]>([]);
+    useState<string[]>([
+      mockBifrostFormQuestionWithSplitTextResponseOne.bifrostFormQuestion
+        .bifrostFormQuestionId,
+      mockBifrostFormQuestionWithEmailResponseOne.bifrostFormQuestion
+        .bifrostFormQuestionId,
+      mockBifrostFormQuestionWithPhoneNumberResponseOne.bifrostFormQuestion
+        .bifrostFormQuestionId,
+    ]);
+
+  const [
+    renderableItineraryOffersFromKismetAI,
+    setRenderableItineraryOffersFromKismetAI,
+  ] = useState<RenderableItineraryOffer[] | undefined>(undefined);
+
+  const [
+    customRenderableItineraryOfferFromGuest,
+    setCustomRenderableItineraryOfferFromGuest,
+  ] = useState<RenderableItineraryOffer | undefined>(undefined);
 
   /////////////////////////
   // Navigation
   /////////////////////////
 
-  const progressToNextBifrostFormApplicationStage = useCallback(async () => {
-    handleProgressToNextBifrostFormApplicationStage({
-      setBifrostFormApplicationStage,
-      setActiveBifrostFormQuestionIds,
-      setBifrostFormQuestionsWithResponses,
-    });
-  }, []);
+  // const progressToNextBifrostFormApplicationStage = useCallback(async () => {
+  //   handleProgressToNextBifrostFormApplicationStage({
+  //     setBifrostFormApplicationStage,
+  //     setActiveBifrostFormQuestionIds,
+  //     bifrostFormQuestionsWithResponses,
+  //     setBifrostFormQuestionsWithResponses,
+  //     setUserSessionId,
+  //     hotelId,
+  //     bifrostApi,
+  //   });
+  // }, []);
 
   const stepBackToPreviousBifrostFormApplicationStage =
     useCallback(async () => {
       handleStepBackToPreviousBifrostFormApplicationStage({});
     }, []);
+
+  const beginUserSession = useCallback(async () => {
+    await handleBeginUserSession({
+      setBifrostFormApplicationStage,
+      setActiveBifrostFormQuestionIds,
+      bifrostFormQuestionsWithResponses,
+      setBifrostFormQuestionsWithResponses,
+      setUserSessionId,
+      hotelId,
+      bifrostApi,
+    });
+  }, [
+    setBifrostFormApplicationStage,
+    setActiveBifrostFormQuestionIds,
+    bifrostFormQuestionsWithResponses,
+    setBifrostFormQuestionsWithResponses,
+    setUserSessionId,
+    hotelId,
+    bifrostApi,
+  ]);
+
+  const submitBifrostFormQuestion = useCallback(async () => {
+    if (userSessionId) {
+      return handleSubmitBifrostFormQuestion({
+        userSessionId,
+        bifrostFormQuestionsWithResponses,
+        activeBifrostFormQuestionIds,
+        setBifrostFormQuestionsWithResponses,
+        setActiveBifrostFormQuestionIds,
+        setRenderableItineraryOffersFromKismetAI,
+        setBifrostFormApplicationStage,
+        bifrostApi,
+      });
+    }
+  }, [
+    userSessionId,
+    bifrostFormQuestionsWithResponses,
+    activeBifrostFormQuestionIds,
+    setBifrostFormQuestionsWithResponses,
+    setActiveBifrostFormQuestionIds,
+    setRenderableItineraryOffersFromKismetAI,
+    setBifrostFormApplicationStage,
+    bifrostApi,
+  ]);
+
+  const paymentsPageUrl: string = useMemo((): string => {
+    if (userSessionId) {
+      return getPaymentsPageUrl({
+        hotelId,
+        userSessionId,
+      });
+    }
+    return "";
+  }, [hotelId, userSessionId]);
 
   /////////////////////////
   // Form Question Responses
@@ -61,16 +169,27 @@ export const BifrostFormStateProvider = ({
     }: {
       updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
     }) => {
-      setBifrostFormQuestionsWithResponses(
-        (
-          previousBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[]
-        ) => {
-          return getUpdatedBifrostFormQuestionsWithResponses({
-            previousBifrostFormQuestionsWithResponses,
-            updatedBifrostFormQuestionWithResponse,
-          });
-        }
-      );
+      handleSetBifrostFormQuestionWithResponse({
+        updatedBifrostFormQuestionWithResponse,
+        setBifrostFormQuestionsWithResponses,
+      });
+    },
+    [
+      handleSetBifrostFormQuestionWithResponse,
+      setBifrostFormQuestionsWithResponses,
+    ]
+  );
+
+  const setBifrostFormQuestionsWithResponsesWithCallback = useCallback(
+    ({
+      updatedBifrostFormQuestionsWithResponses,
+    }: {
+      updatedBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+    }) => {
+      return handleSetBifrostFormQuestionsWithResponses({
+        setBifrostFormQuestionsWithResponses,
+        updatedBifrostFormQuestionsWithResponses,
+      });
     },
     []
   );
@@ -79,13 +198,25 @@ export const BifrostFormStateProvider = ({
   // Active Form Questions
   /////////////////////////
 
+  console.log(
+    `activeBifrostFormQuestionIds: ${JSON.stringify(
+      activeBifrostFormQuestionIds,
+      null,
+      4
+    )}`
+  );
+
   const activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
     useMemo((): BifrostFormQuestionWithResponse[] => {
       return handleGetActiveBifrostFormQuestionsWithResponses({
         activeBifrostFormQuestionIds,
         bifrostFormQuestionsWithResponses,
       });
-    }, [activeBifrostFormQuestionIds, bifrostFormQuestionsWithResponses]);
+    }, [
+      handleGetActiveBifrostFormQuestionsWithResponses,
+      activeBifrostFormQuestionIds,
+      bifrostFormQuestionsWithResponses,
+    ]);
 
   const setActiveBifrostFormQuestionsWithResponses = useCallback(
     ({
@@ -123,20 +254,80 @@ export const BifrostFormStateProvider = ({
     });
   }, [bifrostFormQuestionsWithResponses]);
 
+  /////////////////////////
+  // Itinerary Offers
+  /////////////////////////
+
+  const setRenderableItineraryOffersFromKismetAIWithCallback = useCallback(
+    ({
+      updatedRenderableItineraryOffers,
+    }: {
+      updatedRenderableItineraryOffers: RenderableItineraryOffer[];
+    }) => {
+      if (userSessionId) {
+        return setRenderableItineraryOffersFromKismetAI(
+          updatedRenderableItineraryOffers
+        );
+      }
+    },
+    [userSessionId, setRenderableItineraryOffersFromKismetAI]
+  );
+
+  const updateItineraryOfferHotelRoomCount = useCallback(
+    ({
+      itineraryOfferId,
+      hotelRoomId,
+      updatedCountOffered,
+    }: {
+      itineraryOfferId: string;
+      hotelRoomId: string;
+      updatedCountOffered: number;
+    }): Promise<{ updatedItineraryOfferId: string }> => {
+      if (userSessionId) {
+        return handleUpdateItineraryOfferHotelRoomCount({
+          userSessionId,
+          itineraryOfferId,
+          hotelRoomId,
+          updatedCountOffered,
+          renderableItineraryOffersFromKismetAI,
+          customRenderableItineraryOfferFromGuest,
+          setCustomRenderableItineraryOfferFromGuest,
+          bifrostApi,
+        });
+      } else {
+        throw new Error(
+          `userSessionId missing but needed for handleUpdateItineraryOfferHotelRoomCount`
+        );
+      }
+    },
+    [
+      userSessionId,
+      renderableItineraryOffersFromKismetAI,
+      customRenderableItineraryOfferFromGuest,
+      setCustomRenderableItineraryOfferFromGuest,
+      bifrostApi,
+    ]
+  );
+
   const contextValue = useMemo(() => {
     const bifrostFormStateContextValue: BifrostFormStateContextValue = {
       /////////////////////////
       // Navigation
       /////////////////////////
       bifrostFormApplicationStage,
-      progressToNextBifrostFormApplicationStage,
+      // progressToNextBifrostFormApplicationStage,
       stepBackToPreviousBifrostFormApplicationStage,
+      beginUserSession,
+      submitBifrostFormQuestion,
+      paymentsPageUrl,
 
       /////////////////////////
       // Form Question Responses
       /////////////////////////
       bifrostFormQuestionsWithResponses,
 
+      setBifrostFormQuestionsWithResponses:
+        setBifrostFormQuestionsWithResponsesWithCallback,
       setBifrostFormQuestionWithResponse,
       /////////////////////////
       // Active Form Question
@@ -153,17 +344,61 @@ export const BifrostFormStateProvider = ({
       // Pending Itinerary
       /////////////////////////
       renderablePendingItinerary,
+
+      /////////////////////////
+      // Itinerary Offers
+      /////////////////////////
+
+      renderableItineraryOffersFromKismetAI,
+      customRenderableItineraryOfferFromGuest,
+      setRenderableItineraryOffersFromKismetAI:
+        setRenderableItineraryOffersFromKismetAIWithCallback,
+      updateItineraryOfferHotelRoomCount,
     };
 
     return bifrostFormStateContextValue;
   }, [
+    /////////////////////////
+    // Navigation
+    /////////////////////////
     bifrostFormApplicationStage,
-    setBifrostFormApplicationStage,
+    // progressToNextBifrostFormApplicationStage,
+    stepBackToPreviousBifrostFormApplicationStage,
+    beginUserSession,
+    submitBifrostFormQuestion,
+    paymentsPageUrl,
+
+    /////////////////////////
+    // Form Question Responses
+    /////////////////////////
     bifrostFormQuestionsWithResponses,
-    setBifrostFormQuestionsWithResponses,
-    activeBifrostFormQuestionIds,
-    setActiveBifrostFormQuestionIds,
+
+    setBifrostFormQuestionsWithResponsesWithCallback,
+    setBifrostFormQuestionWithResponse,
+
+    /////////////////////////
+    // Active Form Question
+    /////////////////////////
     activeBifrostFormQuestionsWithResponses,
+    setActiveBifrostFormQuestionsWithResponses,
+
+    /////////////////////////
+    // Historical Form Questions
+    /////////////////////////
+    historicalBifrostFormQuestionsWithResponses,
+
+    /////////////////////////
+    // Pending Itinerary
+    /////////////////////////
+    renderablePendingItinerary,
+
+    /////////////////////////
+    // Itinerary Offers
+    /////////////////////////
+    renderableItineraryOffersFromKismetAI,
+    customRenderableItineraryOfferFromGuest,
+    setRenderableItineraryOffersFromKismetAIWithCallback,
+    updateItineraryOfferHotelRoomCount,
   ]);
 
   return (

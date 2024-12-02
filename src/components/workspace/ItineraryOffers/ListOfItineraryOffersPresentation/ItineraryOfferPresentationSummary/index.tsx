@@ -1,4 +1,4 @@
-import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
 import React from "react";
 import { AlternativeItineraryOfferPreview } from "../../ItineraryOfferPresentation/AlternativeItineraryOfferPreview";
 import { Button } from "@/components/shadcn/button";
@@ -13,6 +13,7 @@ export interface ItineraryOfferPresentationSummaryProps {
 export function ItineraryOfferPresentationSummary({
   renderableItineraryOffer,
   itineraryOfferIndex,
+  onClick,
 }: ItineraryOfferPresentationSummaryProps) {
   return (
     <div className="flex items-center justify-between bg-white pr-4">
@@ -21,7 +22,13 @@ export function ItineraryOfferPresentationSummary({
         itineraryOfferIndex={itineraryOfferIndex}
         onClick={() => {}}
       />
-      <Button className="flex items-center bg-transparent hover:bg-transparent border border-black text-black rounded-full w-auto px-4 py-2 text-lg lowercase">
+      <Button
+        className="flex items-center bg-transparent hover:bg-transparent border border-black text-black rounded-full w-auto px-4 py-2 text-lg lowercase"
+        onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          event.preventDefault();
+          onClick();
+        }}
+      >
         info <ArrowRight className="ml-2" />
       </Button>
     </div>

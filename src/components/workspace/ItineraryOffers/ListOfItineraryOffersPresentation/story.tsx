@@ -28,6 +28,9 @@ const StoryWrapper = () => {
       mockRenderableItineraryOfferThree,
       mockRenderableItineraryOfferFour,
     ],
+    onClick: ({ itineraryOfferId }: { itineraryOfferId: string }) => {
+      console.log(itineraryOfferId);
+    },
   };
 
   return (

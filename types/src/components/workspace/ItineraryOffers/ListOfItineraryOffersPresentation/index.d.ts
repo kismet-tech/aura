@@ -1,6 +1,9 @@
+/// <reference types="react" />
 import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
-import React from "react";
 export interface ListOfItineraryOffersPresentationProps {
     renderableItineraryOffers: RenderableItineraryOffer[];
+    onClick: ({ itineraryOfferId }: {
+        itineraryOfferId: string;
+    }) => void;
 }
-export declare function ListOfItineraryOffersPresentation({ renderableItineraryOffers, }: ListOfItineraryOffersPresentationProps): React.JSX.Element[];
+export declare function ListOfItineraryOffersPresentation({ renderableItineraryOffers, onClick, }: ListOfItineraryOffersPresentationProps): JSX.Element;

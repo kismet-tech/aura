@@ -2,7 +2,7 @@ import React from "react";
 import { RenderablePendingItinerary } from "../../models/RenderablePendingItinerary";
 import { KismetSectionHeader } from "@/components/atoms";
 import { Calendar, Hotel, User } from "lucide-react";
-import { OrnateConciergeBell } from "@/components/icons/OrnateConciergeBell";
+import { OrnateConciergeBell } from "@/components/atoms/icons/OrnateConciergeBell";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { ExpandCollapseButton } from "@/components/atoms/ExpandCollapseButton";

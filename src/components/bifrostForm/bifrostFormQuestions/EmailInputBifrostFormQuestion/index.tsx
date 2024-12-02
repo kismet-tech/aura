@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
 import { Input } from "@/components/shadcn/input";
-import { RenderableEmailInputBifrostFormQuestion } from "@/models/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableEmailInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { ValidationError } from "@/components/atoms/forms/ValidationError";
 
 export interface EmailInputBifrostFormQuestionProps {

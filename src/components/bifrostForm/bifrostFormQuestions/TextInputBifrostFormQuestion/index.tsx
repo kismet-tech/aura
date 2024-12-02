@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
 import { Input } from "@/components/shadcn/input";
-import { RenderableTextInputBifrostFormQuestion } from "@/models/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableTextInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 
 export interface TextInputBifrostFormQuestionProps {
   renderableTextInputBifrostFormQuestion: RenderableTextInputBifrostFormQuestion;

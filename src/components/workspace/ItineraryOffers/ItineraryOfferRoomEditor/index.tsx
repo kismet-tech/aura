@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Settings2 } from "lucide-react";
+import { Settings2, X } from "lucide-react";
 import React from "react";
-import { RenderableItineraryOffer } from "../../../../models/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "../../../../models/bifrost/RenderableItineraryOffer";
 import { KismetHeader, KismetSectionHeader } from "../../../atoms";
 import { ItineraryOfferRoomEditorRoomDetailsImageList } from "./ItineraryOfferRoomEditorRoomDetailsImageList";
 import { ItineraryOfferRoomEditorRoomCarousel } from "./ItineraryOfferRoomEditorRoomCarousel";
@@ -9,11 +9,24 @@ import { ItineraryOfferRoomEditorRoomDetails } from "./ItineraryOfferRoomEditorR
 
 export interface ItineraryOfferRoomEditorProps {
   renderableItineraryOffer: RenderableItineraryOffer;
+  onClickUpdateItineraryOfferHotelRoomCount: ({
+    itineraryOfferId,
+    updatedCountOffered,
+    hotelRoomId,
+  }: {
+    itineraryOfferId: string;
+    updatedCountOffered: number;
+    hotelRoomId: string;
+  }) => void;
+
+  onClickExit: () => void;
 }
 
 export function ItineraryOfferRoomEditor({
   renderableItineraryOffer,
-}: ItineraryOfferRoomEditorProps) {
+  onClickUpdateItineraryOfferHotelRoomCount,
+  onClickExit,
+}: ItineraryOfferRoomEditorProps): JSX.Element {
   const [selectedHotelRoomId, setSelectedHotelRoomId] = useState<
     string | undefined
   >(undefined);
@@ -44,11 +57,11 @@ export function ItineraryOfferRoomEditor({
   }
   return (
     <div>
-      <KismetHeader>Edit Rooms</KismetHeader>
-      <div>
-        Please edit and add additional rooms you want to make bookable in your
-        wedding bloc below.
+      <div className="flex items-center justify-between">
+        <KismetHeader>Edit Rooms</KismetHeader>
+        <X className="cursor-pointer" onClick={onClickExit} />
       </div>
+      <div>Please edit and add additional rooms you want to make bookable.</div>
       <div className="pt-5">
         <KismetSectionHeader>
           <div className="flex items-center space-x-2">
@@ -63,11 +76,12 @@ export function ItineraryOfferRoomEditor({
         setSelectedHotelRoomId={({ hotelRoomId }: { hotelRoomId: string }) => {
           setSelectedHotelRoomId(hotelRoomId);
         }}
+        onClickUpdateItineraryOfferHotelRoomCount={
+          onClickUpdateItineraryOfferHotelRoomCount
+        }
       />
 
       {RenderedSelectedHotelRoomDetails}
     </div>
   );
-
-  return;
 }

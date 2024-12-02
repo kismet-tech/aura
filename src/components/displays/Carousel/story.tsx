@@ -30,7 +30,9 @@ export const Example_One: Story = {
   render: (args) => {
     return (
       <div style={{ width: "100%", margin: "0 auto" }}>
-        <Carousel {...args} />
+        <div className="h-32">
+          <Carousel {...args} />
+        </div>
       </div>
     );
   },

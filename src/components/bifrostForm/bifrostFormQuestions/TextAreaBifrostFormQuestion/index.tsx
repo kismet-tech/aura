@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
-import { RenderableTextAreaBifrostFormQuestion } from "@/models/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableTextAreaBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { KismetSectionHeader } from "@/components/atoms";
 
 export interface TextAreaBifrostFormQuestionProps {

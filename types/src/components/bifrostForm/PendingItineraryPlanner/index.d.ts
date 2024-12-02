@@ -5,5 +5,8 @@ export interface PendingItineraryPlannerProps {
     renderablePendingItinerary: RenderablePendingItinerary;
     itineraryOfferId: string;
     renderableItineraryOffers: RenderableItineraryOffer[];
+    onClickHotelRoom: ({ hotelRoomId }: {
+        hotelRoomId: string;
+    }) => void;
 }
-export declare function PendingItineraryPlanner({ renderablePendingItinerary, itineraryOfferId, renderableItineraryOffers, }: PendingItineraryPlannerProps): React.JSX.Element;
+export declare function PendingItineraryPlanner({ renderablePendingItinerary, itineraryOfferId, renderableItineraryOffers, onClickHotelRoom, }: PendingItineraryPlannerProps): React.JSX.Element;

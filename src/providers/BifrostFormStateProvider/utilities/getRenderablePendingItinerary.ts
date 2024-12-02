@@ -1,7 +1,14 @@
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { ReservedBifrostFormQuestionIds } from "@/models/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
-import { CalendarDateRange } from "@/models/core/date/CalendarDateRange";
+import {
+  mockRenderableSplitTextInputBifrostFormQuestionOne,
+  mockRenderableSplitTextInputBifrostFormQuestionTwo,
+} from "@/mockData/bifrost/bifrostFormQuestions/mockRenderableBifrostFormQuestions";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { ReservedBifrostFormQuestionIds } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
+import {
+  CalendarDateRange,
+  PendingCalendarDateRange,
+} from "@/models/core/date/CalendarDateRange";
 
 interface GetRenderablePendingItineraryProps {
   bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
@@ -10,19 +17,32 @@ interface GetRenderablePendingItineraryProps {
 export const getRenderablePendingItinerary = ({
   bifrostFormQuestionsWithResponses,
 }: GetRenderablePendingItineraryProps): RenderablePendingItinerary => {
-  const maybeGuestFirstNameQuestionWithResponse =
-    bifrostFormQuestionsWithResponses.find(
-      (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
-        return (
-          bifrostFormQuestionWithResponse.bifrostFormQuestion
-            .bifrostFormQuestionId === ReservedBifrostFormQuestionIds.FIRST_NAME
-        );
-      }
-    );
+  console.log(
+    `getRenderablePendingItinerary bifrostFormQuestionsWithResponses: ${JSON.stringify(
+      bifrostFormQuestionsWithResponses,
+      null,
+      4
+    )}`
+  );
 
-  const guestFirstName: string | undefined =
-    maybeGuestFirstNameQuestionWithResponse?.responseData
-      .responseValue as string;
+  const maybeGuestFirstNameQuestionWithResponse:
+    | BifrostFormQuestionWithResponse
+    | undefined = bifrostFormQuestionsWithResponses.find(
+    (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
+      return (
+        bifrostFormQuestionWithResponse.bifrostFormQuestion
+          .bifrostFormQuestionId ===
+        mockRenderableSplitTextInputBifrostFormQuestionOne.bifrostFormQuestionId
+      );
+    }
+  );
+
+  const guestFirstName: string | undefined = (
+    maybeGuestFirstNameQuestionWithResponse?.responseData.responseValue as {
+      left: string;
+      right: string;
+    }
+  )?.left as string;
 
   const maybeCountOfHotelRoomsInItineraryQuestionWithResponse =
     bifrostFormQuestionsWithResponses.find(
@@ -30,17 +50,22 @@ export const getRenderablePendingItinerary = ({
         return (
           bifrostFormQuestionWithResponse.bifrostFormQuestion
             .bifrostFormQuestionId ===
-          ReservedBifrostFormQuestionIds.COUNT_OF_ROOMS_NEEDED
+          mockRenderableSplitTextInputBifrostFormQuestionTwo.bifrostFormQuestionId
         );
       }
     );
 
+  const maybeCountOfHotelRoomsInItineraryString: string | undefined = (
+    maybeCountOfHotelRoomsInItineraryQuestionWithResponse?.responseData
+      .responseValue as {
+      left: string;
+      right: string;
+    }
+  )?.right as string;
+
   const countOfHotelRoomsInItinerary: number | undefined =
-    maybeCountOfHotelRoomsInItineraryQuestionWithResponse
-      ? parseInt(
-          maybeCountOfHotelRoomsInItineraryQuestionWithResponse.responseData
-            .responseValue as string
-        )
+    maybeCountOfHotelRoomsInItineraryString
+      ? parseInt(maybeCountOfHotelRoomsInItineraryString)
       : undefined;
 
   const maybeCalendarDateRangeQuestionWithResponse =
@@ -53,10 +78,17 @@ export const getRenderablePendingItinerary = ({
       }
     );
 
-  const calendarDateRangeInItinerary: CalendarDateRange | undefined =
-    maybeCalendarDateRangeQuestionWithResponse
-      ? (maybeCalendarDateRangeQuestionWithResponse.responseData
-          .responseValue as CalendarDateRange)
+  const pendingCalendarDateRangeInItinerary:
+    | PendingCalendarDateRange
+    | undefined = maybeCalendarDateRangeQuestionWithResponse
+    ? (maybeCalendarDateRangeQuestionWithResponse.responseData
+        .responseValue as PendingCalendarDateRange)
+    : undefined;
+
+  const calendarDateRangeInItinerary =
+    pendingCalendarDateRangeInItinerary?.startCalendarDate &&
+    pendingCalendarDateRangeInItinerary?.endCalendarDate
+      ? (pendingCalendarDateRangeInItinerary as CalendarDateRange)
       : undefined;
 
   const itineraryImageUrl: string =

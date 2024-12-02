@@ -1,4 +1,4 @@
-import { BifrostFormQuestionResponseType } from "@/models/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { BifrostFormQuestionResponseType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
 import {
   BifrostFormQuestionWithCalendarDateRangeResponse,
   BifrostFormQuestionWithEmailResponse,
@@ -9,7 +9,7 @@ import {
   BifrostTextAreaFormQuestionWithTextResponse,
   BifrostTextInputFormQuestionWithTextResponse,
   BifrostToggleButtonGroupFormQuestionWithTextResponse,
-} from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import {
   mockRenderableTextInputBifrostFormQuestionOne,
   mockRenderableEmailInputBifrostFormQuestionOne,
@@ -19,8 +19,22 @@ import {
   mockRenderableToggleButtonGroupBifrostFormQuestionOne,
   mockRenderableMultiSelectDateRangeBifrostFormQuestionOne,
   mockRenderableSelectDateRangeBifrostFormQuestionOne,
+  mockRenderableToggleButtonGroupBifrostFormQuestionTwo,
+  mockRenderableTextInputBifrostFormQuestionThree,
+  mockRenderableSplitTextInputBifrostFormQuestionTwo,
+  mockRenderableToggleButtonGroupBifrostFormQuestionThree,
 } from "./mockRenderableBifrostFormQuestions";
-import { ReservedBifrostReasonForTravelOptionValues } from "@/models/BifrostFormQuestions/ReservedBifrostFormQuestionValues";
+import { ReservedBifrostReasonForTravelOptionValues } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionValues";
+
+export const mockBifrostTextInputFormQuestionWithTextResponseOne: BifrostTextInputFormQuestionWithTextResponse =
+  {
+    responseType: BifrostFormQuestionResponseType.TEXT,
+    bifrostFormQuestion: mockRenderableTextInputBifrostFormQuestionThree,
+    responseData: {
+      type: BifrostFormQuestionResponseType.TEXT,
+      responseValue: "",
+    },
+  };
 
 export const mockBifrostFormQuestionWithTextResponseOne: BifrostTextInputFormQuestionWithTextResponse =
   {
@@ -72,6 +86,27 @@ export const mockBifrostFormQuestionWithTextResponseFive: BifrostToggleButtonGro
     },
   };
 
+export const mockBifrostToggleButtonGroupFormQuestionWithTextResponseTwo: BifrostToggleButtonGroupFormQuestionWithTextResponse =
+  {
+    responseType: BifrostFormQuestionResponseType.TEXT,
+    bifrostFormQuestion: mockRenderableToggleButtonGroupBifrostFormQuestionTwo,
+    responseData: {
+      type: BifrostFormQuestionResponseType.TEXT,
+      responseValue: "",
+    },
+  };
+
+export const mockBifrostToggleButtonGroupFormQuestionWithTextResponseThree: BifrostToggleButtonGroupFormQuestionWithTextResponse =
+  {
+    responseType: BifrostFormQuestionResponseType.TEXT,
+    bifrostFormQuestion:
+      mockRenderableToggleButtonGroupBifrostFormQuestionThree,
+    responseData: {
+      type: BifrostFormQuestionResponseType.TEXT,
+      responseValue: "",
+    },
+  };
+
 export const mockBifrostFormQuestionWithEmailResponseOne: BifrostFormQuestionWithEmailResponse =
   {
     responseType: BifrostFormQuestionResponseType.EMAIL,
@@ -117,6 +152,16 @@ export const mockBifrostFormQuestionWithCalendarDateRangeResponseOne: BifrostFor
     bifrostFormQuestion: mockRenderableSelectDateRangeBifrostFormQuestionOne,
     responseData: {
       type: BifrostFormQuestionResponseType.CALENDAR_DATE_RANGE,
+      responseValue: {},
+    },
+  };
+
+export const mockBifrostFormQuestionWithCalendarDateRangeResponseTwo: BifrostFormQuestionWithCalendarDateRangeResponse =
+  {
+    responseType: BifrostFormQuestionResponseType.CALENDAR_DATE_RANGE,
+    bifrostFormQuestion: mockRenderableSelectDateRangeBifrostFormQuestionOne,
+    responseData: {
+      type: BifrostFormQuestionResponseType.CALENDAR_DATE_RANGE,
       responseValue: {
         startCalendarDate: {
           year: 2025,
@@ -133,6 +178,17 @@ export const mockBifrostFormQuestionWithCalendarDateRangeResponseOne: BifrostFor
   };
 
 export const mockBifrostFormQuestionWithMultiCalendarDateRangeResponseOne: BifrostFormQuestionWithMultiCalendarDateRangeResponse =
+  {
+    responseType: BifrostFormQuestionResponseType.MULTI_CALENDAR_DATE_RANGE,
+    bifrostFormQuestion:
+      mockRenderableMultiSelectDateRangeBifrostFormQuestionOne,
+    responseData: {
+      type: BifrostFormQuestionResponseType.MULTI_CALENDAR_DATE_RANGE,
+      responseValue: [],
+    },
+  };
+
+export const mockBifrostFormQuestionWithMultiCalendarDateRangeResponseTwo: BifrostFormQuestionWithMultiCalendarDateRangeResponse =
   {
     responseType: BifrostFormQuestionResponseType.MULTI_CALENDAR_DATE_RANGE,
     bifrostFormQuestion:
@@ -190,6 +246,19 @@ export const mockBifrostFormQuestionWithSplitTextResponseTwo: BifrostFormQuestio
       responseValue: {
         left: "Julian",
         right: "Trajanson",
+      },
+    },
+  };
+
+export const mockBifrostFormQuestionWithSplitTextResponseThree: BifrostFormQuestionWithSplitTextResponse =
+  {
+    responseType: BifrostFormQuestionResponseType.SPLIT_TEXT,
+    bifrostFormQuestion: mockRenderableSplitTextInputBifrostFormQuestionTwo,
+    responseData: {
+      type: BifrostFormQuestionResponseType.SPLIT_TEXT,
+      responseValue: {
+        left: "",
+        right: "",
       },
     },
   };

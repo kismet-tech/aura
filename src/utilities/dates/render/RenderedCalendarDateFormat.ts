@@ -5,4 +5,10 @@ export enum RenderedCalendarDateFormat {
   // Example: Dec 13 (current year is hidden)
   // Example: Dec 13, 2027 (non-current year is shown)
   ABBREVIATED_MONTH_DAY_OPTIONAL_YEAR = "ABBREVIATED_MONTH_DAY_OPTIONAL_YEAR",
+
+  // Example: January 3, 2025
+  MONTH_DAY_YEAR = "MONTH_DAY_YEAR",
+
+  // Example: January
+  MONTH = "MONTH",
 }

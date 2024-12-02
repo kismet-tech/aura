@@ -2,7 +2,7 @@ import React from "react";
 import { PendingItineraryPlannerHeader } from "./components/PendingItineraryPlannerHeader";
 import { RenderablePendingItinerary } from "./models/RenderablePendingItinerary";
 import { ItineraryOfferPresentationBody } from "@/components/workspace/ItineraryOffers/ItineraryOfferPresentation/ItineraryOfferPresentationBody";
-import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 import { ArrowRight } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/shadcn/tabs";
@@ -11,12 +11,14 @@ export interface PendingItineraryPlannerProps {
   renderablePendingItinerary: RenderablePendingItinerary;
   itineraryOfferId: string;
   renderableItineraryOffers: RenderableItineraryOffer[];
+  onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => void;
 }
 
 export function PendingItineraryPlanner({
   renderablePendingItinerary,
   itineraryOfferId,
   renderableItineraryOffers,
+  onClickHotelRoom,
 }: PendingItineraryPlannerProps) {
   return (
     <div>
@@ -28,6 +30,7 @@ export function PendingItineraryPlanner({
         <ItineraryOfferPresentationBody
           itineraryOfferId={itineraryOfferId}
           renderableItineraryOffers={renderableItineraryOffers}
+          onClickHotelRoom={onClickHotelRoom}
         />
         <div className="flex mt-4">
           <Tabs>

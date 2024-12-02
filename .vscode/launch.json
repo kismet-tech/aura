@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Storybook",
-      "runtimeExecutable": "yarn",
+      "runtimeExecutable": "/Users/julian/.nvm/versions/node/v20.10.0/bin/yarn",
       "runtimeArgs": ["storybook"],
       "env": {
         "NODE_OPTIONS": "--inspect=9230"
@@ -18,9 +18,9 @@
       "skipFiles": ["<node_internals>/**"]
     },
     {
+      "name": "Launch Chrome to Storybook",
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome to Storybook",
       "url": "http://localhost:6006/",
       "webRoot": "${workspaceFolder}",
       "userDataDir": "${workspaceFolder}/.vscode/.chrome-user-dir"

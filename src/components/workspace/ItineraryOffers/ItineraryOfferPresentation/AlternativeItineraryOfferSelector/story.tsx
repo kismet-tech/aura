@@ -11,6 +11,7 @@ import {
   mockRenderableItineraryOfferThree,
   mockRenderableItineraryOfferTwo,
 } from "@/mockData/bifrost/mockRenderableItineraryOffers";
+import { AppViewport } from "@/components/atoms/AppViewport";
 
 const meta: Meta<typeof AlternativeItineraryOfferSelector> = {
   title:
@@ -40,9 +41,11 @@ const exampleOneArguments: AlternativeItineraryOfferSelectorProps = {
 export const Example: Story = {
   render: (args) => {
     return (
-      <div style={{ width: "50%", margin: "0 auto" }}>
-        <AlternativeItineraryOfferSelector {...args} />
-      </div>
+      <AppViewport>
+        <div className="h-32">
+          <AlternativeItineraryOfferSelector {...args} />
+        </div>
+      </AppViewport>
     );
   },
   args: exampleOneArguments,

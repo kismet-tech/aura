@@ -1,23 +1,13 @@
 // Overlay.tsx
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useState,
-  useEffect,
-} from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 
-// Define the shape of the Overlay context
 interface OverlayContextType {
-  overlay: ReactNode | null;
-  setOverlay: (overlayContent: ReactNode) => void;
-  clearOverlay: () => void;
+  showOverlay: (component: React.ComponentType<any>, props?: any) => void;
+  hideOverlay: () => void;
 }
 
-// Create the Overlay context
 const OverlayContext = createContext<OverlayContextType | undefined>(undefined);
 
-// Custom hook to use the Overlay context
 export const useOverlay = (): OverlayContextType => {
   const context = useContext(OverlayContext);
   if (!context) {
@@ -26,43 +16,34 @@ export const useOverlay = (): OverlayContextType => {
   return context;
 };
 
-// Define the props for the Overlay provider
 interface OverlayProviderProps {
   children: ReactNode;
 }
 
-// Overlay Provider Component
 export const OverlayProvider: React.FC<OverlayProviderProps> = ({
   children,
 }) => {
-  const [overlay, setOverlayState] = useState<ReactNode | null>(null);
+  const [overlayComponent, setOverlayComponent] =
+    useState<React.ComponentType<any> | null>(null);
+  const [overlayProps, setOverlayProps] = useState<any>(null);
 
-  const setOverlay = (overlayContent: ReactNode) => {
-    setOverlayState(overlayContent);
+  const showOverlay = (component: React.ComponentType<any>, props?: any) => {
+    setOverlayComponent(() => component);
+    setOverlayProps(props);
   };
 
-  const clearOverlay = () => {
-    setOverlayState(null);
+  const hideOverlay = () => {
+    setOverlayComponent(null);
+    setOverlayProps(null);
   };
-
-  // Optional: Close overlay on Esc key press for accessibility
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        clearOverlay();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
   return (
-    <OverlayContext.Provider value={{ overlay, setOverlay, clearOverlay }}>
-      {children}
-      {overlay && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-          {overlay}
-        </div>
+    <OverlayContext.Provider value={{ showOverlay, hideOverlay }}>
+      {overlayComponent ? (
+        // <div className="fixed inset-0 z-50 bg-white">
+        <div>{React.createElement(overlayComponent, overlayProps)}</div>
+      ) : (
+        children
       )}
     </OverlayContext.Provider>
   );

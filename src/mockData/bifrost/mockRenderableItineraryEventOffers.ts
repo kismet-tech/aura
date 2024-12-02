@@ -1,7 +1,7 @@
 import {
   RenderableItineraryEventOffer,
   RenderableItineraryEventOfferApprovalStatus,
-} from "@/models/RenderableItineraryOffer";
+} from "@/models/bifrost/RenderableItineraryOffer";
 
 export const mockRenderableItineraryEventOfferOne: RenderableItineraryEventOffer =
   {

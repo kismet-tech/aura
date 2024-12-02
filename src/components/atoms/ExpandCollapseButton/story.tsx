@@ -2,6 +2,7 @@ import React from "react";
 
 import { Meta, StoryObj } from "@storybook/react";
 import { ExpandCollapseButton, ExpandCollapseButtonProps } from ".";
+import { AppViewport } from "../AppViewport";
 
 const meta: Meta<typeof ExpandCollapseButton> = {
   title: "Atoms/ExpandCollapseButton",
@@ -24,9 +25,9 @@ const exampleOneArguments: ExpandCollapseButtonProps = {
 export const IsCollapsed_Example: Story = {
   render: (args) => {
     return (
-      <div style={{ width: "50%", margin: "0 auto" }}>
+      <AppViewport>
         <ExpandCollapseButton {...args} />
-      </div>
+      </AppViewport>
     );
   },
   args: exampleOneArguments,

@@ -4,9 +4,9 @@ import {
   BifrostTextAreaFormQuestionWithTextResponse,
   BifrostTextInputFormQuestionWithTextResponse,
   BifrostToggleButtonGroupFormQuestionWithTextResponse,
-} from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { BifrostFormQuestionResponseType } from "@/models/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { FormQuestionType } from "@/models/BifrostFormQuestions/BifrostFormQuestion";
+} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionResponseType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { BifrostFormQuestionType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { SplitTextInputBifrostFormQuestionChatHistoryElement } from "../SplitTextInputBifrostFormQuestionChatHistoryElement";
 import { PhoneInputBifrostFormQuestionChatHistoryElement } from "../PhoneInputBifrostFormQuestionChatHistoryElement";
 import { TextInputBifrostFormQuestionChatHistoryElement } from "../TextInputBifrostFormQuestionChatHistoryElement";
@@ -34,7 +34,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.TEXT &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.TEXT_INPUT
+      BifrostFormQuestionType.TEXT_INPUT
   ) {
     return (
       <TextInputBifrostFormQuestionChatHistoryElement
@@ -52,7 +52,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.TEXT &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.TEXT_AREA
+      BifrostFormQuestionType.TEXT_AREA
   ) {
     return (
       <TextAreaInputBifrostFormQuestionChatHistoryElement
@@ -70,7 +70,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.TEXT &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.TOGGLE_BUTTON_GROUP
+      BifrostFormQuestionType.TOGGLE_BUTTON_GROUP
   ) {
     return (
       <ToggleButtonGroupBifrostFormQuestionChatHistoryElement
@@ -88,7 +88,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.PHONE_NUMBER &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.PHONE
+      BifrostFormQuestionType.PHONE
   ) {
     return (
       <PhoneInputBifrostFormQuestionChatHistoryElement
@@ -106,7 +106,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.EMAIL &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.EMAIL
+      BifrostFormQuestionType.EMAIL
   ) {
     if (!isBeingEdited) {
       return (
@@ -139,7 +139,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.CALENDAR_DATE_RANGE &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.SELECT_DATE_RANGE
+      BifrostFormQuestionType.SELECT_DATE_RANGE
   ) {
     return (
       <CalendarDateRangeBifrostFormQuestionChatHistoryElement
@@ -157,7 +157,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.MULTI_CALENDAR_DATE_RANGE &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.MULTI_SELECT_DATE_RANGE
+      BifrostFormQuestionType.MULTI_SELECT_DATE_RANGE
   ) {
     return (
       <MultiCalendarDateRangeBifrostFormQuestionChatHistoryElement
@@ -175,7 +175,7 @@ export function BifrostFormQuestionChatHistoryElement({
     bifrostFormQuestionWithResponse.responseType ===
       BifrostFormQuestionResponseType.SPLIT_TEXT &&
     bifrostFormQuestionWithResponse.bifrostFormQuestion.type ===
-      FormQuestionType.SPLIT_TEXT_INPUT
+      BifrostFormQuestionType.SPLIT_TEXT_INPUT
   ) {
     return (
       <SplitTextInputBifrostFormQuestionChatHistoryElement

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
 import "swiper/css";
@@ -72,7 +72,7 @@ export function Carousel<T>({
   if (items.length === 0) return null;
 
   return (
-    <div className="w-full relative">
+    <div className="w-full h-full relative">
       {/* Custom Navigation Buttons */}
       <button
         ref={prevRef}
@@ -95,9 +95,9 @@ export function Carousel<T>({
         grabCursor={true}
         loop={false}
         modules={[Navigation]}
-        autoHeight={true}
-        className="mt-4 w-full"
-        onSwiper={(swiper) => {
+        autoHeight={false}
+        className="mt-4 w-full h-full"
+        onSwiper={(swiper: SwiperClass) => {
           swiperRef.current = swiper;
         }}
         navigation={{

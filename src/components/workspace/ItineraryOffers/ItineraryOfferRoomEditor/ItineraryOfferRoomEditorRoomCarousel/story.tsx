@@ -21,6 +21,19 @@ const exampleOneArguments: ItineraryOfferRoomEditorRoomCarouselProps = {
   selectedHotelRoomId:
     mockRenderableItineraryOfferOne.hotelRoomOffers[0].hotelRoomId,
   setSelectedHotelRoomId: () => {},
+  onClickUpdateItineraryOfferHotelRoomCount: ({
+    itineraryOfferId,
+    updatedCountOffered,
+    hotelRoomId,
+  }: {
+    itineraryOfferId: string;
+    updatedCountOffered: number;
+    hotelRoomId: string;
+  }) => {
+    console.log(
+      `Set itineraryOfferId '${itineraryOfferId}' hotelRoomId '${hotelRoomId}' to ${updatedCountOffered}`
+    );
+  },
 };
 
 export const Example: Story = {

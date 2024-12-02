@@ -26,8 +26,16 @@ const StoryWrapper = (props: ItineraryOfferPresentationBodyProps) => {
   );
 
   const dynamicArgs: ItineraryOfferPresentationBodyProps = {
-    ...props,
     itineraryOfferId: selectedItineraryOfferId,
+    renderableItineraryOffers: [
+      mockRenderableItineraryOfferOne,
+      mockRenderableItineraryOfferTwo,
+      mockRenderableItineraryOfferThree,
+      mockRenderableItineraryOfferFour,
+    ],
+    onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => {
+      console.log(`Clicked ${hotelRoomId}`);
+    },
   };
 
   return (
@@ -46,12 +54,5 @@ const StoryWrapper = (props: ItineraryOfferPresentationBodyProps) => {
 
 export const Example: Story = {
   render: (args) => <StoryWrapper {...args} />,
-  args: {
-    renderableItineraryOffers: [
-      mockRenderableItineraryOfferOne,
-      mockRenderableItineraryOfferTwo,
-      mockRenderableItineraryOfferThree,
-      mockRenderableItineraryOfferFour,
-    ],
-  },
+  args: {},
 };

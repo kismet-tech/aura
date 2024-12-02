@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderableItineraryEventOffer } from "../../../../models/RenderableItineraryOffer";
+import { RenderableItineraryEventOffer } from "../../../../models/bifrost/RenderableItineraryOffer";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";

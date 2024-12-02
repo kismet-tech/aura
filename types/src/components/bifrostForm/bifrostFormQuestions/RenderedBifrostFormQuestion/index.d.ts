@@ -3,8 +3,8 @@ import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/B
 import { BifrostFormQuestionResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionResponse";
 export interface RenderedBifrostFormQuestionProps {
     bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
-    setBifrostFormQuestionResponse: ({ bifrostFormQuestionResponse, }: {
-        bifrostFormQuestionResponse: BifrostFormQuestionResponse;
+    setBifrostFormQuestionResponse: ({ updatedBifrostFormQuestionResponse, }: {
+        updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;
     }) => void;
     setIsResponseValid: ({ isResponseValid, }: {
         isResponseValid: boolean;

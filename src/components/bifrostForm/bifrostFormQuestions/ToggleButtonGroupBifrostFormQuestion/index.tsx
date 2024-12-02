@@ -4,7 +4,7 @@ import { FormLabel } from "@/components/atoms/forms/FormLabel";
 import {
   RenderableToggleButtonGroupBifrostFormQuestion,
   RenderableToggleButtonGroupBifrostFormQuestionOption,
-} from "@/models/BifrostFormQuestions/BifrostFormQuestion";
+} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { ToggleGroup, ToggleGroupItem } from "@/components/shadcn/toggle-group";
 
 export interface ToggleButtonGroupBifrostFormQuestionProps {

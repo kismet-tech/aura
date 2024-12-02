@@ -1,4 +1,4 @@
-import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
 import React from "react";
 import { ItineraryOfferPresentationHeader } from "../ItineraryOfferPresentationHeader";
 import { ItineraryOfferRoomsPresentationPanel } from "../ItineraryOfferRoomsPresentationPanel";
@@ -7,11 +7,13 @@ import { ItineraryOfferEventsPresentationPanel } from "../ItineraryOfferEventsPr
 export interface ItineraryOfferPresentationBodyProps {
   itineraryOfferId: string;
   renderableItineraryOffers: RenderableItineraryOffer[];
+  onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => void;
 }
 
 export function ItineraryOfferPresentationBody({
   itineraryOfferId,
   renderableItineraryOffers,
+  onClickHotelRoom,
 }: ItineraryOfferPresentationBodyProps) {
   const renderableItineraryOffer = renderableItineraryOffers.find(
     (offer) => offer.itineraryOfferId === itineraryOfferId
@@ -33,7 +35,7 @@ export function ItineraryOfferPresentationBody({
       <div className="pt-4">
         <ItineraryOfferRoomsPresentationPanel
           renderableItineraryOffer={renderableItineraryOffer}
-          onClickHotelRoomCarouselItem={() => {}}
+          onClickHotelRoomCarouselItem={onClickHotelRoom}
         />
         <ItineraryOfferEventsPresentationPanel
           renderableItineraryOffer={renderableItineraryOffer}

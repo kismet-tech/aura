@@ -6,7 +6,7 @@ import {
   CalendarDateRangeBifrostFormQuestionChatHistoryElementProps,
 } from ".";
 import {
-  mockBifrostFormQuestionWithCalendarDateRangeResponseOne,
+  mockBifrostFormQuestionWithCalendarDateRangeResponseTwo,
   mockBifrostFormQuestionWithTextResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 
@@ -28,7 +28,7 @@ const StoryWrapper = () => {
     {
       guestFirstName: "Julian",
       bifrostFormQuestionWithCalendarDateRangeResponse:
-        mockBifrostFormQuestionWithCalendarDateRangeResponseOne,
+        mockBifrostFormQuestionWithCalendarDateRangeResponseTwo,
       onClick: () => {
         console.log("onClick");
       },

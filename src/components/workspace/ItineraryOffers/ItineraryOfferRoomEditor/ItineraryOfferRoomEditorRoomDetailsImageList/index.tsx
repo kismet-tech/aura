@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollArea, ScrollBar } from "@/components/shadcn/scroll-area";
-import { RenderableItineraryHotelRoomOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
 
 export interface ItineraryOfferRoomEditorRoomDetailsImageListProps {
   renderableItineraryHotelRoomOffer: RenderableItineraryHotelRoomOffer;

@@ -1,5 +1,5 @@
 import { KismetSectionHeader } from "@/components/atoms/KismetSectionHeader";
-import { RenderableItineraryHotelRoomOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
 import { renderDiscount } from "@/utilities/entities/itineraryOffer/renderDiscount";
 import React from "react";
 
@@ -25,7 +25,9 @@ export function ItineraryOfferRoomEditorRoomDetails({
   return (
     <div>
       <KismetSectionHeader>
-        <div className="flex">Room Information</div>
+        <div className="flex">
+          {renderableItineraryHotelRoomOffer.hotelRoomName}
+        </div>
       </KismetSectionHeader>
 
       <div>

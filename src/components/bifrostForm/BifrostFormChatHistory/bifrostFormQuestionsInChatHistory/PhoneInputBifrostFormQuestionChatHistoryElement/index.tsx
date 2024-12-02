@@ -2,7 +2,7 @@ import { BifrostChatText } from "@/components/atoms/BifrostChatText";
 import React from "react";
 import { KismetChatHistoryMessage } from "../../KismetChatHistoryMessage";
 import { GuestChatHistoryMessage } from "../../GuestChatHistoryMessage";
-import { BifrostFormQuestionWithPhoneNumberResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithPhoneNumberResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { formatPhoneNumber } from "@/utilities/formatting/formatPhoneNumber";
 
 export interface PhoneInputBifrostFormQuestionChatHistoryElementProps {

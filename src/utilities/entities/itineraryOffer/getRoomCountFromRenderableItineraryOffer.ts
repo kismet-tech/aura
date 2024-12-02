@@ -1,7 +1,7 @@
 import {
   RenderableItineraryOffer,
   RenderableItineraryHotelRoomOffer,
-} from "@/models/RenderableItineraryOffer";
+} from "@/models/bifrost/RenderableItineraryOffer";
 
 interface GetRoomCountFromRenderableItineraryOfferProps {
   renderableItineraryOffer: RenderableItineraryOffer;

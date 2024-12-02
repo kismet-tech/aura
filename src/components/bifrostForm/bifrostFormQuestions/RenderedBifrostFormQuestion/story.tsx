@@ -5,8 +5,8 @@ import {
   RenderedBifrostFormQuestionProps,
 } from ".";
 import { mockBifrostFormQuestionWithTextResponseOne } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { updateBifrostFormQuestionWithResponse } from "@/utilities/bifrostFormQuestions/updateBifrostFormQuestionWithResponse";
 
 const meta: Meta<typeof RenderedBifrostFormQuestion> = {
@@ -26,9 +26,9 @@ const StoryWrapper = () => {
   const dynamicArgs: RenderedBifrostFormQuestionProps = {
     bifrostFormQuestionWithResponse,
     setBifrostFormQuestionResponse: ({
-      bifrostFormQuestionResponse,
+      updatedBifrostFormQuestionResponse,
     }: {
-      bifrostFormQuestionResponse: BifrostFormQuestionResponse;
+      updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;
     }) => {
       setBifrostFormQuestionWithResponse(
         (
@@ -36,7 +36,8 @@ const StoryWrapper = () => {
         ) => {
           return updateBifrostFormQuestionWithResponse({
             previousBifrostFormQuestionWithResponse,
-            bifrostFormQuestionResponse,
+            updatedBifrostFormQuestionResponse:
+              updatedBifrostFormQuestionResponse,
           });
         }
       );

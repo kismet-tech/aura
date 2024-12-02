@@ -2,7 +2,7 @@ import { BifrostFormQuestionResponse } from "@/models/BifrostFormQuestions/Bifro
 import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 interface UpdateBifrostFormQuestionWithResponseProps {
     previousBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
-    bifrostFormQuestionResponse: BifrostFormQuestionResponse;
+    updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;
 }
-export declare const updateBifrostFormQuestionWithResponse: ({ previousBifrostFormQuestionWithResponse, bifrostFormQuestionResponse, }: UpdateBifrostFormQuestionWithResponseProps) => BifrostFormQuestionWithResponse;
+export declare const updateBifrostFormQuestionWithResponse: ({ previousBifrostFormQuestionWithResponse, updatedBifrostFormQuestionResponse, }: UpdateBifrostFormQuestionWithResponseProps) => BifrostFormQuestionWithResponse;
 export {};

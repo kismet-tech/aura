@@ -2,7 +2,7 @@ import { BifrostChatText } from "@/components/atoms/BifrostChatText";
 import React from "react";
 import { KismetChatHistoryMessage } from "../../KismetChatHistoryMessage";
 import { GuestChatHistoryMessage } from "../../GuestChatHistoryMessage";
-import { BifrostFormQuestionWithEmailResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithEmailResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 
 export interface EmailInputBifrostFormQuestionChatHistoryElementProps {
   guestFirstName: string;

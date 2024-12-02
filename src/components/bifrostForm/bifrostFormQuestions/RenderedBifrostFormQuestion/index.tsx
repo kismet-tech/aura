@@ -1,5 +1,5 @@
-import { FormQuestionType } from "@/models/BifrostFormQuestions/BifrostFormQuestion";
-import React, { useEffect } from "react";
+import { BifrostFormQuestionType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import React from "react";
 import { EmailInputBifrostFormQuestion } from "../EmailInputBifrostFormQuestion";
 import { PhoneInputBifrostFormQuestion } from "../PhoneInputBifrostFormQuestion";
 import { TextAreaBifrostFormQuestion } from "../TextAreaBifrostFormQuestion";
@@ -8,19 +8,19 @@ import { SelectDateRangeBifrostFormQuestion } from "../SelectDateRangeBifrostFor
 import { MultiSelectDateRangeBifrostFormQuestion } from "../MultiSelectDateRangeBifrostFormQuestion";
 import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
 import { SplitTextInputBifrostFormQuestion } from "../SplitTextInputBifrostFormQuestion";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import {
   BifrostFormQuestionResponse,
   BifrostFormQuestionResponseType,
-} from "@/models/BifrostFormQuestions/BifrostFormQuestionResponse";
+} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
 import { TextInputBifrostFormQuestion } from "../TextInputBifrostFormQuestion";
 
 export interface RenderedBifrostFormQuestionProps {
   bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
   setBifrostFormQuestionResponse: ({
-    bifrostFormQuestionResponse,
+    updatedBifrostFormQuestionResponse,
   }: {
-    bifrostFormQuestionResponse: BifrostFormQuestionResponse;
+    updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;
   }) => void;
   setIsResponseValid: ({
     isResponseValid,
@@ -38,7 +38,7 @@ export function RenderedBifrostFormQuestion({
     bifrostFormQuestionWithResponse;
 
   if (responseType === BifrostFormQuestionResponseType.TEXT) {
-    if (bifrostFormQuestion.type === FormQuestionType.TEXT_INPUT) {
+    if (bifrostFormQuestion.type === BifrostFormQuestionType.TEXT_INPUT) {
       return (
         <TextInputBifrostFormQuestion
           key={bifrostFormQuestion.bifrostFormQuestionId}
@@ -46,7 +46,7 @@ export function RenderedBifrostFormQuestion({
           value={responseData.responseValue}
           setValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.TEXT,
                 responseValue: updatedValue,
               },
@@ -55,7 +55,7 @@ export function RenderedBifrostFormQuestion({
           setIsResponseValid={setIsResponseValid}
         />
       );
-    } else if (bifrostFormQuestion.type === FormQuestionType.TEXT_AREA) {
+    } else if (bifrostFormQuestion.type === BifrostFormQuestionType.TEXT_AREA) {
       return (
         <TextAreaBifrostFormQuestion
           key={bifrostFormQuestion.bifrostFormQuestionId}
@@ -63,7 +63,7 @@ export function RenderedBifrostFormQuestion({
           value={responseData.responseValue}
           setValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.TEXT,
                 responseValue: updatedValue,
               },
@@ -73,7 +73,7 @@ export function RenderedBifrostFormQuestion({
         />
       );
     } else if (
-      bifrostFormQuestion.type === FormQuestionType.TOGGLE_BUTTON_GROUP
+      bifrostFormQuestion.type === BifrostFormQuestionType.TOGGLE_BUTTON_GROUP
     ) {
       return (
         <ToggleButtonGroupBifrostFormQuestion
@@ -82,7 +82,7 @@ export function RenderedBifrostFormQuestion({
           value={responseData.responseValue}
           setValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.TEXT,
                 responseValue: updatedValue,
               },
@@ -93,7 +93,7 @@ export function RenderedBifrostFormQuestion({
       );
     }
   } else if (responseType === BifrostFormQuestionResponseType.PHONE_NUMBER) {
-    if (bifrostFormQuestion.type === FormQuestionType.PHONE) {
+    if (bifrostFormQuestion.type === BifrostFormQuestionType.PHONE) {
       return (
         <PhoneInputBifrostFormQuestion
           key={bifrostFormQuestion.bifrostFormQuestionId}
@@ -101,7 +101,7 @@ export function RenderedBifrostFormQuestion({
           value={responseData.responseValue}
           setValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.PHONE_NUMBER,
                 responseValue: updatedValue,
               },
@@ -112,7 +112,7 @@ export function RenderedBifrostFormQuestion({
       );
     }
   } else if (responseType === BifrostFormQuestionResponseType.EMAIL) {
-    if (bifrostFormQuestion.type === FormQuestionType.EMAIL) {
+    if (bifrostFormQuestion.type === BifrostFormQuestionType.EMAIL) {
       return (
         <EmailInputBifrostFormQuestion
           key={bifrostFormQuestion.bifrostFormQuestionId}
@@ -120,7 +120,7 @@ export function RenderedBifrostFormQuestion({
           value={responseData.responseValue}
           setValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.EMAIL,
                 responseValue: updatedValue,
               },
@@ -133,7 +133,9 @@ export function RenderedBifrostFormQuestion({
   } else if (
     responseType === BifrostFormQuestionResponseType.CALENDAR_DATE_RANGE
   ) {
-    if (bifrostFormQuestion.type === FormQuestionType.SELECT_DATE_RANGE) {
+    if (
+      bifrostFormQuestion.type === BifrostFormQuestionType.SELECT_DATE_RANGE
+    ) {
       return (
         <SelectDateRangeBifrostFormQuestion
           key={bifrostFormQuestion.bifrostFormQuestionId}
@@ -145,7 +147,7 @@ export function RenderedBifrostFormQuestion({
             updatedCalendarDateRange: PendingCalendarDateRange;
           }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.CALENDAR_DATE_RANGE,
                 responseValue: updatedCalendarDateRange,
               },
@@ -158,7 +160,10 @@ export function RenderedBifrostFormQuestion({
   } else if (
     responseType === BifrostFormQuestionResponseType.MULTI_CALENDAR_DATE_RANGE
   ) {
-    if (bifrostFormQuestion.type === FormQuestionType.MULTI_SELECT_DATE_RANGE) {
+    if (
+      bifrostFormQuestion.type ===
+      BifrostFormQuestionType.MULTI_SELECT_DATE_RANGE
+    ) {
       return (
         <MultiSelectDateRangeBifrostFormQuestion
           key={bifrostFormQuestion.bifrostFormQuestionId}
@@ -172,7 +177,7 @@ export function RenderedBifrostFormQuestion({
             updatedCalendarDateRanges: PendingCalendarDateRange[];
           }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.MULTI_CALENDAR_DATE_RANGE,
                 responseValue: updatedCalendarDateRanges,
               },
@@ -183,7 +188,7 @@ export function RenderedBifrostFormQuestion({
       );
     }
   } else if (responseType === BifrostFormQuestionResponseType.SPLIT_TEXT) {
-    if (bifrostFormQuestion.type === FormQuestionType.SPLIT_TEXT_INPUT) {
+    if (bifrostFormQuestion.type === BifrostFormQuestionType.SPLIT_TEXT_INPUT) {
       return (
         <SplitTextInputBifrostFormQuestion
           key={`${bifrostFormQuestion.left.bifrostFormQuestionId}-${bifrostFormQuestion.right.bifrostFormQuestionId}`}
@@ -192,7 +197,7 @@ export function RenderedBifrostFormQuestion({
           rightValue={responseData.responseValue.right}
           setLeftValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.SPLIT_TEXT,
                 responseValue: {
                   ...responseData.responseValue,
@@ -203,7 +208,7 @@ export function RenderedBifrostFormQuestion({
           }}
           setRightValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({
-              bifrostFormQuestionResponse: {
+              updatedBifrostFormQuestionResponse: {
                 type: BifrostFormQuestionResponseType.SPLIT_TEXT,
                 responseValue: {
                   ...responseData.responseValue,

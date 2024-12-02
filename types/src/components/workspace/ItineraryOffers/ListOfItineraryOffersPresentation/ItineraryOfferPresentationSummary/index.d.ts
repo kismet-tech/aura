@@ -5,4 +5,4 @@ export interface ItineraryOfferPresentationSummaryProps {
     itineraryOfferIndex: number;
     onClick: () => void;
 }
-export declare function ItineraryOfferPresentationSummary({ renderableItineraryOffer, itineraryOfferIndex, }: ItineraryOfferPresentationSummaryProps): React.JSX.Element;
+export declare function ItineraryOfferPresentationSummary({ renderableItineraryOffer, itineraryOfferIndex, onClick, }: ItineraryOfferPresentationSummaryProps): React.JSX.Element;

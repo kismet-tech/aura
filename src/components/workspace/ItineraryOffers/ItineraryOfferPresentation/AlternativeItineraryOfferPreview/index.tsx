@@ -1,4 +1,4 @@
-import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";

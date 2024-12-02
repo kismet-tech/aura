@@ -3,7 +3,7 @@ import {
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryOffer,
   RenderableItineraryOfferCriterion,
-} from "../../models/RenderableItineraryOffer";
+} from "../../models/bifrost/RenderableItineraryOffer";
 import { mockRenderableItineraryEventOfferOne } from "./mockRenderableItineraryEventOffers";
 
 const mockRenderableItineraryOfferCriterionOne: RenderableItineraryOfferCriterion =
@@ -182,6 +182,13 @@ export const mockRenderableItineraryOfferOne: RenderableItineraryOffer = {
     mockRenderableItineraryOfferCriterionOne,
     mockRenderableItineraryOfferCriterionTwo,
   ],
+  bookingRules: {
+    holdDurationInDays: 10,
+    discountExpiresAtTimestamp: Date.now() + 5 * 24 * 60 * 60 * 1000,
+    depositPercentage: 10,
+    depositCollectionTimestamp: Date.now() + 1 * 24 * 60 * 60 * 1000,
+    paymentCollectionTimestamp: Date.now() + 10 * 24 * 60 * 60 * 1000,
+  },
 };
 
 export const mockRenderableItineraryOfferTwo: RenderableItineraryOffer = {
@@ -216,6 +223,13 @@ export const mockRenderableItineraryOfferTwo: RenderableItineraryOffer = {
     mockRenderableItineraryOfferCriterionOne,
     mockRenderableItineraryOfferCriterionTwo,
   ],
+  bookingRules: {
+    holdDurationInDays: 10,
+    discountExpiresAtTimestamp: Date.now() + 5 * 24 * 60 * 60 * 1000,
+    depositPercentage: 10,
+    depositCollectionTimestamp: Date.now() + 1 * 24 * 60 * 60 * 1000,
+    paymentCollectionTimestamp: Date.now() + 10 * 24 * 60 * 60 * 1000,
+  },
 };
 
 export const mockRenderableItineraryOfferThree: RenderableItineraryOffer = {
@@ -249,6 +263,13 @@ export const mockRenderableItineraryOfferThree: RenderableItineraryOffer = {
     mockRenderableItineraryOfferCriterionOne,
     mockRenderableItineraryOfferCriterionTwo,
   ],
+  bookingRules: {
+    holdDurationInDays: 10,
+    discountExpiresAtTimestamp: Date.now() + 5 * 24 * 60 * 60 * 1000,
+    depositPercentage: 10,
+    depositCollectionTimestamp: Date.now() + 1 * 24 * 60 * 60 * 1000,
+    paymentCollectionTimestamp: Date.now() + 10 * 24 * 60 * 60 * 1000,
+  },
 };
 
 export const mockRenderableItineraryOfferFour: RenderableItineraryOffer = {
@@ -283,4 +304,11 @@ export const mockRenderableItineraryOfferFour: RenderableItineraryOffer = {
     mockRenderableItineraryOfferCriterionOne,
     mockRenderableItineraryOfferCriterionTwo,
   ],
+  bookingRules: {
+    holdDurationInDays: 10,
+    discountExpiresAtTimestamp: Date.now() + 5 * 24 * 60 * 60 * 1000,
+    depositPercentage: 10,
+    depositCollectionTimestamp: Date.now() + 1 * 24 * 60 * 60 * 1000,
+    paymentCollectionTimestamp: Date.now() + 10 * 24 * 60 * 60 * 1000,
+  },
 };

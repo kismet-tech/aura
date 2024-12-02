@@ -1,5 +1,5 @@
 import {
-  FormQuestionType,
+  BifrostFormQuestionType,
   RenderableEmailInputBifrostFormQuestion,
   RenderableMultiSelectDateRangeBifrostFormQuestion,
   RenderablePhoneInputBifrostFormQuestion,
@@ -8,12 +8,13 @@ import {
   RenderableTextAreaBifrostFormQuestion,
   RenderableTextInputBifrostFormQuestion,
   RenderableToggleButtonGroupBifrostFormQuestion,
-} from "@/models/BifrostFormQuestions/BifrostFormQuestion";
-import { ReservedBifrostFormQuestionIds } from "@/models/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
+} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { ReservedBifrostFormQuestionIds } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
 import {
   ReservedBifrostDateFlexibilityOptionValues,
   ReservedBifrostReasonForTravelOptionValues,
-} from "@/models/BifrostFormQuestions/ReservedBifrostFormQuestionValues";
+  ReservedBifrostSplitPaymentOptionValues,
+} from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionValues";
 
 //////////////////////////////////////////////////
 // Text Inputs
@@ -21,7 +22,7 @@ import {
 
 export const mockRenderableTextInputBifrostFormQuestionOne: RenderableTextInputBifrostFormQuestion =
   {
-    type: FormQuestionType.TEXT_INPUT,
+    type: BifrostFormQuestionType.TEXT_INPUT,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.FIRST_NAME,
     label: "First",
     chatLabel: "Can you please share your first name?",
@@ -30,17 +31,45 @@ export const mockRenderableTextInputBifrostFormQuestionOne: RenderableTextInputB
 
 export const mockRenderableTextInputBifrostFormQuestionTwo: RenderableTextInputBifrostFormQuestion =
   {
-    type: FormQuestionType.TEXT_INPUT,
+    type: BifrostFormQuestionType.TEXT_INPUT,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.LAST_NAME,
     label: "Last",
     chatLabel: "Can you please share your last name?",
     required: true,
   };
 
+export const mockRenderableTextInputBifrostFormQuestionThree: RenderableTextInputBifrostFormQuestion =
+  {
+    type: BifrostFormQuestionType.TEXT_INPUT,
+    bifrostFormQuestionId:
+      ReservedBifrostFormQuestionIds.FLEXIBLE_DATE_DESCRIPTION,
+    label: "Details",
+    chatLabel: "Can you share any details on your date flexibility?",
+    required: true,
+  };
+
+export const mockRenderableTextInputBifrostFormQuestionFour: RenderableTextInputBifrostFormQuestion =
+  {
+    type: BifrostFormQuestionType.TEXT_INPUT,
+    bifrostFormQuestionId: ReservedBifrostFormQuestionIds.ESTIMATED_GUEST_COUNT,
+    label: "Guests",
+    chatLabel: "How many guests will be traveling?",
+    required: false,
+  };
+
+export const mockRenderableTextInputBifrostFormQuestionFive: RenderableTextInputBifrostFormQuestion =
+  {
+    type: BifrostFormQuestionType.TEXT_INPUT,
+    bifrostFormQuestionId: ReservedBifrostFormQuestionIds.COUNT_OF_ROOMS_NEEDED,
+    label: "Rooms",
+    chatLabel: "How many rooms will you need?",
+    required: false,
+  };
+
 export const mockRenderableEmailInputBifrostFormQuestionOne: RenderableEmailInputBifrostFormQuestion =
   {
-    type: FormQuestionType.EMAIL,
-    bifrostFormQuestionId: FormQuestionType.EMAIL,
+    type: BifrostFormQuestionType.EMAIL,
+    bifrostFormQuestionId: BifrostFormQuestionType.EMAIL,
     label: "Email",
     chatLabel: "What is your email?",
     required: true,
@@ -48,8 +77,8 @@ export const mockRenderableEmailInputBifrostFormQuestionOne: RenderableEmailInpu
 
 export const mockRenderablePhoneInputBifrostFormQuestionOne: RenderablePhoneInputBifrostFormQuestion =
   {
-    type: FormQuestionType.PHONE,
-    bifrostFormQuestionId: FormQuestionType.PHONE,
+    type: BifrostFormQuestionType.PHONE,
+    bifrostFormQuestionId: BifrostFormQuestionType.PHONE,
     label: "Phone",
     chatLabel: "What is your phone number?",
     required: true,
@@ -57,10 +86,11 @@ export const mockRenderablePhoneInputBifrostFormQuestionOne: RenderablePhoneInpu
 
 export const mockRenderableTextAreaBifrostFormQuestionOne: RenderableTextAreaBifrostFormQuestion =
   {
-    type: FormQuestionType.TEXT_AREA,
+    type: BifrostFormQuestionType.TEXT_AREA,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.INQUIRY_DETAILS,
     label: "Inquiry details",
     chatLabel: "Inquiry Details",
+    required: true,
   };
 
 //////////////////////////////////////////////////
@@ -69,9 +99,9 @@ export const mockRenderableTextAreaBifrostFormQuestionOne: RenderableTextAreaBif
 
 export const mockRenderableToggleButtonGroupBifrostFormQuestionOne: RenderableToggleButtonGroupBifrostFormQuestion =
   {
-    type: FormQuestionType.TOGGLE_BUTTON_GROUP,
+    type: BifrostFormQuestionType.TOGGLE_BUTTON_GROUP,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.REASON_FOR_TRAVEL,
-    label: "Dates",
+    label: "",
     chatLabel: "What is your reason for travel?",
     options: [
       {
@@ -91,7 +121,7 @@ export const mockRenderableToggleButtonGroupBifrostFormQuestionOne: RenderableTo
 
 export const mockRenderableToggleButtonGroupBifrostFormQuestionTwo: RenderableToggleButtonGroupBifrostFormQuestion =
   {
-    type: FormQuestionType.TOGGLE_BUTTON_GROUP,
+    type: BifrostFormQuestionType.TOGGLE_BUTTON_GROUP,
     bifrostFormQuestionId:
       ReservedBifrostFormQuestionIds.ARE_ITINERARY_DATES_FLEXIBLE,
     label: "Dates",
@@ -112,13 +142,31 @@ export const mockRenderableToggleButtonGroupBifrostFormQuestionTwo: RenderableTo
     ],
   };
 
+export const mockRenderableToggleButtonGroupBifrostFormQuestionThree: RenderableToggleButtonGroupBifrostFormQuestion =
+  {
+    type: BifrostFormQuestionType.TOGGLE_BUTTON_GROUP,
+    bifrostFormQuestionId: ReservedBifrostFormQuestionIds.PAYMENT_SPLIT,
+    label: "Split payment?",
+    chatLabel: "Split payment?",
+    options: [
+      {
+        label: "guests pay individually",
+        value: ReservedBifrostSplitPaymentOptionValues.SINGLE_PAYER,
+      },
+      {
+        label: "host will pay for rooms",
+        value: ReservedBifrostSplitPaymentOptionValues.SPLIT_PAYER,
+      },
+    ],
+  };
+
 //////////////////////////////////////////////////
 // DateTime Inputs
 //////////////////////////////////////////////////
 
 export const mockRenderableSelectDateRangeBifrostFormQuestionOne: RenderableSelectDateRangeBifrostFormQuestion =
   {
-    type: FormQuestionType.SELECT_DATE_RANGE,
+    type: BifrostFormQuestionType.SELECT_DATE_RANGE,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.DATES,
     label: "Dates",
     chatLabel: "What are your dates for travel?",
@@ -126,7 +174,7 @@ export const mockRenderableSelectDateRangeBifrostFormQuestionOne: RenderableSele
 
 export const mockRenderableMultiSelectDateRangeBifrostFormQuestionOne: RenderableMultiSelectDateRangeBifrostFormQuestion =
   {
-    type: FormQuestionType.MULTI_SELECT_DATE_RANGE,
+    type: BifrostFormQuestionType.MULTI_SELECT_DATE_RANGE,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.POTENTIAL_DATES,
     label: "Potential dates",
     chatLabel:
@@ -140,10 +188,21 @@ export const mockRenderableMultiSelectDateRangeBifrostFormQuestionOne: Renderabl
 export const mockRenderableSplitTextInputBifrostFormQuestionOne: RenderableSplitTextInputBifrostFormQuestion =
   {
     bifrostFormQuestionId: `${mockRenderableTextInputBifrostFormQuestionOne.bifrostFormQuestionId}-${mockRenderableTextInputBifrostFormQuestionTwo.bifrostFormQuestionId}`,
-    type: FormQuestionType.SPLIT_TEXT_INPUT,
+    type: BifrostFormQuestionType.SPLIT_TEXT_INPUT,
     label: "Contact info",
     chatLabel: "Can you please share your first and last name?",
 
     left: mockRenderableTextInputBifrostFormQuestionOne,
     right: mockRenderableTextInputBifrostFormQuestionTwo,
+  };
+
+export const mockRenderableSplitTextInputBifrostFormQuestionTwo: RenderableSplitTextInputBifrostFormQuestion =
+  {
+    bifrostFormQuestionId: `${mockRenderableTextInputBifrostFormQuestionFour.bifrostFormQuestionId}-${mockRenderableTextInputBifrostFormQuestionFive.bifrostFormQuestionId}`,
+    type: BifrostFormQuestionType.SPLIT_TEXT_INPUT,
+    chatLabel:
+      "How many rooms do you require? How many guests will be joining you?",
+
+    left: mockRenderableTextInputBifrostFormQuestionFour,
+    right: mockRenderableTextInputBifrostFormQuestionFive,
   };

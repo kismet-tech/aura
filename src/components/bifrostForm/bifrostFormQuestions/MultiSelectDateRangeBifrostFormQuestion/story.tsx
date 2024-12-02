@@ -6,7 +6,6 @@ import {
 import React, { useState } from "react";
 import { mockRenderableMultiSelectDateRangeBifrostFormQuestionOne } from "@/mockData/bifrost/bifrostFormQuestions/mockRenderableBifrostFormQuestions";
 import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
-import { CalendarDate } from "@/models/core/date/CalendarDate";
 
 const meta: Meta<typeof MultiSelectDateRangeBifrostFormQuestion> = {
   title: "BifrostFormQuestions/MultiSelectDateRangeBifrostFormQuestion",

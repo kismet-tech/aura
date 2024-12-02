@@ -7,6 +7,8 @@ import {
   mockRenderableItineraryOfferThree,
   mockRenderableItineraryOfferTwo,
 } from "@/mockData/bifrost/mockRenderableItineraryOffers";
+import { AppViewport } from "@/components/atoms/AppViewport";
+import { AppViewportScrollArea } from "@/components/atoms/AppViewportScrollArea";
 
 const meta: Meta<typeof ItineraryOfferPresentation> = {
   title: "ItineraryOffer/ItineraryOfferPresentation/ItineraryOfferPresentation",
@@ -16,13 +18,12 @@ export default meta;
 
 type Story = StoryObj<typeof ItineraryOfferPresentation>;
 
-const StoryWrapper = (props: ItineraryOfferPresentationProps) => {
+const StoryWrapper = () => {
   const [selectedItineraryOfferId, setSelectedItineraryOfferId] = useState(
     mockRenderableItineraryOfferOne.itineraryOfferId
   );
 
   const dynamicArgs: ItineraryOfferPresentationProps = {
-    ...props,
     itineraryOfferId: selectedItineraryOfferId,
     onSelectAlternativeItineraryOffer: ({
       itineraryOfferId,
@@ -32,30 +33,34 @@ const StoryWrapper = (props: ItineraryOfferPresentationProps) => {
       console.log(`Selected itinerary offer: ${itineraryOfferId}`);
       setSelectedItineraryOfferId(itineraryOfferId);
     },
-  };
-
-  return (
-    <div
-      style={{
-        width: "50%",
-        margin: "0 auto",
-        border: "1px solid #ccc",
-        padding: "16px",
-      }}
-    >
-      <ItineraryOfferPresentation {...dynamicArgs} />
-    </div>
-  );
-};
-
-export const Example: Story = {
-  render: (args) => <StoryWrapper {...args} />,
-  args: {
     renderableItineraryOffers: [
       mockRenderableItineraryOfferOne,
       mockRenderableItineraryOfferTwo,
       mockRenderableItineraryOfferThree,
       mockRenderableItineraryOfferFour,
     ],
-  },
+    onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => {
+      console.log(`Clicked ${hotelRoomId}`);
+    },
+    onClickGoToPaymentsPage: ({
+      itineraryOfferId,
+    }: {
+      itineraryOfferId: string;
+    }) => {
+      console.log(`Clicked go to payments page for ${itineraryOfferId}`);
+    },
+  };
+
+  return (
+    <AppViewport>
+      <AppViewportScrollArea>
+        <ItineraryOfferPresentation {...dynamicArgs} />
+      </AppViewportScrollArea>
+    </AppViewport>
+  );
+};
+
+export const Example: Story = {
+  render: (args) => <StoryWrapper />,
+  args: {},
 };

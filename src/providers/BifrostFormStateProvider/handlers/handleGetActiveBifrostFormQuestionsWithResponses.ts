@@ -1,4 +1,4 @@
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 
 interface HandleGetActiveBifrostFormQuestionsWithResponsesProps {
   activeBifrostFormQuestionIds: string[];

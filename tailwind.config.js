@@ -53,6 +53,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui"], // Add Inter to the default sans stack
+        palatino: ["Palatino", "Palatino Linotype", "Book Antiqua", "serif"],
       },
     },
   },

@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { DateRangePicker, DateRangePickerProps } from ".";
 import React, { useState } from "react";
 import { DateRange } from "react-day-picker";
+import { AppViewport } from "../AppViewport";
 
 const meta: Meta<typeof DateRangePicker> = {
   title: "Atoms/DateRangePicker",
@@ -20,16 +21,9 @@ const StoryWrapper = () => {
   };
 
   return (
-    <div
-      style={{
-        width: "50%",
-        margin: "0 auto",
-        border: "1px solid #ccc",
-        padding: "16px",
-      }}
-    >
+    <AppViewport>
       <DateRangePicker {...dynamicArgs} />
-    </div>
+    </AppViewport>
   );
 };
 

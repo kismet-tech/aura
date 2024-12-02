@@ -14,6 +14,22 @@ type Story = StoryObj<typeof ItineraryOfferRoomEditor>;
 
 const exampleOneArguments: ItineraryOfferRoomEditorProps = {
   renderableItineraryOffer: mockRenderableItineraryOfferOne,
+  onClickUpdateItineraryOfferHotelRoomCount: ({
+    itineraryOfferId,
+    updatedCountOffered,
+    hotelRoomId,
+  }: {
+    itineraryOfferId: string;
+    updatedCountOffered: number;
+    hotelRoomId: string;
+  }) => {
+    console.log(
+      `Requested to update itineraryOfferId '${itineraryOfferId}' hotelRoomId '${hotelRoomId}' to ${updatedCountOffered}`
+    );
+  },
+  onClickExit: () => {
+    console.log(`Exiting component`);
+  },
 };
 
 export const Example: Story = {

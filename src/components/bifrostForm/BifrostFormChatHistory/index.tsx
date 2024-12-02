@@ -1,4 +1,4 @@
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import React from "react";
 import { BifrostFormQuestionChatHistoryElement } from "./bifrostFormQuestionsInChatHistory/BifrostFormQuestionChatHistoryElement";
 

@@ -2,6 +2,7 @@ import { CalendarDateRange } from "@/models/core/date/CalendarDateRange";
 import { RenderedCalendarDateFormat } from "./RenderedCalendarDateFormat";
 import { renderCalendarDate } from "./renderCalendarDate";
 import { RenderedCalendarDateRangeJoinFormat } from "./RenderedCalendarDateRangeJoinFormat";
+import { format } from "date-fns";
 
 export interface RenderedCalendarDateCollapseStrategy {
   collapseSameDay: boolean;
@@ -36,6 +37,7 @@ export const renderCalendarDateRange = ({
     });
     return startDate;
   }
+
   if (
     collapseStrategy.collapseSameMonth &&
     calendarDateRange.startCalendarDate.year ===
@@ -43,6 +45,17 @@ export const renderCalendarDateRange = ({
     calendarDateRange.startCalendarDate.month ===
       calendarDateRange.endCalendarDate.month
   ) {
+    if (
+      renderedCalendarDateFormat === RenderedCalendarDateFormat.MONTH_DAY_YEAR
+    ) {
+      const month = renderCalendarDate({
+        calendarDate: calendarDateRange.startCalendarDate,
+        format: RenderedCalendarDateFormat.MONTH,
+      });
+
+      return `${month} ${calendarDateRange.startCalendarDate.day} - ${calendarDateRange.endCalendarDate.day}, ${calendarDateRange.startCalendarDate.year}`;
+    }
+
     const startDate = renderCalendarDate({
       calendarDate: calendarDateRange.startCalendarDate,
       format: renderedCalendarDateFormat,

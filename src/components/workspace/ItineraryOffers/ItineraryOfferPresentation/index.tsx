@@ -1,12 +1,19 @@
-import { RenderableItineraryOffer } from "@/models/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
 import React from "react";
 import { AlternativeItineraryOfferSelector } from "./AlternativeItineraryOfferSelector";
 import { ItineraryOfferPresentationBody } from "./ItineraryOfferPresentationBody";
+import { NavigationButton } from "@/components/atoms/NavigationButton";
 
 export interface ItineraryOfferPresentationProps {
   itineraryOfferId: string;
   renderableItineraryOffers: RenderableItineraryOffer[];
   onSelectAlternativeItineraryOffer: ({
+    itineraryOfferId,
+  }: {
+    itineraryOfferId: string;
+  }) => void;
+  onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => void;
+  onClickGoToPaymentsPage: ({
     itineraryOfferId,
   }: {
     itineraryOfferId: string;
@@ -17,6 +24,8 @@ export function ItineraryOfferPresentation({
   itineraryOfferId,
   renderableItineraryOffers,
   onSelectAlternativeItineraryOffer,
+  onClickHotelRoom,
+  onClickGoToPaymentsPage,
 }: ItineraryOfferPresentationProps) {
   const renderableItineraryOffer = renderableItineraryOffers.find(
     (offer) => offer.itineraryOfferId === itineraryOfferId
@@ -29,16 +38,33 @@ export function ItineraryOfferPresentation({
   const { itineraryOfferName } = renderableItineraryOffer;
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold mb-0">{itineraryOfferName}</h2>
-      <AlternativeItineraryOfferSelector
-        renderableItineraryOffers={renderableItineraryOffers}
-        onSelectAlternativeItineraryOffer={onSelectAlternativeItineraryOffer}
-      />
-      <ItineraryOfferPresentationBody
-        itineraryOfferId={itineraryOfferId}
-        renderableItineraryOffers={renderableItineraryOffers}
-      />
+    <div className="flex flex-col h-full">
+      <div className="flex-grow overflow-y-auto">
+        <h2 className="text-lg font-semibold mb-0">{itineraryOfferName}</h2>
+        <div className="h-32">
+          <AlternativeItineraryOfferSelector
+            renderableItineraryOffers={renderableItineraryOffers}
+            onSelectAlternativeItineraryOffer={
+              onSelectAlternativeItineraryOffer
+            }
+          />
+        </div>
+        <ItineraryOfferPresentationBody
+          itineraryOfferId={itineraryOfferId}
+          renderableItineraryOffers={renderableItineraryOffers}
+          onClickHotelRoom={onClickHotelRoom}
+        />
+      </div>
+      <div className="flex-shrink-0">
+        <div className="flex">
+          <NavigationButton
+            onClick={() => onClickGoToPaymentsPage({ itineraryOfferId })}
+            isEnabled={true}
+          >
+            Place hold {">"}
+          </NavigationButton>
+        </div>
+      </div>
     </div>
   );
 }

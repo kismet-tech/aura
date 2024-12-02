@@ -1,4 +1,4 @@
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { deepClone } from "@/utilities/core/deepClone";
 import { deepEqual } from "@/utilities/core/deepEqual";
 
@@ -17,15 +17,14 @@ export const handleSetActiveBifrostFormQuestionsWithResponses = ({
   setBifrostFormQuestionsWithResponses,
   setActiveBifrostFormQuestionIds,
 }: HandleSetActiveBifrostFormQuestionsWithResponsesProps) => {
-  console.log(`REQUESTING TO PROGRESS TO NEXT STAGE INNER`);
+  console.trace("Here is the call stack:");
+
   console.log(
-    JSON.stringify(
-      {
-        updatedActiveBifrostFormQuestionsWithResponses,
-      },
+    `handleSetActiveBifrostFormQuestionsWithResponses updatedActiveBifrostFormQuestionsWithResponses: ${JSON.stringify(
+      updatedActiveBifrostFormQuestionsWithResponses,
       null,
       4
-    )
+    )}`
   );
 
   setBifrostFormQuestionsWithResponses(
@@ -71,9 +70,17 @@ export const handleSetActiveBifrostFormQuestionsWithResponses = ({
 
       const updatedBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
         [
-          ...updatedActiveBifrostFormQuestionsWithResponsesWithExistingAnswers,
           ...previousBifrostFormQuestionsWithResponsesFilteredFromUpdatedActiveBifrostFormQuestionsWithResponses,
+          ...updatedActiveBifrostFormQuestionsWithResponsesWithExistingAnswers,
         ];
+
+      console.log(
+        `handleSetActiveBifrostFormQuestionsWithResponses updatedBifrostFormQuestionsWithResponses: ${JSON.stringify(
+          updatedBifrostFormQuestionsWithResponses,
+          null,
+          4
+        )}`
+      );
 
       setActiveBifrostFormQuestionIds(
         (previousActiveBifrostFormQuestionIds: string[]) => {
@@ -85,24 +92,6 @@ export const handleSetActiveBifrostFormQuestionsWithResponses = ({
                 updatedActiveBifrostFormQuestionWithResponse.bifrostFormQuestion
                   .bifrostFormQuestionId
             );
-
-          console.log("\n\nDOWN HERE 3");
-          console.log(
-            JSON.stringify(
-              {
-                updatedActiveBifrostFormQuestionsWithResponses,
-              },
-              null,
-              4
-            )
-          );
-
-          console.log(
-            `updatedActiveBifrostFormQuestionIds: ${updatedActiveBifrostFormQuestionIds}`
-          );
-          console.log(
-            `previousActiveBifrostFormQuestionIds: ${previousActiveBifrostFormQuestionIds}`
-          );
 
           if (
             deepEqual(

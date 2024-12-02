@@ -6,7 +6,7 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseOne,
   mockBifrostFormQuestionWithSplitTextResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@/models/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 
 const meta: Meta<typeof ActiveBifrostFormQuestions> = {
   title: "BifrostForm/ActiveBifrostFormQuestions",
