@@ -3,6 +3,13 @@ import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQue
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handleSetActiveBifrostFormQuestionsWithResponses";
 import { BifrostFormApplicationStage } from "../models/BifrostFormApplicationStage";
 import { useReactStateCache } from "@/utilities/core/react/useReactStateCache";
+import { mockRenderableSplitTextInputBifrostFormQuestionOne } from "@/mockData/bifrost/bifrostFormQuestions/mockRenderableBifrostFormQuestions";
+import {
+  BifrostFormQuestionEmailResponse,
+  BifrostFormQuestionPhoneNumberResponse,
+  BifrostFormQuestionSplitTextResponse,
+} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { ReservedBifrostFormQuestionIds } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
 
 interface HandleBeginUserSessionProps {
   setBifrostFormApplicationStage: React.Dispatch<
@@ -21,6 +28,7 @@ interface HandleBeginUserSessionProps {
 
   setUserSessionId: React.Dispatch<React.SetStateAction<string | undefined>>;
   hotelId: string;
+  bifrostTravelerId?: string;
   bifrostApi: BifrostApiInterface;
 }
 
@@ -33,12 +41,62 @@ export const handleBeginUserSession = async ({
 
   setUserSessionId,
   hotelId,
+  bifrostTravelerId,
   bifrostApi,
 }: HandleBeginUserSessionProps): Promise<void> => {
+  const splitNameQuestion = bifrostFormQuestionsWithResponses.find(
+    (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
+      return (
+        bifrostFormQuestionWithResponse.bifrostFormQuestion
+          .bifrostFormQuestionId ===
+        mockRenderableSplitTextInputBifrostFormQuestionOne.bifrostFormQuestionId
+      );
+    }
+  )!;
+
+  const firstName = (
+    splitNameQuestion.responseData as BifrostFormQuestionSplitTextResponse
+  ).responseValue.left;
+
+  const lastName = (
+    splitNameQuestion.responseData as BifrostFormQuestionSplitTextResponse
+  ).responseValue.right;
+
+  const emailQuestion = bifrostFormQuestionsWithResponses.find(
+    (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
+      return (
+        bifrostFormQuestionWithResponse.bifrostFormQuestion
+          .bifrostFormQuestionId === ReservedBifrostFormQuestionIds.EMAIL
+      );
+    }
+  )!;
+
+  const emailAddress = (
+    emailQuestion.responseData as BifrostFormQuestionEmailResponse
+  ).responseValue;
+
+  const phoneNumberQuestion = bifrostFormQuestionsWithResponses.find(
+    (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
+      return (
+        bifrostFormQuestionWithResponse.bifrostFormQuestion
+          .bifrostFormQuestionId === ReservedBifrostFormQuestionIds.PHONE
+      );
+    }
+  )!;
+
+  const phoneNumber = (
+    phoneNumberQuestion.responseData as BifrostFormQuestionPhoneNumberResponse
+  ).responseValue;
+
   const { userSessionId, nextQuestionWithResponse } =
     await bifrostApi.createUserSessionFromBifrost({
       hotelId,
-      bifrostFormQuestionsWithResponses,
+      bifrostTravelerId,
+      firstName,
+      lastName,
+      emailAddress,
+      phoneNumber,
+      additionalBifrostFormQuestionsWithResponses: [],
     });
 
   setBifrostFormApplicationStage(

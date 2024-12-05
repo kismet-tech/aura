@@ -41,8 +41,12 @@ const StoryWrapper = () => {
 
   return (
     <BifrostGroupBookingCheckoutHeader
+      onClickLogin={() => {
+        console.log("Login clicked");
+      }}
       cart={cart}
       checkoutSessionSummary={checkoutSessionSummary}
+      authenticatedGuestUser={undefined}
     />
   );
 };

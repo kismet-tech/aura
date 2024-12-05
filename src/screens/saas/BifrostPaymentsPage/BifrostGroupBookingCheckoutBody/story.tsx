@@ -1,7 +1,15 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React from "react";
+import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutBody } from ".";
 import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import {
+  mockRenderableItineraryHotelRoomOfferFive,
+  mockRenderableItineraryHotelRoomOfferFour,
+  mockRenderableItineraryHotelRoomOfferOne,
+  mockRenderableItineraryHotelRoomOfferSix,
+  mockRenderableItineraryHotelRoomOfferThree,
+  mockRenderableItineraryHotelRoomOfferTwo,
+} from "@/mockData/bifrost/mockRenderableItineraryOffers";
 
 const meta: Meta<typeof BifrostGroupBookingCheckoutBody> = {
   title:
@@ -13,60 +21,35 @@ export default meta;
 type Story = StoryObj<typeof BifrostGroupBookingCheckoutBody>;
 
 const StoryWrapper = () => {
-  const availableHotelRooms: RenderableItineraryHotelRoomOffer[] = [
-    {
-      hotelRoomId: "jahldsfljkh",
-      countOffered: 5,
-      countAvailable: 6,
-      offerPriceInCents: 10000,
-      listPriceInCents: 15000,
+  const mockRenderableItineraryHotelRoomOffers: RenderableItineraryHotelRoomOffer[] =
+    [
+      mockRenderableItineraryHotelRoomOfferOne,
+      mockRenderableItineraryHotelRoomOfferTwo,
+      mockRenderableItineraryHotelRoomOfferThree,
+      mockRenderableItineraryHotelRoomOfferFour,
+      mockRenderableItineraryHotelRoomOfferFive,
+      mockRenderableItineraryHotelRoomOfferSix,
+    ];
 
-      hotelRoomName: "Standard King",
-      hotelRoomDescription: "Some description",
-      verboseHotelRoomDescription: "Longer description",
-      heroImageUrl:
-        "https://compote.slate.com/images/3a80009e-24e2-4bf0-9cd0-99ef4d4a5255.jpg?height=346&width=568",
-      hotelRoomImageUrls: [
-        "https://compote.slate.com/images/3a80009e-24e2-4bf0-9cd0-99ef4d4a5255.jpg?height=346&width=568",
-      ],
-    },
-    {
-      hotelRoomId: "adsfdsaf",
-      countOffered: 5,
-      countAvailable: 6,
-      offerPriceInCents: 10000,
-      listPriceInCents: 15000,
+  const initialAvailableHotelRooms: RenderableItineraryHotelRoomOffer[] =
+    mockRenderableItineraryHotelRoomOffers.map(
+      (offer: RenderableItineraryHotelRoomOffer) => {
+        return {
+          ...offer,
+          countOffered: 0,
+          countAvailable: offer.countOffered,
+        };
+      }
+    );
 
-      hotelRoomName: "Standard King",
-      hotelRoomDescription: "Some description",
-      verboseHotelRoomDescription: "Longer description",
-      heroImageUrl:
-        "https://compote.slate.com/images/3a80009e-24e2-4bf0-9cd0-99ef4d4a5255.jpg?height=346&width=568",
-      hotelRoomImageUrls: [
-        "https://compote.slate.com/images/3a80009e-24e2-4bf0-9cd0-99ef4d4a5255.jpg?height=346&width=568",
-      ],
-    },
-    {
-      hotelRoomId: "81923747aghew",
-      countOffered: 5,
-      countAvailable: 6,
-      offerPriceInCents: 10000,
-      listPriceInCents: 15000,
-
-      hotelRoomName: "Standard King",
-      hotelRoomDescription: "Some description",
-      verboseHotelRoomDescription: "Longer description",
-      heroImageUrl:
-        "https://compote.slate.com/images/3a80009e-24e2-4bf0-9cd0-99ef4d4a5255.jpg?height=346&width=568",
-      hotelRoomImageUrls: [
-        "https://compote.slate.com/images/3a80009e-24e2-4bf0-9cd0-99ef4d4a5255.jpg?height=346&width=568",
-      ],
-    },
-  ];
+  const [hotelRoomOffers, setHotelRoomOffers] = useState<
+    RenderableItineraryHotelRoomOffer[]
+  >(initialAvailableHotelRooms);
 
   return (
     <BifrostGroupBookingCheckoutBody
-      availableHotelRooms={availableHotelRooms}
+      availableHotelRooms={hotelRoomOffers}
+      onClickUpdateHotelRoomCountInCart={() => {}}
     />
   );
 };

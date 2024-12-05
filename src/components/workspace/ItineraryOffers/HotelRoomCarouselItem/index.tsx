@@ -8,9 +8,16 @@ import {
   TooltipTrigger,
 } from "@/components/shadcn/tooltip";
 
+export enum HotelRoomCarouselItemIndicatorLabel {
+  COUNT_AVAILABLE_VALUE_ONLY = "COUNT_AVAILABLE_VALUE_ONLY",
+  // Remove?
+  COUNT_REMAINING = "COUNT_REMAINING",
+}
+
 export interface HotelRoomCarouselItemProps {
   hotelRoomOffer: RenderableItineraryHotelRoomOffer;
   onClick: ({ hotelRoomId }: { hotelRoomId: string }) => void;
+  hotelRoomCarouselItemIndicatorLabel: HotelRoomCarouselItemIndicatorLabel;
   isCountEditable: boolean;
   onClickUpdateItineraryOfferHotelRoomCount: ({
     updatedCountOffered,
@@ -24,32 +31,60 @@ export interface HotelRoomCarouselItemProps {
 export function HotelRoomCarouselItem({
   hotelRoomOffer,
   onClick,
+  hotelRoomCarouselItemIndicatorLabel,
   isCountEditable,
   onClickUpdateItineraryOfferHotelRoomCount,
 }: HotelRoomCarouselItemProps) {
   const listPrice = Math.round(hotelRoomOffer.listPriceInCents / 100);
   const offerPrice = Math.round(hotelRoomOffer.offerPriceInCents / 100);
 
+  let renderedIndicator: JSX.Element;
+  if (
+    hotelRoomCarouselItemIndicatorLabel ===
+    HotelRoomCarouselItemIndicatorLabel.COUNT_REMAINING
+  ) {
+    renderedIndicator = (
+      <>
+        {" "}
+        {hotelRoomOffer.countOffered > 0
+          ? `${hotelRoomOffer.countOffered} remaining`
+          : "-"}{" "}
+      </>
+    );
+  } else if (
+    hotelRoomCarouselItemIndicatorLabel ===
+    HotelRoomCarouselItemIndicatorLabel.COUNT_AVAILABLE_VALUE_ONLY
+  ) {
+    renderedIndicator = (
+      <>
+        {" "}
+        {hotelRoomOffer.countOffered > 0
+          ? hotelRoomOffer.countOffered
+          : "-"}{" "}
+      </>
+    );
+  } else {
+    throw new Error("Invalid hotelRoomCarouselItemIndicatorLabel");
+  }
+
   return (
     <TooltipProvider>
-      <div
-        className="flex flex-col items-center space-y-2 relative"
-        onClick={() =>
-          onClick({
-            hotelRoomId: hotelRoomOffer.hotelRoomId,
-          })
-        }
-      >
-        <div className="relative w-36 h-36 mx-auto cursor-pointer">
+      <div className="flex flex-col items-center space-y-2 relative">
+        <div
+          className="relative w-36 h-36 mx-auto cursor-pointer"
+          onClick={() =>
+            onClick({
+              hotelRoomId: hotelRoomOffer.hotelRoomId,
+            })
+          }
+        >
           <img
             src={hotelRoomOffer.heroImageUrl}
             alt={hotelRoomOffer.hotelRoomName}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute top-2 left-2 w-6 h-6 flex items-center justify-center text-sm font-bold text-black bg-white border border-black rounded-full">
-            {hotelRoomOffer.countOffered > 0
-              ? hotelRoomOffer.countOffered
-              : "-"}
+          <div className="absolute top-2 left-2 flex items-center justify-center text-sm font-bold text-black bg-white border border-black rounded-full px-2">
+            {renderedIndicator}
           </div>
           {isCountEditable && (
             <>
@@ -72,7 +107,7 @@ export function HotelRoomCarouselItem({
                       <CircleArrowDown size={24} className="text-gray-400" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      {<p>Zero rooms selected</p>}
+                      <p>Zero rooms selected</p>
                     </TooltipContent>
                   </Tooltip>
                 )}
@@ -110,12 +145,17 @@ export function HotelRoomCarouselItem({
             </>
           )}
         </div>
-        <div className="text-center text-sm font-medium">
-          {hotelRoomOffer.hotelRoomName}
-        </div>
-        <div className="text-center">
-          <span className="text-gray-500 line-through mr-2">${listPrice}</span>
-          <span className="text-black font-semibold">${offerPrice}</span>
+        {/* Left-aligned text */}
+        <div className="w-36 text-left space-y-1">
+          <div className="text-sm font-medium">
+            {hotelRoomOffer.hotelRoomName}
+          </div>
+          <div className="text-sm">
+            <span className="text-gray-500 line-through mr-2">
+              ${listPrice}
+            </span>
+            <span className="text-black font-semibold">${offerPrice}</span>
+          </div>
         </div>
       </div>
     </TooltipProvider>

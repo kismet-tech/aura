@@ -17,14 +17,6 @@ interface GetRenderablePendingItineraryProps {
 export const getRenderablePendingItinerary = ({
   bifrostFormQuestionsWithResponses,
 }: GetRenderablePendingItineraryProps): RenderablePendingItinerary => {
-  console.log(
-    `getRenderablePendingItinerary bifrostFormQuestionsWithResponses: ${JSON.stringify(
-      bifrostFormQuestionsWithResponses,
-      null,
-      4
-    )}`
-  );
-
   const maybeGuestFirstNameQuestionWithResponse:
     | BifrostFormQuestionWithResponse
     | undefined = bifrostFormQuestionsWithResponses.find(

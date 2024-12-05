@@ -3,7 +3,6 @@ interface FormatPhoneNumberProps {
 }
 
 export const formatPhoneNumber = ({ phoneNumber }: FormatPhoneNumberProps) => {
-  console.log(`phoneNumber: ${phoneNumber}`);
   if (phoneNumber.length < 10) {
     return phoneNumber;
   }

@@ -17,16 +17,6 @@ export const handleSetActiveBifrostFormQuestionsWithResponses = ({
   setBifrostFormQuestionsWithResponses,
   setActiveBifrostFormQuestionIds,
 }: HandleSetActiveBifrostFormQuestionsWithResponsesProps) => {
-  console.trace("Here is the call stack:");
-
-  console.log(
-    `handleSetActiveBifrostFormQuestionsWithResponses updatedActiveBifrostFormQuestionsWithResponses: ${JSON.stringify(
-      updatedActiveBifrostFormQuestionsWithResponses,
-      null,
-      4
-    )}`
-  );
-
   setBifrostFormQuestionsWithResponses(
     (
       previousBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[]
@@ -73,14 +63,6 @@ export const handleSetActiveBifrostFormQuestionsWithResponses = ({
           ...previousBifrostFormQuestionsWithResponsesFilteredFromUpdatedActiveBifrostFormQuestionsWithResponses,
           ...updatedActiveBifrostFormQuestionsWithResponsesWithExistingAnswers,
         ];
-
-      console.log(
-        `handleSetActiveBifrostFormQuestionsWithResponses updatedBifrostFormQuestionsWithResponses: ${JSON.stringify(
-          updatedBifrostFormQuestionsWithResponses,
-          null,
-          4
-        )}`
-      );
 
       setActiveBifrostFormQuestionIds(
         (previousActiveBifrostFormQuestionIds: string[]) => {

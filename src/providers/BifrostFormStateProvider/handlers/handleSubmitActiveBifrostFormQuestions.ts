@@ -21,6 +21,7 @@ interface HandleSubmitBifrostFormQuestionProps {
     React.SetStateAction<BifrostFormApplicationStage>
   >;
 
+  hotelId: string;
   bifrostApi: BifrostApiInterface;
 }
 
@@ -32,6 +33,7 @@ export const handleSubmitBifrostFormQuestion = ({
   setActiveBifrostFormQuestionIds,
   setRenderableItineraryOffersFromKismetAI,
   setBifrostFormApplicationStage,
+  hotelId,
   bifrostApi,
 }: HandleSubmitBifrostFormQuestionProps) => {
   const bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse =
@@ -46,8 +48,9 @@ export const handleSubmitBifrostFormQuestion = ({
 
   bifrostApi
     .submitBifrostFormQuestionWithResponse({
+      hotelId,
       userSessionId,
-      bifrostFormQuestionWithResponse,
+      bifrostFormQuestionsWithResponses,
     })
     .then(({ nextQuestionWithResponse, renderableItineraryOffers }) => {
       if (nextQuestionWithResponse) {

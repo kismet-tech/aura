@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
-import { Input } from "@/components/shadcn/input";
 import { RenderablePhoneInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { ValidationError } from "@/components/atoms/forms/ValidationError";
+import { KismetInput } from "@/components/atoms/KismetInput";
 
 export interface PhoneInputBifrostFormQuestionProps {
   renderablePhoneInputBifrostFormQuestion: RenderablePhoneInputBifrostFormQuestion;
@@ -15,6 +15,42 @@ export interface PhoneInputBifrostFormQuestionProps {
     isResponseValid: boolean;
   }) => void;
 }
+
+const filterPhoneNumberToDigits = ({
+  phoneNumber,
+}: {
+  phoneNumber: string;
+}): string => {
+  let digitsOnly = phoneNumber.replace(/\D/g, "");
+  // Remove leading '1' if present
+  if (digitsOnly.startsWith("1")) {
+    digitsOnly = digitsOnly.substring(1);
+  }
+  return digitsOnly;
+};
+
+const formatPhoneNumber = ({
+  phoneNumber,
+}: {
+  phoneNumber: string;
+}): string => {
+  const digitsOnly = filterPhoneNumberToDigits({ phoneNumber });
+
+  if (digitsOnly.length > 0) {
+    return digitsOnly.replace(
+      /(\d{0,3})(\d{0,3})(\d{0,4})/,
+      (_match, p1, p2, p3) => {
+        let result = "";
+        if (p1) result += `(${p1}`;
+        if (p1 && p1.length === 3) result += `)`;
+        if (p2) result += `-${p2}`;
+        if (p3) result += `-${p3}`;
+        return result;
+      }
+    );
+  }
+  return "";
+};
 
 export function PhoneInputBifrostFormQuestion({
   renderablePhoneInputBifrostFormQuestion,
@@ -28,31 +64,19 @@ export function PhoneInputBifrostFormQuestion({
 
   const [isLocallyValid, setIsLocallyValid] = useState<boolean>(true);
 
-  const filterPhoneNumber = ({
-    phoneNumber,
-  }: {
-    phoneNumber: string;
-  }): string => {
-    let digitsOnly = phoneNumber.replace(/\D/g, "");
-    // Remove leading '1' if present
-    if (digitsOnly.startsWith("1")) {
-      digitsOnly = digitsOnly.substring(1);
-    }
-    return digitsOnly;
-  };
-
   const isPhoneNumberValid = ({
     phoneNumber,
   }: {
     phoneNumber: string;
   }): boolean => {
-    const phoneNumberDigits = filterPhoneNumber({ phoneNumber });
+    const phoneNumberDigits = filterPhoneNumberToDigits({ phoneNumber });
     return phoneNumberDigits.length === 10;
   };
 
   useEffect(() => {
     if (value) {
-      setLocalValue(value);
+      const formattedValue = formatPhoneNumber({ phoneNumber: value });
+      setLocalValue(formattedValue);
     } else {
       setLocalValue("");
     }
@@ -76,28 +100,10 @@ export function PhoneInputBifrostFormQuestion({
   }: {
     updatedValue: string;
   }) => {
-    const digitsOnly = filterPhoneNumber({ phoneNumber: updatedValue });
+    const digitsOnly = filterPhoneNumberToDigits({ phoneNumber: updatedValue });
+    const formattedNumber = formatPhoneNumber({ phoneNumber: digitsOnly });
 
     // Format the digits into (###)-###-####
-    let formattedNumber = digitsOnly;
-    if (digitsOnly.length > 0) {
-      formattedNumber = digitsOnly.replace(
-        /(\d{0,3})(\d{0,3})(\d{0,4})/,
-        (
-          _match: string,
-          p1: string | undefined,
-          p2: string | undefined,
-          p3: string | undefined
-        ) => {
-          let result = "";
-          if (p1) result += `(${p1}`;
-          if (p1 && p1.length === 3) result += `)`;
-          if (p2) result += `-${p2}`;
-          if (p3) result += `-${p3}`;
-          return result;
-        }
-      );
-    }
 
     setIsLocallyValid(isPhoneNumberValid({ phoneNumber: updatedValue }));
     setIsResponseValid({
@@ -110,7 +116,11 @@ export function PhoneInputBifrostFormQuestion({
 
   return (
     <FormField>
-      <Input
+      <FormLabel htmlFor={inputId}>
+        {renderablePhoneInputBifrostFormQuestion.label}
+      </FormLabel>
+
+      <KismetInput
         value={localValue}
         id={inputId}
         placeholder={""}
@@ -118,11 +128,7 @@ export function PhoneInputBifrostFormQuestion({
         onChange={(e) => {
           handlePhoneValueChange({ updatedValue: e.target.value });
         }}
-        className="bg-white"
       />
-      <FormLabel htmlFor={inputId}>
-        {renderablePhoneInputBifrostFormQuestion.label}
-      </FormLabel>
       {!isLocallyValid && localValue.length > 0 && (
         <ValidationError>Please enter a valid phone number</ValidationError>
       )}

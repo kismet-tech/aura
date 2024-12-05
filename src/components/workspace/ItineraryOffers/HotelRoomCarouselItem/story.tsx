@@ -1,5 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { HotelRoomCarouselItem, HotelRoomCarouselItemProps } from ".";
+import {
+  HotelRoomCarouselItem,
+  HotelRoomCarouselItemIndicatorLabel,
+  HotelRoomCarouselItemProps,
+} from ".";
 import React from "react";
 import { mockRenderableItineraryHotelRoomOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
 
@@ -16,6 +20,8 @@ const exampleOneArguments: HotelRoomCarouselItemProps = {
   onClick: () => {
     console.log("Clicked");
   },
+  hotelRoomCarouselItemIndicatorLabel:
+    HotelRoomCarouselItemIndicatorLabel.COUNT_AVAILABLE_VALUE_ONLY,
   isCountEditable: true,
   onClickUpdateItineraryOfferHotelRoomCount: ({
     updatedCountOffered,

@@ -68,7 +68,11 @@ export function BifrostFormApplication() {
           });
         }}
         renderablePendingItinerary={renderablePendingItinerary}
-        submitBifrostFormQuestion={submitBifrostFormQuestion}
+        submitBifrostFormQuestion={async () => {
+          console.log("submitBifrostFormQuestion");
+
+          await submitBifrostFormQuestion();
+        }}
       />
     );
   } else if (

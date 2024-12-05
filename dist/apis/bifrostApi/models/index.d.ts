@@ -1,28 +1,12 @@
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { CreateUserSessionFromBifrostRequestDto, CreateUserSessionFromBifrostSuccessResponseDataDto } from "../bifrostApi/core/createUserSessionFromBifrost/CreateUserSessionFromBifrost.dto";
+import { SubmitBifrostFormQuestionsWithResponsesRequestDto, SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto } from "../bifrostApi/core/submitBifrostFormQuestionWithResponse/SubmitBifrostFormQuestionsWithResponses.dto";
+import { UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto, UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto } from "../bifrostApi/core/updateGuestCustomRenderableItineraryOfferHotelRoomOfferCount/UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCount.dto";
+import { GetOrCreateBifrostTravelerIdRequestDto, GetOrCreateBifrostTravelerIdSuccessResponseDataDto } from "../bifrostApi/core/getOrCreateBifrostTravelerId/GetOrCreateBifrostTravelerId.dto";
+import { SuggestCalendarDateRangesFromConstraintsRequestDto, SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto } from "../bifrostApi/helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
 export interface BifrostApiInterface {
-    createUserSessionFromBifrost: ({ hotelId, bifrostFormQuestionsWithResponses, }: {
-        hotelId: string;
-        bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
-    }) => Promise<{
-        userSessionId: string;
-        nextQuestionWithResponse: BifrostFormQuestionWithResponse;
-    }>;
-    submitBifrostFormQuestionWithResponse: ({ userSessionId, bifrostFormQuestionWithResponse, }: {
-        userSessionId: string;
-        bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
-    }) => Promise<{
-        nextQuestionWithResponse?: BifrostFormQuestionWithResponse;
-        renderableItineraryOffers?: RenderableItineraryOffer[];
-    }>;
-    guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount: ({ userSessionId, itineraryOfferId, hotelRoomId, updatedCountOffered, }: {
-        userSessionId: string;
-        itineraryOfferId: string;
-        hotelRoomId: string;
-        updatedCountOffered: number;
-    }) => Promise<{
-        itineraryOfferId: string;
-        hotelRoomId: string;
-        updatedCountOffered: number;
-    }>;
+    getOrCreateBifrostTravelerId: (requestBody: GetOrCreateBifrostTravelerIdRequestDto) => Promise<GetOrCreateBifrostTravelerIdSuccessResponseDataDto>;
+    createUserSessionFromBifrost: (requestBody: CreateUserSessionFromBifrostRequestDto) => Promise<CreateUserSessionFromBifrostSuccessResponseDataDto>;
+    submitBifrostFormQuestionWithResponse: (requestBody: SubmitBifrostFormQuestionsWithResponsesRequestDto) => Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto>;
+    guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount: (requestBody: UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto) => Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto>;
+    suggestCalendarDateRangesFromConstraints: (requestBody: SuggestCalendarDateRangesFromConstraintsRequestDto) => Promise<SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto>;
 }

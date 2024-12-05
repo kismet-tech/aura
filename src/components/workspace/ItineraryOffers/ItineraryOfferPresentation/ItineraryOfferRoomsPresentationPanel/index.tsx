@@ -7,7 +7,10 @@ import {
   RenderableItineraryOffer,
   RenderableItineraryHotelRoomOffer,
 } from "@/models/bifrost/RenderableItineraryOffer";
-import { HotelRoomCarouselItem } from "../../HotelRoomCarouselItem";
+import {
+  HotelRoomCarouselItem,
+  HotelRoomCarouselItemIndicatorLabel,
+} from "../../HotelRoomCarouselItem";
 
 export interface ItineraryOfferRoomsPresentationPanelProps {
   renderableItineraryOffer: RenderableItineraryOffer;
@@ -48,6 +51,9 @@ export function ItineraryOfferRoomsPresentationPanel({
               hotelRoomOffer={hotelRoomOffer}
               onClick={({ hotelRoomId }: { hotelRoomId: string }) =>
                 onClickHotelRoomCarouselItem({ hotelRoomId })
+              }
+              hotelRoomCarouselItemIndicatorLabel={
+                HotelRoomCarouselItemIndicatorLabel.COUNT_AVAILABLE_VALUE_ONLY
               }
               isCountEditable={false}
               onClickUpdateItineraryOfferHotelRoomCount={() => {}}

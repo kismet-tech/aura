@@ -1,9 +1,9 @@
 import React, { ChangeEventHandler, useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
-import { Input } from "@/components/shadcn/input";
 import { RenderableEmailInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { ValidationError } from "@/components/atoms/forms/ValidationError";
+import { KismetInput } from "@/components/atoms/KismetInput";
 
 export interface EmailInputBifrostFormQuestionProps {
   renderableEmailInputBifrostFormQuestion: RenderableEmailInputBifrostFormQuestion;
@@ -60,18 +60,18 @@ export function EmailInputBifrostFormQuestion({
 
   return (
     <FormField>
-      <Input
+      <FormLabel htmlFor={inputId}>
+        {renderableEmailInputBifrostFormQuestion.label}
+      </FormLabel>
+
+      <KismetInput
         value={value}
         id={inputId}
         placeholder={""}
         type="email"
         autoComplete={renderableEmailInputBifrostFormQuestion.autocomplete}
         onChange={handleOnChange}
-        className="bg-white"
       />
-      <FormLabel htmlFor={inputId}>
-        {renderableEmailInputBifrostFormQuestion.label}
-      </FormLabel>
       {!isLocallyValid && (
         <ValidationError>Please enter a valid email address</ValidationError>
       )}

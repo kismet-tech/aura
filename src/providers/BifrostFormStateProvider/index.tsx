@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   BifrostFormStateContextValue,
   BifrostFormStateProviderProps,
@@ -7,7 +13,6 @@ import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQue
 import { BifrostFormApplicationStage } from "./models/BifrostFormApplicationStage";
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleSetActiveBifrostFormQuestionsWithResponses";
 import { handleStepBackToPreviousBifrostFormApplicationStage } from "./handlers/handleStepBackToPreviousBifrostFormApplicationStage";
-// import { handleProgressToNextBifrostFormApplicationStage } from "./handlers/handleProgressToNextBifrostFormApplicationStage";
 import { handleGetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleGetActiveBifrostFormQuestionsWithResponses";
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { getRenderablePendingItinerary } from "./utilities/getRenderablePendingItinerary";
@@ -25,6 +30,7 @@ import {
   mockBifrostFormQuestionWithEmailResponseOne,
   mockBifrostFormQuestionWithPhoneNumberResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
+import { handleGetBifrostTravelerId } from "./handlers/handleGetBifrostTravelerId";
 
 export const BifrostFormStateContext = createContext(
   {} as BifrostFormStateContextValue
@@ -55,6 +61,10 @@ export const BifrostFormStateProvider = ({
       BifrostFormApplicationStage.LAUNCH_SCREEN
     );
 
+  const [bifrostTravelerId, setBifrostTravelerId] = useState<
+    string | undefined
+  >(undefined);
+
   const [
     bifrostFormQuestionsWithResponses,
     setBifrostFormQuestionsWithResponses,
@@ -84,21 +94,18 @@ export const BifrostFormStateProvider = ({
     setCustomRenderableItineraryOfferFromGuest,
   ] = useState<RenderableItineraryOffer | undefined>(undefined);
 
+  useEffect(() => {
+    const initializeBifrostTravelerId = async () => {
+      if (!bifrostTravelerId) {
+        await handleGetBifrostTravelerId({ setBifrostTravelerId, bifrostApi });
+      }
+    };
+    initializeBifrostTravelerId();
+  }, [bifrostTravelerId, setBifrostTravelerId, bifrostApi]);
+
   /////////////////////////
   // Navigation
   /////////////////////////
-
-  // const progressToNextBifrostFormApplicationStage = useCallback(async () => {
-  //   handleProgressToNextBifrostFormApplicationStage({
-  //     setBifrostFormApplicationStage,
-  //     setActiveBifrostFormQuestionIds,
-  //     bifrostFormQuestionsWithResponses,
-  //     setBifrostFormQuestionsWithResponses,
-  //     setUserSessionId,
-  //     hotelId,
-  //     bifrostApi,
-  //   });
-  // }, []);
 
   const stepBackToPreviousBifrostFormApplicationStage =
     useCallback(async () => {
@@ -135,6 +142,7 @@ export const BifrostFormStateProvider = ({
         setActiveBifrostFormQuestionIds,
         setRenderableItineraryOffersFromKismetAI,
         setBifrostFormApplicationStage,
+        hotelId,
         bifrostApi,
       });
     }
@@ -146,6 +154,7 @@ export const BifrostFormStateProvider = ({
     setActiveBifrostFormQuestionIds,
     setRenderableItineraryOffersFromKismetAI,
     setBifrostFormApplicationStage,
+    hotelId,
     bifrostApi,
   ]);
 
@@ -197,14 +206,6 @@ export const BifrostFormStateProvider = ({
   /////////////////////////
   // Active Form Questions
   /////////////////////////
-
-  console.log(
-    `activeBifrostFormQuestionIds: ${JSON.stringify(
-      activeBifrostFormQuestionIds,
-      null,
-      4
-    )}`
-  );
 
   const activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
     useMemo((): BifrostFormQuestionWithResponse[] => {
@@ -315,7 +316,6 @@ export const BifrostFormStateProvider = ({
       // Navigation
       /////////////////////////
       bifrostFormApplicationStage,
-      // progressToNextBifrostFormApplicationStage,
       stepBackToPreviousBifrostFormApplicationStage,
       beginUserSession,
       submitBifrostFormQuestion,
@@ -362,7 +362,6 @@ export const BifrostFormStateProvider = ({
     // Navigation
     /////////////////////////
     bifrostFormApplicationStage,
-    // progressToNextBifrostFormApplicationStage,
     stepBackToPreviousBifrostFormApplicationStage,
     beginUserSession,
     submitBifrostFormQuestion,

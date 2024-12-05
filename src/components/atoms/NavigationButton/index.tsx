@@ -19,7 +19,13 @@ export function NavigationButton({
           ? "cursor-pointer"
           : "cursor-not-allowed bg-gray-300 text-gray-500 border-gray-300"
       }`}
-      onClick={isEnabled ? onClick : undefined}
+      onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault();
+
+        if (isEnabled) {
+          onClick();
+        }
+      }}
       disabled={!isEnabled}
     >
       {children}

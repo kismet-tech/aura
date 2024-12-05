@@ -1,4 +1,6 @@
 import { KismetShoppingCartIcon } from "@/components/atoms/icons/KismetShoppingCartIcon";
+import { UserAvatar } from "@/components/atoms/UserAvatar";
+import { AuthenticatedGuestUser } from "@/models/guests/AuthenticatedGuestUser";
 import {
   BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
@@ -6,21 +8,30 @@ import {
 import React from "react";
 
 interface BifrostGroupBookingCheckoutHeaderProps {
+  authenticatedGuestUser: AuthenticatedGuestUser | undefined;
   cart: BifrostGroupBookingCheckoutCart;
   checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
+  onClickLogin: () => void;
 }
 
 export function BifrostGroupBookingCheckoutHeader({
+  authenticatedGuestUser,
   cart,
   checkoutSessionSummary,
+  onClickLogin,
 }: BifrostGroupBookingCheckoutHeaderProps) {
+  const countOfHotelRoomsInCart = cart.hotelRooms.reduce(
+    (acc, hotelRoom) => acc + hotelRoom.countOffered,
+    0
+  );
+
   let cartRoomIndicator: JSX.Element = <></>;
-  if (cart.hotelRooms.length > 0) {
+  if (countOfHotelRoomsInCart > 0) {
     cartRoomIndicator = (
       <div className="ml-3">
         {" "}
-        {`${cart.hotelRooms.length} ${
-          cart.hotelRooms.length > 1 ? "Rooms" : "Room"
+        {`${countOfHotelRoomsInCart} ${
+          countOfHotelRoomsInCart > 1 ? "Rooms" : "Room"
         }`}
       </div>
     );
@@ -43,11 +54,30 @@ export function BifrostGroupBookingCheckoutHeader({
       <div className="text-4xl font-light font-palatino">
         {checkoutSessionSummary.hotelName}
       </div>
-      <div className="ml-auto flex">
+      <div className="ml-auto flex items-center">
         <KismetShoppingCartIcon />
         {cartRoomIndicator}
         {cartAddOnIndicator}
-        <button className="ml-3">Login</button>
+        <div className="ml-3 items-center">
+          {authenticatedGuestUser ? (
+            <div className="cursor-pointer">
+              <UserAvatar
+                name={`${authenticatedGuestUser.firstName} ${authenticatedGuestUser.lastName}`}
+              />
+            </div>
+          ) : (
+            <button
+              onClick={(
+                event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+              ) => {
+                event.preventDefault();
+                onClickLogin();
+              }}
+            >
+              Login
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

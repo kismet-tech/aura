@@ -4,7 +4,10 @@ import {
   RenderableItineraryHotelRoomOffer,
 } from "@/models/bifrost/RenderableItineraryOffer";
 import React from "react";
-import { HotelRoomCarouselItem } from "../../HotelRoomCarouselItem";
+import {
+  HotelRoomCarouselItem,
+  HotelRoomCarouselItemIndicatorLabel,
+} from "../../HotelRoomCarouselItem";
 
 export interface ItineraryOfferRoomEditorRoomCarouselProps {
   renderableItineraryOffer: RenderableItineraryOffer;
@@ -40,6 +43,9 @@ export function ItineraryOfferRoomEditorRoomCarousel({
               })
             }
             isCountEditable={true}
+            hotelRoomCarouselItemIndicatorLabel={
+              HotelRoomCarouselItemIndicatorLabel.COUNT_AVAILABLE_VALUE_ONLY
+            }
             onClickUpdateItineraryOfferHotelRoomCount={({
               updatedCountOffered,
               hotelRoomId,

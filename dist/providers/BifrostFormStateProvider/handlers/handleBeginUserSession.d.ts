@@ -9,7 +9,8 @@ interface HandleBeginUserSessionProps {
     setActiveBifrostFormQuestionIds: React.Dispatch<React.SetStateAction<string[]>>;
     setUserSessionId: React.Dispatch<React.SetStateAction<string | undefined>>;
     hotelId: string;
+    bifrostTravelerId?: string;
     bifrostApi: BifrostApiInterface;
 }
-export declare const handleBeginUserSession: ({ setBifrostFormApplicationStage, bifrostFormQuestionsWithResponses, setBifrostFormQuestionsWithResponses, setActiveBifrostFormQuestionIds, setUserSessionId, hotelId, bifrostApi, }: HandleBeginUserSessionProps) => Promise<void>;
+export declare const handleBeginUserSession: ({ setBifrostFormApplicationStage, bifrostFormQuestionsWithResponses, setBifrostFormQuestionsWithResponses, setActiveBifrostFormQuestionIds, setUserSessionId, hotelId, bifrostTravelerId, bifrostApi, }: HandleBeginUserSessionProps) => Promise<void>;
 export {};

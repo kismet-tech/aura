@@ -1,3 +1,9 @@
-2024/11/30-16:07:27.969 2a07 Reusing MANIFEST /Users/julian/Desktop/tourii/tech/aura/.vscode/.chrome-user-dir/Default/Local Storage/leveldb/MANIFEST-000001
-2024/11/30-16:07:27.972 2a07 Recovering log #3
-2024/11/30-16:07:27.972 2a07 Reusing old log /Users/julian/Desktop/tourii/tech/aura/.vscode/.chrome-user-dir/Default/Local Storage/leveldb/000003.log 
+2024/12/02-18:16:49.116 2e03 Reusing MANIFEST /Users/julian/Desktop/tourii/tech/aura/.vscode/.chrome-user-dir/Default/Local Storage/leveldb/MANIFEST-000001
+2024/12/02-18:16:49.118 2e03 Recovering log #3
+2024/12/02-18:16:49.118 2e03 Reusing old log /Users/julian/Desktop/tourii/tech/aura/.vscode/.chrome-user-dir/Default/Local Storage/leveldb/000003.log 
+2024/12/02-20:24:31.456 3803 Level-0 table #5: started
+2024/12/02-20:24:31.467 3803 Level-0 table #5: 9927 bytes OK
+2024/12/02-20:24:31.483 3803 Delete type=0 #3
+2024/12/03-10:52:14.394 3803 Level-0 table #7: started
+2024/12/03-10:52:14.411 3803 Level-0 table #7: 44300 bytes OK
+2024/12/03-10:52:14.432 3803 Delete type=0 #4

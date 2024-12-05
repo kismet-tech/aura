@@ -69,7 +69,7 @@ export const mockRenderableTextInputBifrostFormQuestionFive: RenderableTextInput
 export const mockRenderableEmailInputBifrostFormQuestionOne: RenderableEmailInputBifrostFormQuestion =
   {
     type: BifrostFormQuestionType.EMAIL,
-    bifrostFormQuestionId: BifrostFormQuestionType.EMAIL,
+    bifrostFormQuestionId: ReservedBifrostFormQuestionIds.EMAIL,
     label: "Email",
     chatLabel: "What is your email?",
     required: true,
@@ -78,8 +78,8 @@ export const mockRenderableEmailInputBifrostFormQuestionOne: RenderableEmailInpu
 export const mockRenderablePhoneInputBifrostFormQuestionOne: RenderablePhoneInputBifrostFormQuestion =
   {
     type: BifrostFormQuestionType.PHONE,
-    bifrostFormQuestionId: BifrostFormQuestionType.PHONE,
-    label: "Phone",
+    bifrostFormQuestionId: ReservedBifrostFormQuestionIds.PHONE,
+    label: "Phone Number",
     chatLabel: "What is your phone number?",
     required: true,
   };
@@ -189,7 +189,8 @@ export const mockRenderableSplitTextInputBifrostFormQuestionOne: RenderableSplit
   {
     bifrostFormQuestionId: `${mockRenderableTextInputBifrostFormQuestionOne.bifrostFormQuestionId}-${mockRenderableTextInputBifrostFormQuestionTwo.bifrostFormQuestionId}`,
     type: BifrostFormQuestionType.SPLIT_TEXT_INPUT,
-    label: "Contact info",
+    // label: "Contact info",
+    label: "",
     chatLabel: "Can you please share your first and last name?",
 
     left: mockRenderableTextInputBifrostFormQuestionOne,

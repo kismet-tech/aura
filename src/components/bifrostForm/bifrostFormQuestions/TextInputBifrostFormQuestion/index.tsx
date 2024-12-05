@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
-import { Input } from "@/components/shadcn/input";
 import { RenderableTextInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { KismetInput } from "@/components/atoms/KismetInput";
 
 export interface TextInputBifrostFormQuestionProps {
   renderableTextInputBifrostFormQuestion: RenderableTextInputBifrostFormQuestion;
@@ -46,18 +46,18 @@ export function TextInputBifrostFormQuestion({
 
   return (
     <FormField>
-      <Input
+      <FormLabel htmlFor={inputId}>
+        {renderableTextInputBifrostFormQuestion.label}
+      </FormLabel>
+
+      <KismetInput
         onChange={handleOnChange}
         type={"text"}
         id={inputId}
         placeholder={""}
         autoComplete={renderableTextInputBifrostFormQuestion.autocomplete}
         value={value}
-        className="bg-white"
       />
-      <FormLabel htmlFor={inputId}>
-        {renderableTextInputBifrostFormQuestion.label}
-      </FormLabel>
     </FormField>
   );
 }
