@@ -29,16 +29,23 @@ export function BifrostGroupBookingCheckoutBody({
     0
   );
 
-  const roomsRemainingIndicator =
-    availabilityCount > 0
-      ? `${availabilityCount} Rooms Remain`
-      : "No rooms available";
+  let roomsRemainingIndicator: JSX.Element;
+  if (availableHotelRooms.length === 0) {
+    roomsRemainingIndicator = <>Loading...</>;
+  } else {
+    roomsRemainingIndicator =
+      availabilityCount > 0 ? (
+        <>Room Block ({`${availabilityCount} Rooms Remain`})</>
+      ) : (
+        <> Room Block ({"No rooms available"})</>
+      );
+  }
 
   return (
     <div className="">
       <div>
         <div className="flex text-xl items-center">
-          {`Room Block (${roomsRemainingIndicator})`}
+          {roomsRemainingIndicator}
           <div className="ml-4 cursor-pointer">
             <ThreeSettingSlider className="" />
           </div>
