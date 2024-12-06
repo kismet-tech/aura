@@ -9,7 +9,6 @@ import React, { ReactNode, useState } from "react";
 export interface BifrostItineraryOfferPresentationScreenProps {
   renderableItineraryOffers: RenderableItineraryOffer[];
   renderablePendingItinerary: RenderablePendingItinerary;
-  paymentsPageUrl: string;
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
     updatedCountOffered,
@@ -19,6 +18,11 @@ export interface BifrostItineraryOfferPresentationScreenProps {
     updatedCountOffered: number;
     hotelRoomId: string;
   }) => Promise<{ updatedItineraryOfferId: string }>;
+  onClickSelectItineraryOfferAndGoToPaymentsPage: ({
+    itineraryOfferId,
+  }: {
+    itineraryOfferId: string;
+  }) => void;
 }
 
 enum BifrostItineraryOfferPresentationScreenType {
@@ -30,16 +34,9 @@ enum BifrostItineraryOfferPresentationScreenType {
 export function BifrostItineraryOfferPresentationScreen({
   renderableItineraryOffers,
   renderablePendingItinerary,
-  paymentsPageUrl,
   onClickUpdateItineraryOfferHotelRoomCount,
+  onClickSelectItineraryOfferAndGoToPaymentsPage,
 }: BifrostItineraryOfferPresentationScreenProps) {
-  const onClickGoToPaymentsPage = ({}: { itineraryOfferId: string }) => {
-    window.location.href = paymentsPageUrl;
-  };
-
-  // console.log(`\n\n\nUPDATED renderableItineraryOffers`);
-  // console.log(JSON.stringify(renderableItineraryOffers, null, 4));
-
   const [
     bifrostItineraryOfferPresentationScreenType,
     setBifrostItineraryOfferPresentationScreenType,
@@ -103,7 +100,9 @@ export function BifrostItineraryOfferPresentationScreen({
             BifrostItineraryOfferPresentationScreenType.ITINERARY_OFFER_ROOM_EDITOR
           );
         }}
-        onClickGoToPaymentsPage={onClickGoToPaymentsPage}
+        onClickSelectItineraryOfferAndGoToPaymentsPage={
+          onClickSelectItineraryOfferAndGoToPaymentsPage
+        }
       />
     );
   } else if (

@@ -39,4 +39,7 @@ export interface BifrostFormStateContextValue {
     }) => Promise<{
         updatedItineraryOfferId: string;
     }>;
+    selectItineraryOffer: ({ itineraryOfferId, }: {
+        itineraryOfferId: string;
+    }) => Promise<void>;
 }

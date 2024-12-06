@@ -18,9 +18,10 @@ export function BifrostFormApplication() {
     submitBifrostFormQuestion,
     renderableItineraryOffersFromKismetAI,
     customRenderableItineraryOfferFromGuest,
-    paymentsPageUrl,
     updateItineraryOfferHotelRoomCount,
     beginUserSession,
+    paymentsPageUrl,
+    selectItineraryOffer,
   } = useBifrostFormState();
 
   let renderedScreen: JSX.Element;
@@ -94,7 +95,6 @@ export function BifrostFormApplication() {
       <BifrostItineraryOfferPresentationScreen
         renderableItineraryOffers={renderableItineraryOffers}
         renderablePendingItinerary={renderablePendingItinerary}
-        paymentsPageUrl={paymentsPageUrl}
         onClickUpdateItineraryOfferHotelRoomCount={async ({
           itineraryOfferId,
           hotelRoomId,
@@ -111,6 +111,14 @@ export function BifrostFormApplication() {
               updatedCountOffered,
             });
           return { updatedItineraryOfferId };
+        }}
+        onClickSelectItineraryOfferAndGoToPaymentsPage={async ({
+          itineraryOfferId,
+        }: {
+          itineraryOfferId: string;
+        }): Promise<void> => {
+          selectItineraryOffer({ itineraryOfferId });
+          window.location.href = paymentsPageUrl;
         }}
       />
     );

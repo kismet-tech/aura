@@ -20,6 +20,10 @@ import {
   SuggestCalendarDateRangesFromConstraintsRequestDto,
   SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto,
 } from "../bifrostApi/helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
+import {
+  SelectBifrostItineraryOfferRequestDto,
+  SelectBifrostItineraryOfferSuccessResponseDataDto,
+} from "../bifrostApi/core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
 
 export interface BifrostApiInterface {
   //////////////////////////////////////////////////
@@ -48,6 +52,10 @@ export interface BifrostApiInterface {
   guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount: (
     requestBody: UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto
   ) => Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto>;
+
+  selectBifrostItineraryOffer: (
+    requestBody: SelectBifrostItineraryOfferRequestDto
+  ) => Promise<SelectBifrostItineraryOfferSuccessResponseDataDto>;
 
   //////////////////////////////////////////////////
   // Helpers

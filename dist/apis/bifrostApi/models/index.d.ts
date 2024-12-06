@@ -3,10 +3,12 @@ import { SubmitBifrostFormQuestionsWithResponsesRequestDto, SubmitBifrostFormQue
 import { UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto, UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto } from "../bifrostApi/core/updateGuestCustomRenderableItineraryOfferHotelRoomOfferCount/UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCount.dto";
 import { GetOrCreateBifrostTravelerIdRequestDto, GetOrCreateBifrostTravelerIdSuccessResponseDataDto } from "../bifrostApi/core/getOrCreateBifrostTravelerId/GetOrCreateBifrostTravelerId.dto";
 import { SuggestCalendarDateRangesFromConstraintsRequestDto, SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto } from "../bifrostApi/helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
+import { SelectBifrostItineraryOfferRequestDto, SelectBifrostItineraryOfferSuccessResponseDataDto } from "../bifrostApi/core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
 export interface BifrostApiInterface {
     getOrCreateBifrostTravelerId: (requestBody: GetOrCreateBifrostTravelerIdRequestDto) => Promise<GetOrCreateBifrostTravelerIdSuccessResponseDataDto>;
     createUserSessionFromBifrost: (requestBody: CreateUserSessionFromBifrostRequestDto) => Promise<CreateUserSessionFromBifrostSuccessResponseDataDto>;
     submitBifrostFormQuestionWithResponse: (requestBody: SubmitBifrostFormQuestionsWithResponsesRequestDto) => Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto>;
     guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount: (requestBody: UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto) => Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto>;
+    selectBifrostItineraryOffer: (requestBody: SelectBifrostItineraryOfferRequestDto) => Promise<SelectBifrostItineraryOfferSuccessResponseDataDto>;
     suggestCalendarDateRangesFromConstraints: (requestBody: SuggestCalendarDateRangesFromConstraintsRequestDto) => Promise<SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto>;
 }

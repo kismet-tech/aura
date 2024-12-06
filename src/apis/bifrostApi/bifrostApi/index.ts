@@ -27,6 +27,11 @@ import {
   SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto,
   SuggestCalendarDateRangesFromConstraintsSuccessResponseDto,
 } from "./helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
+import {
+  SelectBifrostItineraryOfferRequestDto,
+  SelectBifrostItineraryOfferSuccessResponseDataDto,
+  SelectBifrostItineraryOfferSuccessResponseDto,
+} from "./core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
 
 export class BifrostApi implements BifrostApiInterface {
   Api: AxiosInstance;
@@ -123,6 +128,28 @@ export class BifrostApi implements BifrostApiInterface {
       | ErrorResponseDto
     > = await this.Api.post(
       `/Bifrost/UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCount`,
+      requestBody,
+      {}
+    );
+
+    if ("error" in response.data) {
+      console.error(response.data.error.reason);
+    }
+
+    const successResponseValue = (
+      response.data as UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDto
+    ).success;
+
+    return successResponseValue;
+  }
+
+  async selectBifrostItineraryOffer(
+    requestBody: SelectBifrostItineraryOfferRequestDto
+  ): Promise<SelectBifrostItineraryOfferSuccessResponseDataDto> {
+    const response: AxiosResponse<
+      SelectBifrostItineraryOfferSuccessResponseDto | ErrorResponseDto
+    > = await this.Api.post(
+      `/Bifrost/SelectBifrostItineraryOffer`,
       requestBody,
       {}
     );

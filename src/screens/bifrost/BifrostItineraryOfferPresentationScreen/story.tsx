@@ -50,7 +50,6 @@ const StoryWrapper = () => {
   const dynamicArgs: BifrostItineraryOfferPresentationScreenProps = {
     renderableItineraryOffers,
     renderablePendingItinerary,
-    paymentsPageUrl: "https://www.checkout.com",
     onClickUpdateItineraryOfferHotelRoomCount: async ({
       itineraryOfferId,
       updatedCountOffered,
@@ -65,6 +64,13 @@ const StoryWrapper = () => {
         updatedCountOffered,
         hotelRoomId,
       });
+    },
+    onClickSelectItineraryOfferAndGoToPaymentsPage: async ({
+      itineraryOfferId,
+    }: {
+      itineraryOfferId: string;
+    }) => {
+      console.log(`Clicked go to payments page for ${itineraryOfferId}`);
     },
   };
 

@@ -42,7 +42,7 @@ const StoryWrapper = () => {
     onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => {
       console.log(`Clicked ${hotelRoomId}`);
     },
-    onClickGoToPaymentsPage: ({
+    onClickSelectItineraryOfferAndGoToPaymentsPage: ({
       itineraryOfferId,
     }: {
       itineraryOfferId: string;

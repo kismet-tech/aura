@@ -4,7 +4,6 @@ import React from "react";
 export interface BifrostItineraryOfferPresentationScreenProps {
     renderableItineraryOffers: RenderableItineraryOffer[];
     renderablePendingItinerary: RenderablePendingItinerary;
-    paymentsPageUrl: string;
     onClickUpdateItineraryOfferHotelRoomCount: ({ itineraryOfferId, updatedCountOffered, hotelRoomId, }: {
         itineraryOfferId: string;
         updatedCountOffered: number;
@@ -12,5 +11,8 @@ export interface BifrostItineraryOfferPresentationScreenProps {
     }) => Promise<{
         updatedItineraryOfferId: string;
     }>;
+    onClickSelectItineraryOfferAndGoToPaymentsPage: ({ itineraryOfferId, }: {
+        itineraryOfferId: string;
+    }) => void;
 }
-export declare function BifrostItineraryOfferPresentationScreen({ renderableItineraryOffers, renderablePendingItinerary, paymentsPageUrl, onClickUpdateItineraryOfferHotelRoomCount, }: BifrostItineraryOfferPresentationScreenProps): React.JSX.Element;
+export declare function BifrostItineraryOfferPresentationScreen({ renderableItineraryOffers, renderablePendingItinerary, onClickUpdateItineraryOfferHotelRoomCount, onClickSelectItineraryOfferAndGoToPaymentsPage, }: BifrostItineraryOfferPresentationScreenProps): React.JSX.Element;

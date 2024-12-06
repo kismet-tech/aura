@@ -100,7 +100,7 @@ export function BifrostGroupBookingCheckoutRootPage({
               alt="The hero image for the event"
             />
           </div>
-          <div className="mt-4 border-b-2 border-black w-full" />
+          <div className="mt-4 border-b border-black w-full" />
           <div className="mt-4 mb-10">
             <BifrostGroupBookingCheckoutBody
               availableHotelRooms={availableHotelRooms}
@@ -113,7 +113,7 @@ export function BifrostGroupBookingCheckoutRootPage({
           {renderedCheckoutButton}
         </div>
       </div>
-      <footer className="bg-white bg-opacity-0 border-t-2 border-black w-full p-2 flex justify-end">
+      <footer className="bg-white bg-opacity-0 border-t border-black w-full p-2 flex justify-end">
         <div className="transform scale-75 pb-">
           <MadeWithKismetLogo />
         </div>

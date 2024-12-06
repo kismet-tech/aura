@@ -13,7 +13,7 @@ export interface ItineraryOfferPresentationProps {
     itineraryOfferId: string;
   }) => void;
   onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => void;
-  onClickGoToPaymentsPage: ({
+  onClickSelectItineraryOfferAndGoToPaymentsPage: ({
     itineraryOfferId,
   }: {
     itineraryOfferId: string;
@@ -25,7 +25,7 @@ export function ItineraryOfferPresentation({
   renderableItineraryOffers,
   onSelectAlternativeItineraryOffer,
   onClickHotelRoom,
-  onClickGoToPaymentsPage,
+  onClickSelectItineraryOfferAndGoToPaymentsPage,
 }: ItineraryOfferPresentationProps) {
   const renderableItineraryOffer = renderableItineraryOffers.find(
     (offer) => offer.itineraryOfferId === itineraryOfferId
@@ -58,7 +58,11 @@ export function ItineraryOfferPresentation({
       <div className="flex-shrink-0">
         <div className="flex">
           <NavigationButton
-            onClick={() => onClickGoToPaymentsPage({ itineraryOfferId })}
+            onClick={() =>
+              onClickSelectItineraryOfferAndGoToPaymentsPage({
+                itineraryOfferId,
+              })
+            }
             isEnabled={true}
           >
             Place hold {">"}

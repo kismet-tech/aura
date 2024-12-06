@@ -48,6 +48,10 @@ import {
   SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto,
   SuggestCalendarDateRangesFromConstraintsSuccessResponseDto,
 } from "../bifrostApi/helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
+import {
+  SelectBifrostItineraryOfferRequestDto,
+  SelectBifrostItineraryOfferSuccessResponseDataDto,
+} from "../bifrostApi/core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
 
 export class MockBifrostApi implements BifrostApiInterface {
   apiState = {
@@ -261,6 +265,14 @@ export class MockBifrostApi implements BifrostApiInterface {
       throw new Error("Unsupported itineraryOffer originatorType");
     }
   }
+
+  async selectBifrostItineraryOffer({}: SelectBifrostItineraryOfferRequestDto): Promise<SelectBifrostItineraryOfferSuccessResponseDataDto> {
+    return {};
+  }
+
+  //////////////////////////////////////////////////
+  // Helpers
+  //////////////////////////////////////////////////
 
   async suggestCalendarDateRangesFromConstraints({}: SuggestCalendarDateRangesFromConstraintsRequestDto): Promise<SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto> {
     return {

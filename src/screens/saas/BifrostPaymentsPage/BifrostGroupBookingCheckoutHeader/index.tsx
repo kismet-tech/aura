@@ -50,7 +50,7 @@ export function BifrostGroupBookingCheckoutHeader({
   }
 
   return (
-    <div className="flex items-center border-b-4 border-black w-full pb-4">
+    <div className="flex items-center border-b border-black w-full pb-4">
       <div className="text-4xl font-light font-palatino">
         {checkoutSessionSummary.hotelName}
       </div>

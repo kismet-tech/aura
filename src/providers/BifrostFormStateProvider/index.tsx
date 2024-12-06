@@ -310,6 +310,19 @@ export const BifrostFormStateProvider = ({
     ]
   );
 
+  const selectItineraryOffer = useCallback(
+    async ({
+      itineraryOfferId,
+    }: {
+      itineraryOfferId: string;
+    }): Promise<void> => {
+      await bifrostApi.selectBifrostItineraryOffer({
+        itineraryOfferId,
+      });
+    },
+    [bifrostApi]
+  );
+
   const contextValue = useMemo(() => {
     const bifrostFormStateContextValue: BifrostFormStateContextValue = {
       /////////////////////////
@@ -354,6 +367,7 @@ export const BifrostFormStateProvider = ({
       setRenderableItineraryOffersFromKismetAI:
         setRenderableItineraryOffersFromKismetAIWithCallback,
       updateItineraryOfferHotelRoomCount,
+      selectItineraryOffer,
     };
 
     return bifrostFormStateContextValue;
@@ -398,6 +412,7 @@ export const BifrostFormStateProvider = ({
     customRenderableItineraryOfferFromGuest,
     setRenderableItineraryOffersFromKismetAIWithCallback,
     updateItineraryOfferHotelRoomCount,
+    selectItineraryOffer,
   ]);
 
   return (

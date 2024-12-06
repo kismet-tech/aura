@@ -17,6 +17,10 @@ export function ItineraryOfferEventsPresentationPanel({
   const eventOffers: RenderableItineraryEventOffer[] =
     renderableItineraryOffer.eventOffers;
 
+  if (eventOffers.length === 0) {
+    return <></>;
+  }
+
   return (
     <div>
       <KismetSectionHeader>
