@@ -17,6 +17,44 @@ interface KismetSectionHeaderProps {
 }
 declare function KismetSectionHeader({ children }: KismetSectionHeaderProps): React.JSX.Element;
 
+interface ImageUploadProps {
+    images: Array<{
+        file: File;
+        preview: string;
+        id: string;
+    }>;
+    onImagesChange: (images: Array<{
+        file: File;
+        preview: string;
+        id: string;
+    }>) => void;
+    label?: string;
+    maxSize: number;
+    maxFiles: number;
+}
+declare function ImageUpload({ images, onImagesChange, maxSize, maxFiles, }: ImageUploadProps): React.JSX.Element;
+
+interface ExistingImage {
+    imageId: string;
+    url: string;
+}
+interface ImageUploadWithExistingProps {
+    existingImages: ExistingImage[];
+    onImagesChange: (params: {
+        newImages: Array<{
+            file: File;
+            preview: string;
+            id: string;
+        }>;
+        imageIdsToDelete: string[];
+        imagesOrdering: string[];
+    }) => void;
+    label?: string;
+    maxSize: number;
+    maxFiles: number;
+}
+declare function ImageUploadWithExisting({ existingImages, onImagesChange, maxSize, maxFiles, label, }: ImageUploadWithExistingProps): React.JSX.Element;
+
 declare function KismetLogo(): React.JSX.Element;
 
 declare enum BifrostFormQuestionType {
@@ -326,4 +364,4 @@ interface BifrostGroupBookingCheckoutRootPageProps {
 }
 declare function BifrostGroupBookingCheckoutRootPage({ authenticatedGuestUser, checkoutSessionSummary, cart, availableHotelRooms, onClickLogin, onClickUpdateHotelRoomCountInCart, onClickCheckout, }: BifrostGroupBookingCheckoutRootPageProps): React.JSX.Element;
 
-export { BaseBifrostFormQuestionResponse, BaseBifrostFormQuestionWithResponse, BaseRenderableBifrostFormQuestion, BifrostFormQuestion, BifrostFormQuestionCalendarDateRangeResponse, BifrostFormQuestionEmailResponse, BifrostFormQuestionMultiCalendarDateRangeResponse, BifrostFormQuestionPhoneNumberResponse, BifrostFormQuestionResponse, BifrostFormQuestionResponseType, BifrostFormQuestionSplitTextResponse, BifrostFormQuestionTextResponse, BifrostFormQuestionType, BifrostFormQuestionWithCalendarDateRangeResponse, BifrostFormQuestionWithEmailResponse, BifrostFormQuestionWithMultiCalendarDateRangeResponse, BifrostFormQuestionWithPhoneNumberResponse, BifrostFormQuestionWithResponse, BifrostFormQuestionWithSplitTextResponse, BifrostFormQuestionWithTextResponse, BifrostGroupBookingCheckoutCart, BifrostGroupBookingCheckoutRootPage, BifrostGroupBookingCheckoutSessionSummary, BifrostGroupBookingCheckoutStateContextValue, BifrostTextAreaFormQuestionWithTextResponse, BifrostTextInputFormQuestionWithTextResponse, BifrostToggleButtonGroupFormQuestionWithTextResponse, ItineraryOfferOriginatorType, KismetHeader, KismetHeaderProps, KismetLogo, KismetSectionHeader, KismetSectionHeaderProps, RenderableEmailInputBifrostFormQuestion, RenderableItineraryEventOffer, RenderableItineraryEventOfferApprovalStatus, RenderableItineraryHotelRoomOffer, RenderableItineraryOffer, RenderableItineraryOfferBookingRules, RenderableItineraryOfferCriterion, RenderableMultiSelectDateRangeBifrostFormQuestion, RenderablePhoneInputBifrostFormQuestion, RenderableSelectDateRangeBifrostFormQuestion, RenderableSplitTextInputBifrostFormQuestion, RenderableTextAreaBifrostFormQuestion, RenderableTextInputBifrostFormQuestion, RenderableToggleButtonGroupBifrostFormQuestion, RenderableToggleButtonGroupBifrostFormQuestionOption, ReservedBifrostDateFlexibilityOptionValues, ReservedBifrostFormQuestionIds, ReservedBifrostReasonForTravelOptionValues, ReservedBifrostSplitPaymentOptionValues, SingleRenderableBifrostFormQuestion, bundleBifrostFormQuestionWithResponse, updateBifrostFormQuestionWithResponse };
+export { BaseBifrostFormQuestionResponse, BaseBifrostFormQuestionWithResponse, BaseRenderableBifrostFormQuestion, BifrostFormQuestion, BifrostFormQuestionCalendarDateRangeResponse, BifrostFormQuestionEmailResponse, BifrostFormQuestionMultiCalendarDateRangeResponse, BifrostFormQuestionPhoneNumberResponse, BifrostFormQuestionResponse, BifrostFormQuestionResponseType, BifrostFormQuestionSplitTextResponse, BifrostFormQuestionTextResponse, BifrostFormQuestionType, BifrostFormQuestionWithCalendarDateRangeResponse, BifrostFormQuestionWithEmailResponse, BifrostFormQuestionWithMultiCalendarDateRangeResponse, BifrostFormQuestionWithPhoneNumberResponse, BifrostFormQuestionWithResponse, BifrostFormQuestionWithSplitTextResponse, BifrostFormQuestionWithTextResponse, BifrostGroupBookingCheckoutCart, BifrostGroupBookingCheckoutRootPage, BifrostGroupBookingCheckoutSessionSummary, BifrostGroupBookingCheckoutStateContextValue, BifrostTextAreaFormQuestionWithTextResponse, BifrostTextInputFormQuestionWithTextResponse, BifrostToggleButtonGroupFormQuestionWithTextResponse, ExistingImage, ImageUpload, ImageUploadProps, ImageUploadWithExisting, ImageUploadWithExistingProps, ItineraryOfferOriginatorType, KismetHeader, KismetHeaderProps, KismetLogo, KismetSectionHeader, KismetSectionHeaderProps, RenderableEmailInputBifrostFormQuestion, RenderableItineraryEventOffer, RenderableItineraryEventOfferApprovalStatus, RenderableItineraryHotelRoomOffer, RenderableItineraryOffer, RenderableItineraryOfferBookingRules, RenderableItineraryOfferCriterion, RenderableMultiSelectDateRangeBifrostFormQuestion, RenderablePhoneInputBifrostFormQuestion, RenderableSelectDateRangeBifrostFormQuestion, RenderableSplitTextInputBifrostFormQuestion, RenderableTextAreaBifrostFormQuestion, RenderableTextInputBifrostFormQuestion, RenderableToggleButtonGroupBifrostFormQuestion, RenderableToggleButtonGroupBifrostFormQuestionOption, ReservedBifrostDateFlexibilityOptionValues, ReservedBifrostFormQuestionIds, ReservedBifrostReasonForTravelOptionValues, ReservedBifrostSplitPaymentOptionValues, SingleRenderableBifrostFormQuestion, bundleBifrostFormQuestionWithResponse, updateBifrostFormQuestionWithResponse };
