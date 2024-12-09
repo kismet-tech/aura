@@ -12,10 +12,11 @@ import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCal
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 import { AuthenticatedGuestUser } from "@/models/guests/AuthenticatedGuestUser";
 import { Button } from "@/components/shadcn/button";
+import { Skeleton } from "@/components/shadcn/skeleton";
 
 interface BifrostGroupBookingCheckoutRootPageProps {
   authenticatedGuestUser: AuthenticatedGuestUser | undefined;
-  checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
+  checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary | undefined;
   cart: BifrostGroupBookingCheckoutCart;
   availableHotelRooms: RenderableItineraryHotelRoomOffer[];
   onClickLogin: () => void;
@@ -75,30 +76,42 @@ export function BifrostGroupBookingCheckoutRootPage({
         />
         <div className="mt-5 w-3/4 mx-auto relative">
           <div className="text-center text-3xl font-palatino">
-            {checkoutSessionSummary.groupBookingCheckoutSessionTitle}
+            {checkoutSessionSummary ? (
+              checkoutSessionSummary.groupBookingCheckoutSessionTitle
+            ) : (
+              <Skeleton className="text-center w-[100px] h-[20px] rounded-full" />
+            )}
           </div>
           <div className="text-center mt-2 font-palatino">
-            {renderCalendarDateRange({
-              calendarDateRange:
-                checkoutSessionSummary.groupBookingCheckoutSessionCalendarDateRange,
-              renderedCalendarDateFormat:
-                RenderedCalendarDateFormat.MONTH_DAY_YEAR,
-              renderedCalendarDateRangeJoinFormat:
-                RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
-              collapseStrategy: {
-                collapseSameMonth: true,
-                collapseSameDay: true,
-              },
-            })}
+            {checkoutSessionSummary ? (
+              renderCalendarDateRange({
+                calendarDateRange:
+                  checkoutSessionSummary.groupBookingCheckoutSessionCalendarDateRange,
+                renderedCalendarDateFormat:
+                  RenderedCalendarDateFormat.MONTH_DAY_YEAR,
+                renderedCalendarDateRangeJoinFormat:
+                  RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+                collapseStrategy: {
+                  collapseSameMonth: true,
+                  collapseSameDay: true,
+                },
+              })
+            ) : (
+              <Skeleton className="text-center w-[100px] h-[20px] rounded-full" />
+            )}
           </div>
           <div className="mt-4">
-            <img
-              src={
-                checkoutSessionSummary.groupBookingCheckoutSessionHeroImageUrl
-              }
-              className="h-[250px] w-full object-cover"
-              alt="The hero image for the event"
-            />
+            {checkoutSessionSummary ? (
+              <img
+                src={
+                  checkoutSessionSummary.groupBookingCheckoutSessionHeroImageUrl
+                }
+                className="h-[250px] w-full object-cover"
+                alt="The hero image for the event"
+              />
+            ) : (
+              <Skeleton className="w-full h-[250px] rounded-full" />
+            )}
           </div>
           <div className="mt-4 border-b border-black w-full" />
           <div className="mt-4 mb-10">

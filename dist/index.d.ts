@@ -352,7 +352,7 @@ declare const updateBifrostFormQuestionWithResponse: ({ previousBifrostFormQuest
 
 interface BifrostGroupBookingCheckoutRootPageProps {
     authenticatedGuestUser: AuthenticatedGuestUser | undefined;
-    checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary$1;
+    checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary$1 | undefined;
     cart: BifrostGroupBookingCheckoutCart$1;
     availableHotelRooms: RenderableItineraryHotelRoomOffer$1[];
     onClickLogin: () => void;

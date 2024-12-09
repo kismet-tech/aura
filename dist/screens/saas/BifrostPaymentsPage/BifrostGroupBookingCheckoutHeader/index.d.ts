@@ -4,7 +4,7 @@ import React from "react";
 interface BifrostGroupBookingCheckoutHeaderProps {
     authenticatedGuestUser: AuthenticatedGuestUser | undefined;
     cart: BifrostGroupBookingCheckoutCart;
-    checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
+    checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary | undefined;
     onClickLogin: () => void;
 }
 export declare function BifrostGroupBookingCheckoutHeader({ authenticatedGuestUser, cart, checkoutSessionSummary, onClickLogin, }: BifrostGroupBookingCheckoutHeaderProps): React.JSX.Element;

@@ -4,7 +4,7 @@ import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableIt
 import { AuthenticatedGuestUser } from "@/models/guests/AuthenticatedGuestUser";
 interface BifrostGroupBookingCheckoutRootPageProps {
     authenticatedGuestUser: AuthenticatedGuestUser | undefined;
-    checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
+    checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary | undefined;
     cart: BifrostGroupBookingCheckoutCart;
     availableHotelRooms: RenderableItineraryHotelRoomOffer[];
     onClickLogin: () => void;

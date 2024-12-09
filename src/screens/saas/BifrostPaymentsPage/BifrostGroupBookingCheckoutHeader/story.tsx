@@ -55,3 +55,27 @@ export const Example: Story = {
   render: () => <StoryWrapper />,
   args: {},
 };
+
+const LoadingStoryWrapper = () => {
+  const cart: BifrostGroupBookingCheckoutCart = {
+    hotelRooms: [],
+  };
+
+  const checkoutSessionSummary = undefined;
+
+  return (
+    <BifrostGroupBookingCheckoutHeader
+      onClickLogin={() => {
+        console.log("Login clicked");
+      }}
+      cart={cart}
+      checkoutSessionSummary={checkoutSessionSummary}
+      authenticatedGuestUser={undefined}
+    />
+  );
+};
+
+export const LoadingExample: Story = {
+  render: () => <LoadingStoryWrapper />,
+  args: {},
+};

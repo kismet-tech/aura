@@ -148,3 +148,110 @@ export const Example: Story = {
   render: () => <StoryWrapper />,
   args: {},
 };
+
+const LoadingStoryWrapper = () => {
+  const initialCart: BifrostGroupBookingCheckoutCart = {
+    hotelRooms: [],
+  };
+
+  const checkoutSessionSummary = undefined;
+
+  const mockRenderableItineraryHotelRoomOffers: RenderableItineraryHotelRoomOffer[] =
+    [
+      mockRenderableItineraryHotelRoomOfferOne,
+      mockRenderableItineraryHotelRoomOfferTwo,
+      mockRenderableItineraryHotelRoomOfferThree,
+      mockRenderableItineraryHotelRoomOfferFour,
+      mockRenderableItineraryHotelRoomOfferFive,
+      mockRenderableItineraryHotelRoomOfferSix,
+    ];
+
+  const initialAvailableHotelRooms: RenderableItineraryHotelRoomOffer[] =
+    mockRenderableItineraryHotelRoomOffers.map(
+      (offer: RenderableItineraryHotelRoomOffer) => {
+        return {
+          ...offer,
+          countOffered: 0,
+          countAvailable: offer.countOffered,
+        };
+      }
+    );
+
+  const [hotelRoomOffers, setHotelRoomOffers] = useState<
+    RenderableItineraryHotelRoomOffer[]
+  >(initialAvailableHotelRooms);
+
+  const [cart, setCart] =
+    useState<BifrostGroupBookingCheckoutCart>(initialCart);
+
+  const [authenticatedGuestUser, setAuthenticatedGuestUser] = useState<
+    AuthenticatedGuestUser | undefined
+  >(undefined);
+
+  return (
+    <BifrostGroupBookingCheckoutRootPage
+      onClickLogin={() => {
+        setAuthenticatedGuestUser({
+          firstName: "Julian",
+          lastName: "Trajanson",
+          userId: "trajanson",
+        });
+      }}
+      authenticatedGuestUser={authenticatedGuestUser}
+      checkoutSessionSummary={checkoutSessionSummary}
+      cart={cart}
+      availableHotelRooms={hotelRoomOffers}
+      onClickUpdateHotelRoomCountInCart={({
+        updatedCountOffered,
+        hotelRoomId,
+      }: {
+        updatedCountOffered: number;
+        hotelRoomId: string;
+      }) => {
+        setHotelRoomOffers(
+          (previousHotelRoomOffers: RenderableItineraryHotelRoomOffer[]) => {
+            const updatedHotelRoomOffers = previousHotelRoomOffers.map(
+              (previousHotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
+                if (previousHotelRoomOffer.hotelRoomId === hotelRoomId) {
+                  return {
+                    ...previousHotelRoomOffer,
+                    countOffered: updatedCountOffered,
+                  };
+                }
+                return previousHotelRoomOffer;
+              }
+            );
+
+            setCart((previousCart: BifrostGroupBookingCheckoutCart) => {
+              const updatedCart = {
+                ...previousCart,
+                hotelRooms: updatedHotelRoomOffers.filter(
+                  (offer: RenderableItineraryHotelRoomOffer) =>
+                    offer.countOffered > 0
+                ),
+              };
+
+              return useReactStateCache({
+                updatedValue: updatedCart,
+                previousValue: previousCart,
+              });
+            });
+
+            return useReactStateCache({
+              updatedValue: updatedHotelRoomOffers,
+              previousValue: previousHotelRoomOffers,
+            });
+          }
+        );
+      }}
+      onClickCheckout={() => {
+        console.log("Checkout clicked");
+      }}
+    />
+  );
+};
+
+export const LoadingExample: Story = {
+  render: () => <LoadingStoryWrapper />,
+  args: {},
+};

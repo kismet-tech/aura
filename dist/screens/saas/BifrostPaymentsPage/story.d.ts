@@ -4,3 +4,4 @@ declare const meta: Meta<typeof BifrostGroupBookingCheckoutRootPage>;
 export default meta;
 type Story = StoryObj<typeof BifrostGroupBookingCheckoutRootPage>;
 export declare const Example: Story;
+export declare const LoadingExample: Story;

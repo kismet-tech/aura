@@ -1,5 +1,6 @@
 import { KismetShoppingCartIcon } from "@/components/atoms/icons/KismetShoppingCartIcon";
 import { UserAvatar } from "@/components/atoms/UserAvatar";
+import { Skeleton } from "@/components/shadcn/skeleton";
 import { AuthenticatedGuestUser } from "@/models/guests/AuthenticatedGuestUser";
 import {
   BifrostGroupBookingCheckoutCart,
@@ -10,7 +11,7 @@ import React from "react";
 interface BifrostGroupBookingCheckoutHeaderProps {
   authenticatedGuestUser: AuthenticatedGuestUser | undefined;
   cart: BifrostGroupBookingCheckoutCart;
-  checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
+  checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary | undefined;
   onClickLogin: () => void;
 }
 
@@ -52,7 +53,11 @@ export function BifrostGroupBookingCheckoutHeader({
   return (
     <div className="flex items-center border-b border-black w-full pb-4">
       <div className="text-4xl font-light font-palatino">
-        {checkoutSessionSummary.hotelName}
+        {checkoutSessionSummary ? (
+          checkoutSessionSummary.hotelName
+        ) : (
+          <Skeleton className="w-[100px] h-[20px] rounded-full" />
+        )}
       </div>
       <div className="ml-auto flex items-center">
         <KismetShoppingCartIcon />
