@@ -22,6 +22,11 @@ export interface MultiSelectDateRangeBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function MultiSelectDateRangeBifrostFormQuestion({
@@ -29,6 +34,7 @@ export function MultiSelectDateRangeBifrostFormQuestion({
   calendarDateRanges,
   setCalendarDateRanges,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: MultiSelectDateRangeBifrostFormQuestionProps) {
   const inputId: string = `MultiSelectDateRangeBifrostFormQuestion_${renderableMultiSelectDateRangeBifrostFormQuestion.bifrostFormQuestionId}`;
 

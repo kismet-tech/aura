@@ -9,5 +9,8 @@ export interface PhoneInputBifrostFormQuestionProps {
     setIsResponseValid: ({ isResponseValid, }: {
         isResponseValid: boolean;
     }) => void;
+    setHasQuestionBeenRespondedTo: ({ hasQuestionBeenRespondedTo, }: {
+        hasQuestionBeenRespondedTo: boolean;
+    }) => void;
 }
-export declare function PhoneInputBifrostFormQuestion({ renderablePhoneInputBifrostFormQuestion, value, setValue, setIsResponseValid, }: PhoneInputBifrostFormQuestionProps): React.JSX.Element;
+export declare function PhoneInputBifrostFormQuestion({ renderablePhoneInputBifrostFormQuestion, value, setValue, setIsResponseValid, setHasQuestionBeenRespondedTo, }: PhoneInputBifrostFormQuestionProps): React.JSX.Element;

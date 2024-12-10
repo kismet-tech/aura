@@ -27,6 +27,13 @@ const StoryWrapper = () => {
     setIsResponseValid: ({ isResponseValid }: { isResponseValid: boolean }) => {
       setIsResponseValid(isResponseValid);
     },
+    setHasQuestionBeenRespondedTo: ({
+      hasQuestionBeenRespondedTo,
+    }: {
+      hasQuestionBeenRespondedTo: boolean;
+    }) => {
+      console.log("hasQuestionBeenRespondedTo", hasQuestionBeenRespondedTo);
+    },
   };
 
   return (

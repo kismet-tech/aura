@@ -1,11 +1,11 @@
 import { KismetHeader } from "@/components/atoms";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import { ActiveBifrostFormQuestions } from "@/components/bifrostForm/ActiveBifrostFormQuestions";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 
 export interface BifrostFormLaunchScreenProps {
-  bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+  activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
   setBifrostFormQuestionWithResponse: ({
     updatedBifrostFormQuestionWithResponse,
   }: {
@@ -15,11 +15,21 @@ export interface BifrostFormLaunchScreenProps {
 }
 
 export function BifrostFormLaunchScreen({
-  bifrostFormQuestionsWithResponses,
+  activeBifrostFormQuestionsWithResponses,
   setBifrostFormQuestionWithResponse,
   handleProgressForward,
 }: BifrostFormLaunchScreenProps) {
-  const [allResponsesAreValid, setAllResponsesAreValid] = useState(false);
+  const [allResponsesAreValid, setAllResponsesAreValid] =
+    useState<boolean>(false);
+
+  const [allQuestionBeenRespondedTo, setAllQuestionBeenRespondedTo] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (allResponsesAreValid) {
+      handleProgressForward();
+    }
+  }, [allResponsesAreValid]);
 
   return (
     <div>
@@ -28,7 +38,9 @@ export function BifrostFormLaunchScreen({
       </div>
       <div>
         <ActiveBifrostFormQuestions
-          bifrostFormQuestionsWithResponses={bifrostFormQuestionsWithResponses}
+          activeBifrostFormQuestionsWithResponses={
+            activeBifrostFormQuestionsWithResponses
+          }
           setBifrostFormQuestionWithResponse={
             setBifrostFormQuestionWithResponse
           }
@@ -38,6 +50,25 @@ export function BifrostFormLaunchScreen({
             areAllResponsesValid: boolean;
           }) => {
             setAllResponsesAreValid(areAllResponsesValid);
+          }}
+          setBifrostFormQuestionIdsRespondedTo={({
+            bifrostFormQuestionIdsRespondedTo,
+          }: {
+            bifrostFormQuestionIdsRespondedTo: string[];
+          }) => {
+            setAllQuestionBeenRespondedTo(
+              bifrostFormQuestionIdsRespondedTo.length > 0 &&
+                activeBifrostFormQuestionsWithResponses.every(
+                  (
+                    activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+                  ) => {
+                    return bifrostFormQuestionIdsRespondedTo.includes(
+                      activeBifrostFormQuestionWithResponse.bifrostFormQuestion
+                        .bifrostFormQuestionId
+                    );
+                  }
+                )
+            );
           }}
         />
       </div>

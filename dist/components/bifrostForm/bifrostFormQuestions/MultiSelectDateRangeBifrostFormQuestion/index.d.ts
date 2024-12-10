@@ -10,5 +10,8 @@ export interface MultiSelectDateRangeBifrostFormQuestionProps {
     setIsResponseValid: ({ isResponseValid, }: {
         isResponseValid: boolean;
     }) => void;
+    setHasQuestionBeenRespondedTo: ({ hasQuestionBeenRespondedTo, }: {
+        hasQuestionBeenRespondedTo: boolean;
+    }) => void;
 }
-export declare function MultiSelectDateRangeBifrostFormQuestion({ renderableMultiSelectDateRangeBifrostFormQuestion, calendarDateRanges, setCalendarDateRanges, setIsResponseValid, }: MultiSelectDateRangeBifrostFormQuestionProps): React.JSX.Element;
+export declare function MultiSelectDateRangeBifrostFormQuestion({ renderableMultiSelectDateRangeBifrostFormQuestion, calendarDateRanges, setCalendarDateRanges, setIsResponseValid, setHasQuestionBeenRespondedTo, }: MultiSelectDateRangeBifrostFormQuestionProps): React.JSX.Element;

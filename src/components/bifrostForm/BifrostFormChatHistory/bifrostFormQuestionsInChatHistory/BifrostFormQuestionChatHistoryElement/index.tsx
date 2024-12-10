@@ -132,6 +132,11 @@ export function BifrostFormQuestionChatHistoryElement({
           }: {
             isResponseValid: boolean;
           }) => {}}
+          setHasQuestionBeenRespondedTo={function ({
+            hasQuestionBeenRespondedTo,
+          }: {
+            hasQuestionBeenRespondedTo: boolean;
+          }): void {}}
         />
       );
     }

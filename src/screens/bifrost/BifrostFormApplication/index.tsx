@@ -30,7 +30,7 @@ export function BifrostFormApplication() {
   ) {
     renderedScreen = (
       <BifrostFormLaunchScreen
-        bifrostFormQuestionsWithResponses={
+        activeBifrostFormQuestionsWithResponses={
           activeBifrostFormQuestionsWithResponses
         }
         setBifrostFormQuestionWithResponse={({

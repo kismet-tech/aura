@@ -6,7 +6,6 @@ import {
 import React, { useState } from "react";
 import { mockRenderableSelectDateRangeBifrostFormQuestionOne } from "@/mockData/bifrost/bifrostFormQuestions/mockRenderableBifrostFormQuestions";
 import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
-import { CalendarDate } from "@/models/core/date/CalendarDate";
 
 const meta: Meta<typeof SelectDateRangeBifrostFormQuestion> = {
   title: "BifrostFormQuestions/SelectDateRangeBifrostFormQuestion",
@@ -34,6 +33,13 @@ const StoryWrapper = () => {
     }) => setCalendarDateRange(updatedCalendarDateRange),
     setIsResponseValid: ({ isResponseValid }: { isResponseValid: boolean }) =>
       console.log("isResponseValid", isResponseValid),
+    setHasQuestionBeenRespondedTo: ({
+      hasQuestionBeenRespondedTo,
+    }: {
+      hasQuestionBeenRespondedTo: boolean;
+    }) => {
+      console.log("hasQuestionBeenRespondedTo", hasQuestionBeenRespondedTo);
+    },
   };
 
   return (

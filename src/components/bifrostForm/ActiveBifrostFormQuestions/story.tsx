@@ -27,7 +27,7 @@ const StoryWrapper = () => {
   ]);
 
   const dynamicArgs: ActiveBifrostFormQuestionsProps = {
-    bifrostFormQuestionsWithResponses,
+    activeBifrostFormQuestionsWithResponses: bifrostFormQuestionsWithResponses,
     setBifrostFormQuestionWithResponse: ({
       updatedBifrostFormQuestionWithResponse,
     }: {
@@ -57,6 +57,16 @@ const StoryWrapper = () => {
     },
     setAreAllResponsesValid: ({ areAllResponsesValid }) => {
       console.log("areAllResponsesValid", areAllResponsesValid);
+    },
+    setBifrostFormQuestionIdsRespondedTo: function ({
+      bifrostFormQuestionIdsRespondedTo,
+    }: {
+      bifrostFormQuestionIdsRespondedTo: string[];
+    }): void {
+      console.log(
+        "bifrostFormQuestionIdsRespondedTo",
+        bifrostFormQuestionIdsRespondedTo
+      );
     },
   };
 

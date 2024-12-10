@@ -27,7 +27,7 @@ const StoryWrapper = () => {
   ]);
 
   const dynamicArgs: BifrostFormLaunchScreenProps = {
-    bifrostFormQuestionsWithResponses,
+    activeBifrostFormQuestionsWithResponses: bifrostFormQuestionsWithResponses,
     setBifrostFormQuestionWithResponse: ({
       updatedBifrostFormQuestionWithResponse,
     }: {

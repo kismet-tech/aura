@@ -22,6 +22,11 @@ export interface SelectDateRangeBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function SelectDateRangeBifrostFormQuestion({
@@ -29,8 +34,24 @@ export function SelectDateRangeBifrostFormQuestion({
   calendarDateRange,
   setCalendarDateRange,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: SelectDateRangeBifrostFormQuestionProps) {
   const inputId: string = `SelectDateRangeBifrostFormQuestion_${renderableSelectDateRangeBifrostFormQuestion.bifrostFormQuestionId}`;
+
+  const isCalendarDateRangeEntered = ({
+    pendingCalendarDateRange,
+  }: {
+    pendingCalendarDateRange: PendingCalendarDateRange;
+  }): boolean => {
+    return !!(
+      calendarDateRange.startCalendarDate?.year &&
+      calendarDateRange.startCalendarDate?.month &&
+      calendarDateRange.startCalendarDate?.day &&
+      calendarDateRange.endCalendarDate?.year &&
+      calendarDateRange.endCalendarDate?.month &&
+      calendarDateRange.endCalendarDate?.day
+    );
+  };
 
   const isCalendarDateRangeValid = ({
     pendingCalendarDateRange,
@@ -52,17 +73,23 @@ export function SelectDateRangeBifrostFormQuestion({
   };
 
   useEffect(() => {
-    // Cleanup function to set `isValid` to true on unmount
     setIsResponseValid({
       isResponseValid: isCalendarDateRangeValid({
         pendingCalendarDateRange: calendarDateRange,
       }),
     });
 
+    setHasQuestionBeenRespondedTo({
+      hasQuestionBeenRespondedTo: isCalendarDateRangeEntered({
+        pendingCalendarDateRange: calendarDateRange,
+      }),
+    });
+
     return () => {
       setIsResponseValid({ isResponseValid: true });
+      setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: true });
     };
-  }, [setIsResponseValid]);
+  }, [calendarDateRange, setIsResponseValid, setHasQuestionBeenRespondedTo]);
 
   const onChangeCalendarDateRange = (dateRange: DateRange | undefined) => {
     if (!dateRange) return;

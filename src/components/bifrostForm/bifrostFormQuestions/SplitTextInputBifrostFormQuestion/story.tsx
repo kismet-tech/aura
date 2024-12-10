@@ -30,6 +30,16 @@ const StoryWrapper = () => {
     setIsResponseValid: ({ isResponseValid }: { isResponseValid: boolean }) => {
       console.log("isResponseValid", isResponseValid);
     },
+    setHasQuestionBeenRespondedTo: ({
+      hasQuestionBeenRespondedTo,
+    }: {
+      hasQuestionBeenRespondedTo: boolean;
+    }) => {
+      console.log(
+        "SplitTextInputBifrostFormQuestion hasQuestionBeenRespondedTo",
+        hasQuestionBeenRespondedTo
+      );
+    },
   };
 
   return (

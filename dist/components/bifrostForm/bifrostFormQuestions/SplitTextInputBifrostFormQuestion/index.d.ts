@@ -13,5 +13,8 @@ export interface SplitTextInputBifrostFormQuestionProps {
     setIsResponseValid: ({ isResponseValid, }: {
         isResponseValid: boolean;
     }) => void;
+    setHasQuestionBeenRespondedTo: ({ hasQuestionBeenRespondedTo, }: {
+        hasQuestionBeenRespondedTo: boolean;
+    }) => void;
 }
-export declare function SplitTextInputBifrostFormQuestion({ renderableSplitTextInputBifrostFormQuestion, leftValue, setLeftValue, rightValue, setRightValue, setIsResponseValid, }: SplitTextInputBifrostFormQuestionProps): React.JSX.Element;
+export declare function SplitTextInputBifrostFormQuestion({ renderableSplitTextInputBifrostFormQuestion, leftValue, setLeftValue, rightValue, setRightValue, setIsResponseValid, setHasQuestionBeenRespondedTo, }: SplitTextInputBifrostFormQuestionProps): React.JSX.Element;

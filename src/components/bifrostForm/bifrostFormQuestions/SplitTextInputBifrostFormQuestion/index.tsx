@@ -14,6 +14,11 @@ export interface SplitTextInputBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function SplitTextInputBifrostFormQuestion({
@@ -23,9 +28,15 @@ export function SplitTextInputBifrostFormQuestion({
   rightValue,
   setRightValue,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: SplitTextInputBifrostFormQuestionProps) {
   const [isLeftResponseValid, setIsLeftResponseValid] = useState(true);
   const [isRightResponseValid, setIsRightResponseValid] = useState(true);
+
+  const [hasLeftQuestionBeenRespondedTo, setHasLeftQuestionBeenRespondedTo] =
+    useState(false);
+  const [hasRightQuestionBeenRespondedTo, setHasRightQuestionBeenRespondedTo] =
+    useState(false);
 
   useEffect(() => {
     if (!isLeftResponseValid || !isRightResponseValid) {
@@ -33,12 +44,26 @@ export function SplitTextInputBifrostFormQuestion({
     } else {
       setIsResponseValid({ isResponseValid: true });
     }
-  }, [isLeftResponseValid, isRightResponseValid, setIsResponseValid]);
+
+    if (!hasLeftQuestionBeenRespondedTo || !hasRightQuestionBeenRespondedTo) {
+      setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: false });
+    } else {
+      setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: true });
+    }
+  }, [
+    isLeftResponseValid,
+    isRightResponseValid,
+    setIsResponseValid,
+    hasLeftQuestionBeenRespondedTo,
+    hasRightQuestionBeenRespondedTo,
+    setHasQuestionBeenRespondedTo,
+  ]);
 
   useEffect(() => {
     // Cleanup function to set `isValid` to true on unmount
     return () => {
       setIsResponseValid({ isResponseValid: true });
+      setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: true });
     };
   }, [setIsResponseValid]);
 
@@ -48,7 +73,7 @@ export function SplitTextInputBifrostFormQuestion({
         {renderableSplitTextInputBifrostFormQuestion.label}
       </KismetSectionHeader>
 
-      <div className="flex flex-wrap gap-4 [&>*]:flex-1">
+      <div className="flex flex-wrap gap-4 [&>*]:flex-1 [&>*]:min-w-[150px]">
         <TextInputBifrostFormQuestion
           renderableTextInputBifrostFormQuestion={
             renderableSplitTextInputBifrostFormQuestion.left
@@ -61,6 +86,13 @@ export function SplitTextInputBifrostFormQuestion({
             isResponseValid: boolean;
           }) => {
             setIsLeftResponseValid(isResponseValid);
+          }}
+          setHasQuestionBeenRespondedTo={({
+            hasQuestionBeenRespondedTo,
+          }: {
+            hasQuestionBeenRespondedTo: boolean;
+          }) => {
+            setHasLeftQuestionBeenRespondedTo(hasQuestionBeenRespondedTo);
           }}
         />
         <TextInputBifrostFormQuestion
@@ -75,6 +107,13 @@ export function SplitTextInputBifrostFormQuestion({
             isResponseValid: boolean;
           }) => {
             setIsRightResponseValid(isResponseValid);
+          }}
+          setHasQuestionBeenRespondedTo={({
+            hasQuestionBeenRespondedTo,
+          }: {
+            hasQuestionBeenRespondedTo: boolean;
+          }) => {
+            setHasRightQuestionBeenRespondedTo(hasQuestionBeenRespondedTo);
           }}
         />
       </div>

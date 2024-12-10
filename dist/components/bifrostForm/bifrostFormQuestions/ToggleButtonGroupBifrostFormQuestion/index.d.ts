@@ -9,5 +9,8 @@ export interface ToggleButtonGroupBifrostFormQuestionProps {
     setIsResponseValid: ({ isResponseValid, }: {
         isResponseValid: boolean;
     }) => void;
+    setHasQuestionBeenRespondedTo: ({ hasQuestionBeenRespondedTo, }: {
+        hasQuestionBeenRespondedTo: boolean;
+    }) => void;
 }
-export declare function ToggleButtonGroupBifrostFormQuestion({ renderableToggleButtonGroupBifrostFormQuestion, value, setValue, setIsResponseValid, }: ToggleButtonGroupBifrostFormQuestionProps): React.JSX.Element;
+export declare function ToggleButtonGroupBifrostFormQuestion({ renderableToggleButtonGroupBifrostFormQuestion, value, setValue, setIsResponseValid, setHasQuestionBeenRespondedTo, }: ToggleButtonGroupBifrostFormQuestionProps): React.JSX.Element;

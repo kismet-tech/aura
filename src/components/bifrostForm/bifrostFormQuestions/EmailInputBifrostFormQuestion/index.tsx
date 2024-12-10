@@ -14,6 +14,11 @@ export interface EmailInputBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function EmailInputBifrostFormQuestion({
@@ -21,6 +26,7 @@ export function EmailInputBifrostFormQuestion({
   value,
   setValue,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: EmailInputBifrostFormQuestionProps) {
   const inputId: string = `EmailInputBifrostFormQuestion_${renderableEmailInputBifrostFormQuestion.bifrostFormQuestionId}`;
 
@@ -37,11 +43,15 @@ export function EmailInputBifrostFormQuestion({
         : value.length === 0 || isEmailValid({ email: value }),
     });
 
+    setHasQuestionBeenRespondedTo({
+      hasQuestionBeenRespondedTo: isEmailValid({ email: value }),
+    });
+
     // Cleanup function to set `isValid` to true on unmount
     return () => {
       setIsResponseValid({ isResponseValid: true });
     };
-  }, [setIsResponseValid]);
+  }, [value, setIsResponseValid, setHasQuestionBeenRespondedTo]);
 
   const [isLocallyValid, setIsLocallyValid] = useState<boolean>(true);
 

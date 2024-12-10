@@ -9,5 +9,8 @@ export interface EmailInputBifrostFormQuestionProps {
     setIsResponseValid: ({ isResponseValid, }: {
         isResponseValid: boolean;
     }) => void;
+    setHasQuestionBeenRespondedTo: ({ hasQuestionBeenRespondedTo, }: {
+        hasQuestionBeenRespondedTo: boolean;
+    }) => void;
 }
-export declare function EmailInputBifrostFormQuestion({ renderableEmailInputBifrostFormQuestion, value, setValue, setIsResponseValid, }: EmailInputBifrostFormQuestionProps): React.JSX.Element;
+export declare function EmailInputBifrostFormQuestion({ renderableEmailInputBifrostFormQuestion, value, setValue, setIsResponseValid, setHasQuestionBeenRespondedTo, }: EmailInputBifrostFormQuestionProps): React.JSX.Element;

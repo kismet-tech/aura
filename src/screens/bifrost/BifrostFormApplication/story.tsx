@@ -32,7 +32,6 @@ const MockBifrostApiStoryWrapper = () => {
       formContainer.style.setProperty("font-family", "Outfit");
 
       const themeVariables = knollcroftTheme;
-      console.log(formContainer);
       injectTheme(formContainer, themeVariables);
     }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { RenderableTextAreaBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import { KismetSectionHeader } from "@/components/atoms";
@@ -12,6 +12,11 @@ export interface TextAreaBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function TextAreaBifrostFormQuestion({
@@ -19,8 +24,11 @@ export function TextAreaBifrostFormQuestion({
   value,
   setValue,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: TextAreaBifrostFormQuestionProps) {
   const inputId: string = `TextAreaBifrostFormQuestion_${renderableTextAreaBifrostFormQuestion.bifrostFormQuestionId}`;
+
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     setIsResponseValid({
@@ -29,11 +37,16 @@ export function TextAreaBifrostFormQuestion({
         : true,
     });
 
+    setHasQuestionBeenRespondedTo({
+      hasQuestionBeenRespondedTo: !!value && !isFocused,
+    });
+
     // Cleanup function to set `isValid` to true on unmount
     return () => {
       setIsResponseValid({ isResponseValid: true });
+      setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: true });
     };
-  }, [setIsResponseValid]);
+  }, [value, isFocused, setIsResponseValid, setHasQuestionBeenRespondedTo]);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue({ updatedValue: event.target.value });
@@ -43,6 +56,9 @@ export function TextAreaBifrostFormQuestion({
     }
   };
 
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+
   return (
     <FormField>
       <KismetSectionHeader>
@@ -51,6 +67,8 @@ export function TextAreaBifrostFormQuestion({
 
       <textarea
         onChange={handleOnChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         id={inputId}
         placeholder={""}
         value={value}

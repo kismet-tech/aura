@@ -27,12 +27,18 @@ export interface RenderedBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function RenderedBifrostFormQuestion({
   bifrostFormQuestionWithResponse,
   setBifrostFormQuestionResponse,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: RenderedBifrostFormQuestionProps) {
   const { bifrostFormQuestion, responseData, responseType } =
     bifrostFormQuestionWithResponse;
@@ -53,6 +59,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     } else if (bifrostFormQuestion.type === BifrostFormQuestionType.TEXT_AREA) {
@@ -70,6 +77,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     } else if (
@@ -89,6 +97,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     }
@@ -108,6 +117,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     }
@@ -127,6 +137,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     }
@@ -154,6 +165,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     }
@@ -184,6 +196,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     }
@@ -218,6 +231,7 @@ export function RenderedBifrostFormQuestion({
             });
           }}
           setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
         />
       );
     }

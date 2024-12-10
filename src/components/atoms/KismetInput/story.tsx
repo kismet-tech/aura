@@ -19,7 +19,7 @@ export const Example: Story = {
   render: (args) => {
     return (
       <div style={{ width: "50%", margin: "0 auto" }}>
-        <KismetInput {...args} />
+        <KismetInput />
       </div>
     );
   },

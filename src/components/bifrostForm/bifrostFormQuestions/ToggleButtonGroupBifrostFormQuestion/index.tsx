@@ -16,6 +16,11 @@ export interface ToggleButtonGroupBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function ToggleButtonGroupBifrostFormQuestion({
@@ -23,8 +28,11 @@ export function ToggleButtonGroupBifrostFormQuestion({
   value,
   setValue,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: ToggleButtonGroupBifrostFormQuestionProps) {
   const inputId = `ToggleButtonGroupBifrostFormQuestion_${renderableToggleButtonGroupBifrostFormQuestion.bifrostFormQuestionId}`;
+
+  console.log(`ToggleButtonGroupBifrostFormQuestion: '${value}'`);
 
   useEffect(() => {
     setIsResponseValid({
@@ -33,11 +41,23 @@ export function ToggleButtonGroupBifrostFormQuestion({
         : true,
     });
 
+    console.log(
+      `THIS IS BEING CALLED HERE: ${renderableToggleButtonGroupBifrostFormQuestion.bifrostFormQuestionId}`,
+      !!value
+    );
+    setHasQuestionBeenRespondedTo({
+      hasQuestionBeenRespondedTo: !!value,
+    });
+
     // Cleanup function to set `isValid` to true on unmount
     return () => {
-      setIsResponseValid({ isResponseValid: true });
+      // setIsResponseValid({ isResponseValid: true });
+      console.log(
+        `THIS IS BEING CALLED DOWN HERE: ${renderableToggleButtonGroupBifrostFormQuestion.bifrostFormQuestionId}`
+      );
+      // setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: true });
     };
-  }, [setIsResponseValid]);
+  }, [value, setIsResponseValid, setHasQuestionBeenRespondedTo]);
 
   const handleOnChange = ({ updatedValue }: { updatedValue: string }) => {
     if (updatedValue === "") {

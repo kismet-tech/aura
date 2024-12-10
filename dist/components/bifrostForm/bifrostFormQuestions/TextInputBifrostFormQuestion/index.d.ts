@@ -9,5 +9,8 @@ export interface TextInputBifrostFormQuestionProps {
     setIsResponseValid: ({ isResponseValid, }: {
         isResponseValid: boolean;
     }) => void;
+    setHasQuestionBeenRespondedTo: ({ hasQuestionBeenRespondedTo, }: {
+        hasQuestionBeenRespondedTo: boolean;
+    }) => void;
 }
-export declare function TextInputBifrostFormQuestion({ renderableTextInputBifrostFormQuestion, value, setValue, setIsResponseValid, }: TextInputBifrostFormQuestionProps): React.JSX.Element;
+export declare function TextInputBifrostFormQuestion({ renderableTextInputBifrostFormQuestion, value, setValue, setIsResponseValid, setHasQuestionBeenRespondedTo, }: TextInputBifrostFormQuestionProps): React.JSX.Element;

@@ -14,6 +14,11 @@ export interface PhoneInputBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 const filterPhoneNumberToDigits = ({
@@ -57,6 +62,7 @@ export function PhoneInputBifrostFormQuestion({
   value,
   setValue,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: PhoneInputBifrostFormQuestionProps) {
   const inputId: string = `PhoneInputBifrostFormQuestion_${renderablePhoneInputBifrostFormQuestion.bifrostFormQuestionId}`;
 
@@ -89,11 +95,15 @@ export function PhoneInputBifrostFormQuestion({
         : value.length === 0 || isPhoneNumberValid({ phoneNumber: value }),
     });
 
+    setHasQuestionBeenRespondedTo({
+      hasQuestionBeenRespondedTo: isPhoneNumberValid({ phoneNumber: value }),
+    });
+
     // Cleanup function to set `isValid` to true on unmount
     return () => {
       setIsResponseValid({ isResponseValid: true });
     };
-  }, [setIsResponseValid]);
+  }, [value, setIsResponseValid, setHasQuestionBeenRespondedTo]);
 
   const handlePhoneValueChange = ({
     updatedValue,

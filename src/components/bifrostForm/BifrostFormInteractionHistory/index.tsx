@@ -74,6 +74,7 @@ export function BifrostFormInteractionHistory({
                   bifrostFormQuestionWithResponse
                 )}
                 setIsResponseValid={() => {}}
+                setHasQuestionBeenRespondedTo={() => {}}
               />
             </div>
           );

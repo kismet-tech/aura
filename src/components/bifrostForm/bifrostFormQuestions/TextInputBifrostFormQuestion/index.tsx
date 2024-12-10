@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
 import { RenderableTextInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
@@ -13,6 +13,11 @@ export interface TextInputBifrostFormQuestionProps {
   }: {
     isResponseValid: boolean;
   }) => void;
+  setHasQuestionBeenRespondedTo: ({
+    hasQuestionBeenRespondedTo,
+  }: {
+    hasQuestionBeenRespondedTo: boolean;
+  }) => void;
 }
 
 export function TextInputBifrostFormQuestion({
@@ -20,8 +25,11 @@ export function TextInputBifrostFormQuestion({
   value,
   setValue,
   setIsResponseValid,
+  setHasQuestionBeenRespondedTo,
 }: TextInputBifrostFormQuestionProps) {
   const inputId = `TextInputBifrostFormQuestion_${renderableTextInputBifrostFormQuestion.bifrostFormQuestionId}`;
+
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     setIsResponseValid({
@@ -30,11 +38,15 @@ export function TextInputBifrostFormQuestion({
         : true,
     });
 
-    // Cleanup function to set `isValid` to true on unmount
+    setHasQuestionBeenRespondedTo({
+      hasQuestionBeenRespondedTo: !!value && !isFocused,
+    });
+
     return () => {
       setIsResponseValid({ isResponseValid: true });
+      setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: true });
     };
-  }, [setIsResponseValid]);
+  }, [value, isFocused, setIsResponseValid, setHasQuestionBeenRespondedTo]);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ updatedValue: event.target.value });
@@ -44,6 +56,9 @@ export function TextInputBifrostFormQuestion({
     }
   };
 
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+
   return (
     <FormField>
       <FormLabel htmlFor={inputId}>
@@ -52,6 +67,8 @@ export function TextInputBifrostFormQuestion({
 
       <KismetInput
         onChange={handleOnChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         type={"text"}
         id={inputId}
         placeholder={""}
