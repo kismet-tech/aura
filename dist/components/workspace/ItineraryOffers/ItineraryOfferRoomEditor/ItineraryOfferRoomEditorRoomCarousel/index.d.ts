@@ -11,5 +11,7 @@ export interface ItineraryOfferRoomEditorRoomCarouselProps {
         updatedCountOffered: number;
         hotelRoomOfferId: string;
     }) => void;
+    includeAddRoomButton?: boolean;
+    onClickAddRoomButton?: () => void;
 }
-export declare function ItineraryOfferRoomEditorRoomCarousel({ renderableItineraryOffer, setSelectedHotelRoomOfferId, onClickUpdateItineraryOfferHotelRoomCount, }: ItineraryOfferRoomEditorRoomCarouselProps): React.JSX.Element;
+export declare function ItineraryOfferRoomEditorRoomCarousel({ renderableItineraryOffer, setSelectedHotelRoomOfferId, onClickUpdateItineraryOfferHotelRoomCount, includeAddRoomButton, onClickAddRoomButton, }: ItineraryOfferRoomEditorRoomCarouselProps): React.JSX.Element;

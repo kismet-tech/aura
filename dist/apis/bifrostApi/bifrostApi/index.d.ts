@@ -1,5 +1,4 @@
 import { BifrostApiInterface } from "../models";
-import { AxiosInstance } from "axios";
 import { CreateUserSessionFromBifrostRequestDto, CreateUserSessionFromBifrostSuccessResponseDataDto } from "./core/createUserSessionFromBifrost/CreateUserSessionFromBifrost.dto";
 import { SubmitBifrostFormQuestionsWithResponsesRequestDto, SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto } from "./core/submitBifrostFormQuestionWithResponse/SubmitBifrostFormQuestionsWithResponses.dto";
 import { UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto, UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto } from "./core/updateGuestCustomRenderableItineraryOfferHotelRoomOfferCount/UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCount.dto";
@@ -7,7 +6,7 @@ import { GetOrCreateBifrostTravelerIdRequestDto, GetOrCreateBifrostTravelerIdSuc
 import { SuggestCalendarDateRangesFromConstraintsRequestDto, SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto } from "./helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
 import { SelectBifrostItineraryOfferRequestDto, SelectBifrostItineraryOfferSuccessResponseDataDto } from "./core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
 export declare class BifrostApi implements BifrostApiInterface {
-    Api: AxiosInstance;
+    Api: any;
     constructor();
     getOrCreateBifrostTravelerId(requestBody: GetOrCreateBifrostTravelerIdRequestDto): Promise<GetOrCreateBifrostTravelerIdSuccessResponseDataDto>;
     createUserSessionFromBifrost(requestBody: CreateUserSessionFromBifrostRequestDto): Promise<CreateUserSessionFromBifrostSuccessResponseDataDto>;

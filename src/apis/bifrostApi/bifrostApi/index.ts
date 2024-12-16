@@ -1,6 +1,4 @@
 import { BifrostApiInterface } from "../models";
-import axios, { AxiosInstance, AxiosResponse } from "axios";
-import axiosRetry from "axios-retry";
 import {
   CreateUserSessionFromBifrostRequestDto,
   CreateUserSessionFromBifrostSuccessResponseDataDto,
@@ -33,13 +31,28 @@ import {
 } from "./core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
 import { ErrorResponseDto } from "@kismet_ai/foundation";
 
+interface AxiosResponse<T> {
+  data: T;
+}
+
 export class BifrostApi implements BifrostApiInterface {
-  Api: AxiosInstance;
+  Api: any;
 
   constructor() {
     const API_BASE_URL = "http://localhost:4000";
-    this.Api = axios.create({ baseURL: API_BASE_URL });
-    axiosRetry(this.Api, { retries: 3 });
+    // this.Api = axios.create({ baseURL: API_BASE_URL });
+    this.Api = {
+      post: async (url: string, requestBody: any): Promise<any> => {
+        const response = await fetch(url, {
+          method: "POST",
+          body: requestBody, // Send the form data directly
+        });
+
+        const result = await response.json();
+
+        return { data: result };
+      },
+    };
   }
 
   //////////////////////////////////////////////////
