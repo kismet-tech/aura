@@ -19,7 +19,6 @@ export interface SubmitBifrostFormQuestionsWithResponsesRequestDto {
 
 export interface SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto {
   nextQuestionWithResponse?: BifrostFormQuestionWithResponse;
-  renderableItineraryOffers?: RenderableItineraryOffer[];
 }
 
 export interface SubmitBifrostFormQuestionsWithResponsesSuccessResponseDto {

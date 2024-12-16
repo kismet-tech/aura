@@ -47,6 +47,10 @@ import {
   RenderableItineraryOffer,
   mockBifrostFormQuestionWithMultiStageReasonForTravelResponse,
 } from "@kismet_ai/foundation";
+import {
+  GetBifrostFormItineraryOffersRequestDto,
+  GetBifrostFormItineraryOffersSuccessResponseDataDto,
+} from "../bifrostApi/core/getBifrostFormItineraryOffers/GetBifrostFormItineraryOffers.dto";
 
 export class MockBifrostApi implements BifrostApiInterface {
   apiState = {
@@ -93,7 +97,6 @@ export class MockBifrostApi implements BifrostApiInterface {
     bifrostFormQuestionsWithResponses,
   }: SubmitBifrostFormQuestionsWithResponsesRequestDto): Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto> {
     let nextQuestionWithResponse: BifrostFormQuestionWithResponse | undefined;
-    let renderableItineraryOffers: RenderableItineraryOffer[] | undefined;
 
     const bifrostFormQuestionWithResponse =
       bifrostFormQuestionsWithResponses[
@@ -138,13 +141,18 @@ export class MockBifrostApi implements BifrostApiInterface {
     ) {
       nextQuestionWithResponse =
         mockBifrostToggleButtonGroupFormQuestionWithTextResponseThree;
-      renderableItineraryOffers = this.apiState.itineraryOffers;
     }
 
     return {
       nextQuestionWithResponse,
-      renderableItineraryOffers,
     };
+  }
+
+  async getBifrostFormItineraryOffers({}: GetBifrostFormItineraryOffersRequestDto): Promise<GetBifrostFormItineraryOffersSuccessResponseDataDto> {
+    const renderableItineraryOffers: RenderableItineraryOffer[] =
+      this.apiState.itineraryOffers;
+
+    return { renderableItineraryOffers };
   }
 
   //////////////////////////////////////////////////

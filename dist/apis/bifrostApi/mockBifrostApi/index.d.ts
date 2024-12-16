@@ -6,6 +6,7 @@ import { UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto,
 import { SuggestCalendarDateRangesFromConstraintsRequestDto, SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto } from "../bifrostApi/helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
 import { SelectBifrostItineraryOfferRequestDto, SelectBifrostItineraryOfferSuccessResponseDataDto } from "../bifrostApi/core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
 import { RenderableItineraryOffer } from "@kismet_ai/foundation";
+import { GetBifrostFormItineraryOffersRequestDto, GetBifrostFormItineraryOffersSuccessResponseDataDto } from "../bifrostApi/core/getBifrostFormItineraryOffers/GetBifrostFormItineraryOffers.dto";
 export declare class MockBifrostApi implements BifrostApiInterface {
     apiState: {
         itineraryOffers: RenderableItineraryOffer[];
@@ -14,6 +15,7 @@ export declare class MockBifrostApi implements BifrostApiInterface {
     getOrCreateBifrostTravelerId(requestBody: GetOrCreateBifrostTravelerIdRequestDto): Promise<GetOrCreateBifrostTravelerIdSuccessResponseDataDto>;
     createUserSessionFromBifrost({ hotelId, bifrostTravelerId, firstName, lastName, emailAddress, phoneNumber, additionalBifrostFormQuestionsWithResponses, }: CreateUserSessionFromBifrostRequestDto): Promise<CreateUserSessionFromBifrostSuccessResponseDataDto>;
     submitBifrostFormQuestionWithResponse({ hotelId, userSessionId, bifrostFormQuestionsWithResponses, }: SubmitBifrostFormQuestionsWithResponsesRequestDto): Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto>;
+    getBifrostFormItineraryOffers({}: GetBifrostFormItineraryOffersRequestDto): Promise<GetBifrostFormItineraryOffersSuccessResponseDataDto>;
     guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount({ userSessionId, itineraryOfferId, hotelRoomOfferId, updatedCountOffered, }: UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto): Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto>;
     selectBifrostItineraryOffer({}: SelectBifrostItineraryOfferRequestDto): Promise<SelectBifrostItineraryOfferSuccessResponseDataDto>;
     suggestCalendarDateRangesFromConstraints({}: SuggestCalendarDateRangesFromConstraintsRequestDto): Promise<SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto>;

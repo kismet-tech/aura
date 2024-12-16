@@ -55,7 +55,13 @@ const LocalhostBifrostApiStoryWrapper = () => {
 
   return (
     <AppViewport>
-      <BifrostFormStateProvider bifrostApi={new BifrostApi()}>
+      <BifrostFormStateProvider
+        bifrostApi={
+          new BifrostApi({
+            apiBaseUrl: "http://localhost:4000",
+          })
+        }
+      >
         <BifrostFormApplication />
       </BifrostFormStateProvider>
     </AppViewport>

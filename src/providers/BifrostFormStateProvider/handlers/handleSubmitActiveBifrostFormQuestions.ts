@@ -36,23 +36,13 @@ export const handleSubmitBifrostFormQuestion = ({
   hotelId,
   bifrostApi,
 }: HandleSubmitBifrostFormQuestionProps) => {
-  const bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse =
-    bifrostFormQuestionsWithResponses.find(
-      (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
-        return (
-          bifrostFormQuestionWithResponse.bifrostFormQuestion
-            .bifrostFormQuestionId === activeBifrostFormQuestionIds[0]
-        );
-      }
-    ) as BifrostFormQuestionWithResponse;
-
   bifrostApi
     .submitBifrostFormQuestionWithResponse({
       hotelId,
       userSessionId,
       bifrostFormQuestionsWithResponses,
     })
-    .then(({ nextQuestionWithResponse, renderableItineraryOffers }) => {
+    .then(({ nextQuestionWithResponse }) => {
       if (nextQuestionWithResponse) {
         handleSetActiveBifrostFormQuestionsWithResponses({
           updatedActiveBifrostFormQuestionsWithResponses: [
@@ -61,15 +51,25 @@ export const handleSubmitBifrostFormQuestion = ({
           setBifrostFormQuestionsWithResponses,
           setActiveBifrostFormQuestionIds,
         });
+
+        if (!nextQuestionWithResponse) {
+          bifrostApi
+            .getBifrostFormItineraryOffers({
+              hotelId,
+              userSessionId,
+              bifrostFormQuestionsWithResponses,
+            })
+            .then(({ renderableItineraryOffers }) => {
+              setRenderableItineraryOffersFromKismetAI(
+                renderableItineraryOffers
+              );
+              setBifrostFormApplicationStage(
+                BifrostFormApplicationStage.ITINERARY_OFFER_PRESENTATION_SCREEN
+              );
+            });
+        }
       } else {
         setActiveBifrostFormQuestionIds([]);
-      }
-
-      if (renderableItineraryOffers) {
-        setRenderableItineraryOffersFromKismetAI(renderableItineraryOffers);
-        setBifrostFormApplicationStage(
-          BifrostFormApplicationStage.ITINERARY_OFFER_PRESENTATION_SCREEN
-        );
       }
     });
 };

@@ -26,7 +26,6 @@ interface SubmitBifrostFormQuestionsWithResponsesRequestDto {
 }
 interface SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto {
     nextQuestionWithResponse?: BifrostFormQuestionWithResponse;
-    renderableItineraryOffers?: RenderableItineraryOffer[];
 }
 
 interface UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto {
@@ -60,10 +59,20 @@ interface SelectBifrostItineraryOfferRequestDto {
 interface SelectBifrostItineraryOfferSuccessResponseDataDto {
 }
 
+interface GetBifrostFormItineraryOffersRequestDto {
+    hotelId: string;
+    userSessionId: string;
+    bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+}
+interface GetBifrostFormItineraryOffersSuccessResponseDataDto {
+    renderableItineraryOffers?: RenderableItineraryOffer[];
+}
+
 interface BifrostApiInterface {
     getOrCreateBifrostTravelerId: (requestBody: GetOrCreateBifrostTravelerIdRequestDto) => Promise<GetOrCreateBifrostTravelerIdSuccessResponseDataDto>;
     createUserSessionFromBifrost: (requestBody: CreateUserSessionFromBifrostRequestDto) => Promise<CreateUserSessionFromBifrostSuccessResponseDataDto>;
     submitBifrostFormQuestionWithResponse: (requestBody: SubmitBifrostFormQuestionsWithResponsesRequestDto) => Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto>;
+    getBifrostFormItineraryOffers: (requestBody: GetBifrostFormItineraryOffersRequestDto) => Promise<GetBifrostFormItineraryOffersSuccessResponseDataDto>;
     guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount: (requestBody: UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto) => Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto>;
     selectBifrostItineraryOffer: (requestBody: SelectBifrostItineraryOfferRequestDto) => Promise<SelectBifrostItineraryOfferSuccessResponseDataDto>;
     suggestCalendarDateRangesFromConstraints: (requestBody: SuggestCalendarDateRangesFromConstraintsRequestDto) => Promise<SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto>;
@@ -71,10 +80,13 @@ interface BifrostApiInterface {
 
 declare class BifrostApi implements BifrostApiInterface {
     Api: any;
-    constructor();
+    constructor({ apiBaseUrl }: {
+        apiBaseUrl: string;
+    });
     getOrCreateBifrostTravelerId(requestBody: GetOrCreateBifrostTravelerIdRequestDto): Promise<GetOrCreateBifrostTravelerIdSuccessResponseDataDto>;
     createUserSessionFromBifrost(requestBody: CreateUserSessionFromBifrostRequestDto): Promise<CreateUserSessionFromBifrostSuccessResponseDataDto>;
     submitBifrostFormQuestionWithResponse(requestBody: SubmitBifrostFormQuestionsWithResponsesRequestDto): Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto>;
+    getBifrostFormItineraryOffers(requestBody: GetBifrostFormItineraryOffersRequestDto): Promise<GetBifrostFormItineraryOffersSuccessResponseDataDto>;
     guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount(requestBody: UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto): Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto>;
     selectBifrostItineraryOffer(requestBody: SelectBifrostItineraryOfferRequestDto): Promise<SelectBifrostItineraryOfferSuccessResponseDataDto>;
     suggestCalendarDateRangesFromConstraints(requestBody: SuggestCalendarDateRangesFromConstraintsRequestDto): Promise<SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto>;
