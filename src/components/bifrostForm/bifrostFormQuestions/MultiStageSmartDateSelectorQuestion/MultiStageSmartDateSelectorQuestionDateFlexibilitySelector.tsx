@@ -32,7 +32,7 @@ export function MultiStageSmartDateSelectorQuestionDateFlexibilitySelector({
         onValueChange={(
           updatedValue: ReservedBifrostDateFlexibilityOptionValues
         ) => setValue({ updatedValue })}
-        className="flex w-full space-x-4 py-2"
+        className="flex w-full py-2"
       >
         {Object.values(ReservedBifrostDateFlexibilityOptionValues).map(
           (option: ReservedBifrostDateFlexibilityOptionValues) => {

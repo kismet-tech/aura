@@ -1,8 +1,7 @@
 import React from "react";
 import { RenderablePendingItinerary } from "../../models/RenderablePendingItinerary";
 import { KismetSectionHeader } from "@/components/atoms";
-import { Calendar, Hotel, User } from "lucide-react";
-import { OrnateConciergeBell } from "@/components/atoms/icons/OrnateConciergeBell";
+import { Calendar, Hotel, User, Bell } from "lucide-react";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
@@ -103,7 +102,7 @@ export function PendingItineraryPlannerHeader({
           </div>
           <div className="flex items-center">
             <div className="mr-2">
-              <OrnateConciergeBell />
+              <Bell />
             </div>
             <span className="underline cursor-pointer">details</span>
           </div>

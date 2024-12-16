@@ -140,17 +140,19 @@ export function BifrostFormInteractiveLoopScreen({
 
       <div className="flex-grow overflow-y-auto min-h-0" ref={scrollableRef}>
         {/* Inner Container */}
-        <div className="space-y-4 p-4">
-          <BifrostFormInteractionHistory
-            bifrostFormQuestionsWithResponses={
-              historicalBifrostFormQuestionsWithResponses
-            }
-            setBifrostFormQuestionWithResponse={() => {}}
-            suggestCalendarDateRangesFromConstraints={
-              suggestCalendarDateRangesFromConstraints
-            }
-          />
-          <div ref={activeQuestionsRef}>
+        <div className="space-y-0 p-0">
+          <div className="px-1 py-4">
+            <BifrostFormInteractionHistory
+              bifrostFormQuestionsWithResponses={
+                historicalBifrostFormQuestionsWithResponses
+              }
+              setBifrostFormQuestionWithResponse={() => {}}
+              suggestCalendarDateRangesFromConstraints={
+                suggestCalendarDateRangesFromConstraints
+              }
+            />
+          </div>
+          <div ref={activeQuestionsRef} className="px-1">
             <ActiveBifrostFormQuestions
               activeBifrostFormQuestionsWithResponses={
                 activeBifrostFormQuestionsWithResponses
