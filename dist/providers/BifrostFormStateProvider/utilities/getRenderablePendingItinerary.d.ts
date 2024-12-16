@@ -1,5 +1,5 @@
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 interface GetRenderablePendingItineraryProps {
     bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
 }

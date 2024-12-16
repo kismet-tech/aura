@@ -3,7 +3,7 @@ import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItin
 import { ItineraryOfferPresentation } from "@/components/workspace/ItineraryOffers/ItineraryOfferPresentation";
 import { ItineraryOfferRoomEditor } from "@/components/workspace/ItineraryOffers/ItineraryOfferRoomEditor";
 import { ListOfItineraryOffersPresentation } from "@/components/workspace/ItineraryOffers/ListOfItineraryOffersPresentation";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import React, { ReactNode, useState } from "react";
 
 export interface BifrostItineraryOfferPresentationScreenProps {
@@ -12,11 +12,11 @@ export interface BifrostItineraryOfferPresentationScreenProps {
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     itineraryOfferId: string;
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => Promise<{ updatedItineraryOfferId: string }>;
   onClickSelectItineraryOfferAndGoToPaymentsPage: ({
     itineraryOfferId,
@@ -95,7 +95,7 @@ export function BifrostItineraryOfferPresentationScreen({
         }): void => {
           setSelectedItineraryOfferId(itineraryOfferId);
         }}
-        onClickHotelRoom={({}: { hotelRoomId: string }): void => {
+        onClickHotelRoom={({}: { hotelRoomOfferId: string }): void => {
           setBifrostItineraryOfferPresentationScreenType(
             BifrostItineraryOfferPresentationScreenType.ITINERARY_OFFER_ROOM_EDITOR
           );
@@ -124,17 +124,17 @@ export function BifrostItineraryOfferPresentationScreen({
         onClickUpdateItineraryOfferHotelRoomCount={async ({
           itineraryOfferId,
           updatedCountOffered,
-          hotelRoomId,
+          hotelRoomOfferId,
         }: {
           itineraryOfferId: string;
           updatedCountOffered: number;
-          hotelRoomId: string;
+          hotelRoomOfferId: string;
         }): Promise<void> => {
           const { updatedItineraryOfferId } =
             await onClickUpdateItineraryOfferHotelRoomCount({
               itineraryOfferId,
               updatedCountOffered,
-              hotelRoomId,
+              hotelRoomOfferId,
             });
 
           setSelectedItineraryOfferId(updatedItineraryOfferId);

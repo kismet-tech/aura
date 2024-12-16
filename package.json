@@ -8,8 +8,10 @@
     "rollup-build-lib": "rollup -c",
     "prepublishOnly": "yarn build && yarn rollup-build-lib && npm version patch --no-git-tag-version",
     "publish_npm": "npx npm publish --access public",
+    "prestorybook": "yarn run upgrade_libraries",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "upgrade_libraries": "yarn add @kismet_ai/foundation@latest",
     "cloud_build_storybook": "gcloud builds submit --config '.storybook/cloudbuild.yaml' --project playgroundist",
     "deploy_storybook": "yarn cloud_build_storybook && gcloud run deploy kismet-bifrost-storybook --region us-central1 --image us-docker.pkg.dev/playgroundist/kismet-docker-repo/kismet-bifrost-storybook:latest"
   },
@@ -57,7 +59,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
-    "@kismet_ai/foundation": "^1.0.0",
+    "@kismet_ai/foundation": "^1.0.59",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-scroll-area": "^1.2.1",

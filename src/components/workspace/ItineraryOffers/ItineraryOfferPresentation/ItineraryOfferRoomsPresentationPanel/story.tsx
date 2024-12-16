@@ -17,8 +17,12 @@ type Story = StoryObj<typeof ItineraryOfferRoomsPresentationPanel>;
 
 const exampleOneArguments: ItineraryOfferRoomsPresentationPanelProps = {
   renderableItineraryOffer: mockRenderableItineraryOfferOne,
-  onClickHotelRoomCarouselItem: ({ hotelRoomId }: { hotelRoomId: string }) => {
-    console.log(`Clicked on hotel room carousel item: ${hotelRoomId}`);
+  onClickHotelRoomCarouselItem: ({
+    hotelRoomOfferId,
+  }: {
+    hotelRoomOfferId: string;
+  }) => {
+    console.log(`Clicked on hotel room carousel item: ${hotelRoomOfferId}`);
   },
 };
 

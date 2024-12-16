@@ -1,4 +1,4 @@
-import { CalendarDate } from "@/models/core/date/CalendarDate";
+import { CalendarDate } from "@kismet_ai/foundation";
 
 interface RenderAbbreviatedMonthDayOptionalYearFormatCalendarDateProps {
   calendarDate: CalendarDate;

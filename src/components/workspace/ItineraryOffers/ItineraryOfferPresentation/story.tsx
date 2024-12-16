@@ -39,8 +39,8 @@ const StoryWrapper = () => {
       mockRenderableItineraryOfferThree,
       mockRenderableItineraryOfferFour,
     ],
-    onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => {
-      console.log(`Clicked ${hotelRoomId}`);
+    onClickHotelRoom: ({ hotelRoomOfferId }: { hotelRoomOfferId: string }) => {
+      console.log(`Clicked ${hotelRoomOfferId}`);
     },
     onClickSelectItineraryOfferAndGoToPaymentsPage: ({
       itineraryOfferId,

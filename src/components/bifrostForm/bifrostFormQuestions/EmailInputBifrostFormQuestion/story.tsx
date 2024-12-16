@@ -55,3 +55,47 @@ export const Example: Story = {
   render: () => <StoryWrapper />,
   args: {},
 };
+
+const ValidationErrorStoryWrapper = () => {
+  const [value, setValue] = useState<string>("");
+  const [_isResponseValid, setisResponseValid] = useState<boolean>(true);
+
+  const dynamicArgs: EmailInputBifrostFormQuestionProps = {
+    renderableEmailInputBifrostFormQuestion: {
+      ...mockRenderableEmailInputBifrostFormQuestionOne,
+      required: true,
+    },
+    value: "not an email",
+    setValue: ({ updatedValue }: { updatedValue: string }) => {
+      setValue(updatedValue);
+    },
+    setIsResponseValid: ({ isResponseValid }: { isResponseValid: boolean }) => {
+      setisResponseValid(isResponseValid);
+    },
+    setHasQuestionBeenRespondedTo: ({
+      hasQuestionBeenRespondedTo,
+    }: {
+      hasQuestionBeenRespondedTo: boolean;
+    }) => {
+      console.log("hasQuestionBeenRespondedTo", hasQuestionBeenRespondedTo);
+    },
+  };
+
+  return (
+    <div
+      style={{
+        width: "50%",
+        margin: "0 auto",
+        border: "1px solid #ccc",
+        padding: "16px",
+      }}
+    >
+      <EmailInputBifrostFormQuestion {...dynamicArgs} />
+    </div>
+  );
+};
+
+export const ValidationErrorExample: Story = {
+  render: () => <ValidationErrorStoryWrapper />,
+  args: {},
+};

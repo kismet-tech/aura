@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderableSplitTextInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableSplitTextInputBifrostFormQuestion } from "@kismet_ai/foundation";
 export interface SplitTextInputBifrostFormQuestionProps {
     renderableSplitTextInputBifrostFormQuestion: RenderableSplitTextInputBifrostFormQuestion;
     leftValue: string;

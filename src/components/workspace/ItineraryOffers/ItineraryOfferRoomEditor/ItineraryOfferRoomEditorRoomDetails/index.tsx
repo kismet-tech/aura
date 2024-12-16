@@ -1,5 +1,5 @@
 import { KismetSectionHeader } from "@/components/atoms/KismetSectionHeader";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 import { renderDiscount } from "@/utilities/entities/itineraryOffer/renderDiscount";
 import React from "react";
 

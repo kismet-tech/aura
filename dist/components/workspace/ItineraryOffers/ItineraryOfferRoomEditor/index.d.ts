@@ -1,11 +1,11 @@
 /// <reference types="react" />
-import { RenderableItineraryOffer } from "../../../../models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 export interface ItineraryOfferRoomEditorProps {
     renderableItineraryOffer: RenderableItineraryOffer;
-    onClickUpdateItineraryOfferHotelRoomCount: ({ itineraryOfferId, updatedCountOffered, hotelRoomId, }: {
+    onClickUpdateItineraryOfferHotelRoomCount: ({ itineraryOfferId, updatedCountOffered, hotelRoomOfferId, }: {
         itineraryOfferId: string;
         updatedCountOffered: number;
-        hotelRoomId: string;
+        hotelRoomOfferId: string;
     }) => void;
     onClickExit: () => void;
 }

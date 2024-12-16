@@ -6,7 +6,6 @@ import {
   CreateUserSessionFromBifrostSuccessResponseDataDto,
   CreateUserSessionFromBifrostSuccessResponseDto,
 } from "./core/createUserSessionFromBifrost/CreateUserSessionFromBifrost.dto";
-import { ErrorResponseDto } from "@/models/core/monads/monads.dto";
 import {
   SubmitBifrostFormQuestionsWithResponsesRequestDto,
   SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto,
@@ -32,6 +31,7 @@ import {
   SelectBifrostItineraryOfferSuccessResponseDataDto,
   SelectBifrostItineraryOfferSuccessResponseDto,
 } from "./core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
+import { ErrorResponseDto } from "@kismet_ai/foundation";
 
 export class BifrostApi implements BifrostApiInterface {
   Api: AxiosInstance;
@@ -49,7 +49,7 @@ export class BifrostApi implements BifrostApiInterface {
     requestBody: GetOrCreateBifrostTravelerIdRequestDto
   ): Promise<GetOrCreateBifrostTravelerIdSuccessResponseDataDto> {
     const response: AxiosResponse<
-      GetOrCreateBifrostTravelerIdSuccessResponseDto | ErrorResponseDto
+      GetOrCreateBifrostTravelerIdSuccessResponseDto | ErrorResponseDto<string>
     > = await this.Api.post(
       `/Bifrost/GetOrCreateBifrostTravelerId`,
       requestBody,
@@ -75,7 +75,7 @@ export class BifrostApi implements BifrostApiInterface {
     requestBody: CreateUserSessionFromBifrostRequestDto
   ): Promise<CreateUserSessionFromBifrostSuccessResponseDataDto> {
     const response: AxiosResponse<
-      CreateUserSessionFromBifrostSuccessResponseDto | ErrorResponseDto
+      CreateUserSessionFromBifrostSuccessResponseDto | ErrorResponseDto<string>
     > = await this.Api.post(
       `/Bifrost/CreateUserSessionFromBifrost`,
       requestBody,
@@ -98,7 +98,7 @@ export class BifrostApi implements BifrostApiInterface {
   ): Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto> {
     const response: AxiosResponse<
       | SubmitBifrostFormQuestionsWithResponsesSuccessResponseDto
-      | ErrorResponseDto
+      | ErrorResponseDto<string>
     > = await this.Api.post(
       `/Bifrost/SubmitBifrostFormQuestionsWithResponses`,
       requestBody,
@@ -125,7 +125,7 @@ export class BifrostApi implements BifrostApiInterface {
   ): Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto> {
     const response: AxiosResponse<
       | UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDto
-      | ErrorResponseDto
+      | ErrorResponseDto<string>
     > = await this.Api.post(
       `/Bifrost/UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCount`,
       requestBody,
@@ -147,7 +147,7 @@ export class BifrostApi implements BifrostApiInterface {
     requestBody: SelectBifrostItineraryOfferRequestDto
   ): Promise<SelectBifrostItineraryOfferSuccessResponseDataDto> {
     const response: AxiosResponse<
-      SelectBifrostItineraryOfferSuccessResponseDto | ErrorResponseDto
+      SelectBifrostItineraryOfferSuccessResponseDto | ErrorResponseDto<string>
     > = await this.Api.post(
       `/Bifrost/SelectBifrostItineraryOffer`,
       requestBody,
@@ -173,7 +173,7 @@ export class BifrostApi implements BifrostApiInterface {
   ): Promise<SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto> {
     const response: AxiosResponse<
       | SuggestCalendarDateRangesFromConstraintsSuccessResponseDto
-      | ErrorResponseDto
+      | ErrorResponseDto<string>
     > = await this.Api.post(
       `/Bifrost/SuggestCalendarDateRangesFromConstraints`,
       requestBody,

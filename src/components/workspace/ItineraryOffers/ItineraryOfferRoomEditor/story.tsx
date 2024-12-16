@@ -17,14 +17,14 @@ const exampleOneArguments: ItineraryOfferRoomEditorProps = {
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     itineraryOfferId: string;
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => {
     console.log(
-      `Requested to update itineraryOfferId '${itineraryOfferId}' hotelRoomId '${hotelRoomId}' to ${updatedCountOffered}`
+      `Requested to update itineraryOfferId '${itineraryOfferId}' hotelRoomOfferId '${hotelRoomOfferId}' to ${updatedCountOffered}`
     );
   },
   onClickExit: () => {

@@ -2,9 +2,9 @@ import { BifrostChatText } from "@/components/atoms/BifrostChatText";
 import React from "react";
 import { KismetChatHistoryMessage } from "../../KismetChatHistoryMessage";
 import { GuestChatHistoryMessage } from "../../GuestChatHistoryMessage";
-import { BifrostFormQuestionWithMultiCalendarDateRangeResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithMultiCalendarDateRangeResponse } from "@kismet_ai/foundation";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
-import { CalendarDateRange } from "@/models/core/date/CalendarDateRange";
+import { CalendarDateRange } from "@kismet_ai/foundation";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 

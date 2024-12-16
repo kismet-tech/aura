@@ -1,4 +1,3 @@
-import { BifrostFormQuestionType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
 import React from "react";
 import { EmailInputBifrostFormQuestion } from "../EmailInputBifrostFormQuestion";
 import { PhoneInputBifrostFormQuestion } from "../PhoneInputBifrostFormQuestion";
@@ -6,14 +5,22 @@ import { TextAreaBifrostFormQuestion } from "../TextAreaBifrostFormQuestion";
 import { ToggleButtonGroupBifrostFormQuestion } from "../ToggleButtonGroupBifrostFormQuestion";
 import { SelectDateRangeBifrostFormQuestion } from "../SelectDateRangeBifrostFormQuestion";
 import { MultiSelectDateRangeBifrostFormQuestion } from "../MultiSelectDateRangeBifrostFormQuestion";
-import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
-import { SplitTextInputBifrostFormQuestion } from "../SplitTextInputBifrostFormQuestion";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
 import {
+  BifrostFormQuestionMultiStageReasonForTravelResponseValue,
+  PendingCalendarDateRange,
+} from "@kismet_ai/foundation";
+import { SplitTextInputBifrostFormQuestion } from "../SplitTextInputBifrostFormQuestion";
+import { TextInputBifrostFormQuestion } from "../TextInputBifrostFormQuestion";
+import {
+  BifrostFormQuestionMultiStageSmartDateResponseValue,
   BifrostFormQuestionResponse,
   BifrostFormQuestionResponseType,
-} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { TextInputBifrostFormQuestion } from "../TextInputBifrostFormQuestion";
+  BifrostFormQuestionType,
+  BifrostFormQuestionWithResponse,
+  CalendarDateRange,
+} from "@kismet_ai/foundation";
+import { MultiStageSmartDateSelectorQuestion } from "../MultiStageSmartDateSelectorQuestion";
+import { MultiStageReasonForTravelQuestion } from "../MultiStageReasonForTravelQuestion";
 
 export interface RenderedBifrostFormQuestionProps {
   bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
@@ -32,6 +39,12 @@ export interface RenderedBifrostFormQuestionProps {
   }: {
     hasQuestionBeenRespondedTo: boolean;
   }) => void;
+
+  suggestCalendarDateRangesFromConstraints: ({
+    descriptionOfPotentialCalendarDates,
+  }: {
+    descriptionOfPotentialCalendarDates: string;
+  }) => Promise<CalendarDateRange[]>;
 }
 
 export function RenderedBifrostFormQuestion({
@@ -39,6 +52,7 @@ export function RenderedBifrostFormQuestion({
   setBifrostFormQuestionResponse,
   setIsResponseValid,
   setHasQuestionBeenRespondedTo,
+  suggestCalendarDateRangesFromConstraints,
 }: RenderedBifrostFormQuestionProps) {
   const { bifrostFormQuestion, responseData, responseType } =
     bifrostFormQuestionWithResponse;
@@ -227,6 +241,72 @@ export function RenderedBifrostFormQuestion({
                   ...responseData.responseValue,
                   right: updatedValue,
                 },
+              },
+            });
+          }}
+          setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
+        />
+      );
+    }
+  } else if (
+    responseType === BifrostFormQuestionResponseType.MULTI_STAGE_SMART_DATE
+  ) {
+    if (
+      bifrostFormQuestion.type ===
+      BifrostFormQuestionType.MULTI_STAGE_SMART_DATE_SELECTOR
+    ) {
+      return (
+        <MultiStageSmartDateSelectorQuestion
+          key={bifrostFormQuestion.bifrostFormQuestionId}
+          renderableMultiStageSmartDateSelectorBifrostFormQuestion={
+            bifrostFormQuestion
+          }
+          value={responseData.responseValue}
+          setValue={({
+            updatedValue,
+          }: {
+            updatedValue: BifrostFormQuestionMultiStageSmartDateResponseValue;
+          }) => {
+            setBifrostFormQuestionResponse({
+              updatedBifrostFormQuestionResponse: {
+                type: BifrostFormQuestionResponseType.MULTI_STAGE_SMART_DATE,
+                responseValue: updatedValue,
+              },
+            });
+          }}
+          setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
+          suggestCalendarDateRangesFromConstraints={
+            suggestCalendarDateRangesFromConstraints
+          }
+        />
+      );
+    }
+  } else if (
+    responseType ===
+    BifrostFormQuestionResponseType.MULTI_STAGE_REASON_FOR_TRAVEL
+  ) {
+    if (
+      bifrostFormQuestion.type ===
+      BifrostFormQuestionType.MULTI_STAGE_REASON_FOR_TRAVEL
+    ) {
+      return (
+        <MultiStageReasonForTravelQuestion
+          key={bifrostFormQuestion.bifrostFormQuestionId}
+          renderableMultiStageReasonForTravelBifrostFormQuestion={
+            bifrostFormQuestion
+          }
+          value={responseData.responseValue}
+          setValue={({
+            updatedValue,
+          }: {
+            updatedValue: BifrostFormQuestionMultiStageReasonForTravelResponseValue;
+          }) => {
+            setBifrostFormQuestionResponse({
+              updatedBifrostFormQuestionResponse: {
+                type: BifrostFormQuestionResponseType.MULTI_STAGE_REASON_FOR_TRAVEL,
+                responseValue: updatedValue,
               },
             });
           }}

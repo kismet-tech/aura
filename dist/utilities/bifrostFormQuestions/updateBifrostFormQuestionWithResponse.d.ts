@@ -1,5 +1,5 @@
-import { BifrostFormQuestionResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionResponse } from "@kismet_ai/foundation";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 interface UpdateBifrostFormQuestionWithResponseProps {
     previousBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
     updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;

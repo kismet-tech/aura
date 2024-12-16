@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useBifrostFormState } from "@/providers/BifrostFormStateProvider/useBifrostFormState";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 
 interface MockBifrostFormStateProviderProps {
   // All questions

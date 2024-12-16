@@ -1,5 +1,5 @@
-import { CalendarDateRange } from "@/models/core/date/CalendarDateRange";
-import { EitherResponseType } from "@/models/core/monads";
+import { CalendarDateRange } from "@kismet_ai/foundation";
+import { EitherResponseType } from "@kismet_ai/foundation";
 export interface SuggestCalendarDateRangesFromConstraintsRequestDto {
     descriptionOfPotentialCalendarDates: string;
 }

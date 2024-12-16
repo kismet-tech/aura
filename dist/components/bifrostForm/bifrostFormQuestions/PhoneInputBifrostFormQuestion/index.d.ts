@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderablePhoneInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderablePhoneInputBifrostFormQuestion } from "@kismet_ai/foundation";
 export interface PhoneInputBifrostFormQuestionProps {
     renderablePhoneInputBifrostFormQuestion: RenderablePhoneInputBifrostFormQuestion;
     value: string;

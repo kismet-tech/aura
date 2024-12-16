@@ -2,7 +2,7 @@ import React from "react";
 import { PendingItineraryPlannerHeader } from "./components/PendingItineraryPlannerHeader";
 import { RenderablePendingItinerary } from "./models/RenderablePendingItinerary";
 import { ItineraryOfferPresentationBody } from "@/components/workspace/ItineraryOffers/ItineraryOfferPresentation/ItineraryOfferPresentationBody";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 import { ArrowRight } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/shadcn/tabs";
@@ -11,7 +11,11 @@ export interface PendingItineraryPlannerProps {
   renderablePendingItinerary: RenderablePendingItinerary;
   itineraryOfferId: string;
   renderableItineraryOffers: RenderableItineraryOffer[];
-  onClickHotelRoom: ({ hotelRoomId }: { hotelRoomId: string }) => void;
+  onClickHotelRoom: ({
+    hotelRoomOfferId,
+  }: {
+    hotelRoomOfferId: string;
+  }) => void;
 }
 
 export function PendingItineraryPlanner({

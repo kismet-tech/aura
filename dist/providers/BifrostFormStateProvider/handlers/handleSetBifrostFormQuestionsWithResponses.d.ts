@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 interface HandleSetBifrostFormQuestionsWithResponsesProps {
     setBifrostFormQuestionsWithResponses: React.Dispatch<React.SetStateAction<BifrostFormQuestionWithResponse[]>>;
     updatedBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];

@@ -9,7 +9,10 @@ import {
   BifrostFormStateContextValue,
   BifrostFormStateProviderProps,
 } from "./models/models";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import {
+  BifrostFormQuestionWithResponse,
+  CalendarDateRange,
+} from "@kismet_ai/foundation";
 import { BifrostFormApplicationStage } from "./models/BifrostFormApplicationStage";
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleSetActiveBifrostFormQuestionsWithResponses";
 import { handleStepBackToPreviousBifrostFormApplicationStage } from "./handlers/handleStepBackToPreviousBifrostFormApplicationStage";
@@ -18,7 +21,7 @@ import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItin
 import { getRenderablePendingItinerary } from "./utilities/getRenderablePendingItinerary";
 import { getHistoricalBifrostFormQuestionsWithResponses } from "./utilities/getHistoricalBifrostFormQuestionsWithResponses";
 import { handleSetBifrostFormQuestionsWithResponses } from "./handlers/handleSetBifrostFormQuestionsWithResponses";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import { handleSubmitBifrostFormQuestion } from "./handlers/handleSubmitActiveBifrostFormQuestions";
 import { handleBeginUserSession } from "./handlers/handleBeginUserSession";
 import { getPaymentsPageUrl } from "@/apis/apiConfig";
@@ -204,6 +207,26 @@ export const BifrostFormStateProvider = ({
   );
 
   /////////////////////////
+  // Question Helpers
+  /////////////////////////
+
+  const suggestCalendarDateRangesFromConstraints = useCallback(
+    async ({
+      descriptionOfPotentialCalendarDates,
+    }: {
+      descriptionOfPotentialCalendarDates: string;
+    }): Promise<CalendarDateRange[]> => {
+      const response =
+        await bifrostApi.suggestCalendarDateRangesFromConstraints({
+          descriptionOfPotentialCalendarDates,
+        });
+
+      return response.calendarDateRanges;
+    },
+    [bifrostApi]
+  );
+
+  /////////////////////////
   // Active Form Questions
   /////////////////////////
 
@@ -277,18 +300,18 @@ export const BifrostFormStateProvider = ({
   const updateItineraryOfferHotelRoomCount = useCallback(
     ({
       itineraryOfferId,
-      hotelRoomId,
+      hotelRoomOfferId,
       updatedCountOffered,
     }: {
       itineraryOfferId: string;
-      hotelRoomId: string;
+      hotelRoomOfferId: string;
       updatedCountOffered: number;
     }): Promise<{ updatedItineraryOfferId: string }> => {
       if (userSessionId) {
         return handleUpdateItineraryOfferHotelRoomCount({
           userSessionId,
           itineraryOfferId,
-          hotelRoomId,
+          hotelRoomOfferId,
           updatedCountOffered,
           renderableItineraryOffersFromKismetAI,
           customRenderableItineraryOfferFromGuest,
@@ -342,6 +365,12 @@ export const BifrostFormStateProvider = ({
       setBifrostFormQuestionsWithResponses:
         setBifrostFormQuestionsWithResponsesWithCallback,
       setBifrostFormQuestionWithResponse,
+
+      /////////////////////////
+      // Question Helpers
+      /////////////////////////
+      suggestCalendarDateRangesFromConstraints,
+
       /////////////////////////
       // Active Form Question
       /////////////////////////
@@ -388,6 +417,11 @@ export const BifrostFormStateProvider = ({
 
     setBifrostFormQuestionsWithResponsesWithCallback,
     setBifrostFormQuestionWithResponse,
+
+    /////////////////////////
+    // Question Helpers
+    /////////////////////////
+    suggestCalendarDateRangesFromConstraints,
 
     /////////////////////////
     // Active Form Question

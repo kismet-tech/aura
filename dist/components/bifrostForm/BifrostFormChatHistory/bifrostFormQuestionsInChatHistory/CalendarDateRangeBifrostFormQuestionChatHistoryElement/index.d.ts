@@ -1,5 +1,5 @@
 import React from "react";
-import { BifrostFormQuestionWithCalendarDateRangeResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithCalendarDateRangeResponse } from "@kismet_ai/foundation";
 export interface CalendarDateRangeBifrostFormQuestionChatHistoryElementProps {
     guestFirstName: string;
     bifrostFormQuestionWithCalendarDateRangeResponse: BifrostFormQuestionWithCalendarDateRangeResponse;

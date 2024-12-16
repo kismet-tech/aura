@@ -1,7 +1,7 @@
 import {
-  RenderableItineraryOffer,
   RenderableItineraryHotelRoomOffer,
-} from "../../../models/bifrost/RenderableItineraryOffer";
+  RenderableItineraryOffer,
+} from "@kismet_ai/foundation";
 import { getDaysBetweenCalendarDates } from "../../dates/getDaysBetweenCalendarDates";
 
 interface GetTotalOfferPriceInCentsFromRenderableItineraryOfferProps {

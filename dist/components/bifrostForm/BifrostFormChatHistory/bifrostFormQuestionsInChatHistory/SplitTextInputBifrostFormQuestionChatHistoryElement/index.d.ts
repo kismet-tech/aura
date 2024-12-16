@@ -1,5 +1,5 @@
 import React from "react";
-import { BifrostFormQuestionWithSplitTextResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithSplitTextResponse } from "@kismet_ai/foundation";
 export interface SplitTextInputBifrostFormQuestionChatHistoryElementProps {
     guestFirstName: string;
     bifrostFormQuestionWithSplitTextResponse: BifrostFormQuestionWithSplitTextResponse;

@@ -2,7 +2,7 @@
 // REQUEST ///////////////////////////////////////
 //////////////////////////////////////////////////
 
-import { EitherResponseType } from "@/models/core/monads";
+import { EitherResponseType } from "@kismet_ai/foundation";
 
 export interface GetOrCreateBifrostTravelerIdRequestDto {}
 

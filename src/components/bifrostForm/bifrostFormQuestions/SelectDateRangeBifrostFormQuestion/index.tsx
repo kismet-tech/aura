@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
-import { RenderableSelectDateRangeBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableSelectDateRangeBifrostFormQuestion } from "@kismet_ai/foundation";
 import { DateRangePicker } from "@/components/atoms/DateRangePicker";
-import { CalendarDate } from "@/models/core/date/CalendarDate";
-import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
 import { DateRange } from "react-day-picker";
-import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
-import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
+import { PendingCalendarDateRange } from "@kismet_ai/foundation";
+import {
+  CalendarDate,
+  convertLocalCalendarDateToNativeDate,
+  convertNativeDateToLocalCalendarDate,
+} from "@kismet_ai/foundation";
 
 export interface SelectDateRangeBifrostFormQuestionProps {
   renderableSelectDateRangeBifrostFormQuestion: RenderableSelectDateRangeBifrostFormQuestion;
@@ -44,12 +46,12 @@ export function SelectDateRangeBifrostFormQuestion({
     pendingCalendarDateRange: PendingCalendarDateRange;
   }): boolean => {
     return !!(
-      calendarDateRange.startCalendarDate?.year &&
-      calendarDateRange.startCalendarDate?.month &&
-      calendarDateRange.startCalendarDate?.day &&
-      calendarDateRange.endCalendarDate?.year &&
-      calendarDateRange.endCalendarDate?.month &&
-      calendarDateRange.endCalendarDate?.day
+      pendingCalendarDateRange.startCalendarDate?.year &&
+      pendingCalendarDateRange.startCalendarDate?.month &&
+      pendingCalendarDateRange.startCalendarDate?.day &&
+      pendingCalendarDateRange.endCalendarDate?.year &&
+      pendingCalendarDateRange.endCalendarDate?.month &&
+      pendingCalendarDateRange.endCalendarDate?.day
     );
   };
 

@@ -1,4 +1,4 @@
-import { RenderableItineraryHotelRoomOffer, RenderableItineraryOffer } from "../../models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer, RenderableItineraryOffer } from "@kismet_ai/foundation";
 export declare const mockRenderableItineraryHotelRoomOfferOne: RenderableItineraryHotelRoomOffer;
 export declare const mockRenderableItineraryHotelRoomOfferTwo: RenderableItineraryHotelRoomOffer;
 export declare const mockRenderableItineraryHotelRoomOfferThree: RenderableItineraryHotelRoomOffer;

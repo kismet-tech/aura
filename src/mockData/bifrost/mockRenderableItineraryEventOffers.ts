@@ -1,7 +1,7 @@
 import {
   RenderableItineraryEventOffer,
   RenderableItineraryEventOfferApprovalStatus,
-} from "@/models/bifrost/RenderableItineraryOffer";
+} from "@kismet_ai/foundation";
 
 export const mockRenderableItineraryEventOfferOne: RenderableItineraryEventOffer =
   {

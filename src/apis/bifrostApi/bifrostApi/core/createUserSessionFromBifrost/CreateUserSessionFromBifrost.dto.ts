@@ -2,8 +2,10 @@
 // REQUEST ///////////////////////////////////////
 //////////////////////////////////////////////////
 
-import { BifrostFormQuestionWithResponse } from "@/models";
-import { EitherResponseType } from "@/models/core/monads";
+import {
+  BifrostFormQuestionWithResponse,
+  EitherResponseType,
+} from "@kismet_ai/foundation";
 
 export interface CreateUserSessionFromBifrostRequestDto {
   hotelId: string;

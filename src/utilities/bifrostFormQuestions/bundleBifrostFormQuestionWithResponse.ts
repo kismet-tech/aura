@@ -2,9 +2,9 @@ import {
   BifrostFormQuestion,
   BifrostFormQuestionType,
   BifrostFormQuestionResponseType,
-} from "@/models";
+} from "@kismet_ai/foundation";
 
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 
 interface BundleBifrostFormQuestionWithResponseProps {
   bifrostFormQuestion: BifrostFormQuestion;

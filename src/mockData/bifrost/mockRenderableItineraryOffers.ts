@@ -3,7 +3,7 @@ import {
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryOffer,
   RenderableItineraryOfferCriterion,
-} from "../../models/bifrost/RenderableItineraryOffer";
+} from "@kismet_ai/foundation";
 import { mockRenderableItineraryEventOfferOne } from "./mockRenderableItineraryEventOffers";
 
 const mockRenderableItineraryOfferCriterionOne: RenderableItineraryOfferCriterion =
@@ -20,6 +20,7 @@ const mockRenderableItineraryOfferCriterionTwo: RenderableItineraryOfferCriterio
 
 export const mockRenderableItineraryHotelRoomOfferOne: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: "13242431afdasfd",
     hotelRoomId: `123456`,
     countOffered: 2,
     countAvailable: 2,
@@ -40,6 +41,7 @@ export const mockRenderableItineraryHotelRoomOfferOne: RenderableItineraryHotelR
 
 export const mockRenderableItineraryHotelRoomOfferTwo: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: "13242431afdasfafjjhsefd",
     hotelRoomId: `234567`,
     countOffered: 3,
     countAvailable: 3,
@@ -56,6 +58,7 @@ export const mockRenderableItineraryHotelRoomOfferTwo: RenderableItineraryHotelR
 
 export const mockRenderableItineraryHotelRoomOfferThree: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: "13123432",
     hotelRoomId: `345678`,
     countOffered: 3,
     countAvailable: 3,
@@ -72,6 +75,7 @@ export const mockRenderableItineraryHotelRoomOfferThree: RenderableItineraryHote
 
 export const mockRenderableItineraryHotelRoomOfferFour: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: "1323421",
     hotelRoomId: `456789`,
     countOffered: 4,
     countAvailable: 4,
@@ -88,6 +92,7 @@ export const mockRenderableItineraryHotelRoomOfferFour: RenderableItineraryHotel
 
 export const mockRenderableItineraryHotelRoomOfferFive: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: "134123afesdlnjkfsdqwerb",
     hotelRoomId: `567890`,
     countOffered: 2,
     countAvailable: 2,
@@ -104,6 +109,7 @@ export const mockRenderableItineraryHotelRoomOfferFive: RenderableItineraryHotel
 
 export const mockRenderableItineraryHotelRoomOfferSix: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: `jqrwebrheiiqewasdf678901`,
     hotelRoomId: `678901`,
     countOffered: 1,
     countAvailable: 1,
@@ -120,6 +126,7 @@ export const mockRenderableItineraryHotelRoomOfferSix: RenderableItineraryHotelR
 
 export const mockRenderableItineraryHotelRoomOfferSeven: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: `78901qerjweqrwerhv2`,
     hotelRoomId: `789012`,
     countOffered: 5,
     countAvailable: 5,
@@ -136,6 +143,7 @@ export const mockRenderableItineraryHotelRoomOfferSeven: RenderableItineraryHote
 
 export const mockRenderableItineraryHotelRoomOfferEight: RenderableItineraryHotelRoomOffer =
   {
+    hotelRoomOfferId: `8qrweqwrejnejwqrqr90123`,
     hotelRoomId: `890123`,
     countOffered: 6,
     countAvailable: 6,

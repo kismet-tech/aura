@@ -1,2 +1,2 @@
-import { RenderableItineraryEventOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryEventOffer } from "@kismet_ai/foundation";
 export declare const mockRenderableItineraryEventOfferOne: RenderableItineraryEventOffer;

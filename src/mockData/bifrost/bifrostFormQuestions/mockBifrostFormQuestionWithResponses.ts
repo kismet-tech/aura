@@ -1,4 +1,4 @@
-import { BifrostFormQuestionResponseType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { BifrostFormQuestionResponseType } from "@kismet_ai/foundation";
 import {
   BifrostFormQuestionWithCalendarDateRangeResponse,
   BifrostFormQuestionWithEmailResponse,
@@ -9,7 +9,7 @@ import {
   BifrostTextAreaFormQuestionWithTextResponse,
   BifrostTextInputFormQuestionWithTextResponse,
   BifrostToggleButtonGroupFormQuestionWithTextResponse,
-} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+} from "@kismet_ai/foundation";
 import {
   mockRenderableTextInputBifrostFormQuestionOne,
   mockRenderableEmailInputBifrostFormQuestionOne,
@@ -24,7 +24,7 @@ import {
   mockRenderableSplitTextInputBifrostFormQuestionTwo,
   mockRenderableToggleButtonGroupBifrostFormQuestionThree,
 } from "./mockRenderableBifrostFormQuestions";
-import { ReservedBifrostReasonForTravelOptionValues } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionValues";
+import { ReservedBifrostReasonForTravelOptionValues } from "@kismet_ai/foundation";
 
 export const mockBifrostTextInputFormQuestionWithTextResponseOne: BifrostTextInputFormQuestionWithTextResponse =
   {

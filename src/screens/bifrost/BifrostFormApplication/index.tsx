@@ -2,11 +2,11 @@ import { BifrostFooter } from "@/components/atoms/BifrostFooter";
 import { useBifrostFormState } from "@/providers/BifrostFormStateProvider/useBifrostFormState";
 import React from "react";
 import { BifrostFormLaunchScreen } from "../BifrostFormLaunchScreen";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { BifrostFormApplicationStage } from "@/providers/BifrostFormStateProvider/models/BifrostFormApplicationStage";
 import { BifrostFormInteractiveLoopScreen } from "../BifrostFormInteractiveLoopScreen";
 import { BifrostItineraryOfferPresentationScreen } from "../BifrostItineraryOfferPresentationScreen";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 
 export function BifrostFormApplication() {
   const {
@@ -22,7 +22,16 @@ export function BifrostFormApplication() {
     beginUserSession,
     paymentsPageUrl,
     selectItineraryOffer,
+    suggestCalendarDateRangesFromConstraints,
   } = useBifrostFormState();
+
+  console.log(
+    `activeBifrostFormQuestionsWithResponses: ${JSON.stringify(
+      activeBifrostFormQuestionsWithResponses,
+      null,
+      4
+    )}`
+  );
 
   let renderedScreen: JSX.Element;
   if (
@@ -45,6 +54,9 @@ export function BifrostFormApplication() {
         handleProgressForward={() => {
           beginUserSession();
         }}
+        suggestCalendarDateRangesFromConstraints={
+          suggestCalendarDateRangesFromConstraints
+        }
       />
     );
   } else if (
@@ -64,6 +76,14 @@ export function BifrostFormApplication() {
         }: {
           updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
         }) => {
+          console.log(
+            `updatedBifrostFormQuestionWithResponse: ${JSON.stringify(
+              updatedBifrostFormQuestionWithResponse,
+              null,
+              4
+            )}`
+          );
+
           setBifrostFormQuestionWithResponse({
             updatedBifrostFormQuestionWithResponse,
           });
@@ -74,6 +94,9 @@ export function BifrostFormApplication() {
 
           await submitBifrostFormQuestion();
         }}
+        suggestCalendarDateRangesFromConstraints={
+          suggestCalendarDateRangesFromConstraints
+        }
       />
     );
   } else if (
@@ -97,17 +120,17 @@ export function BifrostFormApplication() {
         renderablePendingItinerary={renderablePendingItinerary}
         onClickUpdateItineraryOfferHotelRoomCount={async ({
           itineraryOfferId,
-          hotelRoomId,
+          hotelRoomOfferId,
           updatedCountOffered,
         }: {
           itineraryOfferId: string;
-          hotelRoomId: string;
+          hotelRoomOfferId: string;
           updatedCountOffered: number;
         }): Promise<{ updatedItineraryOfferId: string }> => {
           const { updatedItineraryOfferId } =
             await updateItineraryOfferHotelRoomCount({
               itineraryOfferId,
-              hotelRoomId,
+              hotelRoomOfferId,
               updatedCountOffered,
             });
           return { updatedItineraryOfferId };

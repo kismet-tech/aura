@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutBody } from ".";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
 import {
   mockRenderableItineraryHotelRoomOfferFive,
   mockRenderableItineraryHotelRoomOfferFour,
@@ -10,6 +9,7 @@ import {
   mockRenderableItineraryHotelRoomOfferThree,
   mockRenderableItineraryHotelRoomOfferTwo,
 } from "@/mockData/bifrost/mockRenderableItineraryOffers";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostGroupBookingCheckoutBody> = {
   title:

@@ -5,5 +5,5 @@ export interface KismetSectionHeaderProps {
 }
 
 export function KismetSectionHeader({ children }: KismetSectionHeaderProps) {
-  return <h2 className="font-semibold">{children}</h2>;
+  return <h2 className="font-medium">{children}</h2>;
 }

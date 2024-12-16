@@ -1,4 +1,4 @@
-import { RenderableItineraryOffer } from "../../../models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 interface GetTotalOfferPriceInCentsFromRenderableItineraryOfferProps {
     renderableItineraryOffer: RenderableItineraryOffer;
 }

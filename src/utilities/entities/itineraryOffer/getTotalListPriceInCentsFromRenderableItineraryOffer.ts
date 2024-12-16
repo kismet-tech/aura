@@ -1,7 +1,7 @@
 import {
-  RenderableItineraryOffer,
   RenderableItineraryHotelRoomOffer,
-} from "../../../models/bifrost/RenderableItineraryOffer";
+  RenderableItineraryOffer,
+} from "@kismet_ai/foundation";
 import { getDaysBetweenCalendarDates } from "../../dates/getDaysBetweenCalendarDates";
 
 interface GetTotalListPriceInCentsFromRenderableItineraryOfferProps {
@@ -21,7 +21,7 @@ export const getTotalListPriceInCentsFromRenderableItineraryOffer = ({
     endCalendarDate,
   });
 
-  const totalListPriceInCents = hotelRoomOffers.reduce(
+  const totalListPriceInCents: number = hotelRoomOffers.reduce(
     (acc: number, hotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
       return (
         acc +

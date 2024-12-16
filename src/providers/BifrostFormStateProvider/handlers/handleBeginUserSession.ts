@@ -1,5 +1,5 @@
 import { BifrostApiInterface } from "@/apis/bifrostApi/models";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handleSetActiveBifrostFormQuestionsWithResponses";
 import { BifrostFormApplicationStage } from "../models/BifrostFormApplicationStage";
 import { useReactStateCache } from "@/utilities/core/react/useReactStateCache";
@@ -8,8 +8,8 @@ import {
   BifrostFormQuestionEmailResponse,
   BifrostFormQuestionPhoneNumberResponse,
   BifrostFormQuestionSplitTextResponse,
-} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { ReservedBifrostFormQuestionIds } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
+} from "@kismet_ai/foundation";
+import { ReservedBifrostFormQuestionIds } from "@kismet_ai/foundation";
 
 interface HandleBeginUserSessionProps {
   setBifrostFormApplicationStage: React.Dispatch<

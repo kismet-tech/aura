@@ -4,3 +4,4 @@ declare const meta: Meta<typeof EmailInputBifrostFormQuestion>;
 export default meta;
 type Story = StoryObj<typeof EmailInputBifrostFormQuestion>;
 export declare const Example: Story;
+export declare const ValidationErrorExample: Story;

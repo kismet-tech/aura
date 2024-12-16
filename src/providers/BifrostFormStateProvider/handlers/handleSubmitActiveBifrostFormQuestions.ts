@@ -1,7 +1,7 @@
 import { BifrostApiInterface } from "@/apis/bifrostApi/models";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handleSetActiveBifrostFormQuestionsWithResponses";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import { BifrostFormApplicationStage } from "../models/BifrostFormApplicationStage";
 
 interface HandleSubmitBifrostFormQuestionProps {

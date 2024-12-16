@@ -1,6 +1,6 @@
 import React from "react";
-import { RenderableSelectDateRangeBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
-import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
+import { RenderableSelectDateRangeBifrostFormQuestion } from "@kismet_ai/foundation";
+import { PendingCalendarDateRange } from "@kismet_ai/foundation";
 export interface SelectDateRangeBifrostFormQuestionProps {
     renderableSelectDateRangeBifrostFormQuestion: RenderableSelectDateRangeBifrostFormQuestion;
     calendarDateRange: PendingCalendarDateRange;

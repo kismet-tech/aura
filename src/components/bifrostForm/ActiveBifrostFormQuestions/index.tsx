@@ -1,5 +1,8 @@
-import { BifrostFormQuestionResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import {
+  BifrostFormQuestionResponse,
+  CalendarDateRange,
+} from "@kismet_ai/foundation";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RenderedBifrostFormQuestion,
@@ -16,16 +19,22 @@ export interface ActiveBifrostFormQuestionsProps {
   }: {
     updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
   }) => void;
-  setAreAllResponsesValid: ({
-    areAllResponsesValid,
+  setBifrostFormQuestionIdsWithValidResponses: ({
+    bifrostFormQuestionIdsWithValidResponses,
   }: {
-    areAllResponsesValid: boolean;
+    bifrostFormQuestionIdsWithValidResponses: string[];
   }) => void;
   setBifrostFormQuestionIdsRespondedTo: ({
     bifrostFormQuestionIdsRespondedTo,
   }: {
     bifrostFormQuestionIdsRespondedTo: string[];
   }) => void;
+
+  suggestCalendarDateRangesFromConstraints: ({
+    descriptionOfPotentialCalendarDates,
+  }: {
+    descriptionOfPotentialCalendarDates: string;
+  }) => Promise<CalendarDateRange[]>;
 }
 
 const MemoizedRenderedBifrostFormQuestion = React.memo(
@@ -33,14 +42,17 @@ const MemoizedRenderedBifrostFormQuestion = React.memo(
   (
     prevProps: Readonly<RenderedBifrostFormQuestionProps>,
     nextProps: Readonly<RenderedBifrostFormQuestionProps>
-  ): boolean => deepEqual(prevProps, nextProps)
+  ): boolean => {
+    return deepEqual(prevProps, nextProps);
+  }
 );
 
 export function ActiveBifrostFormQuestions({
   activeBifrostFormQuestionsWithResponses,
   setBifrostFormQuestionWithResponse,
-  setAreAllResponsesValid,
+  setBifrostFormQuestionIdsWithValidResponses,
   setBifrostFormQuestionIdsRespondedTo,
+  suggestCalendarDateRangesFromConstraints,
 }: ActiveBifrostFormQuestionsProps) {
   const [
     mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
@@ -51,6 +63,14 @@ export function ActiveBifrostFormQuestions({
       { isResponseValid: boolean; hasQuestionBeenRespondedTo: boolean }
     >
   >({});
+
+  console.log(
+    `mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments: ${JSON.stringify(
+      mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
+      null,
+      4
+    )}`
+  );
 
   useEffect(() => {
     const updatedActiveBifrostFormQuestionIds: string[] =
@@ -88,14 +108,6 @@ export function ActiveBifrostFormQuestions({
         {}
       );
 
-      console.log(
-        `useEffect 111 updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments: ${JSON.stringify(
-          updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
-          null,
-          4
-        )}`
-      );
-
       setMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments(
         updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments
       );
@@ -106,12 +118,6 @@ export function ActiveBifrostFormQuestions({
   ]);
 
   useEffect(() => {
-    console.log(
-      `useEffect mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments: ${JSON.stringify(
-        mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments
-      )}`
-    );
-
     const areAllFormQuestionResponsesValid: boolean =
       Object.values(
         mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments
@@ -138,24 +144,27 @@ export function ActiveBifrostFormQuestions({
       )
       .map(([formQuestionId]) => formQuestionId);
 
-    setAreAllResponsesValid({
-      areAllResponsesValid: areAllFormQuestionResponsesValid,
-    });
-
-    console.log(
-      `setHaveAllQuestionBeenRespondedTo ActiveBifrostFormQuestions: ${JSON.stringify(
-        haveAllQuestionBeenRespondedTo
-      )}`
-    );
+    const bifrostFormQuestionIdsWithValidResponses: string[] = Object.entries(
+      mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments
+    )
+      .filter(([, { isResponseValid }]) => isResponseValid)
+      .map(([formQuestionId]) => formQuestionId);
 
     if (bifrostFormQuestionIdsRespondedTo.length > 0) {
       setBifrostFormQuestionIdsRespondedTo({
         bifrostFormQuestionIdsRespondedTo,
       });
     }
+
+    setBifrostFormQuestionIdsRespondedTo({
+      bifrostFormQuestionIdsRespondedTo,
+    });
+    setBifrostFormQuestionIdsWithValidResponses({
+      bifrostFormQuestionIdsWithValidResponses,
+    });
   }, [
     mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
-    setAreAllResponsesValid,
+    setBifrostFormQuestionIdsWithValidResponses,
     setBifrostFormQuestionIdsRespondedTo,
   ]);
 
@@ -185,36 +194,6 @@ export function ActiveBifrostFormQuestions({
               formQuestionId
             ].isResponseValid = isResponseValid;
           }
-
-          // if (
-          //   updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments[
-          //     formQuestionId
-          //   ] === undefined
-          // ) {
-          //   updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments[
-          //     formQuestionId
-          //   ] = {
-          //     isResponseValid,
-          //     hasQuestionBeenRespondedTo: false,
-          //   };
-          // } else {
-          //   updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments[
-          //     formQuestionId
-          //   ] = {
-          //     ...updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments[
-          //       formQuestionId
-          //     ],
-          //     isResponseValid,
-          //   };
-          // }
-
-          // console.log(
-          //   `handleSetIsResponseValid: ${JSON.stringify(
-          //     updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
-          //     null,
-          //     4
-          //   )}`
-          // );
 
           if (
             deepEqual(
@@ -258,12 +237,6 @@ export function ActiveBifrostFormQuestions({
               formQuestionId
             ].hasQuestionBeenRespondedTo = hasQuestionBeenRespondedTo;
           }
-
-          console.log(
-            `handleSetQuestionResponseFulfillments: ${JSON.stringify(
-              updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments
-            )}`
-          );
 
           // if (
           //   updatedMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments[
@@ -357,6 +330,14 @@ export function ActiveBifrostFormQuestions({
                 }: {
                   updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;
                 }) => {
+                  console.log(
+                    `MemoizedRenderedBifrostFormQuestion UPDATE: ${JSON.stringify(
+                      updatedBifrostFormQuestionResponse,
+                      null,
+                      4
+                    )}`
+                  );
+
                   handleSetBifrostFormQuestionResponse(
                     bifrostFormQuestionWithResponse
                   )({ updatedBifrostFormQuestionResponse });
@@ -389,6 +370,9 @@ export function ActiveBifrostFormQuestions({
                     hasQuestionBeenRespondedTo,
                   });
                 }}
+                suggestCalendarDateRangesFromConstraints={
+                  suggestCalendarDateRangesFromConstraints
+                }
               />
             </div>
           );

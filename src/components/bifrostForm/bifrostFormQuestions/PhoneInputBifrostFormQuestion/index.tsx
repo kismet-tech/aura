@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
-import { RenderablePhoneInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderablePhoneInputBifrostFormQuestion } from "@kismet_ai/foundation";
 import { ValidationError } from "@/components/atoms/forms/ValidationError";
 import { KismetInput } from "@/components/atoms/KismetInput";
 
@@ -126,10 +126,6 @@ export function PhoneInputBifrostFormQuestion({
 
   return (
     <FormField>
-      <FormLabel htmlFor={inputId}>
-        {renderablePhoneInputBifrostFormQuestion.label}
-      </FormLabel>
-
       <KismetInput
         value={localValue}
         id={inputId}
@@ -139,6 +135,12 @@ export function PhoneInputBifrostFormQuestion({
           handlePhoneValueChange({ updatedValue: e.target.value });
         }}
       />
+      <div className="gap-8">
+        <FormLabel htmlFor={inputId}>
+          {renderablePhoneInputBifrostFormQuestion.label}
+        </FormLabel>
+      </div>
+
       {!isLocallyValid && localValue.length > 0 && (
         <ValidationError>Please enter a valid phone number</ValidationError>
       )}

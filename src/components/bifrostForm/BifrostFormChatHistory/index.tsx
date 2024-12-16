@@ -1,4 +1,4 @@
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import React from "react";
 import { BifrostFormQuestionChatHistoryElement } from "./bifrostFormQuestionsInChatHistory/BifrostFormQuestionChatHistoryElement";
 

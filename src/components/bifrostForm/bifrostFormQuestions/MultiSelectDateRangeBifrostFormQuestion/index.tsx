@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
 import { FormLabel } from "@/components/atoms/forms/FormLabel";
-import { RenderableMultiSelectDateRangeBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableMultiSelectDateRangeBifrostFormQuestion } from "@kismet_ai/foundation";
 import { DateRangePicker } from "@/components/atoms/DateRangePicker";
-import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
-import { CalendarDate } from "@/models/core/date/CalendarDate";
-import { convertLocalCalendarDateToNativeDate } from "@/utilities/dates/convertLocalCalendarDateToNativeDate";
+import { PendingCalendarDateRange } from "@kismet_ai/foundation";
+import {
+  CalendarDate,
+  convertLocalCalendarDateToNativeDate,
+  convertNativeDateToLocalCalendarDate,
+} from "@kismet_ai/foundation";
 import { DateRange } from "react-day-picker";
-import { convertNativeDateToLocalCalendarDate } from "@/utilities/dates/convertNativeDateToLocalCalendarDate";
 
 export interface MultiSelectDateRangeBifrostFormQuestionProps {
   renderableMultiSelectDateRangeBifrostFormQuestion: RenderableMultiSelectDateRangeBifrostFormQuestion;
@@ -142,9 +144,6 @@ export function MultiSelectDateRangeBifrostFormQuestion({
 
   return (
     <FormField>
-      <FormLabel htmlFor={inputId}>
-        {renderableMultiSelectDateRangeBifrostFormQuestion.label}
-      </FormLabel>
       {calendarDateRanges.map(
         (calendarDateRange: PendingCalendarDateRange, index: number) => {
           return (
@@ -166,6 +165,12 @@ export function MultiSelectDateRangeBifrostFormQuestion({
           );
         }
       )}
+
+      <div className="gap-8">
+        <FormLabel htmlFor={inputId}>
+          {renderableMultiSelectDateRangeBifrostFormQuestion.label}
+        </FormLabel>
+      </div>
     </FormField>
   );
 }

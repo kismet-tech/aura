@@ -2,7 +2,7 @@ import { ArrowLeftRight } from "lucide-react";
 import { AlternativeItineraryOfferPreview } from "../AlternativeItineraryOfferPreview";
 import React from "react";
 import { Carousel } from "@/components/displays/Carousel";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 
 export interface AlternativeItineraryOfferSelectorProps {
   renderableItineraryOffers: RenderableItineraryOffer[];

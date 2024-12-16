@@ -5,7 +5,6 @@ import { Calendar, Hotel, User } from "lucide-react";
 import { OrnateConciergeBell } from "@/components/atoms/icons/OrnateConciergeBell";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
-import { ExpandCollapseButton } from "@/components/atoms/ExpandCollapseButton";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 
 export interface PendingItineraryPlannerHeaderProps {

@@ -6,7 +6,7 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseOne,
   mockBifrostFormQuestionWithSplitTextResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof ActiveBifrostFormQuestions> = {
   title: "BifrostForm/ActiveBifrostFormQuestions",
@@ -55,8 +55,13 @@ const StoryWrapper = () => {
         }
       );
     },
-    setAreAllResponsesValid: ({ areAllResponsesValid }) => {
-      console.log("areAllResponsesValid", areAllResponsesValid);
+    setBifrostFormQuestionIdsWithValidResponses: ({
+      bifrostFormQuestionIdsWithValidResponses,
+    }) => {
+      console.log(
+        "bifrostFormQuestionIdsWithValidResponses",
+        bifrostFormQuestionIdsWithValidResponses
+      );
     },
     setBifrostFormQuestionIdsRespondedTo: function ({
       bifrostFormQuestionIdsRespondedTo,
@@ -67,6 +72,13 @@ const StoryWrapper = () => {
         "bifrostFormQuestionIdsRespondedTo",
         bifrostFormQuestionIdsRespondedTo
       );
+    },
+    suggestCalendarDateRangesFromConstraints: async ({
+      descriptionOfPotentialCalendarDates,
+    }: {
+      descriptionOfPotentialCalendarDates: string;
+    }) => {
+      return [];
     },
   };
 

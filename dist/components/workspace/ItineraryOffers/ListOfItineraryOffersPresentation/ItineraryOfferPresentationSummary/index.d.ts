@@ -1,4 +1,4 @@
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import React from "react";
 export interface ItineraryOfferPresentationSummaryProps {
     renderableItineraryOffer: RenderableItineraryOffer;

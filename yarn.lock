@@ -518,10 +518,13 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@kismet_ai/foundation@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@kismet_ai/foundation/-/foundation-1.0.0.tgz#2c0102448c074624dcf7beec899a2cd5119e922d"
-  integrity sha512-INj8IJhZpIAKe4frZnKopXUrnbDwYWVNYqW63LnElgPxIFKMvaP01jBuaw0kh9DMwYjbY6f5wX/Qflzh/Mqf+w==
+"@kismet_ai/foundation@^1.0.59":
+  version "1.0.59"
+  resolved "https://registry.yarnpkg.com/@kismet_ai/foundation/-/foundation-1.0.59.tgz#1b7b2f13781852dc7ec3e5f3800238bda4156632"
+  integrity sha512-HCtyHiiGK0K++un5wGb5ldN5b3zyMK6nM3d1nwzhlAeEXjUk3yCf8nRP+ZdHSITR8WH3Vze9Iggod37cMW6A1w==
+  dependencies:
+    date-fns "^4.1.0"
+    validator "^13.12.0"
 
 "@mdx-js/react@^3.0.0":
   version "3.1.0"
@@ -3834,6 +3837,11 @@ uuid@^9.0.0:
   version "9.0.1"
   resolved "https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz"
   integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
+
+validator@^13.12.0:
+  version "13.12.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.12.0.tgz#7d78e76ba85504da3fee4fd1922b385914d4b35f"
+  integrity sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg==
 
 vite@^5.4.11:
   version "5.4.11"

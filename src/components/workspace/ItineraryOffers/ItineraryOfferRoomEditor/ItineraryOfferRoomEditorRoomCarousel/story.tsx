@@ -18,20 +18,20 @@ type Story = StoryObj<typeof ItineraryOfferRoomEditorRoomCarousel>;
 
 const exampleOneArguments: ItineraryOfferRoomEditorRoomCarouselProps = {
   renderableItineraryOffer: mockRenderableItineraryOfferOne,
-  selectedHotelRoomId:
-    mockRenderableItineraryOfferOne.hotelRoomOffers[0].hotelRoomId,
-  setSelectedHotelRoomId: () => {},
+  selectedHotelRoomOfferId:
+    mockRenderableItineraryOfferOne.hotelRoomOffers[0].hotelRoomOfferId,
+  setSelectedHotelRoomOfferId: () => {},
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     itineraryOfferId: string;
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => {
     console.log(
-      `Set itineraryOfferId '${itineraryOfferId}' hotelRoomId '${hotelRoomId}' to ${updatedCountOffered}`
+      `Set itineraryOfferId '${itineraryOfferId}' hotelRoomId '${hotelRoomOfferId}' to ${updatedCountOffered}`
     );
   },
 };

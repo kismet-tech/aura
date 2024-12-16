@@ -4,7 +4,7 @@ import { Carousel } from "@/components/displays/Carousel";
 import {
   RenderableItineraryOffer,
   RenderableItineraryEventOffer,
-} from "@/models/bifrost/RenderableItineraryOffer";
+} from "@kismet_ai/foundation";
 import { EventOfferCarouselItem } from "../../EventOfferCarouselItem";
 
 export interface ItineraryOfferEventsPresentationPanelProps {

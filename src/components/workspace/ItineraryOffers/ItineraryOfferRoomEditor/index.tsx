@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { Settings2, X } from "lucide-react";
 import React from "react";
-import { RenderableItineraryOffer } from "../../../../models/bifrost/RenderableItineraryOffer";
 import { KismetHeader, KismetSectionHeader } from "../../../atoms";
 import { ItineraryOfferRoomEditorRoomDetailsImageList } from "./ItineraryOfferRoomEditorRoomDetailsImageList";
 import { ItineraryOfferRoomEditorRoomCarousel } from "./ItineraryOfferRoomEditorRoomCarousel";
 import { ItineraryOfferRoomEditorRoomDetails } from "./ItineraryOfferRoomEditorRoomDetails";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 
 export interface ItineraryOfferRoomEditorProps {
   renderableItineraryOffer: RenderableItineraryOffer;
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     itineraryOfferId: string;
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => void;
 
   onClickExit: () => void;
@@ -27,15 +27,15 @@ export function ItineraryOfferRoomEditor({
   onClickUpdateItineraryOfferHotelRoomCount,
   onClickExit,
 }: ItineraryOfferRoomEditorProps): JSX.Element {
-  const [selectedHotelRoomId, setSelectedHotelRoomId] = useState<
+  const [selectedHotelRoomOfferId, setSelectedHotelRoomOfferId] = useState<
     string | undefined
   >(undefined);
 
   let RenderedSelectedHotelRoomDetails: JSX.Element = <></>;
-  if (selectedHotelRoomId) {
+  if (selectedHotelRoomOfferId) {
     const renderableItineraryHotelRoomOffer =
       renderableItineraryOffer.hotelRoomOffers.find(
-        (offer) => offer.hotelRoomId === selectedHotelRoomId
+        (offer) => offer.hotelRoomOfferId === selectedHotelRoomOfferId
       );
 
     if (renderableItineraryHotelRoomOffer) {
@@ -72,9 +72,13 @@ export function ItineraryOfferRoomEditor({
       </div>
       <ItineraryOfferRoomEditorRoomCarousel
         renderableItineraryOffer={renderableItineraryOffer}
-        selectedHotelRoomId={selectedHotelRoomId}
-        setSelectedHotelRoomId={({ hotelRoomId }: { hotelRoomId: string }) => {
-          setSelectedHotelRoomId(hotelRoomId);
+        selectedHotelRoomOfferId={selectedHotelRoomOfferId}
+        setSelectedHotelRoomOfferId={({
+          hotelRoomOfferId,
+        }: {
+          hotelRoomOfferId: string;
+        }) => {
+          setSelectedHotelRoomOfferId(hotelRoomOfferId);
         }}
         onClickUpdateItineraryOfferHotelRoomCount={
           onClickUpdateItineraryOfferHotelRoomCount

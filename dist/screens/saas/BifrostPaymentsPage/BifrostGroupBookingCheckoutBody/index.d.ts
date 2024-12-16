@@ -1,10 +1,10 @@
 import React from "react";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 interface BifrostGroupBookingCheckoutBodyProps {
     availableHotelRooms: RenderableItineraryHotelRoomOffer[];
-    onClickUpdateHotelRoomCountInCart: ({ updatedCountOffered, hotelRoomId, }: {
+    onClickUpdateHotelRoomCountInCart: ({ updatedCountOffered, hotelRoomOfferId, }: {
         updatedCountOffered: number;
-        hotelRoomId: string;
+        hotelRoomOfferId: string;
     }) => void;
 }
 export declare function BifrostGroupBookingCheckoutBody({ availableHotelRooms, onClickUpdateHotelRoomCountInCart, }: BifrostGroupBookingCheckoutBodyProps): React.JSX.Element;

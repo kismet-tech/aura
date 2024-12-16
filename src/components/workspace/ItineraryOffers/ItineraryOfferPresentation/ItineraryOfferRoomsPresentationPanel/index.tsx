@@ -6,7 +6,7 @@ import { Carousel } from "@/components/displays/Carousel";
 import {
   RenderableItineraryOffer,
   RenderableItineraryHotelRoomOffer,
-} from "@/models/bifrost/RenderableItineraryOffer";
+} from "@kismet_ai/foundation";
 import {
   HotelRoomCarouselItem,
   HotelRoomCarouselItemIndicatorLabel,
@@ -15,9 +15,9 @@ import {
 export interface ItineraryOfferRoomsPresentationPanelProps {
   renderableItineraryOffer: RenderableItineraryOffer;
   onClickHotelRoomCarouselItem: ({
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => void;
 }
 
@@ -49,8 +49,8 @@ export function ItineraryOfferRoomsPresentationPanel({
           return (
             <HotelRoomCarouselItem
               hotelRoomOffer={hotelRoomOffer}
-              onClick={({ hotelRoomId }: { hotelRoomId: string }) =>
-                onClickHotelRoomCarouselItem({ hotelRoomId })
+              onClick={({ hotelRoomOfferId }: { hotelRoomOfferId: string }) =>
+                onClickHotelRoomCarouselItem({ hotelRoomOfferId })
               }
               hotelRoomCarouselItemIndicatorLabel={
                 HotelRoomCarouselItemIndicatorLabel.COUNT_AVAILABLE_VALUE_ONLY
@@ -61,7 +61,7 @@ export function ItineraryOfferRoomsPresentationPanel({
           );
         }}
         itemKey={(hotelRoomOffer: RenderableItineraryHotelRoomOffer) =>
-          hotelRoomOffer.hotelRoomId
+          hotelRoomOffer.hotelRoomOfferId
         }
         interItemComponent={<></>}
       />

@@ -1,8 +1,7 @@
-import { CalendarDateRange } from "@/models/core/date/CalendarDateRange";
 import { RenderedCalendarDateFormat } from "./RenderedCalendarDateFormat";
 import { renderCalendarDate } from "./renderCalendarDate";
 import { RenderedCalendarDateRangeJoinFormat } from "./RenderedCalendarDateRangeJoinFormat";
-import { format } from "date-fns";
+import { CalendarDateRange } from "@kismet_ai/foundation";
 
 export interface RenderedCalendarDateCollapseStrategy {
   collapseSameDay: boolean;

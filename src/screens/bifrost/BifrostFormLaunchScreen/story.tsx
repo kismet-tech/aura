@@ -6,7 +6,7 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseOne,
   mockBifrostFormQuestionWithSplitTextResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostFormLaunchScreen> = {
   title: "BifrostForm/Screens/BifrostFormLaunchScreen",
@@ -57,6 +57,13 @@ const StoryWrapper = () => {
     },
     handleProgressForward: () => {
       console.log("Progressing forward");
+    },
+    suggestCalendarDateRangesFromConstraints: async ({
+      descriptionOfPotentialCalendarDates,
+    }: {
+      descriptionOfPotentialCalendarDates: string;
+    }) => {
+      return [];
     },
   };
 

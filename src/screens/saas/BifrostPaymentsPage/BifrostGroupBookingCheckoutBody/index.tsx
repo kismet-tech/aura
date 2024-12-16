@@ -1,6 +1,6 @@
 import React from "react";
 import { Carousel } from "@/components/displays/Carousel";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 import {
   HotelRoomCarouselItem,
   HotelRoomCarouselItemIndicatorLabel,
@@ -11,10 +11,10 @@ interface BifrostGroupBookingCheckoutBodyProps {
   availableHotelRooms: RenderableItineraryHotelRoomOffer[];
   onClickUpdateHotelRoomCountInCart: ({
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => void;
 }
 
@@ -61,28 +61,32 @@ export function BifrostGroupBookingCheckoutBody({
             return (
               <HotelRoomCarouselItem
                 hotelRoomOffer={hotelRoomOffer}
-                onClick={({ hotelRoomId }: { hotelRoomId: string }) => {}}
+                onClick={({
+                  hotelRoomOfferId,
+                }: {
+                  hotelRoomOfferId: string;
+                }) => {}}
                 isCountEditable={true}
                 hotelRoomCarouselItemIndicatorLabel={
                   HotelRoomCarouselItemIndicatorLabel.COUNT_AVAILABLE_VALUE_ONLY
                 }
                 onClickUpdateItineraryOfferHotelRoomCount={({
                   updatedCountOffered,
-                  hotelRoomId,
+                  hotelRoomOfferId,
                 }: {
                   updatedCountOffered: number;
-                  hotelRoomId: string;
+                  hotelRoomOfferId: string;
                 }) => {
                   onClickUpdateHotelRoomCountInCart({
                     updatedCountOffered,
-                    hotelRoomId,
+                    hotelRoomOfferId,
                   });
                 }}
               />
             );
           }}
           itemKey={(hotelRoomOffer: RenderableItineraryHotelRoomOffer) =>
-            hotelRoomOffer.hotelRoomId
+            hotelRoomOffer.hotelRoomOfferId
           }
           interItemComponent={<></>}
         />

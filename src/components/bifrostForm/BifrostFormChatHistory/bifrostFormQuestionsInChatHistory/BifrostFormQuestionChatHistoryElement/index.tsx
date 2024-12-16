@@ -4,9 +4,9 @@ import {
   BifrostTextAreaFormQuestionWithTextResponse,
   BifrostTextInputFormQuestionWithTextResponse,
   BifrostToggleButtonGroupFormQuestionWithTextResponse,
-} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { BifrostFormQuestionResponseType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { BifrostFormQuestionType } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+} from "@kismet_ai/foundation";
+import { BifrostFormQuestionResponseType } from "@kismet_ai/foundation";
+import { BifrostFormQuestionType } from "@kismet_ai/foundation";
 import { SplitTextInputBifrostFormQuestionChatHistoryElement } from "../SplitTextInputBifrostFormQuestionChatHistoryElement";
 import { PhoneInputBifrostFormQuestionChatHistoryElement } from "../PhoneInputBifrostFormQuestionChatHistoryElement";
 import { TextInputBifrostFormQuestionChatHistoryElement } from "../TextInputBifrostFormQuestionChatHistoryElement";

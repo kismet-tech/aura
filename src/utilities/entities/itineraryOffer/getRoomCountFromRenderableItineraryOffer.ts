@@ -1,7 +1,7 @@
 import {
   RenderableItineraryOffer,
   RenderableItineraryHotelRoomOffer,
-} from "@/models/bifrost/RenderableItineraryOffer";
+} from "@kismet_ai/foundation";
 
 interface GetRoomCountFromRenderableItineraryOfferProps {
   renderableItineraryOffer: RenderableItineraryOffer;

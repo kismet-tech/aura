@@ -1,5 +1,5 @@
 import React from "react";
-import { BifrostToggleButtonGroupFormQuestionWithTextResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostToggleButtonGroupFormQuestionWithTextResponse } from "@kismet_ai/foundation";
 export interface ToggleButtonGroupBifrostFormQuestionChatHistoryElementProps {
     guestFirstName: string;
     bifrostToggleButtonGroupFormQuestionWithTextResponse: BifrostToggleButtonGroupFormQuestionWithTextResponse;

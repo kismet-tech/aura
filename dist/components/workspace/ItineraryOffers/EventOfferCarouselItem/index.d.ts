@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderableItineraryEventOffer } from "../../../../models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryEventOffer } from "@kismet_ai/foundation";
 export interface EventOfferCarouselItemProps {
     eventOffer: RenderableItineraryEventOffer;
     onClick: ({ eventOfferId }: {

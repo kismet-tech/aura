@@ -2,11 +2,9 @@
 // REQUEST ///////////////////////////////////////
 //////////////////////////////////////////////////
 
-import {
-  BifrostFormQuestionWithResponse,
-  RenderableItineraryOffer,
-} from "@/models";
-import { EitherResponseType } from "@/models/core/monads";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import { EitherResponseType } from "@kismet_ai/foundation";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 
 export interface SubmitBifrostFormQuestionsWithResponsesRequestDto {
   hotelId: string;

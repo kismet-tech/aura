@@ -1,4 +1,4 @@
-import { EitherResponseType } from "@/models/core/monads";
+import { EitherResponseType } from "@kismet_ai/foundation";
 
 //////////////////////////////////////////////////
 // REQUEST ///////////////////////////////////////
@@ -7,7 +7,7 @@ import { EitherResponseType } from "@/models/core/monads";
 export interface UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto {
   userSessionId: string;
   itineraryOfferId: string;
-  hotelRoomId: string;
+  hotelRoomOfferId: string;
   updatedCountOffered: number;
 }
 
@@ -17,7 +17,7 @@ export interface UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountReq
 
 export interface UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto {
   itineraryOfferId: string;
-  hotelRoomId: string;
+  hotelRoomOfferId: string;
   updatedCountOffered: number;
 }
 

@@ -1,5 +1,5 @@
-import { CalendarDateRange } from "@/models/core/date/CalendarDateRange";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { CalendarDateRange } from "@kismet_ai/foundation";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 export interface BifrostGroupBookingCheckoutCart {
     hotelRooms: RenderableItineraryHotelRoomOffer[];
 }

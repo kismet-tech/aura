@@ -1,4 +1,4 @@
-import { CalendarDate } from "../../models/core/date/CalendarDate";
+import { CalendarDate } from "@kismet_ai/foundation";
 export declare enum CalendarDateComarison {
     FIRST_DATE_OCCURS_BEFORE_SECOND_DATE = -1,
     FIRST_DATE_OCCURS_AFTER_SECOND_DATE = 1,

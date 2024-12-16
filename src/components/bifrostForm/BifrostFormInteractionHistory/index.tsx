@@ -1,11 +1,14 @@
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import {
+  BifrostFormQuestionWithResponse,
+  CalendarDateRange,
+} from "@kismet_ai/foundation";
 import React, { useCallback } from "react";
 import {
   RenderedBifrostFormQuestion,
   RenderedBifrostFormQuestionProps,
 } from "../bifrostFormQuestions/RenderedBifrostFormQuestion";
 import { deepEqual } from "@/utilities/core/deepEqual";
-import { BifrostFormQuestionResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { BifrostFormQuestionResponse } from "@kismet_ai/foundation";
 import { updateBifrostFormQuestionWithResponse } from "@/utilities/bifrostFormQuestions/updateBifrostFormQuestionWithResponse";
 
 export interface BifrostFormInteractionHistoryProps {
@@ -15,6 +18,12 @@ export interface BifrostFormInteractionHistoryProps {
   }: {
     updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
   }) => void;
+
+  suggestCalendarDateRangesFromConstraints: ({
+    descriptionOfPotentialCalendarDates,
+  }: {
+    descriptionOfPotentialCalendarDates: string;
+  }) => Promise<CalendarDateRange[]>;
 }
 
 const MemoizedRenderedBifrostFormQuestion = React.memo(
@@ -28,6 +37,7 @@ const MemoizedRenderedBifrostFormQuestion = React.memo(
 export function BifrostFormInteractionHistory({
   bifrostFormQuestionsWithResponses,
   setBifrostFormQuestionWithResponse,
+  suggestCalendarDateRangesFromConstraints,
 }: BifrostFormInteractionHistoryProps) {
   const handleSetBifrostFormQuestionResponse = useCallback(
     (
@@ -75,6 +85,9 @@ export function BifrostFormInteractionHistory({
                 )}
                 setIsResponseValid={() => {}}
                 setHasQuestionBeenRespondedTo={() => {}}
+                suggestCalendarDateRangesFromConstraints={
+                  suggestCalendarDateRangesFromConstraints
+                }
               />
             </div>
           );

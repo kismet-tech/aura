@@ -1,6 +1,6 @@
 import React from "react";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 interface MockBifrostFormStateProviderProps {
     mockBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
     mockActiveBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];

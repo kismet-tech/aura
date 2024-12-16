@@ -1,4 +1,4 @@
-import { CalendarDateRange } from "@/models/core/date/CalendarDateRange";
+import { CalendarDateRange } from "@kismet_ai/foundation";
 export interface RenderablePendingItinerary {
     itineraryName: string;
     countOfHotelRoomsInItinerary?: number;

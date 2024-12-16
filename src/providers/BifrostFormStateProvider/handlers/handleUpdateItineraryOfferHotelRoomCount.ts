@@ -3,13 +3,13 @@ import {
   ItineraryOfferOriginatorType,
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryOffer,
-} from "@/models/bifrost/RenderableItineraryOffer";
+} from "@kismet_ai/foundation";
 import { deepEqual } from "@/utilities/core/deepEqual";
 
 interface HandleUpdateItineraryOfferHotelRoomCountProps {
   userSessionId: string;
   itineraryOfferId: string;
-  hotelRoomId: string;
+  hotelRoomOfferId: string;
   updatedCountOffered: number;
   renderableItineraryOffersFromKismetAI: RenderableItineraryOffer[] | undefined;
   customRenderableItineraryOfferFromGuest: RenderableItineraryOffer | undefined;
@@ -22,7 +22,7 @@ interface HandleUpdateItineraryOfferHotelRoomCountProps {
 export const handleUpdateItineraryOfferHotelRoomCount = async ({
   userSessionId,
   itineraryOfferId,
-  hotelRoomId,
+  hotelRoomOfferId,
   updatedCountOffered,
   renderableItineraryOffersFromKismetAI,
   customRenderableItineraryOfferFromGuest,
@@ -39,7 +39,7 @@ export const handleUpdateItineraryOfferHotelRoomCount = async ({
       {
         userSessionId,
         itineraryOfferId,
-        hotelRoomId,
+        hotelRoomOfferId,
         updatedCountOffered,
       }
     );
@@ -60,7 +60,7 @@ export const handleUpdateItineraryOfferHotelRoomCount = async ({
         updatedCustomRenderableItineraryOfferFromGuest.hotelRoomOffers =
           updatedCustomRenderableItineraryOfferFromGuest.hotelRoomOffers.map(
             (hotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
-              if (hotelRoomOffer.hotelRoomId === hotelRoomId) {
+              if (hotelRoomOffer.hotelRoomOfferId === hotelRoomOfferId) {
                 return {
                   ...hotelRoomOffer,
                   countOffered: updatedCountOffered,
@@ -104,7 +104,7 @@ export const handleUpdateItineraryOfferHotelRoomCount = async ({
     updatedCustomRenderableItineraryOfferFromGuest.hotelRoomOffers =
       updatedCustomRenderableItineraryOfferFromGuest.hotelRoomOffers.map(
         (hotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
-          if (hotelRoomOffer.hotelRoomId === hotelRoomId) {
+          if (hotelRoomOffer.hotelRoomOfferId === hotelRoomOfferId) {
             return {
               ...hotelRoomOffer,
               countOffered: updatedCountOffered,

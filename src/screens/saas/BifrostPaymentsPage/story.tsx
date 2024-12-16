@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutRootPage } from ".";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 import {
   BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
@@ -96,16 +96,18 @@ const StoryWrapper = () => {
       availableHotelRooms={hotelRoomOffers}
       onClickUpdateHotelRoomCountInCart={({
         updatedCountOffered,
-        hotelRoomId,
+        hotelRoomOfferId,
       }: {
         updatedCountOffered: number;
-        hotelRoomId: string;
+        hotelRoomOfferId: string;
       }) => {
         setHotelRoomOffers(
           (previousHotelRoomOffers: RenderableItineraryHotelRoomOffer[]) => {
             const updatedHotelRoomOffers = previousHotelRoomOffers.map(
               (previousHotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
-                if (previousHotelRoomOffer.hotelRoomId === hotelRoomId) {
+                if (
+                  previousHotelRoomOffer.hotelRoomOfferId === hotelRoomOfferId
+                ) {
                   return {
                     ...previousHotelRoomOffer,
                     countOffered: updatedCountOffered,
@@ -203,16 +205,18 @@ const LoadingStoryWrapper = () => {
       availableHotelRooms={hotelRoomOffers}
       onClickUpdateHotelRoomCountInCart={({
         updatedCountOffered,
-        hotelRoomId,
+        hotelRoomOfferId,
       }: {
         updatedCountOffered: number;
-        hotelRoomId: string;
+        hotelRoomOfferId: string;
       }) => {
         setHotelRoomOffers(
           (previousHotelRoomOffers: RenderableItineraryHotelRoomOffer[]) => {
             const updatedHotelRoomOffers = previousHotelRoomOffers.map(
               (previousHotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
-                if (previousHotelRoomOffer.hotelRoomId === hotelRoomId) {
+                if (
+                  previousHotelRoomOffer.hotelRoomOfferId === hotelRoomOfferId
+                ) {
                   return {
                     ...previousHotelRoomOffer,
                     countOffered: updatedCountOffered,

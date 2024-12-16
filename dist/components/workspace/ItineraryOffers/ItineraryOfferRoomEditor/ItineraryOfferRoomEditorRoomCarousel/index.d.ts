@@ -1,15 +1,15 @@
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import React from "react";
 export interface ItineraryOfferRoomEditorRoomCarouselProps {
     renderableItineraryOffer: RenderableItineraryOffer;
-    selectedHotelRoomId: string | undefined;
-    setSelectedHotelRoomId: ({ hotelRoomId }: {
-        hotelRoomId: string;
+    selectedHotelRoomOfferId: string | undefined;
+    setSelectedHotelRoomOfferId: ({ hotelRoomOfferId, }: {
+        hotelRoomOfferId: string;
     }) => void;
-    onClickUpdateItineraryOfferHotelRoomCount: ({ itineraryOfferId, updatedCountOffered, hotelRoomId, }: {
+    onClickUpdateItineraryOfferHotelRoomCount: ({ itineraryOfferId, updatedCountOffered, hotelRoomOfferId, }: {
         itineraryOfferId: string;
         updatedCountOffered: number;
-        hotelRoomId: string;
+        hotelRoomOfferId: string;
     }) => void;
 }
-export declare function ItineraryOfferRoomEditorRoomCarousel({ renderableItineraryOffer, setSelectedHotelRoomId, onClickUpdateItineraryOfferHotelRoomCount, }: ItineraryOfferRoomEditorRoomCarouselProps): React.JSX.Element;
+export declare function ItineraryOfferRoomEditorRoomCarousel({ renderableItineraryOffer, setSelectedHotelRoomOfferId, onClickUpdateItineraryOfferHotelRoomCount, }: ItineraryOfferRoomEditorRoomCarouselProps): React.JSX.Element;

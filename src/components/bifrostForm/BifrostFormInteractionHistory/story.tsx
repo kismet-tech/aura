@@ -9,7 +9,7 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseTwo,
   mockBifrostFormQuestionWithSplitTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostFormInteractionHistory> = {
   title: "BifrostFormInteractionHistory/BifrostFormInteractionHistory",
@@ -40,6 +40,17 @@ const StoryWrapper = () => {
         "updatedBifrostFormQuestionWithResponse",
         updatedBifrostFormQuestionWithResponse
       );
+    },
+    suggestCalendarDateRangesFromConstraints: async ({
+      descriptionOfPotentialCalendarDates,
+    }: {
+      descriptionOfPotentialCalendarDates: string;
+    }) => {
+      console.log(
+        "descriptionOfPotentialCalendarDates",
+        descriptionOfPotentialCalendarDates
+      );
+      return [];
     },
   };
 

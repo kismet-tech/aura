@@ -3,12 +3,12 @@ import {
   mockRenderableSplitTextInputBifrostFormQuestionOne,
   mockRenderableSplitTextInputBifrostFormQuestionTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockRenderableBifrostFormQuestions";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { ReservedBifrostFormQuestionIds } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import { ReservedBifrostFormQuestionIds } from "@kismet_ai/foundation";
 import {
   CalendarDateRange,
   PendingCalendarDateRange,
-} from "@/models/core/date/CalendarDateRange";
+} from "@kismet_ai/foundation";
 
 interface GetRenderablePendingItineraryProps {
   bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];

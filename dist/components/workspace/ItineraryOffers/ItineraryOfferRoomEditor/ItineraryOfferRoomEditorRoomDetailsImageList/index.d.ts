@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 export interface ItineraryOfferRoomEditorRoomDetailsImageListProps {
     renderableItineraryHotelRoomOffer: RenderableItineraryHotelRoomOffer;
 }

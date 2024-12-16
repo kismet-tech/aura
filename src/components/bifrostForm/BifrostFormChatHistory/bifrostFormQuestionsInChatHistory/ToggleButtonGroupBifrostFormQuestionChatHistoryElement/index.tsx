@@ -2,7 +2,7 @@ import { BifrostChatText } from "@/components/atoms/BifrostChatText";
 import React from "react";
 import { KismetChatHistoryMessage } from "../../KismetChatHistoryMessage";
 import { GuestChatHistoryMessage } from "../../GuestChatHistoryMessage";
-import { BifrostToggleButtonGroupFormQuestionWithTextResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostToggleButtonGroupFormQuestionWithTextResponse } from "@kismet_ai/foundation";
 
 export interface ToggleButtonGroupBifrostFormQuestionChatHistoryElementProps {
   guestFirstName: string;

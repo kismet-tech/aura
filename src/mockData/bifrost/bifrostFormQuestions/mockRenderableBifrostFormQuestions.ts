@@ -8,13 +8,13 @@ import {
   RenderableTextAreaBifrostFormQuestion,
   RenderableTextInputBifrostFormQuestion,
   RenderableToggleButtonGroupBifrostFormQuestion,
-} from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
-import { ReservedBifrostFormQuestionIds } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
+} from "@kismet_ai/foundation";
+import { ReservedBifrostFormQuestionIds } from "@kismet_ai/foundation";
 import {
   ReservedBifrostDateFlexibilityOptionValues,
   ReservedBifrostReasonForTravelOptionValues,
   ReservedBifrostSplitPaymentOptionValues,
-} from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionValues";
+} from "@kismet_ai/foundation";
 
 //////////////////////////////////////////////////
 // Text Inputs
@@ -79,7 +79,7 @@ export const mockRenderablePhoneInputBifrostFormQuestionOne: RenderablePhoneInpu
   {
     type: BifrostFormQuestionType.PHONE,
     bifrostFormQuestionId: ReservedBifrostFormQuestionIds.PHONE,
-    label: "Phone Number",
+    label: "Phone",
     chatLabel: "What is your phone number?",
     required: true,
   };

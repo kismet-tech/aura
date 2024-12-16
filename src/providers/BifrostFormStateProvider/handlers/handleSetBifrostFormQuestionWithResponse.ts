@@ -1,4 +1,4 @@
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { deepClone } from "@/utilities/core/deepClone";
 import { useReactStateCache } from "@/utilities/core/react/useReactStateCache";
 

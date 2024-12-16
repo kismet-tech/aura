@@ -1,22 +1,15 @@
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import {
+  BifrostFormQuestionWithResponse,
+  ReservedBifrostFormQuestionIds,
+  mockBifrostFormQuestionWithMultiStageSmartDateResponseEmpty,
+} from "@kismet_ai/foundation";
 import { BifrostApiInterface } from "../models";
 import {
-  mockBifrostFormQuestionWithCalendarDateRangeResponseOne,
-  mockBifrostFormQuestionWithMultiCalendarDateRangeResponseOne,
   mockBifrostFormQuestionWithSplitTextResponseThree,
   mockBifrostFormQuestionWithTextResponseFour,
   mockBifrostFormQuestionWithTextResponseTwo,
-  mockBifrostTextInputFormQuestionWithTextResponseOne,
   mockBifrostToggleButtonGroupFormQuestionWithTextResponseThree,
-  mockBifrostToggleButtonGroupFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import {
-  ItineraryOfferOriginatorType,
-  RenderableItineraryHotelRoomOffer,
-  RenderableItineraryOffer,
-} from "@/models/bifrost/RenderableItineraryOffer";
-import { ReservedBifrostFormQuestionIds } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionIds";
-import { ReservedBifrostDateFlexibilityOptionValues } from "@/models/bifrost/BifrostFormQuestions/ReservedBifrostFormQuestionValues";
 import {
   mockRenderableItineraryOfferOne,
   mockRenderableItineraryOfferThree,
@@ -27,10 +20,7 @@ import { deepClone } from "@/utilities/core/deepClone";
 import {
   GetOrCreateBifrostTravelerIdRequestDto,
   GetOrCreateBifrostTravelerIdSuccessResponseDataDto,
-  GetOrCreateBifrostTravelerIdSuccessResponseDto,
 } from "../bifrostApi/core/getOrCreateBifrostTravelerId/GetOrCreateBifrostTravelerId.dto";
-import { AxiosResponse } from "axios";
-import { ErrorResponseDto } from "@/models/core/monads/monads.dto";
 import {
   CreateUserSessionFromBifrostRequestDto,
   CreateUserSessionFromBifrostSuccessResponseDataDto,
@@ -46,12 +36,17 @@ import {
 import {
   SuggestCalendarDateRangesFromConstraintsRequestDto,
   SuggestCalendarDateRangesFromConstraintsSuccessResponseDataDto,
-  SuggestCalendarDateRangesFromConstraintsSuccessResponseDto,
 } from "../bifrostApi/helper/suggestCalendarDateRangesFromConstraints/SuggestCalendarDateRangesFromConstraints.dto";
 import {
   SelectBifrostItineraryOfferRequestDto,
   SelectBifrostItineraryOfferSuccessResponseDataDto,
 } from "../bifrostApi/core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
+import {
+  ItineraryOfferOriginatorType,
+  RenderableItineraryHotelRoomOffer,
+  RenderableItineraryOffer,
+  mockBifrostFormQuestionWithMultiStageReasonForTravelResponse,
+} from "@kismet_ai/foundation";
 
 export class MockBifrostApi implements BifrostApiInterface {
   apiState = {
@@ -105,54 +100,32 @@ export class MockBifrostApi implements BifrostApiInterface {
         bifrostFormQuestionsWithResponses.length - 1
       ];
 
+    console.log(
+      `FINAL bifrostFormQuestionWithResponse: ${JSON.stringify(
+        bifrostFormQuestionWithResponse,
+        null,
+        4
+      )}`
+    );
+
     if (
       bifrostFormQuestionWithResponse.bifrostFormQuestion
         .bifrostFormQuestionId ===
       ReservedBifrostFormQuestionIds.INQUIRY_DETAILS
     ) {
-      nextQuestionWithResponse = mockBifrostFormQuestionWithTextResponseFour;
+      nextQuestionWithResponse =
+        mockBifrostFormQuestionWithMultiStageReasonForTravelResponse;
     } else if (
       bifrostFormQuestionWithResponse.bifrostFormQuestion
         .bifrostFormQuestionId ===
-      ReservedBifrostFormQuestionIds.REASON_FOR_TRAVEL
+      ReservedBifrostFormQuestionIds.REASON_FOR_TRAVEL_WITH_DETAILS
     ) {
       nextQuestionWithResponse =
-        mockBifrostToggleButtonGroupFormQuestionWithTextResponseTwo;
+        mockBifrostFormQuestionWithMultiStageSmartDateResponseEmpty;
     } else if (
-      bifrostFormQuestionWithResponse.bifrostFormQuestion
-        .bifrostFormQuestionId ===
-      ReservedBifrostFormQuestionIds.ARE_ITINERARY_DATES_FLEXIBLE
-    ) {
-      if (
-        bifrostFormQuestionWithResponse.responseData.responseValue ===
-        ReservedBifrostDateFlexibilityOptionValues.FIRM_DATES
-      ) {
-        nextQuestionWithResponse =
-          mockBifrostFormQuestionWithCalendarDateRangeResponseOne;
-      } else if (
-        bifrostFormQuestionWithResponse.responseData.responseValue ===
-        ReservedBifrostDateFlexibilityOptionValues.FLEXIBLE_DATES
-      ) {
-        nextQuestionWithResponse =
-          mockBifrostFormQuestionWithMultiCalendarDateRangeResponseOne;
-      } else if (
-        bifrostFormQuestionWithResponse.responseData.responseValue ===
-        ReservedBifrostDateFlexibilityOptionValues.STILL_DECIDING
-      ) {
-        nextQuestionWithResponse =
-          mockBifrostTextInputFormQuestionWithTextResponseOne;
-      }
-    } else if (
-      [
-        mockBifrostFormQuestionWithCalendarDateRangeResponseOne
-          .bifrostFormQuestion.bifrostFormQuestionId,
-        mockBifrostFormQuestionWithMultiCalendarDateRangeResponseOne
-          .bifrostFormQuestion.bifrostFormQuestionId,
-        mockBifrostTextInputFormQuestionWithTextResponseOne.bifrostFormQuestion
-          .bifrostFormQuestionId,
-      ].includes(
+      [ReservedBifrostFormQuestionIds.CALENDAR_DATES].includes(
         bifrostFormQuestionWithResponse.bifrostFormQuestion
-          .bifrostFormQuestionId
+          .bifrostFormQuestionId as ReservedBifrostFormQuestionIds
       )
     ) {
       nextQuestionWithResponse =
@@ -181,7 +154,7 @@ export class MockBifrostApi implements BifrostApiInterface {
   async guestUpdateCustomRenderableItineraryOfferHotelRoomOfferCount({
     userSessionId,
     itineraryOfferId,
-    hotelRoomId,
+    hotelRoomOfferId,
     updatedCountOffered,
   }: UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountRequestDto): Promise<UpdateGuestCustomRenderableItineraryOfferHotelRoomOfferCountSuccessResponseDataDto> {
     const existingItineraryOffer = this.apiState.itineraryOffers.find(
@@ -206,7 +179,7 @@ export class MockBifrostApi implements BifrostApiInterface {
               ): RenderableItineraryHotelRoomOffer => {
                 if (
                   itineraryOffer.itineraryOfferId === itineraryOfferId &&
-                  hotelRoomOffer.hotelRoomId === hotelRoomId
+                  hotelRoomOffer.hotelRoomOfferId === hotelRoomOfferId
                 ) {
                   return {
                     ...hotelRoomOffer,
@@ -223,7 +196,7 @@ export class MockBifrostApi implements BifrostApiInterface {
 
       return {
         itineraryOfferId,
-        hotelRoomId,
+        hotelRoomOfferId,
         updatedCountOffered,
       };
     } else if (
@@ -243,7 +216,7 @@ export class MockBifrostApi implements BifrostApiInterface {
           (
             hotelRoomOffer: RenderableItineraryHotelRoomOffer
           ): RenderableItineraryHotelRoomOffer => {
-            if (hotelRoomOffer.hotelRoomId === hotelRoomId) {
+            if (hotelRoomOffer.hotelRoomOfferId === hotelRoomOfferId) {
               return {
                 ...hotelRoomOffer,
                 countOffered: updatedCountOffered,
@@ -258,7 +231,7 @@ export class MockBifrostApi implements BifrostApiInterface {
 
       return {
         itineraryOfferId: customGuestItineraryOffer.itineraryOfferId,
-        hotelRoomId,
+        hotelRoomOfferId,
         updatedCountOffered,
       };
     } else {

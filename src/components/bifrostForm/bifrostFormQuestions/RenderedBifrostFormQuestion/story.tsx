@@ -5,8 +5,8 @@ import {
   RenderedBifrostFormQuestionProps,
 } from ".";
 import { mockBifrostFormQuestionWithTextResponseOne } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionResponse } from "@kismet_ai/foundation";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { updateBifrostFormQuestionWithResponse } from "@/utilities/bifrostFormQuestions/updateBifrostFormQuestionWithResponse";
 
 const meta: Meta<typeof RenderedBifrostFormQuestion> = {
@@ -25,6 +25,7 @@ const StoryWrapper = () => {
 
   const dynamicArgs: RenderedBifrostFormQuestionProps = {
     bifrostFormQuestionWithResponse,
+
     setBifrostFormQuestionResponse: ({
       updatedBifrostFormQuestionResponse,
     }: {
@@ -41,6 +42,17 @@ const StoryWrapper = () => {
           });
         }
       );
+      suggestCalendarDateRangesFromConstraints: async ({
+        descriptionOfPotentialCalendarDates,
+      }: {
+        descriptionOfPotentialCalendarDates: string;
+      }) => {
+        console.log(
+          "descriptionOfPotentialCalendarDates",
+          descriptionOfPotentialCalendarDates
+        );
+        return [];
+      };
     },
     setIsResponseValid: ({ isResponseValid }) => {
       console.log("isResponseValid", isResponseValid);
@@ -51,6 +63,17 @@ const StoryWrapper = () => {
       hasQuestionBeenRespondedTo: boolean;
     }) => {
       console.log("hasQuestionBeenRespondedTo", hasQuestionBeenRespondedTo);
+    },
+    suggestCalendarDateRangesFromConstraints: async ({
+      descriptionOfPotentialCalendarDates,
+    }: {
+      descriptionOfPotentialCalendarDates: string;
+    }) => {
+      console.log(
+        "descriptionOfPotentialCalendarDates",
+        descriptionOfPotentialCalendarDates
+      );
+      return [];
     },
   };
 

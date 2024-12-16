@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderableItineraryHotelRoomOffer } from "../../../../models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 import { CircleArrowDown, CircleArrowUp } from "lucide-react";
 import {
   Tooltip,
@@ -16,15 +16,15 @@ export enum HotelRoomCarouselItemIndicatorLabel {
 
 export interface HotelRoomCarouselItemProps {
   hotelRoomOffer: RenderableItineraryHotelRoomOffer;
-  onClick: ({ hotelRoomId }: { hotelRoomId: string }) => void;
+  onClick: ({ hotelRoomOfferId }: { hotelRoomOfferId: string }) => void;
   hotelRoomCarouselItemIndicatorLabel: HotelRoomCarouselItemIndicatorLabel;
   isCountEditable: boolean;
   onClickUpdateItineraryOfferHotelRoomCount: ({
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => void;
 }
 
@@ -74,7 +74,7 @@ export function HotelRoomCarouselItem({
           className="relative w-36 h-36 mx-auto cursor-pointer"
           onClick={() =>
             onClick({
-              hotelRoomId: hotelRoomOffer.hotelRoomId,
+              hotelRoomOfferId: hotelRoomOffer.hotelRoomOfferId,
             })
           }
         >
@@ -95,7 +95,7 @@ export function HotelRoomCarouselItem({
                   e.stopPropagation();
                   onClickUpdateItineraryOfferHotelRoomCount({
                     updatedCountOffered: hotelRoomOffer.countOffered - 1,
-                    hotelRoomId: hotelRoomOffer.hotelRoomId,
+                    hotelRoomOfferId: hotelRoomOffer.hotelRoomOfferId,
                   });
                 }}
               >
@@ -121,7 +121,7 @@ export function HotelRoomCarouselItem({
                   e.stopPropagation();
                   onClickUpdateItineraryOfferHotelRoomCount({
                     updatedCountOffered: hotelRoomOffer.countOffered + 1,
-                    hotelRoomId: hotelRoomOffer.hotelRoomId,
+                    hotelRoomOfferId: hotelRoomOffer.hotelRoomOfferId,
                   });
                 }}
               >

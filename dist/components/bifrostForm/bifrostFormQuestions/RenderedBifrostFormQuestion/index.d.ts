@@ -1,6 +1,5 @@
 import React from "react";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { BifrostFormQuestionResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionResponse";
+import { BifrostFormQuestionResponse, BifrostFormQuestionWithResponse, CalendarDateRange } from "@kismet_ai/foundation";
 export interface RenderedBifrostFormQuestionProps {
     bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
     setBifrostFormQuestionResponse: ({ updatedBifrostFormQuestionResponse, }: {
@@ -12,5 +11,8 @@ export interface RenderedBifrostFormQuestionProps {
     setHasQuestionBeenRespondedTo: ({ hasQuestionBeenRespondedTo, }: {
         hasQuestionBeenRespondedTo: boolean;
     }) => void;
+    suggestCalendarDateRangesFromConstraints: ({ descriptionOfPotentialCalendarDates, }: {
+        descriptionOfPotentialCalendarDates: string;
+    }) => Promise<CalendarDateRange[]>;
 }
-export declare function RenderedBifrostFormQuestion({ bifrostFormQuestionWithResponse, setBifrostFormQuestionResponse, setIsResponseValid, setHasQuestionBeenRespondedTo, }: RenderedBifrostFormQuestionProps): React.JSX.Element;
+export declare function RenderedBifrostFormQuestion({ bifrostFormQuestionWithResponse, setBifrostFormQuestionResponse, setIsResponseValid, setHasQuestionBeenRespondedTo, suggestCalendarDateRangesFromConstraints, }: RenderedBifrostFormQuestionProps): React.JSX.Element;

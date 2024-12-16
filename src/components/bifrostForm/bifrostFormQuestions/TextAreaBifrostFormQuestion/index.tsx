@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FormField } from "@/components/atoms/forms/FormField";
-import { RenderableTextAreaBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableTextAreaBifrostFormQuestion } from "@kismet_ai/foundation";
 import { KismetSectionHeader } from "@/components/atoms";
+import { KismetTextArea } from "@/components/atoms/KismetTextArea";
 
 export interface TextAreaBifrostFormQuestionProps {
   renderableTextAreaBifrostFormQuestion: RenderableTextAreaBifrostFormQuestion;
@@ -48,11 +49,11 @@ export function TextAreaBifrostFormQuestion({
     };
   }, [value, isFocused, setIsResponseValid, setHasQuestionBeenRespondedTo]);
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue({ updatedValue: event.target.value });
+  const handleSetValue = ({ updatedValue }: { updatedValue: string }) => {
+    setValue({ updatedValue });
 
     if (renderableTextAreaBifrostFormQuestion.required) {
-      setIsResponseValid({ isResponseValid: event.target.value !== "" });
+      setIsResponseValid({ isResponseValid: updatedValue !== "" });
     }
   };
 
@@ -65,14 +66,15 @@ export function TextAreaBifrostFormQuestion({
         {renderableTextAreaBifrostFormQuestion.label}
       </KismetSectionHeader>
 
-      <textarea
-        onChange={handleOnChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        id={inputId}
-        placeholder={""}
+      <KismetTextArea
         value={value}
-        className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        setValue={({ updatedValue }) => {
+          handleSetValue({ updatedValue });
+        }}
+        placeholder=""
+        inputId={inputId}
+        onFocus={handleFocus}
+        onLoseFocus={handleBlur}
       />
     </FormField>
   );

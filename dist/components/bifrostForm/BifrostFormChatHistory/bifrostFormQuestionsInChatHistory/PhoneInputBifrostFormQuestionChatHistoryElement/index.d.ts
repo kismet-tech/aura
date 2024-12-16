@@ -1,5 +1,5 @@
 import React from "react";
-import { BifrostFormQuestionWithPhoneNumberResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithPhoneNumberResponse } from "@kismet_ai/foundation";
 export interface PhoneInputBifrostFormQuestionChatHistoryElementProps {
     guestFirstName: string;
     bifrostFormQuestionWithPhoneNumberResponse: BifrostFormQuestionWithPhoneNumberResponse;

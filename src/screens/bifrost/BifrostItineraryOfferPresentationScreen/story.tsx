@@ -10,7 +10,7 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseTwo,
   mockBifrostFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { MockBifrostApi } from "@/apis/bifrostApi/mockBifrostApi";
 import { AppViewport } from "@/components/atoms/AppViewport";
 import { BifrostFormStateProvider } from "@/providers/BifrostFormStateProvider";
@@ -21,7 +21,7 @@ import {
   mockRenderableItineraryOfferThree,
 } from "@/mockData/bifrost/mockRenderableItineraryOffers";
 import { useBifrostFormState } from "@/providers/BifrostFormStateProvider/useBifrostFormState";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostItineraryOfferPresentationScreen> = {
   title: "BifrostForm/Screens/BifrostItineraryOfferPresentationScreen",
@@ -53,16 +53,16 @@ const StoryWrapper = () => {
     onClickUpdateItineraryOfferHotelRoomCount: async ({
       itineraryOfferId,
       updatedCountOffered,
-      hotelRoomId,
+      hotelRoomOfferId,
     }: {
       itineraryOfferId: string;
       updatedCountOffered: number;
-      hotelRoomId: string;
+      hotelRoomOfferId: string;
     }): Promise<{ updatedItineraryOfferId: string }> => {
       return updateItineraryOfferHotelRoomCount({
         itineraryOfferId,
         updatedCountOffered,
-        hotelRoomId,
+        hotelRoomOfferId,
       });
     },
     onClickSelectItineraryOfferAndGoToPaymentsPage: async ({

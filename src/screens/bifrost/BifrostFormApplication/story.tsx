@@ -29,8 +29,6 @@ const MockBifrostApiStoryWrapper = () => {
         "#storybook-root"
       ) as HTMLDivElement;
 
-      formContainer.style.setProperty("font-family", "Outfit");
-
       const themeVariables = knollcroftTheme;
       injectTheme(formContainer, themeVariables);
     }

@@ -1,4 +1,4 @@
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import React from "react";
 export interface ItineraryOfferPresentationProps {
     itineraryOfferId: string;
@@ -6,8 +6,8 @@ export interface ItineraryOfferPresentationProps {
     onSelectAlternativeItineraryOffer: ({ itineraryOfferId, }: {
         itineraryOfferId: string;
     }) => void;
-    onClickHotelRoom: ({ hotelRoomId }: {
-        hotelRoomId: string;
+    onClickHotelRoom: ({ hotelRoomOfferId, }: {
+        hotelRoomOfferId: string;
     }) => void;
     onClickSelectItineraryOfferAndGoToPaymentsPage: ({ itineraryOfferId, }: {
         itineraryOfferId: string;

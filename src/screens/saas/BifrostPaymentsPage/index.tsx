@@ -6,7 +6,7 @@ import {
   BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
 } from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
-import { RenderableItineraryHotelRoomOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
@@ -22,10 +22,10 @@ interface BifrostGroupBookingCheckoutRootPageProps {
   onClickLogin: () => void;
   onClickUpdateHotelRoomCountInCart: ({
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => void;
   onClickCheckout: () => void;
 }

@@ -1,4 +1,4 @@
-import { CalendarDate } from "@/models/core/date/CalendarDate";
+import { CalendarDate } from "@kismet_ai/foundation";
 import { RenderedCalendarDateFormat } from "./RenderedCalendarDateFormat";
 import { renderMMSlashDDSlashYYFormatCalendarDate } from "./renderedFormats/renderMMSlashDDSlashYYFormatCalendarDate";
 import { renderAbbreviatedMonthDayOptionalYearFormatCalendarDate } from "./renderedFormats/renderAbbreviatedMonthDayOptionalYearFormatCalendarDate";

@@ -1,4 +1,4 @@
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import React from "react";
 import { AlternativeItineraryOfferPreview } from "../../ItineraryOfferPresentation/AlternativeItineraryOfferPreview";
 import { Button } from "@/components/shadcn/button";

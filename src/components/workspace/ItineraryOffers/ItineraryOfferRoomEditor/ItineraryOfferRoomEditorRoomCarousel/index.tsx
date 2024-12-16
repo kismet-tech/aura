@@ -2,44 +2,74 @@ import { Carousel } from "@/components/displays/Carousel";
 import {
   RenderableItineraryOffer,
   RenderableItineraryHotelRoomOffer,
-} from "@/models/bifrost/RenderableItineraryOffer";
+} from "@kismet_ai/foundation";
 import React from "react";
 import {
   HotelRoomCarouselItem,
   HotelRoomCarouselItemIndicatorLabel,
 } from "../../HotelRoomCarouselItem";
+import { AddHotelRoomCarouselItem } from "../../AddHotelRoomCarouselItem";
 
 export interface ItineraryOfferRoomEditorRoomCarouselProps {
   renderableItineraryOffer: RenderableItineraryOffer;
-  selectedHotelRoomId: string | undefined;
-  setSelectedHotelRoomId: ({ hotelRoomId }: { hotelRoomId: string }) => void;
+  selectedHotelRoomOfferId: string | undefined;
+  setSelectedHotelRoomOfferId: ({
+    hotelRoomOfferId,
+  }: {
+    hotelRoomOfferId: string;
+  }) => void;
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     itineraryOfferId: string;
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => void;
+  includeAddRoomButton?: boolean;
+  onClickAddRoomButton?: () => void;
 }
 
 export function ItineraryOfferRoomEditorRoomCarousel({
   renderableItineraryOffer,
-  setSelectedHotelRoomId,
+  setSelectedHotelRoomOfferId,
   onClickUpdateItineraryOfferHotelRoomCount,
+  includeAddRoomButton,
+  onClickAddRoomButton,
 }: ItineraryOfferRoomEditorRoomCarouselProps) {
   return (
     <Carousel
       spaceBetween={-40}
-      items={renderableItineraryOffer.hotelRoomOffers}
-      renderItem={(hotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
+      items={
+        includeAddRoomButton
+          ? [...renderableItineraryOffer.hotelRoomOffers, "ADD_ROOM"]
+          : [...renderableItineraryOffer.hotelRoomOffers]
+      }
+      renderItem={(
+        hotelRoomOfferOrAddRoomItem:
+          | RenderableItineraryHotelRoomOffer
+          | "ADD_ROOM"
+      ) => {
+        if (hotelRoomOfferOrAddRoomItem === "ADD_ROOM") {
+          return (
+            <AddHotelRoomCarouselItem
+              onClick={() => {
+                if (onClickAddRoomButton) {
+                  onClickAddRoomButton();
+                }
+              }}
+            />
+          );
+        }
+        const hotelRoomOffer = hotelRoomOfferOrAddRoomItem;
+
         return (
           <HotelRoomCarouselItem
             hotelRoomOffer={hotelRoomOffer}
             onClick={() =>
-              setSelectedHotelRoomId({
-                hotelRoomId: hotelRoomOffer.hotelRoomId,
+              setSelectedHotelRoomOfferId({
+                hotelRoomOfferId: hotelRoomOffer.hotelRoomOfferId,
               })
             }
             isCountEditable={true}
@@ -48,23 +78,30 @@ export function ItineraryOfferRoomEditorRoomCarousel({
             }
             onClickUpdateItineraryOfferHotelRoomCount={({
               updatedCountOffered,
-              hotelRoomId,
+              hotelRoomOfferId,
             }: {
               updatedCountOffered: number;
-              hotelRoomId: string;
+              hotelRoomOfferId: string;
             }) => {
               onClickUpdateItineraryOfferHotelRoomCount({
                 itineraryOfferId: renderableItineraryOffer.itineraryOfferId,
                 updatedCountOffered,
-                hotelRoomId,
+                hotelRoomOfferId,
               });
             }}
           />
         );
       }}
-      itemKey={(hotelRoomOffer: RenderableItineraryHotelRoomOffer) =>
-        hotelRoomOffer.hotelRoomId
-      }
+      itemKey={(
+        hotelRoomOfferOrAddRoomItem:
+          | RenderableItineraryHotelRoomOffer
+          | "ADD_ROOM"
+      ) => {
+        if (hotelRoomOfferOrAddRoomItem === "ADD_ROOM") {
+          return "ADD_ROOM";
+        }
+        return hotelRoomOfferOrAddRoomItem.hotelRoomOfferId;
+      }}
       interItemComponent={<></>}
     />
   );

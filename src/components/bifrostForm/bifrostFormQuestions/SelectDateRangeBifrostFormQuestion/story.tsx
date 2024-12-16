@@ -5,7 +5,7 @@ import {
 } from ".";
 import React, { useState } from "react";
 import { mockRenderableSelectDateRangeBifrostFormQuestionOne } from "@/mockData/bifrost/bifrostFormQuestions/mockRenderableBifrostFormQuestions";
-import { PendingCalendarDateRange } from "@/models/core/date/CalendarDateRange";
+import { PendingCalendarDateRange } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof SelectDateRangeBifrostFormQuestion> = {
   title: "BifrostFormQuestions/SelectDateRangeBifrostFormQuestion",

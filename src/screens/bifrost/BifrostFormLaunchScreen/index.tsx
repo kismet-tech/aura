@@ -1,6 +1,9 @@
 import { KismetHeader } from "@/components/atoms";
 import React, { useEffect, useState } from "react";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import {
+  BifrostFormQuestionWithResponse,
+  CalendarDateRange,
+} from "@kismet_ai/foundation";
 import { ActiveBifrostFormQuestions } from "@/components/bifrostForm/ActiveBifrostFormQuestions";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 
@@ -12,12 +15,18 @@ export interface BifrostFormLaunchScreenProps {
     updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
   }) => void;
   handleProgressForward: () => void;
+  suggestCalendarDateRangesFromConstraints: ({
+    descriptionOfPotentialCalendarDates,
+  }: {
+    descriptionOfPotentialCalendarDates: string;
+  }) => Promise<CalendarDateRange[]>;
 }
 
 export function BifrostFormLaunchScreen({
   activeBifrostFormQuestionsWithResponses,
   setBifrostFormQuestionWithResponse,
   handleProgressForward,
+  suggestCalendarDateRangesFromConstraints,
 }: BifrostFormLaunchScreenProps) {
   const [allResponsesAreValid, setAllResponsesAreValid] =
     useState<boolean>(false);
@@ -44,12 +53,24 @@ export function BifrostFormLaunchScreen({
           setBifrostFormQuestionWithResponse={
             setBifrostFormQuestionWithResponse
           }
-          setAreAllResponsesValid={({
-            areAllResponsesValid,
+          setBifrostFormQuestionIdsWithValidResponses={({
+            bifrostFormQuestionIdsWithValidResponses,
           }: {
-            areAllResponsesValid: boolean;
+            bifrostFormQuestionIdsWithValidResponses: string[];
           }) => {
-            setAllResponsesAreValid(areAllResponsesValid);
+            setAllResponsesAreValid(
+              bifrostFormQuestionIdsWithValidResponses.length > 0 &&
+                activeBifrostFormQuestionsWithResponses.every(
+                  (
+                    activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+                  ) => {
+                    return bifrostFormQuestionIdsWithValidResponses.includes(
+                      activeBifrostFormQuestionWithResponse.bifrostFormQuestion
+                        .bifrostFormQuestionId
+                    );
+                  }
+                )
+            );
           }}
           setBifrostFormQuestionIdsRespondedTo={({
             bifrostFormQuestionIdsRespondedTo,
@@ -70,6 +91,9 @@ export function BifrostFormLaunchScreen({
                 )
             );
           }}
+          suggestCalendarDateRangesFromConstraints={
+            suggestCalendarDateRangesFromConstraints
+          }
         />
       </div>
       <div className="flex justify-end">

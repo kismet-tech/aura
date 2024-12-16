@@ -1,9 +1,9 @@
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse, CalendarDateRange } from "@kismet_ai/foundation";
 import { ReactNode } from "react";
 import { BifrostFormApplicationStage } from "./BifrostFormApplicationStage";
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { BifrostApiInterface } from "@/apis/bifrostApi/models";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 export interface BifrostFormStateProviderProps {
     children: ReactNode;
     bifrostApi: BifrostApiInterface;
@@ -21,6 +21,9 @@ export interface BifrostFormStateContextValue {
     setBifrostFormQuestionWithResponse: ({ updatedBifrostFormQuestionWithResponse, }: {
         updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
     }) => void;
+    suggestCalendarDateRangesFromConstraints: ({ descriptionOfPotentialCalendarDates, }: {
+        descriptionOfPotentialCalendarDates: string;
+    }) => Promise<CalendarDateRange[]>;
     activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
     setActiveBifrostFormQuestionsWithResponses: ({ updatedActiveBifrostFormQuestionsWithResponses, }: {
         updatedActiveBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
@@ -32,9 +35,9 @@ export interface BifrostFormStateContextValue {
     setRenderableItineraryOffersFromKismetAI: ({ updatedRenderableItineraryOffers, }: {
         updatedRenderableItineraryOffers: RenderableItineraryOffer[];
     }) => void;
-    updateItineraryOfferHotelRoomCount: ({ itineraryOfferId, hotelRoomId, updatedCountOffered, }: {
+    updateItineraryOfferHotelRoomCount: ({ itineraryOfferId, hotelRoomOfferId, updatedCountOffered, }: {
         itineraryOfferId: string;
-        hotelRoomId: string;
+        hotelRoomOfferId: string;
         updatedCountOffered: number;
     }) => Promise<{
         updatedItineraryOfferId: string;

@@ -6,7 +6,7 @@ import {
   mockBifrostFormQuestionWithSplitTextResponseTwo,
   mockBifrostFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import {
   BifrostFormInteractiveLoopScreen,
   BifrostFormInteractiveLoopScreenProps,
@@ -32,6 +32,7 @@ const StoryWrapper = () => {
     historicalBifrostFormQuestionsWithResponses,
     renderablePendingItinerary,
     submitBifrostFormQuestion,
+    suggestCalendarDateRangesFromConstraints,
   } = useBifrostFormState();
 
   const dynamicArgs: BifrostFormInteractiveLoopScreenProps = {
@@ -40,6 +41,7 @@ const StoryWrapper = () => {
     setBifrostFormQuestionWithResponse,
     renderablePendingItinerary,
     submitBifrostFormQuestion,
+    suggestCalendarDateRangesFromConstraints,
   };
 
   return <BifrostFormInteractiveLoopScreen {...dynamicArgs} />;

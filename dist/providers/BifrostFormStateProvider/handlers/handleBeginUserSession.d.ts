@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import { BifrostApiInterface } from "@/apis/bifrostApi/models";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
+import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { BifrostFormApplicationStage } from "../models/BifrostFormApplicationStage";
 interface HandleBeginUserSessionProps {
     setBifrostFormApplicationStage: React.Dispatch<React.SetStateAction<BifrostFormApplicationStage>>;

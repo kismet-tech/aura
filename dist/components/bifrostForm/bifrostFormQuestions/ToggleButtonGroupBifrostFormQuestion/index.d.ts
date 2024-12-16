@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderableToggleButtonGroupBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableToggleButtonGroupBifrostFormQuestion } from "@kismet_ai/foundation";
 export interface ToggleButtonGroupBifrostFormQuestionProps {
     renderableToggleButtonGroupBifrostFormQuestion: RenderableToggleButtonGroupBifrostFormQuestion;
     value: string | undefined;

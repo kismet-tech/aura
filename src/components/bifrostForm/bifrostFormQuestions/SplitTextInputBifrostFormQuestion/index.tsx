@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RenderableSplitTextInputBifrostFormQuestion } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestion";
+import { RenderableSplitTextInputBifrostFormQuestion } from "@kismet_ai/foundation";
 import { TextInputBifrostFormQuestion } from "../TextInputBifrostFormQuestion";
 import { KismetSectionHeader } from "@/components/atoms/KismetSectionHeader";
 

@@ -1,12 +1,12 @@
 import React from "react";
 import { RenderablePendingItinerary } from "./models/RenderablePendingItinerary";
-import { RenderableItineraryOffer } from "@/models/bifrost/RenderableItineraryOffer";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 export interface PendingItineraryPlannerProps {
     renderablePendingItinerary: RenderablePendingItinerary;
     itineraryOfferId: string;
     renderableItineraryOffers: RenderableItineraryOffer[];
-    onClickHotelRoom: ({ hotelRoomId }: {
-        hotelRoomId: string;
+    onClickHotelRoom: ({ hotelRoomOfferId, }: {
+        hotelRoomOfferId: string;
     }) => void;
 }
 export declare function PendingItineraryPlanner({ renderablePendingItinerary, itineraryOfferId, renderableItineraryOffers, onClickHotelRoom, }: PendingItineraryPlannerProps): React.JSX.Element;

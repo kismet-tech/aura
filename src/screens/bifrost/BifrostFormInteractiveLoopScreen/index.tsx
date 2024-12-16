@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { BifrostFormQuestionWithResponse } from "@/models/bifrost/BifrostFormQuestions/BifrostFormQuestionWithResponse";
-import { PendingItineraryPlannerHeader } from "@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeader";
+import {
+  BifrostFormQuestionWithResponse,
+  CalendarDateRange,
+} from "@kismet_ai/foundation";
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { BifrostFormInteractionHistory } from "@/components/bifrostForm/BifrostFormInteractionHistory";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 import { deepEqual } from "@/utilities/core/deepEqual";
 import { ActiveBifrostFormQuestions } from "@/components/bifrostForm/ActiveBifrostFormQuestions";
+import { PendingItineraryPlannerHeaderClosed } from "@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeaderClosed";
 
 export interface BifrostFormInteractiveLoopScreenProps {
   historicalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
@@ -17,6 +20,11 @@ export interface BifrostFormInteractiveLoopScreenProps {
     updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
   }) => void;
   submitBifrostFormQuestion: () => Promise<void>;
+  suggestCalendarDateRangesFromConstraints: ({
+    descriptionOfPotentialCalendarDates,
+  }: {
+    descriptionOfPotentialCalendarDates: string;
+  }) => Promise<CalendarDateRange[]>;
 }
 
 export function BifrostFormInteractiveLoopScreen({
@@ -25,11 +33,16 @@ export function BifrostFormInteractiveLoopScreen({
   renderablePendingItinerary,
   setBifrostFormQuestionWithResponse,
   submitBifrostFormQuestion,
+  suggestCalendarDateRangesFromConstraints,
 }: BifrostFormInteractiveLoopScreenProps) {
-  const [allResponsesAreValid, setAllResponsesAreValid] = useState(false);
   const [
     bifrostFormQuestionIdsRespondedTo,
     setBifrostFormQuestionIdsRespondedTo,
+  ] = useState<string[]>([]);
+
+  const [
+    bifrostFormQuestionIdsWithValidResponses,
+    setBifrostFormQuestionIdsWithValidResponses,
   ] = useState<string[]>([]);
 
   // Create refs
@@ -43,12 +56,26 @@ export function BifrostFormInteractiveLoopScreen({
 
   useEffect(() => {
     if (
-      allResponsesAreValid &&
       activeBifrostFormQuestionsWithResponses.length > 0 &&
+      bifrostFormQuestionIdsWithValidResponses.length > 0 &&
+      activeBifrostFormQuestionsWithResponses.length ===
+        bifrostFormQuestionIdsWithValidResponses.length &&
+      activeBifrostFormQuestionsWithResponses.every(
+        (
+          activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+        ) => {
+          return bifrostFormQuestionIdsWithValidResponses.includes(
+            activeBifrostFormQuestionWithResponse.bifrostFormQuestion
+              .bifrostFormQuestionId
+          );
+        }
+      ) &&
       bifrostFormQuestionIdsRespondedTo.length ===
         activeBifrostFormQuestionsWithResponses.length &&
       activeBifrostFormQuestionsWithResponses.every(
-        (activeBifrostFormQuestionWithResponse) => {
+        (
+          activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+        ) => {
           return bifrostFormQuestionIdsRespondedTo.includes(
             activeBifrostFormQuestionWithResponse.bifrostFormQuestion
               .bifrostFormQuestionId
@@ -59,7 +86,7 @@ export function BifrostFormInteractiveLoopScreen({
       submitBifrostFormQuestion();
     }
   }, [
-    allResponsesAreValid,
+    bifrostFormQuestionIdsWithValidResponses,
     bifrostFormQuestionIdsRespondedTo,
     activeBifrostFormQuestionsWithResponses,
   ]);
@@ -74,23 +101,16 @@ export function BifrostFormInteractiveLoopScreen({
       return !deepEqual(prev, current);
     };
 
-    console.log(
-      `activeBifrostFormQuestionsWithResponses: ${JSON.stringify(
-        activeBifrostFormQuestionsWithResponses,
-        null,
-        4
-      )}`
-    );
-    console.log(`allResponsesAreValid: ${allResponsesAreValid}`);
-
     if (
-      allResponsesAreValid &&
       activeBifrostFormQuestionsWithResponses.length > 0 &&
-      bifrostFormQuestionIdsRespondedTo.length ===
-        activeBifrostFormQuestionsWithResponses.length &&
+      bifrostFormQuestionIdsWithValidResponses.length > 0 &&
+      activeBifrostFormQuestionsWithResponses.length ===
+        bifrostFormQuestionIdsWithValidResponses.length &&
       activeBifrostFormQuestionsWithResponses.every(
-        (activeBifrostFormQuestionWithResponse) => {
-          return bifrostFormQuestionIdsRespondedTo.includes(
+        (
+          activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+        ) => {
+          return bifrostFormQuestionIdsWithValidResponses.includes(
             activeBifrostFormQuestionWithResponse.bifrostFormQuestion
               .bifrostFormQuestionId
           );
@@ -113,7 +133,7 @@ export function BifrostFormInteractiveLoopScreen({
     <div className="flex flex-col flex-1 h-full overflow-hidden">
       {/* Header */}
       <div className="pb-4 flex-shrink-0">
-        <PendingItineraryPlannerHeader
+        <PendingItineraryPlannerHeaderClosed
           renderablePendingItinerary={renderablePendingItinerary}
         />
       </div>
@@ -126,21 +146,44 @@ export function BifrostFormInteractiveLoopScreen({
               historicalBifrostFormQuestionsWithResponses
             }
             setBifrostFormQuestionWithResponse={() => {}}
+            suggestCalendarDateRangesFromConstraints={
+              suggestCalendarDateRangesFromConstraints
+            }
           />
           <div ref={activeQuestionsRef}>
             <ActiveBifrostFormQuestions
               activeBifrostFormQuestionsWithResponses={
                 activeBifrostFormQuestionsWithResponses
               }
-              setBifrostFormQuestionWithResponse={
-                setBifrostFormQuestionWithResponse
-              }
-              setAreAllResponsesValid={({
-                areAllResponsesValid,
+              setBifrostFormQuestionWithResponse={({
+                updatedBifrostFormQuestionWithResponse,
               }: {
-                areAllResponsesValid: boolean;
+                updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
               }) => {
-                setAllResponsesAreValid(areAllResponsesValid);
+                setBifrostFormQuestionWithResponse({
+                  updatedBifrostFormQuestionWithResponse,
+                });
+              }}
+              setBifrostFormQuestionIdsWithValidResponses={({
+                bifrostFormQuestionIdsWithValidResponses,
+              }: {
+                bifrostFormQuestionIdsWithValidResponses: string[];
+              }) => {
+                setBifrostFormQuestionIdsWithValidResponses(
+                  (
+                    previousBifrostFormQuestionIdsWithValidResponses: string[]
+                  ): string[] => {
+                    if (
+                      deepEqual(
+                        bifrostFormQuestionIdsWithValidResponses,
+                        previousBifrostFormQuestionIdsWithValidResponses
+                      )
+                    ) {
+                      return previousBifrostFormQuestionIdsWithValidResponses;
+                    }
+                    return bifrostFormQuestionIdsWithValidResponses;
+                  }
+                );
               }}
               setBifrostFormQuestionIdsRespondedTo={({
                 bifrostFormQuestionIdsRespondedTo,
@@ -163,6 +206,9 @@ export function BifrostFormInteractiveLoopScreen({
                   }
                 );
               }}
+              suggestCalendarDateRangesFromConstraints={
+                suggestCalendarDateRangesFromConstraints
+              }
             />
           </div>
           {/* Spacer div */}
@@ -176,12 +222,15 @@ export function BifrostFormInteractiveLoopScreen({
             await handleSubmitBifrostFormQuestion();
           }}
           isEnabled={
-            allResponsesAreValid &&
-            bifrostFormQuestionIdsRespondedTo.length ===
-              activeBifrostFormQuestionsWithResponses.length &&
+            activeBifrostFormQuestionsWithResponses.length > 0 &&
+            bifrostFormQuestionIdsWithValidResponses.length > 0 &&
+            activeBifrostFormQuestionsWithResponses.length ===
+              bifrostFormQuestionIdsWithValidResponses.length &&
             activeBifrostFormQuestionsWithResponses.every(
-              (activeBifrostFormQuestionWithResponse) => {
-                return bifrostFormQuestionIdsRespondedTo.includes(
+              (
+                activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+              ) => {
+                return bifrostFormQuestionIdsWithValidResponses.includes(
                   activeBifrostFormQuestionWithResponse.bifrostFormQuestion
                     .bifrostFormQuestionId
                 );

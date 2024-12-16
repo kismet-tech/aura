@@ -6,6 +6,7 @@ import {
 } from ".";
 import React from "react";
 import { mockRenderableItineraryHotelRoomOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
+import { mockRunOfHouseRenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof HotelRoomCarouselItem> = {
   title: "ItineraryOffer/HotelRoomCarouselItem",
@@ -25,13 +26,13 @@ const exampleOneArguments: HotelRoomCarouselItemProps = {
   isCountEditable: true,
   onClickUpdateItineraryOfferHotelRoomCount: ({
     updatedCountOffered,
-    hotelRoomId,
+    hotelRoomOfferId,
   }: {
     updatedCountOffered: number;
-    hotelRoomId: string;
+    hotelRoomOfferId: string;
   }) => {
     () => {
-      console.log(`Updated ${hotelRoomId} to ${updatedCountOffered}`);
+      console.log(`Updated ${hotelRoomOfferId} to ${updatedCountOffered}`);
     };
   },
 };
@@ -45,4 +46,36 @@ export const Example: Story = {
     );
   },
   args: exampleOneArguments,
+};
+
+const RunOfHouseExampleOneArguments: HotelRoomCarouselItemProps = {
+  hotelRoomOffer: mockRunOfHouseRenderableItineraryHotelRoomOffer,
+  onClick: () => {
+    console.log("Clicked");
+  },
+  hotelRoomCarouselItemIndicatorLabel:
+    HotelRoomCarouselItemIndicatorLabel.COUNT_AVAILABLE_VALUE_ONLY,
+  isCountEditable: true,
+  onClickUpdateItineraryOfferHotelRoomCount: ({
+    updatedCountOffered,
+    hotelRoomOfferId,
+  }: {
+    updatedCountOffered: number;
+    hotelRoomOfferId: string;
+  }) => {
+    () => {
+      console.log(`Updated ${hotelRoomOfferId} to ${updatedCountOffered}`);
+    };
+  },
+};
+
+export const RunOfHouseExample: Story = {
+  render: (args) => {
+    return (
+      <div style={{ width: "50%", margin: "0 auto" }}>
+        <HotelRoomCarouselItem {...args} />
+      </div>
+    );
+  },
+  args: RunOfHouseExampleOneArguments,
 };
