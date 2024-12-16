@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "@storybook/react";
 import { AddHotelRoomCarouselItem, AddHotelRoomCarouselItemProps } from ".";
 import React from "react";
 import { mockRenderableItineraryHotelRoomOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
-import { mockRunOfHouseRenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof AddHotelRoomCarouselItem> = {
   title: "ItineraryOffer/AddHotelRoomCarouselItem",
@@ -13,7 +12,6 @@ export default meta;
 type Story = StoryObj<typeof AddHotelRoomCarouselItem>;
 
 const exampleOneArguments: AddHotelRoomCarouselItemProps = {
-  hotelRoomOffer: mockRenderableItineraryHotelRoomOfferOne,
   onClick: () => {
     console.log("Clicked");
   },

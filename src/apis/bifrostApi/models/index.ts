@@ -24,6 +24,10 @@ import {
   SelectBifrostItineraryOfferRequestDto,
   SelectBifrostItineraryOfferSuccessResponseDataDto,
 } from "../bifrostApi/core/selectBifrostItineraryOffer/SelectBifrostItineraryOffer.dto";
+import {
+  GetBifrostFormItineraryOffersRequestDto,
+  GetBifrostFormItineraryOffersSuccessResponseDataDto,
+} from "../bifrostApi/core/getBifrostFormItineraryOffers/GetBifrostFormItineraryOffers.dto";
 
 export interface BifrostApiInterface {
   //////////////////////////////////////////////////
@@ -44,6 +48,10 @@ export interface BifrostApiInterface {
   submitBifrostFormQuestionWithResponse: (
     requestBody: SubmitBifrostFormQuestionsWithResponsesRequestDto
   ) => Promise<SubmitBifrostFormQuestionsWithResponsesSuccessResponseDataDto>;
+
+  getBifrostFormItineraryOffers: (
+    requestBody: GetBifrostFormItineraryOffersRequestDto
+  ) => Promise<GetBifrostFormItineraryOffersSuccessResponseDataDto>;
 
   //////////////////////////////////////////////////
   // Edit RenderableItineraryOffer

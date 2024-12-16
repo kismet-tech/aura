@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import packageJson from "./package.json" with { type: "json" };
+import json from '@rollup/plugin-json';
 
 import postcss from "rollup-plugin-postcss";
 
@@ -31,6 +32,7 @@ export default [
       postcss({
         plugins: [],
       }),
+      json(),
       terser(), // 👈 new line
     ],
   },
