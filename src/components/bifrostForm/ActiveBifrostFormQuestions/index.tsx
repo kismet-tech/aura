@@ -35,6 +35,13 @@ export interface ActiveBifrostFormQuestionsProps {
   }: {
     descriptionOfPotentialCalendarDates: string;
   }) => Promise<CalendarDateRange[]>;
+  onMountBifrostFormQuestion?: ({
+    bifrostFormQuestionId,
+    element,
+  }: {
+    bifrostFormQuestionId: string;
+    element: HTMLDivElement | null;
+  }) => void;
 }
 
 const MemoizedRenderedBifrostFormQuestion = React.memo(
@@ -53,6 +60,7 @@ export function ActiveBifrostFormQuestions({
   setBifrostFormQuestionIdsWithValidResponses,
   setBifrostFormQuestionIdsRespondedTo,
   suggestCalendarDateRangesFromConstraints,
+  onMountBifrostFormQuestion,
 }: ActiveBifrostFormQuestionsProps) {
   const [
     mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
@@ -319,6 +327,15 @@ export function ActiveBifrostFormQuestions({
               key={
                 bifrostFormQuestionWithResponse.bifrostFormQuestion
                   .bifrostFormQuestionId
+              }
+              ref={(element: HTMLDivElement | null) =>
+                onMountBifrostFormQuestion?.({
+                  bifrostFormQuestionId:
+                    bifrostFormQuestionWithResponse.bifrostFormQuestion
+                      .bifrostFormQuestionId,
+
+                  element,
+                })
               }
             >
               <MemoizedRenderedBifrostFormQuestion

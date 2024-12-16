@@ -7,13 +7,20 @@ import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/Re
 import { Calendar, Hotel, User } from "lucide-react";
 import { OrnateConciergeBell } from "@/components/atoms/icons/OrnateConciergeBell";
 import { MonopolyHouse } from "@/components/atoms/icons/MonopolyHouse";
+import { ReservedBifrostFormQuestionIds } from "@kismet_ai/foundation";
 
 export interface PendingItineraryPlannerHeaderClosedProps {
   renderablePendingItinerary: RenderablePendingItinerary;
+  scrollToBifrostFormQuestion: ({
+    formQuestionId,
+  }: {
+    formQuestionId: string;
+  }) => void;
 }
 
 export function PendingItineraryPlannerHeaderClosed({
   renderablePendingItinerary,
+  scrollToBifrostFormQuestion,
 }: PendingItineraryPlannerHeaderClosedProps) {
   let roomsIndicator: JSX.Element;
   if (
@@ -67,14 +74,34 @@ export function PendingItineraryPlannerHeaderClosed({
             <div className="mr-2">
               <MonopolyHouse />
             </div>
-            {roomsIndicator}
+            <span
+              onClick={(
+                event: React.MouseEvent<HTMLDivElement, MouseEvent>
+              ) => {
+                event.preventDefault();
+                scrollToBifrostFormQuestion({
+                  formQuestionId: `${ReservedBifrostFormQuestionIds.ESTIMATED_GUEST_COUNT}-${ReservedBifrostFormQuestionIds.COUNT_OF_ROOMS_NEEDED}`,
+                });
+              }}
+            >
+              {roomsIndicator}
+            </span>
           </div>
         </div>
         <div className="flex items-center mr-4">
           <div className="mr-2">
             <Calendar />
           </div>
-          {datesIndicator}
+          <span
+            onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+              event.preventDefault();
+              scrollToBifrostFormQuestion({
+                formQuestionId: ReservedBifrostFormQuestionIds.CALENDAR_DATES,
+              });
+            }}
+          >
+            {datesIndicator}
+          </span>
         </div>
         <div className="flex items-center">
           <div className="mr-2">

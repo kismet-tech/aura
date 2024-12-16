@@ -32,12 +32,24 @@ export function MultiStageSmartDateSelectorQuestionSuggestedCalendarDateRangeSel
   descriptionOfPotentialCalendarDates,
   suggestCalendarDateRangesFromConstraints,
 }: MultiStageSmartDateSelectorQuestionSuggestedCalendarDateRangeSelectorProps) {
+  console.log(
+    `descriptionOfPotentialCalendarDates: ${descriptionOfPotentialCalendarDates}`
+  );
+
   useEffect(() => {
     async function loadOptions() {
       const calendarDateRanges: CalendarDateRange[] =
         await suggestCalendarDateRangesFromConstraints({
           descriptionOfPotentialCalendarDates,
         });
+
+      console.log(
+        `THIS IS CALLED setSuggestedCalendarDateRanges: ${JSON.stringify(
+          calendarDateRanges,
+          null,
+          4
+        )}`
+      );
 
       setSuggestedCalendarDateRanges({
         updatedSuggestedCalendarDateRanges: calendarDateRanges,

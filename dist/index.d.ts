@@ -1,4 +1,4 @@
-import { RenderableItineraryHotelRoomOffer, CalendarDateRange, BifrostFormQuestionWithResponse, RenderableItineraryOffer, BifrostFormQuestion, BifrostFormQuestionResponse } from '@kismet_ai/foundation';
+import { BifrostFormQuestionWithResponse, CalendarDateRange, RenderableItineraryOffer, RenderableItineraryHotelRoomOffer, BifrostFormQuestion, BifrostFormQuestionResponse } from '@kismet_ai/foundation';
 import React, { ReactNode } from 'react';
 import { RenderablePendingItinerary } from '@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary';
 import { BifrostApiInterface as BifrostApiInterface$1 } from '@/apis/bifrostApi/models';

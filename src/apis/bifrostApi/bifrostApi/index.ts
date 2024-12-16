@@ -58,6 +58,9 @@ export class BifrostApi implements BifrostApiInterface {
         );
         const response = await fetch(`${apiBaseUrl}/${urlPath}`, {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Add this line
+          },
           body: JSON.stringify(requestBody),
         });
 

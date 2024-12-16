@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   BifrostFormQuestionWithResponse,
   CalendarDateRange,
@@ -49,6 +49,47 @@ export function BifrostFormInteractiveLoopScreen({
   const scrollableRef = useRef<HTMLDivElement>(null);
   const activeQuestionsRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
+
+  // QUESTION SCROLLING
+  ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  const questionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const scrollToBifrostFormQuestion: ({
+    formQuestionId,
+  }: {
+    formQuestionId: string;
+  }) => void = useCallback(({ formQuestionId }: { formQuestionId: string }) => {
+    console.log(`CLICKED ${formQuestionId}`);
+
+    const questionElement = questionRefs.current[formQuestionId];
+    if (questionElement) {
+      questionElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
+  const onMountBifrostFormQuestion: ({
+    bifrostFormQuestionId,
+    element,
+  }: {
+    bifrostFormQuestionId: string;
+    element: HTMLDivElement | null;
+  }) => void = useCallback(
+    ({
+      bifrostFormQuestionId,
+      element,
+    }: {
+      bifrostFormQuestionId: string;
+      element: HTMLDivElement | null;
+    }) => {
+      questionRefs.current[bifrostFormQuestionId] = element;
+    },
+    []
+  );
+
+  ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
 
   const previousActiveQuestionsRef = useRef<
     BifrostFormQuestionWithResponse[] | null
@@ -135,6 +176,7 @@ export function BifrostFormInteractiveLoopScreen({
       <div className="pb-4 flex-shrink-0">
         <PendingItineraryPlannerHeaderClosed
           renderablePendingItinerary={renderablePendingItinerary}
+          scrollToBifrostFormQuestion={scrollToBifrostFormQuestion}
         />
       </div>
 
@@ -149,6 +191,7 @@ export function BifrostFormInteractiveLoopScreen({
             suggestCalendarDateRangesFromConstraints={
               suggestCalendarDateRangesFromConstraints
             }
+            onMountBifrostFormQuestion={onMountBifrostFormQuestion}
           />
           <div ref={activeQuestionsRef}>
             <ActiveBifrostFormQuestions
@@ -209,6 +252,7 @@ export function BifrostFormInteractiveLoopScreen({
               suggestCalendarDateRangesFromConstraints={
                 suggestCalendarDateRangesFromConstraints
               }
+              onMountBifrostFormQuestion={onMountBifrostFormQuestion}
             />
           </div>
           {/* Spacer div */}

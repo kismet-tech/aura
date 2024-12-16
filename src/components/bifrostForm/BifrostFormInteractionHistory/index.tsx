@@ -24,6 +24,13 @@ export interface BifrostFormInteractionHistoryProps {
   }: {
     descriptionOfPotentialCalendarDates: string;
   }) => Promise<CalendarDateRange[]>;
+  onMountBifrostFormQuestion?: ({
+    bifrostFormQuestionId,
+    element,
+  }: {
+    bifrostFormQuestionId: string;
+    element: HTMLDivElement | null;
+  }) => void;
 }
 
 const MemoizedRenderedBifrostFormQuestion = React.memo(
@@ -38,6 +45,7 @@ export function BifrostFormInteractionHistory({
   bifrostFormQuestionsWithResponses,
   setBifrostFormQuestionWithResponse,
   suggestCalendarDateRangesFromConstraints,
+  onMountBifrostFormQuestion,
 }: BifrostFormInteractionHistoryProps) {
   const handleSetBifrostFormQuestionResponse = useCallback(
     (
@@ -74,6 +82,15 @@ export function BifrostFormInteractionHistory({
               key={
                 bifrostFormQuestionWithResponse.bifrostFormQuestion
                   .bifrostFormQuestionId
+              }
+              ref={(element: HTMLDivElement | null) =>
+                onMountBifrostFormQuestion?.({
+                  bifrostFormQuestionId:
+                    bifrostFormQuestionWithResponse.bifrostFormQuestion
+                      .bifrostFormQuestionId,
+
+                  element,
+                })
               }
             >
               <MemoizedRenderedBifrostFormQuestion
