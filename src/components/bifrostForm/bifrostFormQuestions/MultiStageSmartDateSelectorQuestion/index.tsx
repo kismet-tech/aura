@@ -12,8 +12,6 @@ import { MultiStageSmartDateSelectorQuestionDateFlexibilitySelector } from "./Mu
 import { MultiStageSmartDateSelectorQuestionMultiCalendarDateRangePicker } from "./MultiStageSmartDateSelectorQuestionMultiCalendarDateRangePicker";
 import { MultiStageSmartDateSelectorQuestionDescriptionOfPotentialCalendarDatesInput } from "./MultiStageSmartDateSelectorQuestionDescriptionOfPotentialCalendarDatesInput";
 import { MultiStageSmartDateSelectorQuestionSuggestedCalendarDateRangeSelector } from "./MultiStageSmartDateSelectorQuestionSuggestedCalendarDateRangeSelector";
-// eslint-disable-next-line
-
 
 export interface MultiStageSmartDateSelectorQuestionProps {
   renderableMultiStageSmartDateSelectorBifrostFormQuestion: RenderableMultiStageSmartDateSelectorBifrostFormQuestion;
