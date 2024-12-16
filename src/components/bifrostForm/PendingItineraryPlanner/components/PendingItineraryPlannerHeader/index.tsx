@@ -1,11 +1,8 @@
 import React from "react";
 import { RenderablePendingItinerary } from "../../models/RenderablePendingItinerary";
 import { KismetSectionHeader } from "@/components/atoms";
-import { Calendar, Hotel, User } from "lucide-react";
-import { OrnateConciergeBell } from "@/components/atoms/icons/OrnateConciergeBell";
-import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
-import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
-import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
+import { Calendar, Hotel, User, CalendarRange, Bell } from "lucide-react";
+import { MonopolyHouse } from "@/components/atoms/icons/MonopolyHouse";
 
 export interface PendingItineraryPlannerHeaderProps {
   renderablePendingItinerary: RenderablePendingItinerary;
@@ -20,92 +17,57 @@ export function PendingItineraryPlannerHeader({
     renderablePendingItinerary.countOfHotelRoomsInItinerary > 0
   ) {
     roomsIndicator = (
-      <span>
-        <span className="">
-          {renderablePendingItinerary.countOfHotelRoomsInItinerary} rooms
-        </span>{" "}
-        <span className="underline cursor-pointer">choose</span>
+      <span className="text-xs flex items-center gap-1 truncate">
+        <span className="truncate">{renderablePendingItinerary.countOfHotelRoomsInItinerary}</span>
+        <span className="underline cursor-pointer truncate">choose</span>
       </span>
     );
   } else {
-    roomsIndicator = <span className="underline cursor-pointer">choose</span>;
-  }
-
-  let datesIndicator: JSX.Element;
-  if (renderablePendingItinerary.calendarDateRangeInItinerary) {
-    datesIndicator = (
-      <span className="underline cursor-pointer">
-        {renderCalendarDateRange({
-          calendarDateRange:
-            renderablePendingItinerary.calendarDateRangeInItinerary,
-          renderedCalendarDateFormat:
-            RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
-          renderedCalendarDateRangeJoinFormat:
-            RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
-          collapseStrategy: {
-            collapseSameDay: true,
-            collapseSameMonth: false,
-          },
-        })}
-      </span>
-    );
-  } else {
-    datesIndicator = (
-      <span className="underline cursor-pointer">select dates</span>
-    );
+    roomsIndicator = <span className="underline cursor-pointer text-xs truncate">choose</span>;
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-white px-[10px] py-[5px] min-w-[300px] w-full border border-[#D6D6D6]">
       <div className="mb-4">
-        <div className="flex justify-between items-center">
-          <KismetSectionHeader>
-            {renderablePendingItinerary.itineraryName}
-          </KismetSectionHeader>
-          {/* <ExpandCollapseButton
-            isCollapsed={false}
-            onExpand={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-            onCollapse={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-          /> */}
-        </div>
+        <KismetSectionHeader>
+          {renderablePendingItinerary.itineraryName}
+        </KismetSectionHeader>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex min-w-0">
         <img
           src="https://www.bestambiance.com/wp-content/uploads/2022/09/cwo4c5et7jyz-aspect-ratio-800-800.jpg"
           alt="Hotel"
-          className="w-32 h-32 object-cover rounded mr-4"
+          className="w-24 h-[72px] object-cover mr-4 flex-shrink-0"
         />
-        <div className="space-y-2">
-          <div className="flex">
-            <div className="flex items-center mr-4">
-              <div className="mr-2">
-                <Hotel />
+        <div className="h-[72px] flex flex-col justify-between min-w-0 flex-1">
+          <div className="flex items-center gap-4 min-w-0 max-w-[calc(300px-96px-40px)]">
+            <div className="flex items-center gap-1 min-w-0">
+              <div className="flex-shrink-0">
+                <MonopolyHouse />
               </div>
               {roomsIndicator}
             </div>
-            <div className="flex items-center">
-              <div className="mr-2">
-                <User />
+            <div className="flex items-center gap-1 min-w-0">
+              <div className="flex-shrink-0">
+                <User className="w-4 h-4" />
               </div>
-              <span className="underline cursor-pointer">guests</span>
+              <span className="underline cursor-pointer text-xs truncate">guests</span>
             </div>
           </div>
-          <div className="flex items-center">
-            <div className="mr-2">
-              <Calendar />
+          
+          <div className="flex items-center gap-1 min-w-0">
+            <div className="flex-shrink-0">
+              <Calendar className="w-4 h-4" />
             </div>
-            {datesIndicator}
+            <span className="text-xs truncate">12/14/24 - 12/17/24</span>
           </div>
-          <div className="flex items-center">
-            <div className="mr-2">
-              <OrnateConciergeBell />
+          
+          <div className="flex items-center gap-1 min-w-0">
+            <div className="flex-shrink-0">
+              <Bell className="w-4 h-4" />
             </div>
-            <span className="underline cursor-pointer">details</span>
+            <span className="underline cursor-pointer text-xs truncate">details</span>
           </div>
         </div>
       </div>
