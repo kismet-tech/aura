@@ -74,7 +74,7 @@
     "@storybook/addon-links": "^8.4.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
+    "date-fns": "^3.0.0",
     "lucide-react": "^0.460.0",
     "react-day-picker": "8.10.1",
     "swiper": "^11.1.15",
