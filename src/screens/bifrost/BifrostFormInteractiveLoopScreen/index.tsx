@@ -60,8 +60,6 @@ export function BifrostFormInteractiveLoopScreen({
   }: {
     formQuestionId: string;
   }) => void = useCallback(({ formQuestionId }: { formQuestionId: string }) => {
-    console.log(`CLICKED ${formQuestionId}`);
-
     const questionElement = questionRefs.current[formQuestionId];
     if (questionElement) {
       questionElement.scrollIntoView({ behavior: "smooth", block: "start" });

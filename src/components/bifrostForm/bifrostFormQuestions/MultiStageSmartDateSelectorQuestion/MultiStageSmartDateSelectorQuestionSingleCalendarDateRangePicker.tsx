@@ -57,16 +57,15 @@ export function MultiStageSmartDateSelectorQuestionSingleCalendarDateRangePicker
   }: {
     pendingCalendarDateRange: PendingCalendarDateRange;
   }): boolean => {
-    if (
-      pendingCalendarDateRange.startCalendarDate === undefined &&
-      pendingCalendarDateRange.endCalendarDate === undefined
-    ) {
-      return true;
-    }
-
     return (
-      pendingCalendarDateRange.startCalendarDate !== undefined &&
-      pendingCalendarDateRange.endCalendarDate !== undefined
+      !!pendingCalendarDateRange.startCalendarDate &&
+      !!pendingCalendarDateRange.startCalendarDate.year &&
+      !!pendingCalendarDateRange.startCalendarDate.month &&
+      !!pendingCalendarDateRange.startCalendarDate.day &&
+      !!pendingCalendarDateRange.endCalendarDate &&
+      !!pendingCalendarDateRange.endCalendarDate.year &&
+      !!pendingCalendarDateRange.endCalendarDate.month &&
+      !!pendingCalendarDateRange.endCalendarDate.day
     );
   };
 

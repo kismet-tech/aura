@@ -32,8 +32,6 @@ export function ToggleButtonGroupBifrostFormQuestion({
 }: ToggleButtonGroupBifrostFormQuestionProps) {
   const inputId = `ToggleButtonGroupBifrostFormQuestion_${renderableToggleButtonGroupBifrostFormQuestion.bifrostFormQuestionId}`;
 
-  console.log(`ToggleButtonGroupBifrostFormQuestion: '${value}'`);
-
   useEffect(() => {
     setIsResponseValid({
       isResponseValid: renderableToggleButtonGroupBifrostFormQuestion.required
@@ -41,10 +39,6 @@ export function ToggleButtonGroupBifrostFormQuestion({
         : true,
     });
 
-    console.log(
-      `THIS IS BEING CALLED HERE: ${renderableToggleButtonGroupBifrostFormQuestion.bifrostFormQuestionId}`,
-      !!value
-    );
     setHasQuestionBeenRespondedTo({
       hasQuestionBeenRespondedTo: !!value,
     });
@@ -52,9 +46,6 @@ export function ToggleButtonGroupBifrostFormQuestion({
     // Cleanup function to set `isValid` to true on unmount
     return () => {
       // setIsResponseValid({ isResponseValid: true });
-      console.log(
-        `THIS IS BEING CALLED DOWN HERE: ${renderableToggleButtonGroupBifrostFormQuestion.bifrostFormQuestionId}`
-      );
       // setHasQuestionBeenRespondedTo({ hasQuestionBeenRespondedTo: true });
     };
   }, [value, setIsResponseValid, setHasQuestionBeenRespondedTo]);
