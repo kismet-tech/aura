@@ -1,10 +1,10 @@
 import {
   ItineraryOfferOriginatorType,
+  mockRenderableItineraryEventOfferOne,
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryOffer,
   RenderableItineraryOfferCriterion,
 } from "@kismet_ai/foundation";
-import { mockRenderableItineraryEventOfferOne } from "./mockRenderableItineraryEventOffers";
 
 const mockRenderableItineraryOfferCriterionOne: RenderableItineraryOfferCriterion =
   {

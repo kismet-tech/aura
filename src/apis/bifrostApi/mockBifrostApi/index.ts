@@ -6,7 +6,6 @@ import {
 import { BifrostApiInterface } from "../models";
 import {
   mockBifrostFormQuestionWithSplitTextResponseThree,
-  mockBifrostFormQuestionWithTextResponseFour,
   mockBifrostFormQuestionWithTextResponseTwo,
   mockBifrostToggleButtonGroupFormQuestionWithTextResponseThree,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";

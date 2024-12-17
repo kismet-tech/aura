@@ -5,10 +5,7 @@ import {
   ToggleButtonGroupBifrostFormQuestionChatHistoryElement,
   ToggleButtonGroupBifrostFormQuestionChatHistoryElementProps,
 } from ".";
-import {
-  mockBifrostFormQuestionWithTextResponseFive,
-  mockBifrostFormQuestionWithTextResponseThree,
-} from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
+import { mockBifrostFormQuestionWithTextResponseFive } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 
 const meta: Meta<
   typeof ToggleButtonGroupBifrostFormQuestionChatHistoryElement

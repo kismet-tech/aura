@@ -21,6 +21,7 @@ import {
 } from "@kismet_ai/foundation";
 import { MultiStageSmartDateSelectorQuestion } from "../MultiStageSmartDateSelectorQuestion";
 import { MultiStageReasonForTravelQuestion } from "../MultiStageReasonForTravelQuestion";
+import { SelectorBifrostFormQuestion } from "../SelectorBifrostFormQuestion";
 
 export interface RenderedBifrostFormQuestionProps {
   bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
@@ -81,6 +82,24 @@ export function RenderedBifrostFormQuestion({
         <TextAreaBifrostFormQuestion
           key={bifrostFormQuestion.bifrostFormQuestionId}
           renderableTextAreaBifrostFormQuestion={bifrostFormQuestion}
+          value={responseData.responseValue}
+          setValue={({ updatedValue }: { updatedValue: string }) => {
+            setBifrostFormQuestionResponse({
+              updatedBifrostFormQuestionResponse: {
+                type: BifrostFormQuestionResponseType.TEXT,
+                responseValue: updatedValue,
+              },
+            });
+          }}
+          setIsResponseValid={setIsResponseValid}
+          setHasQuestionBeenRespondedTo={setHasQuestionBeenRespondedTo}
+        />
+      );
+    } else if (bifrostFormQuestion.type === BifrostFormQuestionType.SELECTOR) {
+      return (
+        <SelectorBifrostFormQuestion
+          key={bifrostFormQuestion.bifrostFormQuestionId}
+          renderableSelectorBifrostFormQuestion={bifrostFormQuestion}
           value={responseData.responseValue}
           setValue={({ updatedValue }: { updatedValue: string }) => {
             setBifrostFormQuestionResponse({

@@ -12,6 +12,7 @@ import {
 import {
   BifrostFormQuestionWithResponse,
   CalendarDateRange,
+  mockBifrostSelectorFormQuestionWithTextResponse,
 } from "@kismet_ai/foundation";
 import { BifrostFormApplicationStage } from "./models/BifrostFormApplicationStage";
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleSetActiveBifrostFormQuestionsWithResponses";
@@ -34,6 +35,10 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 import { handleGetBifrostTravelerId } from "./handlers/handleGetBifrostTravelerId";
+import {
+  handleGetHotelBifrostFormMetadata,
+  HotelBifrostFormMetadata,
+} from "./handlers/handleGetHotelBifrostFormMetadata";
 
 export const BifrostFormStateContext = createContext(
   {} as BifrostFormStateContextValue
@@ -51,9 +56,10 @@ export const BifrostFormStateProvider = ({
   /////////////////////////
   /////////////////////////
 
-  const hotelId: string = useMemo((): string => {
-    return handleGetHotelId();
-  }, []);
+  const { hotelId, additionalBifrostFormQuestionsWithResponses } =
+    useMemo((): HotelBifrostFormMetadata => {
+      return handleGetHotelBifrostFormMetadata({});
+    }, []);
 
   const [userSessionId, setUserSessionId] = useState<string | undefined>(
     undefined
@@ -75,6 +81,7 @@ export const BifrostFormStateProvider = ({
     mockBifrostFormQuestionWithSplitTextResponseOne,
     mockBifrostFormQuestionWithEmailResponseOne,
     mockBifrostFormQuestionWithPhoneNumberResponseOne,
+    ...additionalBifrostFormQuestionsWithResponses,
   ]);
 
   const [activeBifrostFormQuestionIds, setActiveBifrostFormQuestionIds] =
@@ -85,6 +92,12 @@ export const BifrostFormStateProvider = ({
         .bifrostFormQuestionId,
       mockBifrostFormQuestionWithPhoneNumberResponseOne.bifrostFormQuestion
         .bifrostFormQuestionId,
+      ...additionalBifrostFormQuestionsWithResponses.map(
+        (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
+          return bifrostFormQuestionWithResponse.bifrostFormQuestion
+            .bifrostFormQuestionId;
+        }
+      ),
     ]);
 
   const [
