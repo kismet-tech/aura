@@ -10,7 +10,10 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseTwo,
   mockBifrostFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import {
+  BifrostFormQuestionWithResponse,
+  mockHotelBifrostFormMetadata,
+} from "@kismet_ai/foundation";
 import { MockBifrostApi } from "@/apis/bifrostApi/mockBifrostApi";
 import { AppViewport } from "@/components/atoms/AppViewport";
 import { BifrostFormStateProvider } from "@/providers/BifrostFormStateProvider";
@@ -50,6 +53,7 @@ const StoryWrapper = () => {
   const dynamicArgs: BifrostItineraryOfferPresentationScreenProps = {
     renderableItineraryOffers,
     renderablePendingItinerary,
+    bifrostFormMetadata: mockHotelBifrostFormMetadata,
     onClickUpdateItineraryOfferHotelRoomCount: async ({
       itineraryOfferId,
       updatedCountOffered,

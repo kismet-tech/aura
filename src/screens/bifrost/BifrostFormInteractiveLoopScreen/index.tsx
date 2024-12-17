@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   BifrostFormQuestionWithResponse,
   CalendarDateRange,
+  HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { BifrostFormInteractionHistory } from "@/components/bifrostForm/BifrostFormInteractionHistory";
@@ -11,6 +12,7 @@ import { ActiveBifrostFormQuestions } from "@/components/bifrostForm/ActiveBifro
 import { PendingItineraryPlannerHeaderClosed } from "@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeaderClosed";
 
 export interface BifrostFormInteractiveLoopScreenProps {
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   historicalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
   activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
   renderablePendingItinerary: RenderablePendingItinerary;
@@ -28,6 +30,7 @@ export interface BifrostFormInteractiveLoopScreenProps {
 }
 
 export function BifrostFormInteractiveLoopScreen({
+  bifrostFormMetadata,
   historicalBifrostFormQuestionsWithResponses,
   activeBifrostFormQuestionsWithResponses,
   renderablePendingItinerary,
@@ -183,10 +186,19 @@ export function BifrostFormInteractiveLoopScreen({
         <div className="space-y-0 p-0">
           <div className="px-1 py-4">
             <BifrostFormInteractionHistory
+              bifrostFormMetadata={bifrostFormMetadata}
               bifrostFormQuestionsWithResponses={
                 historicalBifrostFormQuestionsWithResponses
               }
-              setBifrostFormQuestionWithResponse={() => {}}
+              setBifrostFormQuestionWithResponse={({
+                updatedBifrostFormQuestionWithResponse,
+              }: {
+                updatedBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
+              }) => {
+                setBifrostFormQuestionWithResponse({
+                  updatedBifrostFormQuestionWithResponse,
+                });
+              }}
               suggestCalendarDateRangesFromConstraints={
                 suggestCalendarDateRangesFromConstraints
               }
@@ -195,6 +207,7 @@ export function BifrostFormInteractiveLoopScreen({
           </div>
           <div ref={activeQuestionsRef} className="px-1">
             <ActiveBifrostFormQuestions
+              bifrostFormMetadata={bifrostFormMetadata}
               activeBifrostFormQuestionsWithResponses={
                 activeBifrostFormQuestionsWithResponses
               }

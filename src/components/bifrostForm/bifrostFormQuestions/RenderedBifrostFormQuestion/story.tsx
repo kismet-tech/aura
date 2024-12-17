@@ -5,7 +5,10 @@ import {
   RenderedBifrostFormQuestionProps,
 } from ".";
 import { mockBifrostFormQuestionWithTextResponseOne } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionResponse } from "@kismet_ai/foundation";
+import {
+  BifrostFormQuestionResponse,
+  mockHotelBifrostFormMetadata,
+} from "@kismet_ai/foundation";
 import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { updateBifrostFormQuestionWithResponse } from "@/utilities/bifrostFormQuestions/updateBifrostFormQuestionWithResponse";
 
@@ -24,6 +27,7 @@ const StoryWrapper = () => {
     );
 
   const dynamicArgs: RenderedBifrostFormQuestionProps = {
+    bifrostFormMetadata: mockHotelBifrostFormMetadata,
     bifrostFormQuestionWithResponse,
 
     setBifrostFormQuestionResponse: ({

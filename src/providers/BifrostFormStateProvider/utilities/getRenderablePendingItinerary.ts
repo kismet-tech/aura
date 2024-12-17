@@ -55,9 +55,22 @@ export const getRenderablePendingItinerary = ({
     }
   )?.right as string;
 
+  const maybeCountOfGuestsParticipatingInItineraryString: string | undefined = (
+    maybeCountOfHotelRoomsInItineraryQuestionWithResponse?.responseData
+      .responseValue as {
+      left: string;
+      right: string;
+    }
+  )?.left as string;
+
   const countOfHotelRoomsInItinerary: number | undefined =
     maybeCountOfHotelRoomsInItineraryString
       ? parseInt(maybeCountOfHotelRoomsInItineraryString)
+      : undefined;
+
+  const countOfGuestsParticipatingInItinerary: number | undefined =
+    maybeCountOfGuestsParticipatingInItineraryString
+      ? parseInt(maybeCountOfGuestsParticipatingInItineraryString)
       : undefined;
 
   const maybeCalendarDateRangeQuestionWithResponse =
@@ -90,6 +103,7 @@ export const getRenderablePendingItinerary = ({
     itineraryName: `${guestFirstName}'s Itinerary`,
     guestFirstName,
     countOfHotelRoomsInItinerary,
+    countOfGuestsParticipatingInItinerary,
     calendarDateRangeInItinerary,
     itineraryImageUrl,
   };

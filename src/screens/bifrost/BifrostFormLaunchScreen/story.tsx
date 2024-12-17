@@ -6,7 +6,10 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseOne,
   mockBifrostFormQuestionWithSplitTextResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import {
+  BifrostFormQuestionWithResponse,
+  mockHotelBifrostFormMetadata,
+} from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostFormLaunchScreen> = {
   title: "BifrostForm/Screens/BifrostFormLaunchScreen",
@@ -27,6 +30,7 @@ const StoryWrapper = () => {
   ]);
 
   const dynamicArgs: BifrostFormLaunchScreenProps = {
+    bifrostFormMetadata: mockHotelBifrostFormMetadata,
     activeBifrostFormQuestionsWithResponses: bifrostFormQuestionsWithResponses,
     setBifrostFormQuestionWithResponse: ({
       updatedBifrostFormQuestionWithResponse,

@@ -12,6 +12,7 @@ import {
 import {
   BifrostFormQuestionWithResponse,
   CalendarDateRange,
+  HotelBifrostFormMetadata,
   mockBifrostSelectorFormQuestionWithTextResponse,
 } from "@kismet_ai/foundation";
 import { BifrostFormApplicationStage } from "./models/BifrostFormApplicationStage";
@@ -35,10 +36,7 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseOne,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
 import { handleGetBifrostTravelerId } from "./handlers/handleGetBifrostTravelerId";
-import {
-  handleGetHotelBifrostFormMetadata,
-  HotelBifrostFormMetadata,
-} from "./handlers/handleGetHotelBifrostFormMetadata";
+import { handleGetHotelBifrostFormMetadata } from "./handlers/handleGetHotelBifrostFormMetadata";
 
 export const BifrostFormStateContext = createContext(
   {} as BifrostFormStateContextValue
@@ -56,10 +54,13 @@ export const BifrostFormStateProvider = ({
   /////////////////////////
   /////////////////////////
 
-  const { hotelId, additionalBifrostFormQuestionsWithResponses } =
+  const bifrostFormMetadata: HotelBifrostFormMetadata =
     useMemo((): HotelBifrostFormMetadata => {
       return handleGetHotelBifrostFormMetadata({});
     }, []);
+
+  const { hotelId, additionalBifrostFormQuestionsWithResponses } =
+    bifrostFormMetadata;
 
   const [userSessionId, setUserSessionId] = useState<string | undefined>(
     undefined
@@ -362,6 +363,11 @@ export const BifrostFormStateProvider = ({
   const contextValue = useMemo(() => {
     const bifrostFormStateContextValue: BifrostFormStateContextValue = {
       /////////////////////////
+      // Metadata
+      /////////////////////////
+      bifrostFormMetadata,
+
+      /////////////////////////
       // Navigation
       /////////////////////////
       bifrostFormApplicationStage,
@@ -414,6 +420,11 @@ export const BifrostFormStateProvider = ({
 
     return bifrostFormStateContextValue;
   }, [
+    /////////////////////////
+    // Metadata
+    /////////////////////////
+    bifrostFormMetadata,
+
     /////////////////////////
     // Navigation
     /////////////////////////

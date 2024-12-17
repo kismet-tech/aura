@@ -7,6 +7,7 @@ import {
 import {
   BifrostFormQuestionMultiStageReasonForTravelResponseValue,
   mockBifrostFormQuestionMultiStageReasonForTravelResponseEmpty,
+  mockHotelBifrostFormMetadata,
   mockRenderableMultiStageReasonForTravelBifrostFormQuestion,
 } from "@kismet_ai/foundation";
 
@@ -27,6 +28,7 @@ const StoryWrapper = () => {
     });
 
   const dynamicArgs: MultiStageReasonForTravelQuestionProps = {
+    bifrostFormMetadata: mockHotelBifrostFormMetadata,
     renderableMultiStageReasonForTravelBifrostFormQuestion:
       mockRenderableMultiStageReasonForTravelBifrostFormQuestion,
     value,

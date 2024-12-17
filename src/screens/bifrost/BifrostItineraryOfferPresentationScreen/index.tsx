@@ -5,12 +5,16 @@ import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItin
 import { ItineraryOfferPresentation } from "@/components/workspace/ItineraryOffers/ItineraryOfferPresentation";
 import { ItineraryOfferRoomEditor } from "@/components/workspace/ItineraryOffers/ItineraryOfferRoomEditor";
 import { ListOfItineraryOffersPresentation } from "@/components/workspace/ItineraryOffers/ListOfItineraryOffersPresentation";
-import { RenderableItineraryOffer } from "@kismet_ai/foundation";
+import {
+  HotelBifrostFormMetadata,
+  RenderableItineraryOffer,
+} from "@kismet_ai/foundation";
 import React, { useState } from "react";
 
 export interface BifrostItineraryOfferPresentationScreenProps {
   renderableItineraryOffers?: RenderableItineraryOffer[];
   renderablePendingItinerary: RenderablePendingItinerary;
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
     updatedCountOffered,
@@ -36,6 +40,7 @@ enum BifrostItineraryOfferPresentationScreenType {
 export function BifrostItineraryOfferPresentationScreen({
   renderableItineraryOffers,
   renderablePendingItinerary,
+  bifrostFormMetadata,
   onClickUpdateItineraryOfferHotelRoomCount,
   onClickSelectItineraryOfferAndGoToPaymentsPage,
 }: BifrostItineraryOfferPresentationScreenProps) {
@@ -70,7 +75,9 @@ export function BifrostItineraryOfferPresentationScreen({
           />
         </div>
         <div>
-          <BifrostInquirySubmittedIndicator assignedSalesAgentName={"Jason"} />
+          <BifrostInquirySubmittedIndicator
+            assignedSalesAgentName={bifrostFormMetadata.assignedSalesAgentName}
+          />
           {!renderableItineraryOffers ? (
             <div>
               <BifrostItineraryOffersLoadingPanel />

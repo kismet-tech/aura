@@ -1,6 +1,7 @@
 import {
   BifrostFormQuestionResponse,
   CalendarDateRange,
+  HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
 import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import React, { useCallback, useEffect, useState } from "react";
@@ -14,6 +15,7 @@ import { deepClone } from "@/utilities/core/deepClone";
 
 export interface ActiveBifrostFormQuestionsProps {
   activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   setBifrostFormQuestionWithResponse: ({
     updatedBifrostFormQuestionWithResponse,
   }: {
@@ -56,6 +58,7 @@ const MemoizedRenderedBifrostFormQuestion = React.memo(
 
 export function ActiveBifrostFormQuestions({
   activeBifrostFormQuestionsWithResponses,
+  bifrostFormMetadata,
   setBifrostFormQuestionWithResponse,
   setBifrostFormQuestionIdsWithValidResponses,
   setBifrostFormQuestionIdsRespondedTo,
@@ -339,6 +342,7 @@ export function ActiveBifrostFormQuestions({
               }
             >
               <MemoizedRenderedBifrostFormQuestion
+                bifrostFormMetadata={bifrostFormMetadata}
                 bifrostFormQuestionWithResponse={
                   bifrostFormQuestionWithResponse
                 }

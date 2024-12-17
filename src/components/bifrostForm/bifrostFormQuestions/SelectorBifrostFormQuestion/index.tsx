@@ -72,11 +72,18 @@ export function SelectorBifrostFormQuestion({
 
   return (
     <FormField>
-      <FormLabel htmlFor={inputId}>
-        {renderableSelectorBifrostFormQuestion.label}
-      </FormLabel>
+      <div className="gap-8">
+        <FormLabel htmlFor={inputId}>
+          {renderableSelectorBifrostFormQuestion.label}
+        </FormLabel>
+      </div>
 
-      <Select>
+      <Select
+        value={value}
+        onValueChange={(updatedValue) => {
+          handleOnChange({ updatedValue });
+        }}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder={""} />
         </SelectTrigger>

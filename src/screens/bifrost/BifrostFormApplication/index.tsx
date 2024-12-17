@@ -23,6 +23,7 @@ export function BifrostFormApplication() {
     paymentsPageUrl,
     selectItineraryOffer,
     suggestCalendarDateRangesFromConstraints,
+    bifrostFormMetadata,
   } = useBifrostFormState();
 
   console.log(
@@ -39,6 +40,7 @@ export function BifrostFormApplication() {
   ) {
     renderedScreen = (
       <BifrostFormLaunchScreen
+        bifrostFormMetadata={bifrostFormMetadata}
         activeBifrostFormQuestionsWithResponses={
           activeBifrostFormQuestionsWithResponses
         }
@@ -65,6 +67,7 @@ export function BifrostFormApplication() {
   ) {
     renderedScreen = (
       <BifrostFormInteractiveLoopScreen
+        bifrostFormMetadata={bifrostFormMetadata}
         activeBifrostFormQuestionsWithResponses={
           activeBifrostFormQuestionsWithResponses
         }
@@ -155,6 +158,7 @@ export function BifrostFormApplication() {
           selectItineraryOffer({ itineraryOfferId });
           window.location.href = paymentsPageUrl;
         }}
+        bifrostFormMetadata={bifrostFormMetadata}
       />
     );
   } else {

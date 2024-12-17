@@ -1,6 +1,7 @@
 import {
   BifrostFormQuestionWithResponse,
   CalendarDateRange,
+  HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
 import { ReactNode } from "react";
 import { BifrostFormApplicationStage } from "./BifrostFormApplicationStage";
@@ -15,6 +16,11 @@ export interface BifrostFormStateProviderProps {
 
 export interface BifrostFormStateContextValue {
   /////////////////////////
+  // Metadata
+  /////////////////////////
+  bifrostFormMetadata: HotelBifrostFormMetadata;
+
+  /////////////////////////
   // Navigation
   /////////////////////////
   bifrostFormApplicationStage: BifrostFormApplicationStage;
@@ -24,6 +30,7 @@ export interface BifrostFormStateContextValue {
   beginUserSession: () => Promise<void>;
   submitBifrostFormQuestion: () => Promise<void>;
   paymentsPageUrl: string;
+
   /////////////////////////
   // Form Question Responses
   /////////////////////////

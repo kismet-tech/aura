@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import {
   BifrostFormQuestionWithResponse,
   CalendarDateRange,
+  HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
 import { ActiveBifrostFormQuestions } from "@/components/bifrostForm/ActiveBifrostFormQuestions";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 
 export interface BifrostFormLaunchScreenProps {
   activeBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   setBifrostFormQuestionWithResponse: ({
     updatedBifrostFormQuestionWithResponse,
   }: {
@@ -24,6 +26,7 @@ export interface BifrostFormLaunchScreenProps {
 
 export function BifrostFormLaunchScreen({
   activeBifrostFormQuestionsWithResponses,
+  bifrostFormMetadata,
   setBifrostFormQuestionWithResponse,
   handleProgressForward,
   suggestCalendarDateRangesFromConstraints,
@@ -47,6 +50,7 @@ export function BifrostFormLaunchScreen({
       </div>
       <div>
         <ActiveBifrostFormQuestions
+          bifrostFormMetadata={bifrostFormMetadata}
           activeBifrostFormQuestionsWithResponses={
             activeBifrostFormQuestionsWithResponses
           }

@@ -31,9 +31,18 @@ export function PendingItineraryPlannerHeaderClosed({
       </span>
     );
   } else {
-    roomsIndicator = (
-      <span className="underline cursor-pointer text-xs truncate">rooms</span>
-    );
+    if (renderablePendingItinerary.countOfGuestsParticipatingInItinerary) {
+      roomsIndicator = (
+        <span className="underline cursor-pointer text-xs truncate">
+          {renderablePendingItinerary.countOfGuestsParticipatingInItinerary}{" "}
+          guests
+        </span>
+      );
+    } else {
+      roomsIndicator = (
+        <span className="underline cursor-pointer text-xs truncate">rooms</span>
+      );
+    }
   }
 
   let datesIndicator: JSX.Element;

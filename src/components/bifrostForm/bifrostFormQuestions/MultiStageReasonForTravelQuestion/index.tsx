@@ -1,5 +1,6 @@
 import {
   BifrostFormQuestionMultiStageReasonForTravelResponseValue,
+  HotelBifrostFormMetadata,
   RenderableMultiStageReasonForTravelBifrostFormQuestion,
   ReservedBifrostReasonForTravelOptionValues,
 } from "@kismet_ai/foundation";
@@ -10,6 +11,7 @@ import { MultiStageReasonForTravelQuestionWebsiteUrlInput } from "./MultiStageRe
 
 export interface MultiStageReasonForTravelQuestionProps {
   renderableMultiStageReasonForTravelBifrostFormQuestion: RenderableMultiStageReasonForTravelBifrostFormQuestion;
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   value: BifrostFormQuestionMultiStageReasonForTravelResponseValue;
   setValue: ({
     updatedValue,
@@ -29,6 +31,7 @@ export interface MultiStageReasonForTravelQuestionProps {
 }
 
 export function MultiStageReasonForTravelQuestion({
+  bifrostFormMetadata,
   value,
   setValue,
   setIsResponseValid,
@@ -36,6 +39,7 @@ export function MultiStageReasonForTravelQuestion({
 }: MultiStageReasonForTravelQuestionProps) {
   const reasonForTravelCategoryQuestion: React.JSX.Element = (
     <MultiStageReasonForTravelQuestionReasonForTravelCategorySelector
+      bifrostFormMetadata={bifrostFormMetadata}
       value={value.reasonForTravel}
       setValue={({
         updatedValue,

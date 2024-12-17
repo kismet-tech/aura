@@ -7,6 +7,7 @@ import { SelectDateRangeBifrostFormQuestion } from "../SelectDateRangeBifrostFor
 import { MultiSelectDateRangeBifrostFormQuestion } from "../MultiSelectDateRangeBifrostFormQuestion";
 import {
   BifrostFormQuestionMultiStageReasonForTravelResponseValue,
+  HotelBifrostFormMetadata,
   PendingCalendarDateRange,
 } from "@kismet_ai/foundation";
 import { SplitTextInputBifrostFormQuestion } from "../SplitTextInputBifrostFormQuestion";
@@ -24,12 +25,14 @@ import { MultiStageReasonForTravelQuestion } from "../MultiStageReasonForTravelQ
 import { SelectorBifrostFormQuestion } from "../SelectorBifrostFormQuestion";
 
 export interface RenderedBifrostFormQuestionProps {
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse;
   setBifrostFormQuestionResponse: ({
     updatedBifrostFormQuestionResponse,
   }: {
     updatedBifrostFormQuestionResponse: BifrostFormQuestionResponse;
   }) => void;
+
   setIsResponseValid: ({
     isResponseValid,
   }: {
@@ -49,6 +52,7 @@ export interface RenderedBifrostFormQuestionProps {
 }
 
 export function RenderedBifrostFormQuestion({
+  bifrostFormMetadata,
   bifrostFormQuestionWithResponse,
   setBifrostFormQuestionResponse,
   setIsResponseValid,
@@ -312,6 +316,7 @@ export function RenderedBifrostFormQuestion({
     ) {
       return (
         <MultiStageReasonForTravelQuestion
+          bifrostFormMetadata={bifrostFormMetadata}
           key={bifrostFormQuestion.bifrostFormQuestionId}
           renderableMultiStageReasonForTravelBifrostFormQuestion={
             bifrostFormQuestion

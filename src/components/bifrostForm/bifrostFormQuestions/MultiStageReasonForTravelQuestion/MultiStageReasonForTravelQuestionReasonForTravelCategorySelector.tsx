@@ -1,8 +1,12 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/shadcn/toggle-group";
-import { ReservedBifrostReasonForTravelOptionValues } from "@kismet_ai/foundation";
+import {
+  HotelBifrostFormMetadata,
+  ReservedBifrostReasonForTravelOptionValues,
+} from "@kismet_ai/foundation";
 import React from "react";
 
 interface MultiStageReasonForTravelQuestionReasonForTravelCategorySelectorProps {
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   value: ReservedBifrostReasonForTravelOptionValues | undefined;
   setValue: ({
     updatedValue,
@@ -12,6 +16,7 @@ interface MultiStageReasonForTravelQuestionReasonForTravelCategorySelectorProps 
 }
 
 export function MultiStageReasonForTravelQuestionReasonForTravelCategorySelector({
+  bifrostFormMetadata,
   value,
   setValue,
 }: MultiStageReasonForTravelQuestionReasonForTravelCategorySelectorProps) {
@@ -19,7 +24,7 @@ export function MultiStageReasonForTravelQuestionReasonForTravelCategorySelector
     [ReservedBifrostReasonForTravelOptionValues.BUSINESS]: "Business",
     [ReservedBifrostReasonForTravelOptionValues.SOCIAL]: "Social",
     [ReservedBifrostReasonForTravelOptionValues.OTHER]: "Other",
-    [ReservedBifrostReasonForTravelOptionValues.EXTENDED_STAY]: "",
+    [ReservedBifrostReasonForTravelOptionValues.EXTENDED_STAY]: "Extended Stay",
   };
 
   return (
@@ -34,11 +39,16 @@ export function MultiStageReasonForTravelQuestionReasonForTravelCategorySelector
         className="flex w-full py-2"
       >
         {Object.values(ReservedBifrostReasonForTravelOptionValues)
-          .filter(
-            (option) =>
-              option !==
+          .filter((option) => {
+            if (
+              option ===
               ReservedBifrostReasonForTravelOptionValues.EXTENDED_STAY
-          )
+            ) {
+              return bifrostFormMetadata.includeExtendedStay;
+            }
+
+            return true;
+          })
           .map((option: ReservedBifrostReasonForTravelOptionValues) => {
             return (
               <ToggleGroupItem

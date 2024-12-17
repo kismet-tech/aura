@@ -1,6 +1,7 @@
 import {
   BifrostFormQuestionWithResponse,
   CalendarDateRange,
+  HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
 import React, { useCallback } from "react";
 import {
@@ -12,6 +13,7 @@ import { BifrostFormQuestionResponse } from "@kismet_ai/foundation";
 import { updateBifrostFormQuestionWithResponse } from "@/utilities/bifrostFormQuestions/updateBifrostFormQuestionWithResponse";
 
 export interface BifrostFormInteractionHistoryProps {
+  bifrostFormMetadata: HotelBifrostFormMetadata;
   bifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[];
   setBifrostFormQuestionWithResponse: ({
     updatedBifrostFormQuestionWithResponse,
@@ -42,6 +44,7 @@ const MemoizedRenderedBifrostFormQuestion = React.memo(
 );
 
 export function BifrostFormInteractionHistory({
+  bifrostFormMetadata,
   bifrostFormQuestionsWithResponses,
   setBifrostFormQuestionWithResponse,
   suggestCalendarDateRangesFromConstraints,
@@ -94,6 +97,7 @@ export function BifrostFormInteractionHistory({
               }
             >
               <MemoizedRenderedBifrostFormQuestion
+                bifrostFormMetadata={bifrostFormMetadata}
                 bifrostFormQuestionWithResponse={
                   bifrostFormQuestionWithResponse
                 }

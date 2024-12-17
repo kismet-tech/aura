@@ -9,7 +9,10 @@ import {
   mockBifrostFormQuestionWithPhoneNumberResponseTwo,
   mockBifrostFormQuestionWithSplitTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import {
+  BifrostFormQuestionWithResponse,
+  mockHotelBifrostFormMetadata,
+} from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostFormInteractionHistory> = {
   title: "BifrostFormInteractionHistory/BifrostFormInteractionHistory",
@@ -30,6 +33,7 @@ const StoryWrapper = () => {
   ]);
 
   const dynamicArgs: BifrostFormInteractionHistoryProps = {
+    bifrostFormMetadata: mockHotelBifrostFormMetadata,
     bifrostFormQuestionsWithResponses,
     setBifrostFormQuestionWithResponse: ({
       updatedBifrostFormQuestionWithResponse,

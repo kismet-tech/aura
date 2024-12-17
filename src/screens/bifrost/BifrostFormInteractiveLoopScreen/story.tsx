@@ -6,7 +6,10 @@ import {
   mockBifrostFormQuestionWithSplitTextResponseTwo,
   mockBifrostFormQuestionWithTextResponseTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import {
+  BifrostFormQuestionWithResponse,
+  mockHotelBifrostFormMetadata,
+} from "@kismet_ai/foundation";
 import {
   BifrostFormInteractiveLoopScreen,
   BifrostFormInteractiveLoopScreenProps,
@@ -36,6 +39,7 @@ const StoryWrapper = () => {
   } = useBifrostFormState();
 
   const dynamicArgs: BifrostFormInteractiveLoopScreenProps = {
+    bifrostFormMetadata: mockHotelBifrostFormMetadata,
     activeBifrostFormQuestionsWithResponses,
     historicalBifrostFormQuestionsWithResponses,
     setBifrostFormQuestionWithResponse,
