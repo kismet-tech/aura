@@ -22,11 +22,11 @@ export function EventOfferCarouselItem({
         })
       }
     >
-      <div className="relative w-36 h-36 mx-auto  cursor-pointer">
+      <div className="relative w-36 h-28 mx-auto  cursor-pointer">
         <img
           src={eventOffer.imageUrl}
           alt={eventOffer.eventName}
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover"
         />
         <div className="absolute top-2 left-2 pr-1 pl-1 rounded-full bg-white border border-black flex items-center justify-center text-sm font-bold text-black">
           {eventOffer.approvalStatus}
