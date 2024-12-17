@@ -71,7 +71,7 @@ export function HotelRoomCarouselItem({
     <TooltipProvider>
       <div className="flex flex-col items-center space-y-2 relative">
         <div
-          className="relative w-36 h-36 mx-auto cursor-pointer"
+          className="relative w-36 h-28 mx-auto cursor-pointer"
           onClick={() =>
             onClick({
               hotelRoomOfferId: hotelRoomOffer.hotelRoomOfferId,
