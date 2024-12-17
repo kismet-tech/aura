@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { EventOfferCarouselItem, EventOfferCarouselItemProps } from ".";
 import React from "react";
-import { mockRenderableItineraryEventOfferOne } from "@/mockData/bifrost/mockRenderableItineraryEventOffers";
+import { mockRenderableItineraryEventOfferOne } from '@kismet_ai/foundation';
 
 const meta: Meta<typeof EventOfferCarouselItem> = {
   title: "ItineraryOffer/EventOfferCarouselItem",
