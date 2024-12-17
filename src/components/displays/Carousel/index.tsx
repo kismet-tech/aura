@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
@@ -29,6 +29,8 @@ export function Carousel<T>({
   const swiperRef = useRef<any>(null); // Swiper instance
 
   const slides: React.ReactNode[] = [];
+  const [showControls, setShowControls] = useState(true);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   items.forEach((item, index) => {
     slides.push(
@@ -69,6 +71,33 @@ export function Carousel<T>({
     }
   }, [swiperRef, prevRef, nextRef]);
 
+  useEffect(() => {
+    const handleMouseMove = () => {
+      setShowControls(true);
+      
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      
+      // Set new timeout to hide controls after 3 seconds
+      timeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 3000);
+    };
+
+    // Add event listener
+    document.addEventListener('mousemove', handleMouseMove);
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   if (items.length === 0) return null;
 
   return (
@@ -77,16 +106,20 @@ export function Carousel<T>({
       <button
         ref={prevRef}
         aria-label="Previous Slide"
-        className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md"
+        className={`absolute left-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md transition-opacity duration-300 ${
+          showControls ? 'opacity-100' : 'opacity-0'
+        }`}
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-4 h-4" />
       </button>
       <button
         ref={nextRef}
         aria-label="Next Slide"
-        className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md"
+        className={`absolute right-2 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md transition-opacity duration-300 ${
+          showControls ? 'opacity-100' : 'opacity-0'
+        }`}
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-4 h-4" />
       </button>
 
       <Swiper
