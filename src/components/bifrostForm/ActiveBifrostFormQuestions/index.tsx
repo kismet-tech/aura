@@ -323,7 +323,7 @@ export function ActiveBifrostFormQuestions({
         (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
           return (
             <div
-              className="mb-4"
+              className="mb-1.5"
               key={
                 bifrostFormQuestionWithResponse.bifrostFormQuestion
                   .bifrostFormQuestionId

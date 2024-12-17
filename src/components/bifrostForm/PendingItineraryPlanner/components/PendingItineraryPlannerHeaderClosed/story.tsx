@@ -21,6 +21,13 @@ type Story = StoryObj<typeof PendingItineraryPlannerHeaderClosed>;
 const StoryWrapperOne = () => {
   const dynamicArgs: PendingItineraryPlannerHeaderClosedProps = {
     renderablePendingItinerary: mockRenderablePendingItineraryOne,
+    scrollToBifrostFormQuestion: ({
+      formQuestionId,
+    }: {
+      formQuestionId: string;
+    }) => {
+      console.log(`scrollToBifrostFormQuestion: ${formQuestionId}`);
+    },
   };
 
   return (
@@ -45,6 +52,13 @@ export const ExampleOne: Story = {
 const StoryWrapperTwo = () => {
   const dynamicArgs: PendingItineraryPlannerHeaderClosedProps = {
     renderablePendingItinerary: mockRenderablePendingItineraryTwo,
+    scrollToBifrostFormQuestion: ({
+      formQuestionId,
+    }: {
+      formQuestionId: string;
+    }) => {
+      console.log(`scrollToBifrostFormQuestion: ${formQuestionId}`);
+    },
   };
 
   return (

@@ -7,7 +7,7 @@ export interface FormLabelProps {
 
 export function FormLabel({ children, htmlFor }: FormLabelProps) {
   return (
-    <label className="font-light" htmlFor={htmlFor}>
+    <label className="font-light text-sm" htmlFor={htmlFor}>
       {children}
     </label>
   );
