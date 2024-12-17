@@ -106,12 +106,24 @@ export function BifrostFormApplication() {
     renderableItineraryOffersFromKismetAI;
     customRenderableItineraryOfferFromGuest;
 
-    const renderableItineraryOffers: RenderableItineraryOffer[] = [];
-    if (renderableItineraryOffersFromKismetAI) {
-      renderableItineraryOffers.push(...renderableItineraryOffersFromKismetAI);
-    }
-    if (customRenderableItineraryOfferFromGuest) {
-      renderableItineraryOffers.push(customRenderableItineraryOfferFromGuest);
+    let renderableItineraryOffers: RenderableItineraryOffer[] | undefined =
+      undefined;
+
+    if (
+      !!renderableItineraryOffersFromKismetAI ||
+      !!customRenderableItineraryOfferFromGuest
+    ) {
+      renderableItineraryOffers = [];
+
+      if (renderableItineraryOffersFromKismetAI) {
+        renderableItineraryOffers.push(
+          ...renderableItineraryOffersFromKismetAI
+        );
+      }
+
+      if (customRenderableItineraryOfferFromGuest) {
+        renderableItineraryOffers.push(customRenderableItineraryOfferFromGuest);
+      }
     }
 
     renderedScreen = (

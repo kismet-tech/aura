@@ -1,8 +1,7 @@
 import React from "react";
 import { RenderablePendingItinerary } from "../../models/RenderablePendingItinerary";
 import { KismetSectionHeader } from "@/components/atoms";
-import { Calendar, Hotel, User } from "lucide-react";
-import { OrnateConciergeBell } from "@/components/atoms/icons/OrnateConciergeBell";
+import { Calendar, User, ConciergeBell, DoorOpen } from "lucide-react";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
@@ -22,7 +21,7 @@ export function PendingItineraryPlannerHeader({
     roomsIndicator = (
       <span>
         <span className="">
-          {renderablePendingItinerary.countOfHotelRoomsInItinerary} rooms
+          {renderablePendingItinerary.countOfHotelRoomsInItinerary}
         </span>{" "}
         <span className="underline cursor-pointer">choose</span>
       </span>
@@ -56,56 +55,45 @@ export function PendingItineraryPlannerHeader({
   }
 
   return (
-    <div className="bg-white">
-      <div className="mb-4">
-        <div className="flex justify-between items-center">
-          <KismetSectionHeader>
-            {renderablePendingItinerary.itineraryName}
-          </KismetSectionHeader>
-          {/* <ExpandCollapseButton
-            isCollapsed={false}
-            onExpand={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-            onCollapse={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-          /> */}
-        </div>
-      </div>
+    <div className="bg-white px-[10px] py-[5px] min-w-[300px] w-full border border-[#D6D6D6]">
+      <div className="space-y-[2px]">
+        <KismetSectionHeader>
+          {renderablePendingItinerary.itineraryName}
+        </KismetSectionHeader>
 
-      <div className="flex items-center">
-        <img
-          src="https://www.bestambiance.com/wp-content/uploads/2022/09/cwo4c5et7jyz-aspect-ratio-800-800.jpg"
-          alt="Hotel"
-          className="w-32 h-32 object-cover rounded mr-4"
-        />
-        <div className="space-y-2">
-          <div className="flex">
-            <div className="flex items-center mr-4">
-              <div className="mr-2">
-                <Hotel />
+        <div className="flex items-center text-sm">
+          <img
+            src="https://www.bestambiance.com/wp-content/uploads/2022/09/cwo4c5et7jyz-aspect-ratio-800-800.jpg"
+            alt="Hotel"
+            className="w-36 h-28 object-cover mr-4"
+          />
+          <div className="space-y-2 max-w-[calc(100%-theme(spacing.36)-theme(spacing.4))]">
+            <div className="flex truncate">
+              <div className="flex items-center mr-4 truncate">
+                <div className="mr-2">
+                  <DoorOpen className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+                {roomsIndicator}
               </div>
-              {roomsIndicator}
-            </div>
-            <div className="flex items-center">
-              <div className="mr-2">
-                <User />
+              <div className="flex items-center truncate">
+                <div className="mr-2">
+                  <User className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+                <span className="underline cursor-pointer">guests</span>
               </div>
-              <span className="underline cursor-pointer">guests</span>
             </div>
-          </div>
-          <div className="flex items-center">
-            <div className="mr-2">
-              <Calendar />
+            <div className="flex items-center truncate">
+              <div className="mr-2">
+                <Calendar className="w-5 h-5" strokeWidth={1.5} />
+              </div>
+              {datesIndicator}
             </div>
-            {datesIndicator}
-          </div>
-          <div className="flex items-center">
-            <div className="mr-2">
-              <OrnateConciergeBell />
+            <div className="flex items-center truncate">
+              <div className="mr-2">
+                <ConciergeBell className="w-5 h-5" strokeWidth={1.5} />
+              </div>
+              <span className="underline cursor-pointer">details</span>
             </div>
-            <span className="underline cursor-pointer">details</span>
           </div>
         </div>
       </div>

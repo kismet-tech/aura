@@ -51,24 +51,21 @@ export const handleSubmitBifrostFormQuestion = ({
           setBifrostFormQuestionsWithResponses,
           setActiveBifrostFormQuestionIds,
         });
-
-        if (!nextQuestionWithResponse) {
-          bifrostApi
-            .getBifrostFormItineraryOffers({
-              hotelId,
-              userSessionId,
-              bifrostFormQuestionsWithResponses,
-            })
-            .then(({ renderableItineraryOffers }) => {
-              setRenderableItineraryOffersFromKismetAI(
-                renderableItineraryOffers
-              );
-              setBifrostFormApplicationStage(
-                BifrostFormApplicationStage.ITINERARY_OFFER_PRESENTATION_SCREEN
-              );
-            });
-        }
       } else {
+        setBifrostFormApplicationStage(
+          BifrostFormApplicationStage.ITINERARY_OFFER_PRESENTATION_SCREEN
+        );
+
+        bifrostApi
+          .getBifrostFormItineraryOffers({
+            hotelId,
+            userSessionId,
+            bifrostFormQuestionsWithResponses,
+          })
+          .then(({ renderableItineraryOffers }) => {
+            setRenderableItineraryOffersFromKismetAI(renderableItineraryOffers);
+          });
+
         setActiveBifrostFormQuestionIds([]);
       }
     });

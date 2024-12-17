@@ -1,13 +1,15 @@
+import { BifrostInquirySubmittedIndicator } from "@/components/bifrostForm/BifrostInquirySubmittedIndicator";
+import { BifrostItineraryOffersLoadingPanel } from "@/components/bifrostForm/BifrostItineraryOffersLoadingPanel";
 import { PendingItineraryPlannerHeader } from "@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeader";
 import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { ItineraryOfferPresentation } from "@/components/workspace/ItineraryOffers/ItineraryOfferPresentation";
 import { ItineraryOfferRoomEditor } from "@/components/workspace/ItineraryOffers/ItineraryOfferRoomEditor";
 import { ListOfItineraryOffersPresentation } from "@/components/workspace/ItineraryOffers/ListOfItineraryOffersPresentation";
 import { RenderableItineraryOffer } from "@kismet_ai/foundation";
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 
 export interface BifrostItineraryOfferPresentationScreenProps {
-  renderableItineraryOffers: RenderableItineraryOffer[];
+  renderableItineraryOffers?: RenderableItineraryOffer[];
   renderablePendingItinerary: RenderablePendingItinerary;
   onClickUpdateItineraryOfferHotelRoomCount: ({
     itineraryOfferId,
@@ -44,6 +46,11 @@ export function BifrostItineraryOfferPresentationScreen({
     BifrostItineraryOfferPresentationScreenType.LIST_OF_ITINERARY_OFFERS_PRESENTATION
   );
 
+  console.log(
+    `BifrostItineraryOfferPresentationScreen renderableItineraryOffers: ${JSON.stringify(
+      renderableItineraryOffers
+    )}`
+  );
   const [selectedItineraryOfferId, setSelectedItineraryOfferId] = useState<
     string | undefined
   >(undefined);
@@ -51,8 +58,9 @@ export function BifrostItineraryOfferPresentationScreen({
   let renderedScreen: JSX.Element = <></>;
 
   if (
+    !renderableItineraryOffers ||
     bifrostItineraryOfferPresentationScreenType ===
-    BifrostItineraryOfferPresentationScreenType.LIST_OF_ITINERARY_OFFERS_PRESENTATION
+      BifrostItineraryOfferPresentationScreenType.LIST_OF_ITINERARY_OFFERS_PRESENTATION
   ) {
     renderedScreen = (
       <div>
@@ -62,21 +70,23 @@ export function BifrostItineraryOfferPresentationScreen({
           />
         </div>
         <div>
-          <div>
-            Thank you for submitting your inquiry. Someone will be in touch
-            soon. The follow options are available for instant booking. The
-            itinerary and booking options have been emailed to you.
-          </div>
-          <ListOfItineraryOffersPresentation
-            renderableItineraryOffers={renderableItineraryOffers}
-            onClick={({ itineraryOfferId }: { itineraryOfferId: string }) => {
-              console.log(`itineraryOfferId: ${itineraryOfferId}`);
-              setBifrostItineraryOfferPresentationScreenType(
-                BifrostItineraryOfferPresentationScreenType.ITINERARY_OFFER_PRESENTATION
-              );
-              setSelectedItineraryOfferId(itineraryOfferId);
-            }}
-          />
+          <BifrostInquirySubmittedIndicator assignedSalesAgentName={"Jason"} />
+          {!renderableItineraryOffers ? (
+            <div>
+              <BifrostItineraryOffersLoadingPanel />
+            </div>
+          ) : (
+            <ListOfItineraryOffersPresentation
+              renderableItineraryOffers={renderableItineraryOffers}
+              onClick={({ itineraryOfferId }: { itineraryOfferId: string }) => {
+                console.log(`itineraryOfferId: ${itineraryOfferId}`);
+                setBifrostItineraryOfferPresentationScreenType(
+                  BifrostItineraryOfferPresentationScreenType.ITINERARY_OFFER_PRESENTATION
+                );
+                setSelectedItineraryOfferId(itineraryOfferId);
+              }}
+            />
+          )}
         </div>
       </div>
     );

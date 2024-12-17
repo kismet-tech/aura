@@ -31,3 +31,30 @@ export const Example: Story = {
   },
   args: exampleOneArguments,
 };
+
+const LongContent = () => (
+  <>
+    <div className="bg-white p-4 mb-4">Header Content</div>
+    {Array.from({ length: 20 }).map((_, i) => (
+      <div key={i} className="bg-white p-4 mb-4">
+        Content Block {i + 1}
+      </div>
+    ))}
+  </>
+);
+
+export const WithOverflow: Story = {
+  render: () => (
+    <AppViewport>
+      <LongContent />
+    </AppViewport>
+  ),
+};
+
+export const WithShortContent: Story = {
+  render: () => (
+    <AppViewport>
+      <div className="bg-white p-4">Short Content</div>
+    </AppViewport>
+  ),
+};

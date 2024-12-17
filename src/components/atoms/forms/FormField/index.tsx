@@ -5,5 +5,5 @@ export interface FormFieldProps {
 }
 
 export function FormField({ children }: FormFieldProps) {
-  return <div className="grid w-full items-center gap-1.5">{children}</div>;
+  return <div className="grid w-full items-center gap-1.0">{children}</div>;
 }

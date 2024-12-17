@@ -133,8 +133,8 @@ export function MultiStageReasonForTravelQuestion({
   return (
     <div>
       <div>{reasonForTravelCategoryQuestion}</div>
-      <div className="pt-5">{companyNameQuestion}</div>
-      <div className="pt-5">{websiteUrlQuestion}</div>
+      <div>{companyNameQuestion}</div>
+      <div>{websiteUrlQuestion}</div>
     </div>
   );
 }

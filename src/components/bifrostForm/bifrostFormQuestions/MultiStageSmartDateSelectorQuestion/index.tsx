@@ -90,7 +90,9 @@ export function MultiStageSmartDateSelectorQuestion({
           isResponseValid,
         }: {
           isResponseValid: boolean;
-        }) => {}}
+        }) => {
+          setIsResponseValid({ isResponseValid });
+        }}
         setHasQuestionBeenRespondedTo={({
           hasQuestionBeenRespondedTo,
         }: {
@@ -126,7 +128,9 @@ export function MultiStageSmartDateSelectorQuestion({
           isResponseValid,
         }: {
           isResponseValid: boolean;
-        }) => {}}
+        }) => {
+          setIsResponseValid({ isResponseValid });
+        }}
       />
     ) : (
       <></>
@@ -147,6 +151,7 @@ export function MultiStageSmartDateSelectorQuestion({
             updatedValue: {
               ...value,
               descriptionOfPotentialCalendarDates: updatedValue,
+              suggestedCalendarDateRanges: [],
             },
           });
         }}

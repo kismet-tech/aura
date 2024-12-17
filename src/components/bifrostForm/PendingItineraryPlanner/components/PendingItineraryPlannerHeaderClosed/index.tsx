@@ -4,16 +4,21 @@ import { KismetSectionHeader } from "@/components/atoms/KismetSectionHeader";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
-import { Calendar, Hotel, User } from "lucide-react";
-import { OrnateConciergeBell } from "@/components/atoms/icons/OrnateConciergeBell";
-import { MonopolyHouse } from "@/components/atoms/icons/MonopolyHouse";
+import { ReservedBifrostFormQuestionIds } from "@kismet_ai/foundation";
+import { Calendar, ConciergeBell, DoorOpen } from "lucide-react";
 
 export interface PendingItineraryPlannerHeaderClosedProps {
   renderablePendingItinerary: RenderablePendingItinerary;
+  scrollToBifrostFormQuestion: ({
+    formQuestionId,
+  }: {
+    formQuestionId: string;
+  }) => void;
 }
 
 export function PendingItineraryPlannerHeaderClosed({
   renderablePendingItinerary,
+  scrollToBifrostFormQuestion,
 }: PendingItineraryPlannerHeaderClosedProps) {
   let roomsIndicator: JSX.Element;
   if (
@@ -21,20 +26,20 @@ export function PendingItineraryPlannerHeaderClosed({
     renderablePendingItinerary.countOfHotelRoomsInItinerary > 0
   ) {
     roomsIndicator = (
-      <span>
-        <span className="underline cursor-pointer">
-          {renderablePendingItinerary.countOfHotelRoomsInItinerary} rooms
-        </span>{" "}
+      <span className="underline cursor-pointer text-xs truncate">
+        {renderablePendingItinerary.countOfHotelRoomsInItinerary} rooms
       </span>
     );
   } else {
-    roomsIndicator = <span className="underline cursor-pointer">rooms</span>;
+    roomsIndicator = (
+      <span className="underline cursor-pointer text-xs truncate">rooms</span>
+    );
   }
 
   let datesIndicator: JSX.Element;
   if (renderablePendingItinerary.calendarDateRangeInItinerary) {
     datesIndicator = (
-      <span className="underline cursor-pointer">
+      <span className="underline cursor-pointer text-xs truncate">
         {renderCalendarDateRange({
           calendarDateRange:
             renderablePendingItinerary.calendarDateRangeInItinerary,
@@ -50,37 +55,61 @@ export function PendingItineraryPlannerHeaderClosed({
       </span>
     );
   } else {
-    datesIndicator = <span className="underline cursor-pointer">dates</span>;
+    datesIndicator = (
+      <span className="underline cursor-pointer text-xs truncate">dates</span>
+    );
   }
 
   return (
-    <div className="bg-white">
-      <div>
+    <div className="bg-white px-[10px] py-[5px] min-w-[300px] w-full border border-[#D6D6D6] overflow-hidden">
+      <div className="space-y-[2px]">
         <KismetSectionHeader>
           {renderablePendingItinerary.itineraryName}
         </KismetSectionHeader>
-      </div>
 
-      <div className="flex pt-3">
-        <div className="flex">
-          <div className="flex items-center mr-4">
-            <div className="mr-2">
-              <MonopolyHouse />
+        <div className="flex items-start gap-4 min-w-0 max-w-[calc(100%-20px)] text-sm">
+          <div className="flex items-center gap-1 min-w-0 basis-auto">
+            <div className="flex-shrink-0">
+              <DoorOpen className="w-5 h-5" strokeWidth={1.5} />
             </div>
-            {roomsIndicator}
+            <span
+              onClick={(
+                event: React.MouseEvent<HTMLDivElement, MouseEvent>
+              ) => {
+                event.preventDefault();
+                scrollToBifrostFormQuestion({
+                  formQuestionId: `${ReservedBifrostFormQuestionIds.ESTIMATED_GUEST_COUNT}-${ReservedBifrostFormQuestionIds.COUNT_OF_ROOMS_NEEDED}`,
+                });
+              }}
+            >
+              {roomsIndicator}
+            </span>
           </div>
-        </div>
-        <div className="flex items-center mr-4">
-          <div className="mr-2">
-            <Calendar />
+
+          <div className="flex items-center gap-1 min-w-0 basis-fill flex-0 truncate">
+            <div className="flex-shrink-0">
+              <Calendar className="w-5 h-5" strokeWidth={1.5} />
+            </div>
+            <span
+              onClick={(
+                event: React.MouseEvent<HTMLDivElement, MouseEvent>
+              ) => {
+                event.preventDefault();
+                scrollToBifrostFormQuestion({
+                  formQuestionId: ReservedBifrostFormQuestionIds.CALENDAR_DATES,
+                });
+              }}
+            >
+              {datesIndicator}
+            </span>
           </div>
-          {datesIndicator}
-        </div>
-        <div className="flex items-center">
-          <div className="mr-2">
-            <OrnateConciergeBell />
+
+          <div className="flex items-center gap-1 min-w-0 basis-auto">
+            <div className="flex-shrink-0">
+              <ConciergeBell className="w-5 h-5" strokeWidth={1.5} />
+            </div>
+            <span className="underline cursor-pointer">details</span>
           </div>
-          <span className="underline cursor-pointer">details</span>
         </div>
       </div>
     </div>

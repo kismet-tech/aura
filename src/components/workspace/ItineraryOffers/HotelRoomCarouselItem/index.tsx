@@ -1,6 +1,6 @@
 import React from "react";
 import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
-import { CircleArrowDown, CircleArrowUp } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -60,6 +60,7 @@ export function HotelRoomCarouselItem({
         {" "}
         {hotelRoomOffer.countOffered > 0
           ? hotelRoomOffer.countOffered
+          
           : "-"}{" "}
       </>
     );
@@ -71,7 +72,7 @@ export function HotelRoomCarouselItem({
     <TooltipProvider>
       <div className="flex flex-col items-center space-y-2 relative">
         <div
-          className="relative w-36 h-36 mx-auto cursor-pointer"
+          className="relative w-36 h-28 mx-auto cursor-pointer"
           onClick={() =>
             onClick({
               hotelRoomOfferId: hotelRoomOffer.hotelRoomOfferId,
@@ -87,9 +88,9 @@ export function HotelRoomCarouselItem({
             {renderedIndicator}
           </div>
           {isCountEditable && (
-            <>
+            <div className="absolute bottom-8 left-2 right-2">
               <button
-                className="absolute bottom-2 left-2 p-2 text-black hover:scale-110 focus:outline-none"
+                className="absolute left-0 p-2 text-black hover:scale-110 focus:outline-none"
                 disabled={hotelRoomOffer.countOffered <= 0}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -100,11 +101,11 @@ export function HotelRoomCarouselItem({
                 }}
               >
                 {hotelRoomOffer.countOffered > 0 ? (
-                  <CircleArrowDown size={24} className="text-black" />
+                  <Minus size={20} className="text-black bg-white rounded-full border border-black" />
                 ) : (
                   <Tooltip>
                     <TooltipTrigger>
-                      <CircleArrowDown size={24} className="text-gray-400" />
+                        <Minus size={20} className="text-gray-400 bg-white rounded-full border border-gray-400" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Zero rooms selected</p>
@@ -113,7 +114,7 @@ export function HotelRoomCarouselItem({
                 )}
               </button>
               <button
-                className="absolute bottom-2 right-2 p-2 text-black hover:scale-110 focus:outline-none"
+                className="absolute right-0 p-2 text-black hover:scale-110 focus:outline-none"
                 disabled={
                   hotelRoomOffer.countOffered >= hotelRoomOffer.countAvailable
                 }
@@ -126,11 +127,11 @@ export function HotelRoomCarouselItem({
                 }}
               >
                 {hotelRoomOffer.countOffered < hotelRoomOffer.countAvailable ? (
-                  <CircleArrowUp size={24} className="text-black" />
+                  <Plus size={20} className="text-black bg-white rounded-full border border-black" />
                 ) : (
                   <Tooltip>
                     <TooltipTrigger>
-                      <CircleArrowUp size={24} className="text-gray-400" />
+                        <Plus size={20} className="text-gray-400 bg-white rounded-full border border-gray-400" />
                     </TooltipTrigger>
                     <TooltipContent>
                       {hotelRoomOffer.countAvailable > 0 ? (
@@ -142,7 +143,7 @@ export function HotelRoomCarouselItem({
                   </Tooltip>
                 )}
               </button>
-            </>
+            </div>
           )}
         </div>
         {/* Left-aligned text */}

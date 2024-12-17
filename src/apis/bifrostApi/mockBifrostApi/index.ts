@@ -149,6 +149,8 @@ export class MockBifrostApi implements BifrostApiInterface {
   }
 
   async getBifrostFormItineraryOffers({}: GetBifrostFormItineraryOffersRequestDto): Promise<GetBifrostFormItineraryOffersSuccessResponseDataDto> {
+    await new Promise((f) => setTimeout(f, 5000));
+
     const renderableItineraryOffers: RenderableItineraryOffer[] =
       this.apiState.itineraryOffers;
 
