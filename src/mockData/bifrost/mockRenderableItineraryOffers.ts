@@ -4,159 +4,159 @@ import {
   RenderableItineraryOffer,
   RenderableItineraryOfferCriterion,
 } from "@kismet_ai/foundation";
-import { mockRenderableItineraryEventOfferOne } from "./mockRenderableItineraryEventOffers";
+import { mockRenderableItineraryEventOfferOne } from "@kismet_ai/foundation";
 
 const mockRenderableItineraryOfferCriterionOne: RenderableItineraryOfferCriterion =
-  {
-    criterionName: "Space for 12 guests",
-    doesMatchCriterion: true,
-  };
+{
+  criterionName: "Space for 12 guests",
+  doesMatchCriterion: true,
+};
 
 const mockRenderableItineraryOfferCriterionTwo: RenderableItineraryOfferCriterion =
-  {
-    criterionName: "Guest House and suites available",
-    doesMatchCriterion: true,
-  };
+{
+  criterionName: "Guest House and suites available",
+  doesMatchCriterion: true,
+};
 
 export const mockRenderableItineraryHotelRoomOfferOne: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: "13242431afdasfd",
-    hotelRoomId: `123456`,
-    countOffered: 2,
-    countAvailable: 2,
-    offerPriceInCents: 150000,
-    listPriceInCents: 180000,
-    hotelRoomName: `Superior King`,
-    hotelRoomDescription: `A spacious room with a king-size bed and city views.`,
-    verboseHotelRoomDescription: `A spacious room with a king-size bed and city views. This room is perfect for a couple or a solo traveler looking for a luxurious stay in the heart of the city.`,
-    heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
-      `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
-      `https://hotel.hardrock.com/files/5829/23496346_ImageLargeWidth.avif`,
-      `https://images.unsplash.com/photo-1507679799987-c73779587ccf`,
-      `https://imagery.hoteltonight.com/mobile_web/homepage/homepage-2-v3.jpg?&fit=crop&dpr=1&fm=pjpg&q=25&w=412&h=400&auto=compress`,
-    ],
-  };
+{
+  hotelRoomOfferId: "13242431afdasfd",
+  hotelRoomId: `123456`,
+  countOffered: 2,
+  countAvailable: 2,
+  offerPriceInCents: 150000,
+  listPriceInCents: 180000,
+  hotelRoomName: `Superior King`,
+  hotelRoomDescription: `A spacious room with a king-size bed and city views.`,
+  verboseHotelRoomDescription: `A spacious room with a king-size bed and city views. This room is perfect for a couple or a solo traveler looking for a luxurious stay in the heart of the city.`,
+  heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
+    `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
+    `https://hotel.hardrock.com/files/5829/23496346_ImageLargeWidth.avif`,
+    `https://images.unsplash.com/photo-1507679799987-c73779587ccf`,
+    `https://imagery.hoteltonight.com/mobile_web/homepage/homepage-2-v3.jpg?&fit=crop&dpr=1&fm=pjpg&q=25&w=412&h=400&auto=compress`,
+  ],
+};
 
 export const mockRenderableItineraryHotelRoomOfferTwo: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: "13242431afdasfafjjhsefd",
-    hotelRoomId: `234567`,
-    countOffered: 3,
-    countAvailable: 3,
-    offerPriceInCents: 100000,
-    listPriceInCents: 130000,
-    hotelRoomName: `Standard Twin`,
-    hotelRoomDescription: `A comfortable room with two twin beds.`,
-    verboseHotelRoomDescription: `A comfortable room with two twin beds. This room is perfect for friends or family members traveling together.`,
-    heroImageUrl: `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
-    ],
-  };
+{
+  hotelRoomOfferId: "13242431afdasfafjjhsefd",
+  hotelRoomId: `234567`,
+  countOffered: 3,
+  countAvailable: 3,
+  offerPriceInCents: 100000,
+  listPriceInCents: 130000,
+  hotelRoomName: `Standard Twin`,
+  hotelRoomDescription: `A comfortable room with two twin beds.`,
+  verboseHotelRoomDescription: `A comfortable room with two twin beds. This room is perfect for friends or family members traveling together.`,
+  heroImageUrl: `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
+  ],
+};
 
 export const mockRenderableItineraryHotelRoomOfferThree: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: "13123432",
-    hotelRoomId: `345678`,
-    countOffered: 3,
-    countAvailable: 3,
-    offerPriceInCents: 120000,
-    listPriceInCents: 160000,
-    hotelRoomName: `Deluxe King`,
-    hotelRoomDescription: `A luxurious king room with mountain views.`,
-    verboseHotelRoomDescription: `A luxurious king room with mountain views. This room is perfect for a couple or a solo traveler looking for a luxurious stay in the mountains.`,
-    heroImageUrl: `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
-    ],
-  };
+{
+  hotelRoomOfferId: "13123432",
+  hotelRoomId: `345678`,
+  countOffered: 3,
+  countAvailable: 3,
+  offerPriceInCents: 120000,
+  listPriceInCents: 160000,
+  hotelRoomName: `Deluxe King`,
+  hotelRoomDescription: `A luxurious king room with mountain views.`,
+  verboseHotelRoomDescription: `A luxurious king room with mountain views. This room is perfect for a couple or a solo traveler looking for a luxurious stay in the mountains.`,
+  heroImageUrl: `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
+  ],
+};
 
 export const mockRenderableItineraryHotelRoomOfferFour: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: "1323421",
-    hotelRoomId: `456789`,
-    countOffered: 4,
-    countAvailable: 4,
-    offerPriceInCents: 90000,
-    listPriceInCents: 120000,
-    hotelRoomName: `Standard Double`,
-    hotelRoomDescription: `A cozy room with two double beds.`,
-    verboseHotelRoomDescription: `A cozy room with two double beds. This room is perfect for friends or family members traveling together.`,
-    heroImageUrl: `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
-    ],
-  };
+{
+  hotelRoomOfferId: "1323421",
+  hotelRoomId: `456789`,
+  countOffered: 4,
+  countAvailable: 4,
+  offerPriceInCents: 90000,
+  listPriceInCents: 120000,
+  hotelRoomName: `Standard Double`,
+  hotelRoomDescription: `A cozy room with two double beds.`,
+  verboseHotelRoomDescription: `A cozy room with two double beds. This room is perfect for friends or family members traveling together.`,
+  heroImageUrl: `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
+  ],
+};
 
 export const mockRenderableItineraryHotelRoomOfferFive: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: "134123afesdlnjkfsdqwerb",
-    hotelRoomId: `567890`,
-    countOffered: 2,
-    countAvailable: 2,
-    offerPriceInCents: 180000,
-    listPriceInCents: 220000,
-    hotelRoomName: `Executive Suite`,
-    hotelRoomDescription: `An executive suite with a private living room.`,
-    verboseHotelRoomDescription: `An executive suite with a private living room. This suite is perfect for a couple or a solo traveler looking for a luxurious stay in the city.`,
-    heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
-    ],
-  };
+{
+  hotelRoomOfferId: "134123afesdlnjkfsdqwerb",
+  hotelRoomId: `567890`,
+  countOffered: 2,
+  countAvailable: 2,
+  offerPriceInCents: 180000,
+  listPriceInCents: 220000,
+  hotelRoomName: `Executive Suite`,
+  hotelRoomDescription: `An executive suite with a private living room.`,
+  verboseHotelRoomDescription: `An executive suite with a private living room. This suite is perfect for a couple or a solo traveler looking for a luxurious stay in the city.`,
+  heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
+  ],
+};
 
 export const mockRenderableItineraryHotelRoomOfferSix: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: `jqrwebrheiiqewasdf678901`,
-    hotelRoomId: `678901`,
-    countOffered: 1,
-    countAvailable: 1,
-    offerPriceInCents: 300000,
-    listPriceInCents: 350000,
-    hotelRoomName: `Presidential Suite`,
-    hotelRoomDescription: `A luxurious suite fit for royalty.`,
-    verboseHotelRoomDescription: `A luxurious suite fit for royalty. This suite is perfect for a couple or a solo traveler looking for a luxurious stay in the city.`,
-    heroImageUrl: `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
-    ],
-  };
+{
+  hotelRoomOfferId: `jqrwebrheiiqewasdf678901`,
+  hotelRoomId: `678901`,
+  countOffered: 1,
+  countAvailable: 1,
+  offerPriceInCents: 300000,
+  listPriceInCents: 350000,
+  hotelRoomName: `Presidential Suite`,
+  hotelRoomDescription: `A luxurious suite fit for royalty.`,
+  verboseHotelRoomDescription: `A luxurious suite fit for royalty. This suite is perfect for a couple or a solo traveler looking for a luxurious stay in the city.`,
+  heroImageUrl: `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg`,
+  ],
+};
 
 export const mockRenderableItineraryHotelRoomOfferSeven: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: `78901qerjweqrwerhv2`,
-    hotelRoomId: `789012`,
-    countOffered: 5,
-    countAvailable: 5,
-    offerPriceInCents: 80000,
-    listPriceInCents: 100000,
-    hotelRoomName: `Classic Queen`,
-    hotelRoomDescription: `A classic room with a queen-size bed.`,
-    verboseHotelRoomDescription: `A classic room with a queen-size bed. This room is perfect for a couple or a solo traveler looking for a comfortable stay in the city.`,
-    heroImageUrl: `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
-    ],
-  };
+{
+  hotelRoomOfferId: `78901qerjweqrwerhv2`,
+  hotelRoomId: `789012`,
+  countOffered: 5,
+  countAvailable: 5,
+  offerPriceInCents: 80000,
+  listPriceInCents: 100000,
+  hotelRoomName: `Classic Queen`,
+  hotelRoomDescription: `A classic room with a queen-size bed.`,
+  verboseHotelRoomDescription: `A classic room with a queen-size bed. This room is perfect for a couple or a solo traveler looking for a comfortable stay in the city.`,
+  heroImageUrl: `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg`,
+  ],
+};
 
 export const mockRenderableItineraryHotelRoomOfferEight: RenderableItineraryHotelRoomOffer =
-  {
-    hotelRoomOfferId: `8qrweqwrejnejwqrqr90123`,
-    hotelRoomId: `890123`,
-    countOffered: 6,
-    countAvailable: 6,
-    offerPriceInCents: 60000,
-    listPriceInCents: 80000,
-    hotelRoomName: `Economy Room`,
-    hotelRoomDescription: `A budget-friendly option with all essentials.`,
-    verboseHotelRoomDescription: `A budget-friendly option with all essentials. This room is perfect for a couple or a solo traveler looking for a comfortable stay in the city.`,
-    heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
-    hotelRoomImageUrls: [
-      `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
-    ],
-  };
+{
+  hotelRoomOfferId: `8qrweqwrejnejwqrqr90123`,
+  hotelRoomId: `890123`,
+  countOffered: 6,
+  countAvailable: 6,
+  offerPriceInCents: 60000,
+  listPriceInCents: 80000,
+  hotelRoomName: `Economy Room`,
+  hotelRoomDescription: `A budget-friendly option with all essentials.`,
+  verboseHotelRoomDescription: `A budget-friendly option with all essentials. This room is perfect for a couple or a solo traveler looking for a comfortable stay in the city.`,
+  heroImageUrl: `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
+  hotelRoomImageUrls: [
+    `https://images.pexels.com/photos/271639/pexels-photo-271639.jpeg`,
+  ],
+};
 
 export const mockRenderableItineraryOfferOne: RenderableItineraryOffer = {
   itineraryOfferId: `1234567890`,
