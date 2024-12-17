@@ -4,9 +4,8 @@ import { KismetSectionHeader } from "@/components/atoms/KismetSectionHeader";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
-import { Calendar, Bell } from "lucide-react";
-import { MonopolyHouse } from "@/components/atoms/icons/MonopolyHouse";
 import { ReservedBifrostFormQuestionIds } from "@kismet_ai/foundation";
+import { Calendar, ConciergeBell, DoorOpen } from "lucide-react";
 
 export interface PendingItineraryPlannerHeaderClosedProps {
   renderablePendingItinerary: RenderablePendingItinerary;
@@ -27,21 +26,20 @@ export function PendingItineraryPlannerHeaderClosed({
     renderablePendingItinerary.countOfHotelRoomsInItinerary > 0
   ) {
     roomsIndicator = (
-      <span className="text-xs flex items-center gap-1">
-        <span>{renderablePendingItinerary.countOfHotelRoomsInItinerary}</span>
-        <span className="underline cursor-pointer">choose</span>
+      <span className="underline cursor-pointer text-xs truncate">
+        {renderablePendingItinerary.countOfHotelRoomsInItinerary} rooms
       </span>
     );
   } else {
     roomsIndicator = (
-      <span className="underline cursor-pointer text-xs">choose</span>
+      <span className="underline cursor-pointer text-xs truncate">rooms</span>
     );
   }
 
   let datesIndicator: JSX.Element;
   if (renderablePendingItinerary.calendarDateRangeInItinerary) {
     datesIndicator = (
-      <span className="underline cursor-pointer text-xs truncate flex-1">
+      <span className="underline cursor-pointer text-xs truncate">
         {renderCalendarDateRange({
           calendarDateRange:
             renderablePendingItinerary.calendarDateRangeInItinerary,
@@ -58,23 +56,21 @@ export function PendingItineraryPlannerHeaderClosed({
     );
   } else {
     datesIndicator = (
-      <span className="underline cursor-pointer text-xs truncate flex-1">
-        dates
-      </span>
+      <span className="underline cursor-pointer text-xs truncate">dates</span>
     );
   }
 
   return (
-    <div className="bg-white px-[10px] py-[5px] min-w-[300px] w-full border border-[#D6D6D6]">
+    <div className="bg-white px-[10px] py-[5px] min-w-[300px] w-full border border-[#D6D6D6] overflow-hidden">
       <div className="space-y-[2px]">
         <KismetSectionHeader>
           {renderablePendingItinerary.itineraryName}
         </KismetSectionHeader>
 
-        <div className="flex items-start gap-4 min-w-0 max-w-[calc(300px)]">
-          <div className="flex items-center gap-1 min-w-0 flex-0">
+        <div className="flex items-start gap-4 min-w-0 max-w-[calc(100%-20px)] text-sm">
+          <div className="flex items-center gap-1 min-w-0 basis-auto">
             <div className="flex-shrink-0">
-              <MonopolyHouse />
+              <DoorOpen className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <span
               onClick={(
@@ -90,9 +86,9 @@ export function PendingItineraryPlannerHeaderClosed({
             </span>
           </div>
 
-          <div className="flex items-center gap-1 min-w-0 flex-0">
+          <div className="flex items-center gap-1 min-w-0 basis-fill flex-0 truncate">
             <div className="flex-shrink-0">
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <span
               onClick={(
@@ -108,13 +104,11 @@ export function PendingItineraryPlannerHeaderClosed({
             </span>
           </div>
 
-          <div className="flex items-center gap-1 min-w-0 flex-1">
+          <div className="flex items-center gap-1 min-w-0 basis-auto">
             <div className="flex-shrink-0">
-              <Bell className="w-4 h-4" />
+              <ConciergeBell className="w-5 h-5" strokeWidth={1.5} />
             </div>
-            <span className="underline cursor-pointer text-xs flex-1">
-              details
-            </span>
+            <span className="underline cursor-pointer">details</span>
           </div>
         </div>
       </div>
