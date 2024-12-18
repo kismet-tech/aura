@@ -5,6 +5,7 @@ import dts from "rollup-plugin-dts";
 import packageJson from "./package.json" with { type: "json" };
 import json from '@rollup/plugin-json';
 import autoprefixer from 'autoprefixer';
+import strip from '@rollup/plugin-strip';
 
 import postcss from "rollup-plugin-postcss";
 
@@ -29,6 +30,11 @@ export default [
       peerDepsExternal(), // 👈 new line
       resolve(),
       commonjs(),
+          strip({
+      include: '**/*.(js|ts|tsx)',
+      // Remove specific directives
+      // Note: strip plugin removes patterns; to remove "use client", you can use regex in a custom plugin if needed
+    }),
       typescript({ tsconfig: "./tsconfig.json", declaration: false }),
       postcss({
         plugins: [],
