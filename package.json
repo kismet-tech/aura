@@ -1,6 +1,6 @@
 {
   "name": "@kismet_ai/aura",
-  "version": "1.0.138",
+  "version": "1.0.141",
   "scripts": {
     "clean": "rm -rf dist && rm -rf .cache",
     "build": "tsc -b",
@@ -21,10 +21,10 @@
   "description": "",
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",
-    "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-strip": "^3.0.4",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.1",
     "@storybook/addon-essentials": "^8.4.7",
@@ -62,7 +62,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
-    "@kismet_ai/foundation": "file:.yalc/@kismet_ai/foundation",
+    "@kismet_ai/foundation": "^1.0.84",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-scroll-area": "^1.2.1",
