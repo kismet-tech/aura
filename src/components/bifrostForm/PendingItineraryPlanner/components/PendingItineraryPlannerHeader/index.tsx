@@ -1,7 +1,7 @@
 import React from "react";
 import { RenderablePendingItinerary } from "../../models/RenderablePendingItinerary";
 import { KismetSectionHeader } from "@/components/atoms";
-import { Calendar, User, ConciergeBell, DoorOpen } from "lucide-react";
+import { Calendar, UsersRound, ConciergeBell, DoorOpen } from "lucide-react";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
@@ -68,18 +68,20 @@ export function PendingItineraryPlannerHeader({
             className="w-36 h-28 object-cover mr-4"
           />
           <div className="space-y-2 max-w-[calc(100%-theme(spacing.36)-theme(spacing.4))]">
-            <div className="flex truncate">
-              <div className="flex items-center mr-4 truncate">
-                <div className="mr-2">
-                  <DoorOpen className="w-5 h-5" strokeWidth={1.5} />
+            <div className="flex flex-wrap gap-2">
+              <div className="truncate space-y-2">
+                <div className="flex items-center truncate">
+                  <div className="mr-2">
+                    <DoorOpen className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
+                  {roomsIndicator}
                 </div>
-                {roomsIndicator}
-              </div>
-              <div className="flex items-center truncate">
-                <div className="mr-2">
-                  <User className="w-5 h-5" strokeWidth={1.5} />
+                <div className="flex items-center truncate whitespace-nowrap">
+                  <div className="mr-2">
+                    <UsersRound className="w-5 h-5" strokeWidth={1.5} />
+                  </div>
+                  <span className="underline cursor-pointer">guests</span>
                 </div>
-                <span className="underline cursor-pointer">guests</span>
               </div>
             </div>
             <div className="flex items-center truncate">
