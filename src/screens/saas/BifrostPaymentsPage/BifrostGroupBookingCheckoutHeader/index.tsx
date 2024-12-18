@@ -1,7 +1,7 @@
 import { KismetShoppingCartIcon } from "@/components/atoms/icons/KismetShoppingCartIcon";
 import { UserAvatar } from "@/components/atoms/UserAvatar";
 import { Skeleton } from "@/components/shadcn/skeleton";
-import { AuthenticatedGuestUser } from "@/models/guests/AuthenticatedGuestUser";
+import { AuthenticatedGuestUser } from "../../../../../src/models/guests/AuthenticatedGuestUser";
 import {
   BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
@@ -31,9 +31,8 @@ export function BifrostGroupBookingCheckoutHeader({
     cartRoomIndicator = (
       <div className="ml-3">
         {" "}
-        {`${countOfHotelRoomsInCart} ${
-          countOfHotelRoomsInCart > 1 ? "Rooms" : "Room"
-        }`}
+        {`${countOfHotelRoomsInCart} ${countOfHotelRoomsInCart > 1 ? "Rooms" : "Room"
+          }`}
       </div>
     );
   }
@@ -43,9 +42,8 @@ export function BifrostGroupBookingCheckoutHeader({
     cartAddOnIndicator = (
       <div className="ml-3">
         {" "}
-        {`${(cart as any).addOnCount.length} ${
-          (cart as any).addOnCount.length > 1 ? "Add-Ons" : "Add-On"
-        }`}
+        {`${(cart as any).addOnCount.length} ${(cart as any).addOnCount.length > 1 ? "Add-Ons" : "Add-On"
+          }`}
       </div>
     );
   }

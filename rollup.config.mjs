@@ -5,6 +5,8 @@ import dts from "rollup-plugin-dts";
 import packageJson from "./package.json" with { type: "json" };
 import json from '@rollup/plugin-json';
 import autoprefixer from 'autoprefixer';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+
 
 import postcss from "rollup-plugin-postcss";
 
@@ -26,6 +28,7 @@ export default [
       },
     ],
     plugins: [
+      nodeResolve(),
       peerDepsExternal(), // 👈 new line
       resolve(),
       commonjs(),

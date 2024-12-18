@@ -4,3 +4,7 @@
 scratch_txt
 /dist
 .DS_Store
+
+#yalc
+yalc.lock
+.yalc/
