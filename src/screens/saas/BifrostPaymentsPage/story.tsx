@@ -14,7 +14,7 @@ import {
   mockRenderableItineraryHotelRoomOfferThree,
   mockRenderableItineraryHotelRoomOfferTwo,
 } from "@/mockData/bifrost/mockRenderableItineraryOffers";
-import { AuthenticatedGuestUser } from "@/models/guests/AuthenticatedGuestUser";
+import { AuthenticatedGuestUser } from "../../../models/guests/AuthenticatedGuestUser";
 import { useReactStateCache } from "@/utilities/core/react/useReactStateCache";
 
 const meta: Meta<typeof BifrostGroupBookingCheckoutRootPage> = {

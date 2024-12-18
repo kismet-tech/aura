@@ -1,5 +1,5 @@
 import React from "react";
-import { EventOfferCarouselItem, EventOfferCarouselItemProps } from "@/components/atoms/EventOfferCarouselItem";
+import { EventOfferCarouselItem, EventOfferCarouselItemProps } from "../../atoms/EventOfferCarouselItem";
 import { cn } from "@/lib/utils";
 
 export interface EventOfferCarouselProps {
