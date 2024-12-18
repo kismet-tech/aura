@@ -57,5 +57,13 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    "data-[state=open]",
+    "data-[state=closed]",
+    "data-[side=top]",
+    "data-[side=bottom]",
+    "data-[side=left]",
+    "data-[side=right]",
+  ],
   plugins: [require("tailwindcss-animate")],
 };

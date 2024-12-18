@@ -27,7 +27,6 @@ import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 import { handleSubmitBifrostFormQuestion } from "./handlers/handleSubmitActiveBifrostFormQuestions";
 import { handleBeginUserSession } from "./handlers/handleBeginUserSession";
 import { getPaymentsPageUrl } from "@/apis/apiConfig";
-import { handleGetHotelId } from "./handlers/handleGetHotelId";
 import { handleUpdateItineraryOfferHotelRoomCount } from "./handlers/handleUpdateItineraryOfferHotelRoomCount";
 import { handleSetBifrostFormQuestionWithResponse } from "./handlers/handleSetBifrostFormQuestionWithResponse";
 import {

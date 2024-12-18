@@ -1,11 +1,12 @@
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import * as React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DayPicker } from "react-day-picker";
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/shadcn/button"
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/shadcn/button";
+import { useEffect } from "react";
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 function Calendar({
   className,
@@ -13,6 +14,16 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  useEffect(() => {
+    const styles = document.styleSheets;
+    const hasDayPicker = Array.from(styles).some((sheet) =>
+      Array.from(sheet.cssRules).some((rule) =>
+        (rule as any).selectorText?.includes("rdp")
+      )
+    );
+    console.log("DayPicker styles loaded:", hasDayPicker);
+  }, []);
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -63,8 +74,8 @@ function Calendar({
       }}
       {...props}
     />
-  )
+  );
 }
-Calendar.displayName = "Calendar"
+Calendar.displayName = "Calendar";
 
-export { Calendar }
+export { Calendar };

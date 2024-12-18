@@ -39,7 +39,14 @@ export default [
   {
     input: "dist/index.d.ts",
     output: [{ file: "dist/index.d.ts", format: "esm" }],
-    plugins: [dts()],
+    plugins: [
+      dts(),
+      postcss({
+        plugins: [autoprefixer()],
+        extract: true, // Extract CSS to a separate file
+        minimize: true,
+      }),
+    ],
     external: ["react", "react-dom", /\.(css|less|scss)$/],
   },
 ];

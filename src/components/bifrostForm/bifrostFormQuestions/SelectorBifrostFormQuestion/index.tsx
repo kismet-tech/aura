@@ -95,7 +95,11 @@ export function SelectorBifrostFormQuestion({
           {renderableSelectorBifrostFormQuestion.options.map(
             (option: RenderableSelectorBifrostFormQuestionOption) => {
               return (
-                <SelectItem key={option.value} value={option.value}>
+                <SelectItem
+                  key={option.value}
+                  value={option.value}
+                  className="bg-white-500 text-black data-[highlighted]:bg-grey-500 data-[highlighted]:text-black"
+                >
                   {option.label}
                 </SelectItem>
               );
