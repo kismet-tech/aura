@@ -1,6 +1,6 @@
 {
   "name": "@kismet_ai/aura",
-  "version": "1.0.97",
+  "version": "1.0.100",
   "scripts": {
     "clean": "rm -rf dist && rm -rf .cache",
     "build": "tsc -b",
@@ -61,7 +61,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
-    "@kismet_ai/foundation": "^1.0.73",
+    "@kismet_ai/foundation": "^1.0.77",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-scroll-area": "^1.2.1",
