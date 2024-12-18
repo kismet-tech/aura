@@ -63,7 +63,7 @@ export function AlternativeItineraryOfferPreview({
 
   return (
     <div
-      className="flex items-center gap-4 rounded-md p-4"
+      className="flex items-center gap-4 p-4"
       onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.preventDefault();
         onClick();
@@ -71,7 +71,7 @@ export function AlternativeItineraryOfferPreview({
     >
       {/* Image */}
       <div
-        className="w-24 h-24 bg-cover bg-center rounded-md"
+        className="w-24 h-24 bg-cover bg-center"
         style={{ backgroundImage: `url(${heroImageUrl})` }}
       ></div>
 
