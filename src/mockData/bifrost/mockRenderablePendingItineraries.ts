@@ -1,4 +1,4 @@
-import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
+import { RenderablePendingItinerary } from "../../components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 
 export const mockRenderablePendingItineraryOne: RenderablePendingItinerary = {
   itineraryName: "Gustave’s Wedding Block",

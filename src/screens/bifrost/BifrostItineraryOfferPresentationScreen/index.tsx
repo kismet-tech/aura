@@ -1,7 +1,7 @@
 import { BifrostInquirySubmittedIndicator } from "@/components/bifrostForm/BifrostInquirySubmittedIndicator";
 import { BifrostItineraryOffersLoadingPanel } from "@/components/bifrostForm/BifrostItineraryOffersLoadingPanel";
 import { PendingItineraryPlannerHeader } from "@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeader";
-import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
+import { RenderablePendingItinerary } from "../../../components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { ItineraryOfferPresentation } from "@/components/workspace/ItineraryOffers/ItineraryOfferPresentation";
 import { ItineraryOfferRoomEditor } from "@/components/workspace/ItineraryOffers/ItineraryOfferRoomEditor";
 import { ListOfItineraryOffersPresentation } from "@/components/workspace/ItineraryOffers/ListOfItineraryOffersPresentation";

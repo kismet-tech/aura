@@ -4,7 +4,7 @@ import {
   CalendarDateRange,
   HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
-import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
+import { RenderablePendingItinerary } from "../../../components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { BifrostFormInteractionHistory } from "@/components/bifrostForm/BifrostFormInteractionHistory";
 import { NavigationButton } from "@/components/atoms/NavigationButton";
 import { deepEqual } from "@/utilities/core/deepEqual";

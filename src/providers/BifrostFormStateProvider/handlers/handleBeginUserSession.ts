@@ -1,4 +1,4 @@
-import { BifrostApiInterface } from "@/apis/bifrostApi/models";
+import { BifrostApiInterface } from "../../../apis/bifrostApi/models";
 import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handleSetActiveBifrostFormQuestionsWithResponses";
 import { BifrostFormApplicationStage } from "../models/BifrostFormApplicationStage";

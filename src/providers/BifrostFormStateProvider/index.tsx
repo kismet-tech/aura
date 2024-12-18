@@ -19,7 +19,7 @@ import { BifrostFormApplicationStage } from "./models/BifrostFormApplicationStag
 import { handleSetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleSetActiveBifrostFormQuestionsWithResponses";
 import { handleStepBackToPreviousBifrostFormApplicationStage } from "./handlers/handleStepBackToPreviousBifrostFormApplicationStage";
 import { handleGetActiveBifrostFormQuestionsWithResponses } from "./handlers/handleGetActiveBifrostFormQuestionsWithResponses";
-import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
+import { RenderablePendingItinerary } from "../../components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
 import { getRenderablePendingItinerary } from "./utilities/getRenderablePendingItinerary";
 import { getHistoricalBifrostFormQuestionsWithResponses } from "./utilities/getHistoricalBifrostFormQuestionsWithResponses";
 import { handleSetBifrostFormQuestionsWithResponses } from "./handlers/handleSetBifrostFormQuestionsWithResponses";

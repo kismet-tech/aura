@@ -1,4 +1,4 @@
-import { BifrostApiInterface } from "@/apis/bifrostApi/models";
+import { BifrostApiInterface } from "../../../apis/bifrostApi/models";
 
 const LOCAL_STORAGE_BIFROST_TRAVELER_ID_KEY = "bifrostTravelerId";
 

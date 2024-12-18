@@ -5,7 +5,7 @@ import { MadeWithKismetLogo } from "@/components/atoms/icons/MadeWithKismetLogo"
 import {
   BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
-} from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
+} from "../../../providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
 import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";

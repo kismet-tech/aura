@@ -1,4 +1,4 @@
-import { BifrostApiInterface } from "@/apis/bifrostApi/models";
+import { BifrostApiInterface } from "../../../apis/bifrostApi/models";
 import {
   ItineraryOfferOriginatorType,
   RenderableItineraryHotelRoomOffer,

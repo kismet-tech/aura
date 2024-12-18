@@ -5,8 +5,8 @@ import {
 } from "@kismet_ai/foundation";
 import { ReactNode } from "react";
 import { BifrostFormApplicationStage } from "./BifrostFormApplicationStage";
-import { RenderablePendingItinerary } from "@/components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
-import { BifrostApiInterface } from "@/apis/bifrostApi/models";
+import { RenderablePendingItinerary } from "../../../components/bifrostForm/PendingItineraryPlanner/models/RenderablePendingItinerary";
+import { BifrostApiInterface } from "../../../apis/bifrostApi/models";
 import { RenderableItineraryOffer } from "@kismet_ai/foundation";
 
 export interface BifrostFormStateProviderProps {
