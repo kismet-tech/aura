@@ -62,6 +62,6 @@ export default [
         minimize: true,
       }),
     ],
-    external: ["react", "react-dom", /\.(css|less|scss)$/],
+    external: ["react", "react-dom", /\.(css|less|scss)$/, "react-day-picker"],
   },
 ];
