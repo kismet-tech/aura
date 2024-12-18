@@ -4,6 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import packageJson from "./package.json" with { type: "json" };
 import json from '@rollup/plugin-json';
+import autoprefixer from 'autoprefixer';
 
 import postcss from "rollup-plugin-postcss";
 
