@@ -28,7 +28,7 @@ export const handleGetHotelBifrostFormMetadata =
     const additionalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
       [];
 
-    if (hostname === "www.knollcroft.com") {
+    if (hostname.includes("knollcroft")) {
       hotelId = "mews-grand-hotel";
     } else if (hostname.includes("theneighborhoodhotel")) {
       hotelId = "nbhd";

@@ -71,7 +71,7 @@ export function SelectorBifrostFormQuestion({
   };
 
   return (
-    <FormField>
+    <FormField className="pb-7">
       <div className="gap-8">
         <FormLabel htmlFor={inputId}>
           {renderableSelectorBifrostFormQuestion.label}
@@ -84,7 +84,10 @@ export function SelectorBifrostFormQuestion({
           handleOnChange({ updatedValue });
         }}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger
+          className="w-[180px] w-full"
+          style={{ backgroundColor: "rgb(250, 249, 239)" }}
+        >
           <SelectValue placeholder={""} />
         </SelectTrigger>
 
