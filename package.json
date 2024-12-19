@@ -1,6 +1,6 @@
 {
   "name": "@kismet_ai/aura",
-  "version": "1.0.155",
+  "version": "1.0.157",
   "scripts": {
     "clean": "rm -rf dist && rm -rf .cache",
     "build": "tsc -b",
@@ -63,12 +63,14 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
-    "@kismet_ai/foundation": "^1.0.84",
+    "@kismet_ai/foundation": "^1.0.85",
     "@radix-ui/react-avatar": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-scroll-area": "^1.2.1",
     "@radix-ui/react-select": "^2.1.4",
-    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.2",
     "@radix-ui/react-toggle": "^1.1.0",
