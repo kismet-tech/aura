@@ -58,8 +58,10 @@ export const BifrostFormStateProvider = ({
       return handleGetHotelBifrostFormMetadata({});
     }, []);
 
-  const { hotelId, additionalBifrostFormQuestionsWithResponses } =
-    bifrostFormMetadata;
+  const {
+    hotel: { hotelId },
+    additionalBifrostFormQuestionsWithResponses,
+  } = bifrostFormMetadata;
 
   const [userSessionId, setUserSessionId] = useState<string | undefined>(
     undefined

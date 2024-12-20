@@ -76,7 +76,9 @@ export function BifrostItineraryOfferPresentationScreen({
         </div>
         <div>
           <BifrostInquirySubmittedIndicator
-            assignedSalesAgentName={bifrostFormMetadata.assignedSalesAgentName}
+            assignedSalesAgentName={
+              bifrostFormMetadata.hotel.assignedSalesAgentName
+            }
           />
           {!renderableItineraryOffers ? (
             <div>

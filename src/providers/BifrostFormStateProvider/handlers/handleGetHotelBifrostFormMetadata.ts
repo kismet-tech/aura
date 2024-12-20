@@ -24,6 +24,7 @@ export const handleGetHotelBifrostFormMetadata =
 
     let includeExtendedStay: boolean = true;
     let hotelId: string = "mews-grand-hotel";
+    let hotelName: string = "Mews Grand";
     let assignedSalesAgentName: string = "Jason";
     const additionalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
       [];
@@ -34,6 +35,7 @@ export const handleGetHotelBifrostFormMetadata =
 
       isEnabled = true;
       hotelId = "nbhd";
+      hotelName = "Neighborhood";
 
       const renderableSelectorBifrostFormQuestionAskingLocation: RenderableSelectorBifrostFormQuestion =
         {
@@ -83,6 +85,7 @@ export const handleGetHotelBifrostFormMetadata =
     } else if (hostname.includes("theneighborhoodhotel")) {
       isEnabled = true;
       hotelId = "nbhd";
+      hotelName = "Neighborhood";
 
       const renderableSelectorBifrostFormQuestionAskingLocation: RenderableSelectorBifrostFormQuestion =
         {
@@ -138,23 +141,13 @@ export const handleGetHotelBifrostFormMetadata =
     } else {
     }
 
-    console.log(
-      `hotelBifrostFormMetadata: ${JSON.stringify(
-        {
-          hotelId,
-          additionalBifrostFormQuestionsWithResponses,
-          assignedSalesAgentName,
-          includeExtendedStay,
-        },
-        null,
-        4
-      )}`
-    );
-
     return {
-      hotelId,
+      hotel: {
+        hotelId,
+        assignedSalesAgentName,
+        hotelName,
+      },
       additionalBifrostFormQuestionsWithResponses,
-      assignedSalesAgentName,
       includeExtendedStay,
       isEnabled,
     };
