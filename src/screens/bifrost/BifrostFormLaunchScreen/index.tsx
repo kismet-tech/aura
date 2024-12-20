@@ -102,11 +102,10 @@ export function BifrostFormLaunchScreen({
       </div>
       <div className="flex justify-end">
         <NavigationButton
-          onClick={handleProgressForward}
+          onClickMoveForward={handleProgressForward}
           isEnabled={allResponsesAreValid}
-        >
-          Start Planning
-        </NavigationButton>
+          moveForwardChildren={<>Start Planning</>}
+        />
       </div>
     </div>
   );

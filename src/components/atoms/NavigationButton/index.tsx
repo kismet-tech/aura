@@ -2,33 +2,41 @@ import { Button } from "@/components/shadcn/button";
 import React from "react";
 
 export interface NavigationButtonProps {
-  children: React.ReactNode;
-  onClick: () => void;
+  moveForwardChildren: React.ReactNode;
+  disabledChildren?: React.ReactNode;
+  onClickMoveForward: () => void;
   isEnabled: boolean;
 }
 
 export function NavigationButton({
-  children,
-  onClick,
+  moveForwardChildren,
+  disabledChildren,
+  onClickMoveForward,
   isEnabled,
 }: NavigationButtonProps) {
+  const isButtonClickable = !!disabledChildren ? true : isEnabled;
+
   return (
     <Button
       className={`ml-auto border border-black text-black bg-transparent hover:bg-black hover:text-white ${
-        isEnabled
+        isButtonClickable
           ? "cursor-pointer"
           : "cursor-not-allowed bg-gray-300 text-gray-500 border-gray-300"
       }`}
       onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
 
-        if (isEnabled) {
-          onClick();
+        if (isButtonClickable) {
+          onClickMoveForward();
         }
       }}
-      disabled={!isEnabled}
+      disabled={!isButtonClickable}
     >
-      {children}
+      {isEnabled
+        ? moveForwardChildren
+        : disabledChildren
+        ? disabledChildren
+        : moveForwardChildren}
     </Button>
   );
 }

@@ -27,10 +27,12 @@ export const handleGetHotelBifrostFormMetadata =
     let assignedSalesAgentName: string = "Jason";
     const additionalBifrostFormQuestionsWithResponses: BifrostFormQuestionWithResponse[] =
       [];
+    let isEnabled: boolean = false;
 
     if (hostname.includes("knollcroft")) {
       // hotelId = "mews-grand-hotel";
 
+      isEnabled = true;
       hotelId = "nbhd";
 
       const renderableSelectorBifrostFormQuestionAskingLocation: RenderableSelectorBifrostFormQuestion =
@@ -79,6 +81,7 @@ export const handleGetHotelBifrostFormMetadata =
       );
       assignedSalesAgentName = "Matt";
     } else if (hostname.includes("theneighborhoodhotel")) {
+      isEnabled = true;
       hotelId = "nbhd";
 
       const renderableSelectorBifrostFormQuestionAskingLocation: RenderableSelectorBifrostFormQuestion =
@@ -126,10 +129,13 @@ export const handleGetHotelBifrostFormMetadata =
         renderableSelectorBifrostFormQuestionAskingLocationWithResponse
       );
       assignedSalesAgentName = "Matt";
-    } else {
+    } else if (hostname.includes("localhost")) {
+      isEnabled = true;
+
       additionalBifrostFormQuestionsWithResponses.push(
         mockBifrostSelectorFormQuestionWithTextResponse
       );
+    } else {
     }
 
     console.log(
@@ -150,5 +156,6 @@ export const handleGetHotelBifrostFormMetadata =
       additionalBifrostFormQuestionsWithResponses,
       assignedSalesAgentName,
       includeExtendedStay,
+      isEnabled,
     };
   };

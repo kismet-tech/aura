@@ -15,15 +15,14 @@ export default meta;
 type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceSummaryStage>;
 
 const exampleOneArguments: BifrostGroupBookingSheetSequenceSummaryStageProps = {
-  value: "input",
-  setValue: () => {},
+  setLocalStage: () => {},
 };
 
 export const Example: Story = {
   render: (args) => {
     return (
       <div style={{ width: "50%", margin: "0 auto" }}>
-        <BifrostGroupBookingSheetSequenceSummaryStage />
+        <BifrostGroupBookingSheetSequenceSummaryStage {...args} />
       </div>
     );
   },

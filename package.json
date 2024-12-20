@@ -1,6 +1,6 @@
 {
   "name": "@kismet_ai/aura",
-  "version": "1.0.157",
+  "version": "1.0.159",
   "scripts": {
     "clean": "rm -rf dist && rm -rf .cache",
     "build": "tsc -b",
@@ -63,7 +63,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
-    "@kismet_ai/foundation": "^1.0.85",
+    "@kismet_ai/foundation": "^1.0.86",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.4",
     "@radix-ui/react-label": "^2.1.1",

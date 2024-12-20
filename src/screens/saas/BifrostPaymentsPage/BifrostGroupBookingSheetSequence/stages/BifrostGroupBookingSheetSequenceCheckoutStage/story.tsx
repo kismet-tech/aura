@@ -16,15 +16,14 @@ type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceCheckoutStage>;
 
 const exampleOneArguments: BifrostGroupBookingSheetSequenceCheckoutStageProps =
   {
-    value: "input",
-    setValue: () => {},
+    setLocalStage: () => {},
   };
 
 export const Example: Story = {
   render: (args) => {
     return (
       <div style={{ width: "50%", margin: "0 auto" }}>
-        <BifrostGroupBookingSheetSequenceCheckoutStage />
+        <BifrostGroupBookingSheetSequenceCheckoutStage {...args} />
       </div>
     );
   },

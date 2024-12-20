@@ -275,7 +275,7 @@ export function BifrostFormInteractiveLoopScreen({
 
       <div className="flex justify-end flex-shrink-0 p-4">
         <NavigationButton
-          onClick={async () => {
+          onClickMoveForward={async () => {
             await handleSubmitBifrostFormQuestion();
           }}
           isEnabled={
@@ -294,9 +294,9 @@ export function BifrostFormInteractiveLoopScreen({
               }
             )
           }
-        >
-          Next {">"}
-        </NavigationButton>
+          moveForwardChildren={<>Next {">"}</>}
+          disabledChildren={<>Skip {">"}</>}
+        />
       </div>
     </div>
   );

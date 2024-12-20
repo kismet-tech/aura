@@ -62,15 +62,14 @@ export function ItineraryOfferPresentation({
       <div className="flex-shrink-0">
         <div className="flex">
           <NavigationButton
-            onClick={() =>
+            onClickMoveForward={() =>
               onClickSelectItineraryOfferAndGoToPaymentsPage({
                 itineraryOfferId,
               })
             }
             isEnabled={true}
-          >
-            Place hold {">"}
-          </NavigationButton>
+            moveForwardChildren={<>Place hold {">"}</>}
+          />
         </div>
       </div>
     </div>

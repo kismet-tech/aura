@@ -6,6 +6,7 @@ import {
   BifrostGroupBookingSheetSequenceCartStage,
   BifrostGroupBookingSheetSequenceCartStageProps,
 } from ".";
+import { BifrostGroupBookingSheetSequenceStage } from "../..";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequenceCartStage> = {
   title:
@@ -17,15 +18,14 @@ export default meta;
 type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceCartStage>;
 
 const exampleOneArguments: BifrostGroupBookingSheetSequenceCartStageProps = {
-  value: "input",
-  setValue: () => {},
+  setLocalStage: () => {},
 };
 
 export const Example: Story = {
   render: (args) => {
     return (
       <div style={{ width: "50%", margin: "0 auto" }}>
-        <BifrostGroupBookingSheetSequenceCartStage />
+        <BifrostGroupBookingSheetSequenceCartStage {...args} />
       </div>
     );
   },

@@ -53,10 +53,16 @@ export function PendingItineraryPlanner({
               </TabsTrigger>
             </TabsList>
           </Tabs>
-          <NavigationButton onClick={() => {}} isEnabled={true}>
-            Place hold
-            <ArrowRight className="ml-2" />
-          </NavigationButton>
+          <NavigationButton
+            onClickMoveForward={() => {}}
+            isEnabled={true}
+            moveForwardChildren={
+              <>
+                Place hold
+                <ArrowRight className="ml-2" />
+              </>
+            }
+          />
         </div>
       </div>
     </div>
