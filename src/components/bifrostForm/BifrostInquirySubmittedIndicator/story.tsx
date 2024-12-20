@@ -16,6 +16,7 @@ type Story = StoryObj<typeof BifrostInquirySubmittedIndicator>;
 
 const exampleOneArguments: BifrostInquirySubmittedIndicatorProps = {
   assignedSalesAgentName: "Jason",
+  hotelName: "Mews Grand",
 };
 
 export const Example: Story = {

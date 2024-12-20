@@ -133,7 +133,11 @@ export function BifrostFormInteractiveLoopScreen({
     activeBifrostFormQuestionsWithResponses,
   ]);
 
-  const handleSubmitBifrostFormQuestion = async () => {
+  const handleSubmitBifrostFormQuestion = async ({
+    forceRequest,
+  }: {
+    forceRequest: boolean;
+  }) => {
     const haveActiveQuestionsChanged = (
       prev: BifrostFormQuestionWithResponse[] | null,
       current: BifrostFormQuestionWithResponse[]
@@ -144,28 +148,31 @@ export function BifrostFormInteractiveLoopScreen({
     };
 
     if (
-      activeBifrostFormQuestionsWithResponses.length > 0 &&
-      bifrostFormQuestionIdsWithValidResponses.length > 0 &&
-      activeBifrostFormQuestionsWithResponses.length ===
-        bifrostFormQuestionIdsWithValidResponses.length &&
-      activeBifrostFormQuestionsWithResponses.every(
-        (
-          activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
-        ) => {
-          return bifrostFormQuestionIdsWithValidResponses.includes(
-            activeBifrostFormQuestionWithResponse.bifrostFormQuestion
-              .bifrostFormQuestionId
-          );
-        }
-      ) &&
-      haveActiveQuestionsChanged(
-        previousActiveQuestionsRef.current,
-        activeBifrostFormQuestionsWithResponses
-      )
+      forceRequest ||
+      (activeBifrostFormQuestionsWithResponses.length > 0 &&
+        bifrostFormQuestionIdsWithValidResponses.length > 0 &&
+        activeBifrostFormQuestionsWithResponses.length ===
+          bifrostFormQuestionIdsWithValidResponses.length &&
+        activeBifrostFormQuestionsWithResponses.every(
+          (
+            activeBifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse
+          ) => {
+            return bifrostFormQuestionIdsWithValidResponses.includes(
+              activeBifrostFormQuestionWithResponse.bifrostFormQuestion
+                .bifrostFormQuestionId
+            );
+          }
+        ) &&
+        haveActiveQuestionsChanged(
+          previousActiveQuestionsRef.current,
+          activeBifrostFormQuestionsWithResponses
+        ))
     ) {
       // Update the ref before calling the submit function to prevent multiple calls
       previousActiveQuestionsRef.current =
         activeBifrostFormQuestionsWithResponses;
+
+      console.log("tHIS IS HIT 44");
 
       await submitBifrostFormQuestion();
     }
@@ -276,7 +283,7 @@ export function BifrostFormInteractiveLoopScreen({
       <div className="flex justify-end flex-shrink-0 p-4">
         <NavigationButton
           onClickMoveForward={async () => {
-            await handleSubmitBifrostFormQuestion();
+            await handleSubmitBifrostFormQuestion({ forceRequest: true });
           }}
           isEnabled={
             activeBifrostFormQuestionsWithResponses.length > 0 &&
