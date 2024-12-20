@@ -1,3 +1,8 @@
+/**
+ * 🚧 WORK IN PROGRESS 🚧
+ * This component is still under development and may undergo significant changes.
+ */
+
 import React from "react";
 import { BifrostGroupBookingSheetSequenceStage } from "../..";
 import {
@@ -33,30 +38,7 @@ export function BifrostGroupBookingSheetSequenceCheckoutStage({
 
   return (
     <div>
-      <div>Checkout</div>
-      <div>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem
-              onClick={handleMoveToCartStage}
-              className="cursor-pointer"
-            >
-              Cart
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem
-              onClick={handleMoveToSummaryStage}
-              className="cursor-pointer"
-            >
-              Summary
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Checkout</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      
     </div>
   );
 }
