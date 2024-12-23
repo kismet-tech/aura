@@ -1,131 +1,151 @@
-import React from "react";
+import React, { useState } from "react";
 import { RenderableItineraryEventOffer } from "@kismet_ai/foundation";
-import { CalendarDaysIcon, HomeIcon, Users2Icon, HandCoins } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  CalendarDaysIcon,
+  HomeIcon,
+  Users2Icon,
+  HandCoins,
+  FileTextIcon,
+  ChevronDownCircle,
+} from "lucide-react";
+import styles from "./styles.module.css";
 
 export interface EventOfferCarouselItemProps {
   eventOffer: RenderableItineraryEventOffer;
   onClick: ({ eventOfferId }: { eventOfferId: string }) => void;
-  className?: string;
 }
 
 export function EventOfferCarouselItem({
   eventOffer,
   onClick,
-  className,
 }: EventOfferCarouselItemProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const startDate = new Date(eventOffer.startDateTime);
   const endDate = new Date(eventOffer.endDateTime);
 
   const formatDateTime = (start: Date, end: Date) => {
     const formatDate = (date: Date) => {
-      return date.toLocaleDateString('en-US', {
-        month: 'numeric',
-        day: 'numeric'
+      return date.toLocaleDateString("en-US", {
+        month: "numeric",
+        day: "numeric",
       });
     };
 
     const formatTime = (date: Date) => {
-      const timeStr = date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        hour12: true
-      }).toLowerCase();
-      return timeStr.replace(' ', '');
+      const timeStr = date
+        .toLocaleTimeString("en-US", {
+          hour: "numeric",
+          hour12: true,
+        })
+        .toLowerCase();
+      return timeStr.replace(" ", "");
     };
 
     return `${formatDate(start)}, ${formatTime(start)}-${formatTime(end)}`;
   };
 
   const formatPrice = (priceInCents: number) => {
-    const formatted = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    const formatted = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(priceInCents / 100);
 
-    return formatted.replace('.00', '');
+    // Remove .00 if present
+    return formatted.replace(".00", "");
   };
 
   const getVenueNames = (eventOffer: RenderableItineraryEventOffer) => {
-    return eventOffer.venueOffers
-      .map(offer => offer.venueName)
-      .join(", ");
+    return eventOffer.venueOffers.map((offer) => offer.venueName).join(", ");
   };
 
   const formatVenuePrices = (eventOffer: RenderableItineraryEventOffer) => {
     return eventOffer.venueOffers
-      .map(offer => {
+      .map((offer) => {
         const formattedPrice = formatPrice(offer.pricingInfo.priceInCents);
-        const fbMinimumSuffix = offer.pricingInfo.pricingType === 'ALT_FOOD_BEV_MIN'
-          ? ' F&B Minimum'
-          : '';
+        const fbMinimumSuffix =
+          offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN"
+            ? " F&B Minimum"
+            : "";
         return `${formattedPrice}${fbMinimumSuffix} @ ${offer.venueName}`;
       })
-      .join(', ');
+      .join(", ");
   };
 
   return (
     <div
-      className={cn(
-        "relative cursor-pointer overflow-hidden bg-white shadow-sm",
-        "h-[400px] sm:h-[500px] md:h-[600px]",
-        "min-w-[200px] w-full sm:w-[300px] md:w-[350px] lg:w-[400px]",
-        "transition-all duration-300 ease-in-out",
-        className
-      )}
+      className={styles.container}
       onClick={() => onClick({ eventOfferId: eventOffer.eventOfferId })}
     >
-      <div className="relative w-full h-[55.5%] overflow-hidden">
+      <div className={styles.imageContainer}>
         <img
           src={eventOffer.imageUrl}
           alt={eventOffer.eventOfferName}
-          className="w-full h-full object-cover"
+          className={styles.image}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute top-2 left-2 sm:top-3 md:top-4 sm:left-3 md:left-4 
-                      px-2 py-0.5 sm:px-2.5 md:px-3 sm:py-0.5 md:py-1 
-                      bg-white/90 backdrop-blur-sm 
-                      text-[10px] leading-[14px] sm:text-xs sm:leading-4 md:text-sm md:leading-5
-                      font-medium rounded-full">
-          {eventOffer.status.charAt(0).toUpperCase() + eventOffer.status.slice(1).toLowerCase()}
+        <div className={styles.status}>
+          {eventOffer.status.charAt(0).toUpperCase() +
+            eventOffer.status.slice(1).toLowerCase()}
         </div>
       </div>
 
-      <div className="h-[44.5%] p-3 sm:p-4 md:p-6 lg:p-3 flex flex-col">
-        <h3 className="text-base font-semibold mb-2 text-black">
-          {eventOffer.eventOfferName}
-        </h3>
+      <div className={styles.content}>
+        <div className={styles.titleRow}>
+          <h3 className={styles.title}>{eventOffer.eventOfferName}</h3>
+          <ChevronDownCircle
+            className={`${styles.chevron} ${
+              isExpanded ? styles.chevronExpanded : ""
+            }`}
+            strokeWidth={1.5}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(!isExpanded);
+            }}
+          />
+        </div>
 
-        <div className="text-sm text-black/90 overflow-y-auto">
-          <div className="flex items-start gap-2 md:gap-3">
-            <CalendarDaysIcon className="w-4 h-4 shrink-0 text-black/80 mt-0.5" />
-            <span className="text-sm leading-5 break-words">
+        <div className={styles.detailsContainer}>
+          <div className={styles.detailRow}>
+            <CalendarDaysIcon className={styles.detailIcon} strokeWidth={1.5} />
+            <span className={styles.detailText}>
               {formatDateTime(startDate, endDate)}
             </span>
           </div>
 
-          <div className="flex items-start gap-2 md:gap-3">
-            <HomeIcon className="w-4 h-4 shrink-0 text-black/80 mt-0.5" />
-            <span className="text-sm leading-5 break-words">
-              {getVenueNames(eventOffer)}
-            </span>
-          </div>
+          <div
+            className={`${styles.collapsibleDetails} ${
+              isExpanded ? styles.expanded : ""
+            }`}
+          >
+            <div className={styles.detailRow}>
+              <HomeIcon className={styles.detailIcon} strokeWidth={1.5} />
+              <span className={styles.detailText}>
+                {getVenueNames(eventOffer)}
+              </span>
+            </div>
 
-          <div className="flex items-start gap-2 md:gap-3">
-            <Users2Icon className="w-4 h-4 shrink-0 text-black/80 mt-0.5" />
-            <span className="text-sm leading-5 break-words">
-              {eventOffer.numberOfGuests} guests
-            </span>
-          </div>
+            <div className={styles.detailRow}>
+              <Users2Icon className={styles.detailIcon} strokeWidth={1.5} />
+              <span className={styles.detailText}>
+                {eventOffer.numberOfGuests} guests
+              </span>
+            </div>
 
-          <div className="flex items-start gap-2 md:gap-3">
-            <HandCoins className="w-4 h-4 shrink-0 text-black/80 mt-0.5" />
-            <span className="text-sm leading-5 break-words">
-              {eventOffer.isEventOfferPriceEnabled
-                ? formatPrice(eventOffer.eventOfferPriceInCents)
-                : formatVenuePrices(eventOffer)
-              }
-            </span>
+            <div className={styles.detailRow}>
+              <HandCoins className={styles.detailIcon} strokeWidth={1.5} />
+              <span className={styles.detailText}>
+                {eventOffer.isEventOfferPriceEnabled
+                  ? formatPrice(eventOffer.eventOfferPriceInCents)
+                  : formatVenuePrices(eventOffer)}
+              </span>
+            </div>
+
+            {(eventOffer.details as any).description && (
+              <div className={styles.detailRow}>
+                <FileTextIcon className={styles.detailIcon} strokeWidth={1.5} />
+                <span className={styles.detailText}>Details</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

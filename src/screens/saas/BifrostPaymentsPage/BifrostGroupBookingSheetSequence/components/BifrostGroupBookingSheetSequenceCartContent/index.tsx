@@ -139,4 +139,4 @@ export function BifrostGroupBookingSheetSequenceCartContent({
       </BifrostGroupBookingSheetSequenceCartContentScroll>
     </div>
   );
-} 
+}

@@ -46,7 +46,12 @@ interface BifrostGroupBookingSheetSequenceSummaryStageProps {
   confirmedEvents: EventSummary;
 }
 
-export function BifrostGroupBookingSheetSequenceSummaryStage() {
+export function BifrostGroupBookingSheetSequenceSummaryStage({
+  yourRooms,
+  heldRooms,
+  pendingEvents,
+  confirmedEvents
+}: BifrostGroupBookingSheetSequenceSummaryStageProps) {
   return (
     <div className="overflow-x-hidden">
       <BifrostGroupBookingSheetSequenceContentSummary 
@@ -61,12 +66,10 @@ export function BifrostGroupBookingSheetSequenceSummaryStage() {
         }}
         pendingEvents={{
           count: 1,
-          date: "12/19",
           total: 100.00
         }}
         confirmedEvents={{
           count: 0,
-          date: "",
           total: 0
         }}
       />

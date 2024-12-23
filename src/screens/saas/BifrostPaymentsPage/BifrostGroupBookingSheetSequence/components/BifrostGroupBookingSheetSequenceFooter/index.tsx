@@ -6,7 +6,8 @@ interface BifrostGroupBookingSheetSequenceFooterProps {
   isValid: boolean;
   currentStage: "CART" | "SUMMARY" | "CHECKOUT";
   paymentAmount?: number;
-  hasFullPayment?: boolean;
+  hasRooms?: boolean; 
+  hasHold?: boolean;
   hasRoomBlock?: boolean;
   needsQuote?: boolean;
 }
@@ -16,21 +17,30 @@ export function BifrostGroupBookingSheetSequenceFooter({
   isValid,
   currentStage,
   paymentAmount = 100.00,
-  hasFullPayment = false,
+  hasRooms = true,
+  hasHold = true,
   hasRoomBlock = true,
   needsQuote = false
 }: BifrostGroupBookingSheetSequenceFooterProps) {
   const getButtonText = () => {
     if (currentStage === "CART") return "Continue";
     if (needsQuote) return "Request Quote";
-    if (hasRoomBlock && !hasFullPayment) return (
+    if (hasRooms &&hasRoomBlock && hasHold) return (
       <>
-        Block Rooms
+        Book & Block Rooms,
+        <br />
+        Place Hold
+      </>
+    ); 
+    if (hasRoomBlock && hasHold) return (
+      <>
+        Block Rooms,
         <br />
         Place Hold
       </>
     );
-    if (!hasFullPayment) return "Place Hold";
+    if (hasRoomBlock) return "Block Rooms";
+    if (hasHold) return "Place Hold";
     return "Checkout";
   };
 
@@ -48,7 +58,7 @@ export function BifrostGroupBookingSheetSequenceFooter({
         <Button 
           onClick={onClickContinue}
           disabled={!isValid}
-          className="w-full min-h-[48px] whitespace-normal text-sm leading-tight"
+          className="w-full min-h-[48px] whitespace-normal text-xs leading-tight"
         >
           {getButtonText()}
         </Button>
@@ -56,12 +66,3 @@ export function BifrostGroupBookingSheetSequenceFooter({
     </div>
   );
 }
-
-// Example usage:
-<BifrostGroupBookingSheetSequenceFooter
-  onClickContinue={() => {
-    console.log("Continue clicked")
-  }}
-  isValid={true}
-  currentStage="CART"
-/>

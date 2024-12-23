@@ -99,7 +99,6 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
   });
 
   const isAccordionEnabled = stage !== 'summary' && stage !== 'checkout';
-
   return (
     <div className="space-y-6">
       <h2 className="font-semibold">In Cart</h2>
