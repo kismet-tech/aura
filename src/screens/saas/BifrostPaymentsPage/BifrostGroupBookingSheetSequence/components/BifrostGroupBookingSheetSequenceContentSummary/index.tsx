@@ -70,12 +70,10 @@ interface BifrostGroupBookingSheetSequenceContentSummaryProps {
   };
   pendingEvents: {
     count: number;
-    date: string;
     total: number;
   };
   confirmedEvents: {
     count: number;
-    date: string;
     total: number;
   };
   stage?: 'default' | 'summary' | 'checkout';
@@ -84,8 +82,8 @@ interface BifrostGroupBookingSheetSequenceContentSummaryProps {
 export function BifrostGroupBookingSheetSequenceContentSummary({
   yourRooms = { count: 0, dates: '', total: 0 },
   heldRooms = { count: 0, dates: '' },
-  pendingEvents = { count: 0, date: '', total: 0 },
-  confirmedEvents = { count: 0, date: '', total: 0 },
+  pendingEvents = { count: 0, total: 0 },
+  confirmedEvents = { count: 0, total: 0 },
   stage = 'default'
 }: BifrostGroupBookingSheetSequenceContentSummaryProps) {
   const [expandedSections, setExpandedSections] = useState<{
