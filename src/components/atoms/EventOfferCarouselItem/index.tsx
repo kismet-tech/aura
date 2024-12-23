@@ -80,8 +80,14 @@ export function EventOfferCarouselItem({
           src={eventOffer.imageUrl}
           alt={eventOffer.eventOfferName}
           className="w-full h-full object-cover"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="hidden absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-600 text-sm font-medium p-4 text-center">
+          {eventOffer.eventOfferName}
+        </div>
         <div className="absolute top-2 left-2 sm:top-3 md:top-4 sm:left-3 md:left-4 
                       px-2 py-0.5 sm:px-2.5 md:px-3 sm:py-0.5 md:py-1 
                       bg-white/90 backdrop-blur-sm 
