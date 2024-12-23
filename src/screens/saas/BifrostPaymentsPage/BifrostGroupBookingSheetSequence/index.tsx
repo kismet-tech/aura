@@ -59,7 +59,7 @@ export function BifrostGroupBookingSheetSequence({
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT) {
     renderedStage = (
       <BifrostGroupBookingSheetSequenceCheckoutStage
-        setLocalStage={setLocalStage}
+        initialAcceptedState={true}
       />
     );
   }

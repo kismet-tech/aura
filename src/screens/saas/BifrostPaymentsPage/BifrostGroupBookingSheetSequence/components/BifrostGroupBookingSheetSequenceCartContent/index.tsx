@@ -14,7 +14,7 @@ export function BifrostGroupBookingSheetSequenceCartContent({
   const [guestListRoom, setGuestListRoom] = useState<{name: string} | null>(null);
 
   const [editor, setEditor] = useState<{
-    type: 'guest-list' | 'room-details' | 'event-details';
+    type: 'guest-list' | 'room-details' | 'event-details' | 'add-room' | 'add-event';
     title: string;
     name: string;
   } | null>(null);
