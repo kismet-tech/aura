@@ -1,35 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { BifrostGroupBookingSheetSequenceCartContentScroll } from "./BifrostGroupBookingSheetSequenceCartContentScroll";
+import { BifrostGroupBookingSheetSequenceCartContentRoomCard } from "./BifrostGroupBookingSheetSequenceCartContentRoomCard";
+import { BifrostGroupBookingSheetSequenceCartContentEventCard } from "./BifrostGroupBookingSheetSequenceCartContentEventCard";
+import { BifrostGroupBookingSheetSequenceCartContentAddCard } from "./BifrostGroupBookingSheetSequenceCartContentAddCard";
+import { BifrostGroupBookingSheetSequenceGuestList } from "../BifrostGroupBookingSheetSequenceGuestList";
+import { BifrostGroupBookingSheetSequenceEditor } from "../BifrostGroupBookingSheetSequenceEditor";
 
-interface BifrostGroupBookingSheetSequenceCartContentProps {
-  // TODO: @backend-team
-  // These will be the props needed from the API:
-  // - List of rooms with details (array of room objects)
-  // - List of events/experiences (array of event objects)
-  // - Room block total count
-  // - Event count
-  // For the exact data structure, see the dummy data below
-}
+export function BifrostGroupBookingSheetSequenceCartContent({
+  onOpenGuestList
+}: {
+  onOpenGuestList: (roomName: string) => void;
+}) {
+  const [guestListRoom, setGuestListRoom] = useState<{name: string} | null>(null);
 
-export function BifrostGroupBookingSheetSequenceCartContent({}: BifrostGroupBookingSheetSequenceCartContentProps) {
-  // TODO: @backend-team
-  // This is dummy data showing the expected data structure
-  // Replace with actual API response
-  // 
-  // Room object structure:
-  // - id: number (unique identifier)
-  // - name: string (room name)
-  // - subtitle: string (additional info or link text)
-  // - price: number (current price)
-  // - originalPrice: number (price before discount)
-  // - quantity: number (number of rooms of this type)
-  // - type: string (ROH or Your Room)
-  // - imageUrl: string (URL to room image)
+  const [editor, setEditor] = useState<{
+    type: 'guest-list' | 'room-details' | 'event-details';
+    title: string;
+    name: string;
+  } | null>(null);
+
   const rooms = [
     {
       id: 1,
       name: "Run of House",
-      subtitle: "(any room)",
+      moreInfo: {
+        type: 'tooltip' as const,
+        text: '(any room)',
+        tooltipContent: 'Run of House means you will be assigned any available room type upon check-in'
+      },
+      onClick: () => setEditor({
+        type: 'room-details',
+        title: 'Run of House Details',
+        name: "Run of House"
+      }),
       price: 323,
       originalPrice: 387,
       quantity: 29,
@@ -39,7 +42,20 @@ export function BifrostGroupBookingSheetSequenceCartContent({}: BifrostGroupBook
     {
       id: 2,
       name: "Bridal Suite",
-      subtitle: "guest list >",
+      moreInfo: {
+        type: 'link' as const,
+        text: 'guest list',
+        onClick: () => setEditor({
+          type: 'guest-list',
+          title: 'Guest List - Bridal Suite',
+          name: "Bridal Suite"
+        })
+      },
+      onClick: () => setEditor({
+        type: 'room-details',
+        title: 'Bridal Suite Details',
+        name: "Bridal Suite"
+      }),
       price: 0,
       originalPrice: 1295,
       quantity: 1,
@@ -48,22 +64,33 @@ export function BifrostGroupBookingSheetSequenceCartContent({}: BifrostGroupBook
     }
   ];
 
-  // TODO: @backend-team
-  // Event object structure:
-  // - id: number (unique identifier)
-  // - name: string (event name)
-  // - date: string (formatted date string)
-  // - status: string (Pending, Confirmed, etc.)
-  // - imageUrl: string (URL to event image)
   const events = [
     {
       id: 1,
-      name: "Rehearsal dinner",
+      name: "Welcome Reception",
+      onClick: () => setEditor({
+        type: 'event-details',
+        title: 'Welcome Reception Details',
+        name: "Welcome Reception"
+      }),
       date: "Dec 19",
       status: "Pending",
       imageUrl: "https://placehold.co/160x120"
     }
   ];
+
+  if (editor) {
+    return (
+      <div className="absolute inset-0 bg-white z-10">
+        <BifrostGroupBookingSheetSequenceEditor
+          title={editor.title}
+          type={editor.type}
+          name={editor.name}
+          onBack={() => setEditor(null)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -72,37 +99,21 @@ export function BifrostGroupBookingSheetSequenceCartContent({}: BifrostGroupBook
         description="You have a room block of 30 rooms including the bridal suite"
       >
         {rooms.map(room => (
-          <div key={room.id} className="flex-none w-[160px]">
-            <div className="overflow-hidden">
-              <div className="relative">
-                <img 
-                  src={room.imageUrl} 
-                  alt={room.name} 
-                  className="w-[160px] h-[120px] object-cover"
-                />
-                <div className="absolute top-2 left-2 flex gap-2">
-                  <span className="bg-white rounded-full px-2 py-1 text-sm">{room.quantity}</span>
-                  <span className="bg-white rounded-full px-2 py-1 text-sm">{room.type}</span>
-                </div>
-              </div>
-              <div className="pt-2">
-                <h3 className="font-semibold text-sm">{room.name}</h3>
-                <p className="text-sm text-gray-500">{room.subtitle}</p>
-                <div className="mt-1 space-y-0.5">
-                  <div className="flex items-baseline gap-2">
-                    <span className="line-through text-gray-400 text-sm">${room.originalPrice}</span>
-                    <span className="font-semibold text-sm">${room.price}/night</span>
-                  </div>
-                  {room.originalPrice > room.price && (
-                    <div className="text-sm text-gray-500">
-                      ({((1 - room.price/room.originalPrice) * 100).toFixed(0)}% off)
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+          <BifrostGroupBookingSheetSequenceCartContentRoomCard
+            key={room.id}
+            {...room}
+          />
         ))}
+        <BifrostGroupBookingSheetSequenceCartContentAddCard 
+          title="room"
+          onClick={() => {
+            setEditor({
+              type: 'add-room',
+              title: 'Add Room',
+              name: 'New Room'
+            });
+          }}
+        />
       </BifrostGroupBookingSheetSequenceCartContentScroll>
 
       <BifrostGroupBookingSheetSequenceCartContentScroll
@@ -110,25 +121,21 @@ export function BifrostGroupBookingSheetSequenceCartContent({}: BifrostGroupBook
         description="You have 1 event added to your itinerary."
       >
         {events.map(event => (
-          <div key={event.id} className="flex-none w-[160px]">
-            <div className="border overflow-hidden">
-              <div className="relative">
-                <img 
-                  src={event.imageUrl} 
-                  alt={event.name} 
-                  className="w-[160px] h-[120px] object-cover"
-                />
-                <div className="absolute top-2 left-2">
-                  <span className="bg-white rounded-full px-2 py-1 text-sm">{event.status}</span>
-                </div>
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-sm">{event.name}</h3>
-                <p className="text-sm text-gray-500">{event.date}</p>
-              </div>
-            </div>
-          </div>
+          <BifrostGroupBookingSheetSequenceCartContentEventCard
+            key={event.id}
+            {...event}
+          />
         ))}
+        <BifrostGroupBookingSheetSequenceCartContentAddCard 
+          title="event"
+          onClick={() => {
+            setEditor({
+              type: 'add-event',
+              title: 'Add Event',
+              name: 'New Event'
+            });
+          }}
+        />
       </BifrostGroupBookingSheetSequenceCartContentScroll>
     </div>
   );

@@ -11,9 +11,15 @@ export interface BifrostGroupBookingSheetSequenceCartStageProps {
 export function BifrostGroupBookingSheetSequenceCartStage({
   setLocalStage,
 }: BifrostGroupBookingSheetSequenceCartStageProps) {
+  const handleOpenGuestList = (roomName: string) => {
+    // Handle guest list opening logic here
+  };
+
   return (
-    <div>
-      <BifrostGroupBookingSheetSequenceCartContent />
+    <div className="overflow-x-hidden">
+      <BifrostGroupBookingSheetSequenceCartContent 
+        onOpenGuestList={handleOpenGuestList}
+      />
     </div>
   );
 }
