@@ -1,5 +1,4 @@
 import React from "react";
-import { Info } from "lucide-react";
 
 interface BifrostGroupBookingSheetSequenceContentSummaryLineItemProps {
   roomCount?: number;
@@ -7,7 +6,7 @@ interface BifrostGroupBookingSheetSequenceContentSummaryLineItemProps {
   nights: number;
   dates: string;
   price?: {
-    amount: number;
+    amountInCents: number;
     label: string;
   };
   keyTerms?: string[];
@@ -19,7 +18,7 @@ export function BifrostGroupBookingSheetSequenceContentSummaryLineItem({
   nights,
   dates,
   price,
-  keyTerms
+  keyTerms,
 }: BifrostGroupBookingSheetSequenceContentSummaryLineItemProps) {
   return (
     <div className="pl-4 border-l border-gray-200">
@@ -40,12 +39,12 @@ export function BifrostGroupBookingSheetSequenceContentSummaryLineItem({
           </div>
           {price && (
             <div className="text-sm">
-              <div>Final Price: ${price.amount.toFixed(2)}</div>
+              <div>Final Price: ${(price.amountInCents / 100).toFixed(2)}</div>
               <div className="text-gray-600">{price.label}</div>
             </div>
           )}
         </div>
-        
+
         {keyTerms && keyTerms.length > 0 && (
           <div className="text-sm">
             <div className="font-medium mb-1">Key Terms:</div>
@@ -59,4 +58,4 @@ export function BifrostGroupBookingSheetSequenceContentSummaryLineItem({
       </div>
     </div>
   );
-} 
+}
