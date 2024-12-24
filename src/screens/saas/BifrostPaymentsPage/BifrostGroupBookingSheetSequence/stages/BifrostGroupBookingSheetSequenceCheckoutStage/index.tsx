@@ -4,41 +4,14 @@
  */
 
 import React from "react";
-import { BifrostGroupBookingSheetSequenceStage } from "../..";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/shadcn/breadcrumb";
+import { BifrostGroupBookingSheetSequenceCheckoutStageBody } from "./BifrostGroupBookingSheetSequenceCheckoutStageBody";
 
-export interface BifrostGroupBookingSheetSequenceCheckoutStageProps {
-  setLocalStage: React.Dispatch<
-    React.SetStateAction<BifrostGroupBookingSheetSequenceStage>
-  >;
+interface BifrostGroupBookingSheetSequenceCheckoutStageProps {
+  initialAcceptedState?: boolean;
 }
 
 export function BifrostGroupBookingSheetSequenceCheckoutStage({
-  setLocalStage,
+  initialAcceptedState = false
 }: BifrostGroupBookingSheetSequenceCheckoutStageProps) {
-  const handleMoveToCartStage: React.MouseEventHandler<HTMLLIElement> = (
-    event
-  ) => {
-    event.preventDefault();
-    setLocalStage(BifrostGroupBookingSheetSequenceStage.CART);
-  };
-
-  const handleMoveToSummaryStage: React.MouseEventHandler<HTMLLIElement> = (
-    event
-  ) => {
-    event.preventDefault();
-    setLocalStage(BifrostGroupBookingSheetSequenceStage.SUMMARY);
-  };
-
-  return (
-    <div>
-      
-    </div>
-  );
+  return <BifrostGroupBookingSheetSequenceCheckoutStageBody initialAcceptedState={initialAcceptedState} />;
 }
