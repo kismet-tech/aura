@@ -16,7 +16,7 @@ type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceCheckoutStage>;
 
 const exampleOneArguments: BifrostGroupBookingSheetSequenceCheckoutStageProps =
   {
-    setLocalStage: () => {},
+    initialAcceptedState: false,
   };
 
 export const Example: Story = {
