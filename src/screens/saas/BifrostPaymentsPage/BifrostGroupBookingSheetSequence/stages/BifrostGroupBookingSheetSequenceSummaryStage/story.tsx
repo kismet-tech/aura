@@ -14,9 +14,8 @@ export default meta;
 
 type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceSummaryStage>;
 
-const exampleOneArguments: BifrostGroupBookingSheetSequenceSummaryStageProps = {
-  setLocalStage: () => {},
-};
+const exampleOneArguments: BifrostGroupBookingSheetSequenceSummaryStageProps =
+  {};
 
 export const Example: Story = {
   render: (args) => {

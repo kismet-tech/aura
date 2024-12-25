@@ -6,12 +6,16 @@
 import React from "react";
 import { BifrostGroupBookingSheetSequenceCheckoutStageBody } from "./BifrostGroupBookingSheetSequenceCheckoutStageBody";
 
-interface BifrostGroupBookingSheetSequenceCheckoutStageProps {
+export interface BifrostGroupBookingSheetSequenceCheckoutStageProps {
   initialAcceptedState?: boolean;
 }
 
 export function BifrostGroupBookingSheetSequenceCheckoutStage({
-  initialAcceptedState = false
+  initialAcceptedState = false,
 }: BifrostGroupBookingSheetSequenceCheckoutStageProps) {
-  return <BifrostGroupBookingSheetSequenceCheckoutStageBody initialAcceptedState={initialAcceptedState} />;
+  return (
+    <BifrostGroupBookingSheetSequenceCheckoutStageBody
+      initialAcceptedState={initialAcceptedState}
+    />
+  );
 }

@@ -1,13 +1,14 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { BifrostModal } from './index';
-import { BifrostDrawerButton } from '../BifrostDrawer/bifrostDrawerButton';
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { BifrostModal } from "./index";
+import { BifrostDrawerButton } from "../BifrostDrawer/bifrostDrawerButton";
+import { SocialPlatform } from "./components/loginComponents/SocialLoginBody";
 
 const meta = {
-  title: 'Bifrost/BifrostModal',
+  title: "Bifrost/BifrostModal",
   component: BifrostModal,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
 } satisfies Meta<typeof BifrostModal>;
 
@@ -15,46 +16,45 @@ export default meta;
 type Story = StoryObj<typeof BifrostModal>;
 
 const ModalWrapper: React.FC<{
-  platform?: string;
+  platform?: SocialPlatform;
   firstName?: string;
   redirectCode?: string;
   customMessage?: string;
   offerTitle?: string;
   offerDescription?: string;
 }> = ({
-  platform = 'Google',
+  platform = "Google" as SocialPlatform,
   firstName,
   redirectCode,
   customMessage,
-  offerTitle = 'Special Travel Offer',
-  offerDescription = 'Get exclusive deals on your next adventure. Book now and save!',
+  offerTitle = "Special Travel Offer",
+  offerDescription = "Get exclusive deals on your next adventure. Book now and save!",
 }) => {
-  const [modalState, setModalState] = React.useState<'open' | 'closed'>('open');
+  const [modalState, setModalState] = React.useState<"open" | "closed">("open");
 
   const handleClose = () => {
-    setModalState('closed');
+    setModalState("closed");
   };
 
   const handleButtonClick = () => {
-    setModalState('open');
+    setModalState("open");
   };
 
   return (
     <div>
       <BifrostModal
-        isOpen={modalState === 'open'}
+        isOpen={modalState === "open"}
         onClose={handleClose}
         platform={platform}
-        firstName={firstName}
         redirectCode={redirectCode}
-        customMessage={customMessage}
-        offerTitle={offerTitle}
-        offerDescription={offerDescription}
+        firstName={firstName}
+        onLogin={(method, redirectCode) => {}}
+        isLoggedIn={false}
       />
-      {modalState === 'closed' && (
+      {modalState === "closed" && (
         <BifrostDrawerButton
           type="special-offer"
-          data={{ discount: '20%' }}
+          data={{ discount: "20%" }}
           onClick={handleButtonClick}
           shouldOpenModal={false}
           createdByBifrostModal={true}
@@ -68,7 +68,7 @@ const ModalWrapper: React.FC<{
 export const GenericOffer: Story = {
   render: () => (
     <ModalWrapper
-      platform="Google"
+      platform={"Google" as SocialPlatform}
       offerTitle="Exclusive Travel Deal"
       offerDescription="Book your dream vacation with our special rates and flexible dates."
     />
@@ -112,4 +112,4 @@ export const LinkedInRedirect: Story = {
       offerDescription="Exclusive business travel deals for LinkedIn professionals."
     />
   ),
-}; 
+};

@@ -6,12 +6,11 @@
  * - Integrate with the modal for login flows
  */
 
-"use client"
+"use client";
 
-import React, { useState, useEffect } from "react"
-import styled from "styled-components"
-import { DrawerType } from './bifrostDrawer'
-import logoKismet from '@/assets/images/logoKismet.png'
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { DrawerType } from "./bifrostDrawer";
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -25,24 +24,25 @@ const StyledButton = styled.button<{ $type: DrawerType }>`
   align-items: center;
   gap: 12px;
   background: white;
-  border: 2px solid ${props => {
+  border: 2px solid
+    ${(props) => {
+      switch (props.$type) {
+        case "completed-itinerary":
+          return "#10b981";
+        case "special-offer":
+          return "#f59e0b";
+        default:
+          return "#0095f6";
+      }
+    }};
+  color: ${(props) => {
     switch (props.$type) {
-      case 'completed-itinerary':
-        return '#10b981';
-      case 'special-offer':
-        return '#f59e0b';
+      case "completed-itinerary":
+        return "#10b981";
+      case "special-offer":
+        return "#f59e0b";
       default:
-        return '#0095f6';
-    }
-  }};
-  color: ${props => {
-    switch (props.$type) {
-      case 'completed-itinerary':
-        return '#10b981';
-      case 'special-offer':
-        return '#f59e0b';
-      default:
-        return '#0095f6';
+        return "#0095f6";
     }
   }};
   padding: 12px 24px;
@@ -54,34 +54,34 @@ const StyledButton = styled.button<{ $type: DrawerType }>`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background: ${props => {
+    background: ${(props) => {
       switch (props.$type) {
-        case 'completed-itinerary':
-          return '#f0fdf4';
-        case 'special-offer':
-          return '#fef3c7';
+        case "completed-itinerary":
+          return "#f0fdf4";
+        case "special-offer":
+          return "#fef3c7";
         default:
-          return '#f0f9ff';
+          return "#f0f9ff";
       }
     }};
-    border-color: ${props => {
+    border-color: ${(props) => {
       switch (props.$type) {
-        case 'completed-itinerary':
-          return '#059669';
-        case 'special-offer':
-          return '#d97706';
+        case "completed-itinerary":
+          return "#059669";
+        case "special-offer":
+          return "#d97706";
         default:
-          return '#0077c7';
+          return "#0077c7";
       }
     }};
-    color: ${props => {
+    color: ${(props) => {
       switch (props.$type) {
-        case 'completed-itinerary':
-          return '#059669';
-        case 'special-offer':
-          return '#d97706';
+        case "completed-itinerary":
+          return "#059669";
+        case "special-offer":
+          return "#d97706";
         default:
-          return '#0077c7';
+          return "#0077c7";
       }
     }};
   }
@@ -100,10 +100,15 @@ const Logo = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: ${props => `brightness(0) saturate(100%) ${props.color ? `invert(1) sepia(1) saturate(1) hue-rotate(${props.color}deg)` : ''}`};
+  filter: ${(props) =>
+    `brightness(0) saturate(100%) ${
+      props.color
+        ? `invert(1) sepia(1) saturate(1) hue-rotate(${props.color}deg)`
+        : ""
+    }`};
 `;
 
-interface BifrostDrawerButtonProps {
+export interface BifrostDrawerButtonProps {
   onClick?: () => void;
   isPersistent?: boolean;
   type: DrawerType;
@@ -120,13 +125,13 @@ export const BifrostDrawerButton: React.FC<BifrostDrawerButtonProps> = ({
   data,
   shouldOpenModal = false,
   createdByBifrostModal = false,
-  firstName
+  firstName,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (isPersistent) {
-      const storedState = localStorage.getItem('bifrostDrawerButtonVisible');
+      const storedState = localStorage.getItem("bifrostDrawerButtonVisible");
       if (storedState) {
         setIsVisible(JSON.parse(storedState));
       }
@@ -135,28 +140,33 @@ export const BifrostDrawerButton: React.FC<BifrostDrawerButtonProps> = ({
 
   useEffect(() => {
     if (isPersistent) {
-      localStorage.setItem('bifrostDrawerButtonVisible', JSON.stringify(isVisible));
+      localStorage.setItem(
+        "bifrostDrawerButtonVisible",
+        JSON.stringify(isVisible)
+      );
     }
   }, [isVisible, isPersistent]);
 
   const getButtonText = () => {
     if (shouldOpenModal) {
-      return 'Log in to View Offer';
+      return "Log in to View Offer";
     }
 
     if (createdByBifrostModal) {
-      return firstName ? `${firstName}'s Offer` : 'Show Offer';
+      return firstName ? `${firstName}'s Offer` : "Show Offer";
     }
 
     switch (type) {
-      case 'completed-itinerary':
-        return 'View Your Itinerary';
-      case 'in-progress':
-        return `Continue Planning (Step ${(data as any).currentStep}/${(data as any).totalSteps})`;
-      case 'special-offer':
+      case "completed-itinerary":
+        return "View Your Itinerary";
+      case "in-progress":
+        return `Continue Planning (Step ${(data as any).currentStep}/${
+          (data as any).totalSteps
+        })`;
+      case "special-offer":
         return `Special Offer: ${(data as any).discount} Off`;
       default:
-        return 'Resume Booking';
+        return "Resume Booking";
     }
   };
 
@@ -166,11 +176,13 @@ export const BifrostDrawerButton: React.FC<BifrostDrawerButtonProps> = ({
     <ButtonContainer>
       <StyledButton onClick={onClick} $type={type}>
         <LogoContainer $type={type}>
-          <Logo src={logoKismet} alt="Kismet Logo" />
+          <Logo
+            src={"https://storage.googleapis.com/kismet-assets/logoKismet.png"}
+            alt="Kismet Logo"
+          />
         </LogoContainer>
         {getButtonText()}
       </StyledButton>
     </ButtonContainer>
   );
 };
-

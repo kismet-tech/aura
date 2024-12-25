@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { GreetingSection } from './components/sections/GreetingSection';
-import { PromoSection } from './components/sections/PromoSection';
-import { SocialLoginBody, SocialPlatform } from './components/loginComponents/SocialLoginBody';
-import { BookingDrawer } from '../BifrostDrawer/bifrostDrawer';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { GreetingSection } from "./components/sections/GreetingSection";
+import { PromoSection } from "./components/sections/PromoSection";
+import {
+  SocialLoginBody,
+  SocialPlatform,
+} from "./components/loginComponents/SocialLoginBody";
+import { BookingDrawer } from "../BifrostDrawer/bifrostDrawer";
 
 /**
  * Bifrost Redirect Code Structure
  * ------------------------------
  * The redirect code is an encrypted string that contains attribution and user context
  * information from AI interactions. The backend should handle encryption/decryption of this data.
- * 
+ *
  * Backend Implementation Notes:
  * ---------------------------
  * 1. When generating a redirect link:
@@ -18,19 +21,19 @@ import { BookingDrawer } from '../BifrostDrawer/bifrostDrawer';
  *      * Encrypted code (contains source, campaign, target info)
  *      * User context from AI chat (if exists)
  *      * Creation timestamp
- * 
+ *
  * 2. When code is detected:
  *    - Decrypt code server-side
  *    - Look up associated AI interaction context
  *    - Return user data (first name) from chat context
  *    - Track attribution data
- * 
+ *
  * 3. AI Chat Integration:
  *    - Store user context from AI conversations
  *    - Use first name and conversation context for personalization
  *    - Track conversation topics for offer relevance
  *    - Link chat history to user profile upon login
- * 
+ *
  * Security Notes:
  * --------------
  * - Encrypt all codes to prevent data exposure
@@ -87,7 +90,7 @@ const CloseButton = styled.button`
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 16px;
     height: 2px;
@@ -104,7 +107,7 @@ const CloseButton = styled.button`
   }
 `;
 
-interface BifrostModalProps {
+export interface BifrostModalProps {
   isOpen: boolean;
   onClose?: () => void;
   platform?: SocialPlatform;
@@ -123,19 +126,21 @@ export const BifrostModal: React.FC<BifrostModalProps> = ({
   firstName,
   onLogin,
   isLoggedIn = false,
-  prefillEmail
+  prefillEmail,
 }) => {
-  const [localRedirectCode, setLocalRedirectCode] = useState<string | undefined>(redirectCode);
+  const [localRedirectCode, setLocalRedirectCode] = useState<
+    string | undefined
+  >(redirectCode);
   const [showDrawer, setShowDrawer] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
+      const code = params.get("code");
       if (code) {
         setLocalRedirectCode(code);
-        localStorage.setItem('bifrostRedirectCode', code);
+        localStorage.setItem("bifrostRedirectCode", code);
       }
     }
   }, [isOpen]);
@@ -179,19 +184,17 @@ export const BifrostModal: React.FC<BifrostModalProps> = ({
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContainer>
         <CloseButton onClick={handleXClick} aria-label="Close modal" />
-        <GreetingSection 
+        <GreetingSection
           hotelName="Your Hotel"
           customMessage="I'm sending you a personal offer"
           guestFirstName={firstName}
         />
-        <PromoSection 
-          imageUrl="/path/to/promo-image.jpg"
+        <PromoSection
           title="Exclusive Hotel Offer"
           description="Book now and receive special member rates"
-          highlightedText="30% off your stay"
         />
-        <SocialLoginBody 
-          platform={platform} 
+        <SocialLoginBody
+          platform={platform}
           onLogin={handleLoginSuccess}
           redirectCode={localRedirectCode}
           prefillEmail={prefillEmail}
@@ -200,9 +203,5 @@ export const BifrostModal: React.FC<BifrostModalProps> = ({
     </ModalOverlay>
   );
 
-  return (
-    <>
-      {(isOpen || showLoginModal) && renderModalContent()}
-    </>
-  );
-}; 
+  return <>{(isOpen || showLoginModal) && renderModalContent()}</>;
+};

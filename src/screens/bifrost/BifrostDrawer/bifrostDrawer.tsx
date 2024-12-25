@@ -6,15 +6,15 @@
  * - Special offers
  */
 
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import styled from "styled-components"
-import { BifrostDrawerButton } from './bifrostDrawerButton'
-import { PendingItineraryPlannerHeader } from '@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeader'
-import { ItineraryOfferPresentationSummary } from '@/components/workspace/ItineraryOffers/ListOfItineraryOffersPresentation/ItineraryOfferPresentationSummary'
-import { RenderableItineraryOffer } from "@kismet_ai/foundation"
-import { SpecialOffer } from '@/components/molecules/SpecialOffer'
+import React, { useState } from "react";
+import styled from "styled-components";
+import { BifrostDrawerButton } from "./bifrostDrawerButton";
+import { PendingItineraryPlannerHeader } from "@/components/bifrostForm/PendingItineraryPlanner/components/PendingItineraryPlannerHeader";
+import { ItineraryOfferPresentationSummary } from "@/components/workspace/ItineraryOffers/ListOfItineraryOffersPresentation/ItineraryOfferPresentationSummary";
+import { RenderableItineraryOffer } from "@kismet_ai/foundation";
+import { SpecialOffer } from "@/components/molecules/SpecialOffer";
 
 const DrawerOverlay = styled.div`
   position: fixed;
@@ -39,7 +39,7 @@ const DrawerContent = styled.div<{ $isOpen: boolean }>`
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
   z-index: 51;
   overflow-y: auto;
-  transform: translateX(${props => props.$isOpen ? '0' : '100%'});
+  transform: translateX(${(props) => (props.$isOpen ? "0" : "100%")});
   transition: transform 0.3s ease-in-out;
 `;
 
@@ -64,7 +64,7 @@ const CloseButton = styled.button`
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 16px;
     height: 2px;
@@ -105,18 +105,54 @@ const LogoLine = styled.div`
   margin-left: -1.5px;
   margin-top: -6px;
 
-  &:nth-child(1) { transform: rotate(0deg) translateY(-12px); width: 3px; }
-  &:nth-child(2) { transform: rotate(30deg) translateY(-12px); width: 2.7px; }
-  &:nth-child(3) { transform: rotate(60deg) translateY(-12px); width: 2.4px; }
-  &:nth-child(4) { transform: rotate(90deg) translateY(-12px); width: 2.1px; }
-  &:nth-child(5) { transform: rotate(120deg) translateY(-12px); width: 1.8px; }
-  &:nth-child(6) { transform: rotate(150deg) translateY(-12px); width: 1.5px; }
-  &:nth-child(7) { transform: rotate(180deg) translateY(-12px); width: 1.2px; }
-  &:nth-child(8) { transform: rotate(210deg) translateY(-12px); width: 0.9px; }
-  &:nth-child(9) { transform: rotate(240deg) translateY(-12px); width: 0.6px; }
-  &:nth-child(10) { transform: rotate(270deg) translateY(-12px); width: 0.3px; }
-  &:nth-child(11) { transform: rotate(300deg) translateY(-12px); width: 0.3px; }
-  &:nth-child(12) { transform: rotate(330deg) translateY(-12px); width: 0.3px; }
+  &:nth-child(1) {
+    transform: rotate(0deg) translateY(-12px);
+    width: 3px;
+  }
+  &:nth-child(2) {
+    transform: rotate(30deg) translateY(-12px);
+    width: 2.7px;
+  }
+  &:nth-child(3) {
+    transform: rotate(60deg) translateY(-12px);
+    width: 2.4px;
+  }
+  &:nth-child(4) {
+    transform: rotate(90deg) translateY(-12px);
+    width: 2.1px;
+  }
+  &:nth-child(5) {
+    transform: rotate(120deg) translateY(-12px);
+    width: 1.8px;
+  }
+  &:nth-child(6) {
+    transform: rotate(150deg) translateY(-12px);
+    width: 1.5px;
+  }
+  &:nth-child(7) {
+    transform: rotate(180deg) translateY(-12px);
+    width: 1.2px;
+  }
+  &:nth-child(8) {
+    transform: rotate(210deg) translateY(-12px);
+    width: 0.9px;
+  }
+  &:nth-child(9) {
+    transform: rotate(240deg) translateY(-12px);
+    width: 0.6px;
+  }
+  &:nth-child(10) {
+    transform: rotate(270deg) translateY(-12px);
+    width: 0.3px;
+  }
+  &:nth-child(11) {
+    transform: rotate(300deg) translateY(-12px);
+    width: 0.3px;
+  }
+  &:nth-child(12) {
+    transform: rotate(330deg) translateY(-12px);
+    width: 0.3px;
+  }
 `;
 
 const DrawerTitle = styled.h2`
@@ -162,7 +198,7 @@ const ButtonContainer = styled.div`
   margin-top: 24px;
 `;
 
-const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
+const Button = styled.button<{ $variant?: "primary" | "secondary" }>`
   flex: 1;
   padding: 12px;
   border-radius: 8px;
@@ -170,7 +206,9 @@ const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
   cursor: pointer;
   transition: opacity 0.2s;
 
-  ${props => props.$variant === 'secondary' ? `
+  ${(props) =>
+    props.$variant === "secondary"
+      ? `
     background: #f8f9fa;
     color: #333;
     border: 1px solid #ddd;
@@ -178,7 +216,8 @@ const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
     &:hover {
       background: #eee;
     }
-  ` : `
+  `
+      : `
     background: #0095f6;
     color: white;
     border: none;
@@ -200,7 +239,7 @@ const ProgressDot = styled.div<{ $active: boolean }>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: ${props => props.$active ? '#0095f6' : '#e2e8f0'};
+  background: ${(props) => (props.$active ? "#0095f6" : "#e2e8f0")};
 `;
 
 const StatusBox = styled.div`
@@ -225,7 +264,10 @@ const InstantBookPlaceholder = styled.div`
   text-align: center;
 `;
 
-export type DrawerType = 'completed-itinerary' | 'in-progress' | 'special-offer';
+export type DrawerType =
+  | "completed-itinerary"
+  | "in-progress"
+  | "special-offer";
 
 interface CompletedItinerary {
   destination: string;
@@ -233,7 +275,7 @@ interface CompletedItinerary {
   guests: number;
   price: string;
   roomType: string;
-  status: 'confirmed';
+  status: "confirmed";
   confirmationNumber: string;
   imageUrl?: string;
   firstName?: string;
@@ -267,7 +309,7 @@ interface SpecialOffer {
   discountedPrice: string;
 }
 
-interface BookingDrawerProps {
+export interface BookingDrawerProps {
   type: DrawerType;
   data: CompletedItinerary | InProgressItinerary | SpecialOffer;
   onClose?: () => void;
@@ -283,7 +325,7 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
   onClose,
   isLoggedIn = false,
   onButtonClick,
-  isFromModal = false
+  isFromModal = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -304,41 +346,50 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
 
   const renderContent = () => {
     switch (type) {
-      case 'completed-itinerary':
+      case "completed-itinerary":
         const completedData = data as CompletedItinerary;
-        const [startMonth, startDay, startYear] = completedData.dates.split(' - ')[0].split('/');
-        const [endMonth, endDay, endYear] = completedData.dates.split(' - ')[1].split('/');
-        
+        const [startMonth, startDay, startYear] = completedData.dates
+          .split(" - ")[0]
+          .split("/");
+        const [endMonth, endDay, endYear] = completedData.dates
+          .split(" - ")[1]
+          .split("/");
+
         return (
           <>
-            <PendingItineraryPlannerHeader 
+            <PendingItineraryPlannerHeader
               renderablePendingItinerary={{
-                itineraryName: completedData.bifrostItinerarySummary?.title || 'Your Confirmed Itinerary',
+                itineraryName:
+                  completedData.bifrostItinerarySummary?.title ||
+                  "Your Confirmed Itinerary",
                 countOfHotelRoomsInItinerary: 1,
                 calendarDateRangeInItinerary: {
                   startCalendarDate: {
                     year: parseInt(startYear),
                     month: parseInt(startMonth),
-                    day: parseInt(startDay)
+                    day: parseInt(startDay),
                   },
                   endCalendarDate: {
                     year: parseInt(endYear),
                     month: parseInt(endMonth),
-                    day: parseInt(endDay)
-                  }
+                    day: parseInt(endDay),
+                  },
                 },
-                itineraryImageUrl: completedData.imageUrl || 'https://www.bestambiance.com/wp-content/uploads/2022/09/cwo4c5et7jyz-aspect-ratio-800-800.jpg',
-                guestFirstName: completedData.firstName || 'Guest'
+                itineraryImageUrl:
+                  completedData.imageUrl ||
+                  "https://www.bestambiance.com/wp-content/uploads/2022/09/cwo4c5et7jyz-aspect-ratio-800-800.jpg",
+                guestFirstName: completedData.firstName || "Guest",
               }}
             />
-            
+
             {completedData.hasInstantBookOptions ? (
               <InstantBookPlaceholder>
                 Instant Book Offers Go Here
               </InstantBookPlaceholder>
             ) : (
               <StatusBox>
-                Thank you for submitting your inquiry. Jason from Knollcroft will be in touch soon.
+                Thank you for submitting your inquiry. Jason from Knollcroft
+                will be in touch soon.
               </StatusBox>
             )}
 
@@ -346,20 +397,21 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
               <Button onClick={() => setIsOpen(false)} $variant="secondary">
                 Close
               </Button>
-              <Button onClick={() => console.log('View itinerary')}>
+              <Button onClick={() => console.log("View itinerary")}>
                 View Itinerary
               </Button>
             </ButtonContainer>
           </>
         );
 
-      case 'in-progress':
+      case "in-progress":
         const inProgressData = data as InProgressItinerary;
         return (
           <>
             <DrawerTitle>Continue Planning Your Trip</DrawerTitle>
             <DrawerDescription>
-              You're on step {inProgressData.currentStep} of {inProgressData.totalSteps}
+              You're on step {inProgressData.currentStep} of{" "}
+              {inProgressData.totalSteps}
             </DrawerDescription>
             <ProgressIndicator>
               {Array.from({ length: inProgressData.totalSteps }).map((_, i) => (
@@ -388,14 +440,14 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
               <Button onClick={() => setIsOpen(false)} $variant="secondary">
                 Save for Later
               </Button>
-              <Button onClick={() => console.log('Continue planning')}>
+              <Button onClick={() => console.log("Continue planning")}>
                 Continue Planning
               </Button>
             </ButtonContainer>
           </>
         );
 
-      case 'special-offer':
+      case "special-offer":
         const offerData = data as SpecialOffer;
         return (
           <>
@@ -412,7 +464,7 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
               <Button onClick={() => setIsOpen(false)} $variant="secondary">
                 Maybe Later
               </Button>
-              <Button onClick={() => console.log('View offer')}>
+              <Button onClick={() => console.log("View offer")}>
                 View Offer
               </Button>
             </ButtonContainer>
@@ -423,7 +475,7 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
 
   return (
     <>
-      <BifrostDrawerButton 
+      <BifrostDrawerButton
         onClick={handleButtonClick}
         type={type}
         data={data}
@@ -434,7 +486,7 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
       {isOpen && (
         <>
           <DrawerOverlay onClick={handleClose} />
-          <DrawerContent $isOpen={isOpen} onClick={e => e.stopPropagation()}>
+          <DrawerContent $isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
             <CloseButton onClick={handleClose} aria-label="Close drawer" />
             <DrawerHeader>
               <HeaderLogo>
@@ -450,4 +502,3 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
     </>
   );
 };
-

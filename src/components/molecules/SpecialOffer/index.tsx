@@ -7,8 +7,8 @@
  * - Validity period
  */
 
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   padding: 16px;
@@ -123,7 +123,7 @@ const ValidUntil = styled.p`
   font-weight: 500;
 `;
 
-interface SpecialOfferProps {
+export interface SpecialOfferProps {
   title: string;
   description: string;
   imageUrl: string;
@@ -140,7 +140,7 @@ export const SpecialOffer: React.FC<SpecialOfferProps> = ({
   originalPrice,
   discountedPrice,
   discount,
-  validUntil
+  validUntil,
 }) => {
   return (
     <Container>
@@ -163,4 +163,4 @@ export const SpecialOffer: React.FC<SpecialOfferProps> = ({
       </PriceSection>
     </Container>
   );
-}; 
+};

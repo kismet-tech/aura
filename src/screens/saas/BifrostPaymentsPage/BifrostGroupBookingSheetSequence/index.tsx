@@ -51,11 +51,7 @@ export function BifrostGroupBookingSheetSequence({
       />
     );
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.SUMMARY) {
-    renderedStage = (
-      <BifrostGroupBookingSheetSequenceSummaryStage
-        setLocalStage={setLocalStage}
-      />
-    );
+    renderedStage = <BifrostGroupBookingSheetSequenceSummaryStage />;
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT) {
     renderedStage = (
       <BifrostGroupBookingSheetSequenceCheckoutStage
@@ -79,12 +75,14 @@ export function BifrostGroupBookingSheetSequence({
           - Handles back navigation between stages
           - Extends edge-to-edge with negative margins
         */}
-        <BifrostGroupBookingSheetSequenceHeader 
+        <BifrostGroupBookingSheetSequenceHeader
           title={getStageTitle(localStage)}
           onClickBack={() => {
             if (localStage === BifrostGroupBookingSheetSequenceStage.SUMMARY) {
               setLocalStage(BifrostGroupBookingSheetSequenceStage.CART);
-            } else if (localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT) {
+            } else if (
+              localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT
+            ) {
               setLocalStage(BifrostGroupBookingSheetSequenceStage.SUMMARY);
             }
           }}
@@ -96,9 +94,7 @@ export function BifrostGroupBookingSheetSequence({
           - overflow-auto: Enables scrolling if content is too tall
           - pt-5: Adds spacing below header
         */}
-        <div className="flex-1 overflow-auto pt-5">
-          {renderedStage}
-        </div>
+        <div className="flex-1 overflow-auto pt-5">{renderedStage}</div>
 
         {/* 
           Footer Component:
@@ -108,7 +104,7 @@ export function BifrostGroupBookingSheetSequence({
           - Extends edge-to-edge with negative margins
           - Button takes up 50% width on right side
         */}
-        <BifrostGroupBookingSheetSequenceFooter 
+        <BifrostGroupBookingSheetSequenceFooter
           onClickContinue={handleContinue}
           isValid={isValid}
           currentStage={localStage}
