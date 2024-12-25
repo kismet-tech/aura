@@ -1,3 +1,4 @@
+import { Info } from "lucide-react";
 import React from "react";
 
 interface BifrostGroupBookingSheetSequenceContentSummaryLineItemProps {
@@ -6,7 +7,7 @@ interface BifrostGroupBookingSheetSequenceContentSummaryLineItemProps {
   dates: string;
   nights: number;
   price: {
-    amount: number;
+    amountInCents: number;
     label: string;
   };
   keyTerms?: string[];
@@ -48,7 +49,8 @@ export function BifrostGroupBookingSheetSequenceContentSummaryLineItem({
               {dates} | {nights} {nights === 1 ? "Night" : "Nights"}
             </div>
             <div className="text-sm">
-              Final Price: ${price.amount.toLocaleString()} {price.label}
+              Final Price: ${(price.amountInCents / 100).toLocaleString()}{" "}
+              {price.label}
             </div>
           </div>
         </div>
