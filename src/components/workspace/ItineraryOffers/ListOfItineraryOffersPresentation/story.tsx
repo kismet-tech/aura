@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
+import {
+  ListOfItineraryOffersPresentation,
+  ListOfItineraryOffersPresentationProps,
+} from ".";
 import {
   mockRenderableItineraryOfferFour,
   mockRenderableItineraryOfferOne,
   mockRenderableItineraryOfferThree,
   mockRenderableItineraryOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
-import {
-  ListOfItineraryOffersPresentation,
-  ListOfItineraryOffersPresentationProps,
-} from ".";
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof ListOfItineraryOffersPresentation> = {
   title:

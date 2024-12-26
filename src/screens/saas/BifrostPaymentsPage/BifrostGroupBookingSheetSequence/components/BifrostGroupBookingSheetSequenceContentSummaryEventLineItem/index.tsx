@@ -1,11 +1,12 @@
 import React from "react";
+import { Info } from "lucide-react";
 
 interface BifrostGroupBookingSheetSequenceContentSummaryEventLineItemProps {
-  status?: 'pending';
+  status: 'pending' | 'confirmed';
   title: string;
   date: string;
   time: string;
-  capacity?: {
+  capacity: {
     count: number;
     label: string;
   };
@@ -24,50 +25,53 @@ export function BifrostGroupBookingSheetSequenceContentSummaryEventLineItem({
   time,
   capacity,
   price,
-  keyTerms,
-  image
+  keyTerms = [],
+  image = "https://placehold.co/48x48"
 }: BifrostGroupBookingSheetSequenceContentSummaryEventLineItemProps) {
   return (
-    <div className="pl-4 border-l border-gray-200">
-      <div className="space-y-2 py-2">
-        <div className="flex gap-4">
-          {image && (
-            <img src={image} alt="" className="h-20 w-20 object-cover rounded" />
-          )}
-          <div className="flex-1 space-y-1">
-            <div className="flex items-center gap-2">
-              {status && (
-                <span className="px-2 py-0.5 bg-gray-100 rounded text-sm">
-                  {status}
-                </span>
-              )}
-              <h4 className="font-medium">{title}</h4>
+    <div className="space-y-2">
+      <div className="flex gap-3">
+        <div className="relative">
+          <img 
+            src={image} 
+            alt={`${title} event thumbnail`}
+            className="w-12 h-12 rounded object-cover" 
+            loading="lazy"
+          />
+        </div>
+        
+        <div className="flex-1">
+          <div className="flex flex-col">
+            <div className="flex items-start justify-between">
+              <span className="font-medium text-sm">{title}</span>
+              <span className="text-sm text-gray-600">{status === 'confirmed' ? 'Confirmed' : 'Pending'}</span>
             </div>
-            <div className="text-sm text-gray-600">
-              {date}, {time}
-            </div>
-            {capacity && (
-              <div className="text-sm text-purple-700">
-                {capacity.count} {capacity.label}
-              </div>
-            )}
+            <div className="text-sm text-gray-600">{date} | {time}</div>
             <div className="text-sm">
-              <div>Final Price: ${price.amount.toLocaleString()} {price.label}</div>
+              ${price.amount.toLocaleString()} {price.label}
             </div>
           </div>
         </div>
-        
-        {keyTerms && keyTerms.length > 0 && (
-          <div className="text-sm">
-            <div className="font-medium mb-1">Key Terms:</div>
-            <ul className="list-disc pl-4 text-gray-600 space-y-1">
-              {keyTerms.map((term, index) => (
-                <li key={index}>{term}</li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
+      
+      {keyTerms.length > 0 && (
+        <div role="complementary" aria-label="Event Terms">
+          <div className="flex items-center gap-1 text-sm font-medium mb-1">
+            Event Terms
+            <div className="group relative cursor-help">
+              <Info className="h-4 w-4 text-gray-500" />
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-64 p-2 text-xs bg-gray-900 text-white rounded shadow-lg">
+                Terms and conditions for this event.
+              </div>
+            </div>
+          </div>
+          <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+            {keyTerms.map((term, index) => (
+              <li key={`term-${index}`}>{term}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 } 

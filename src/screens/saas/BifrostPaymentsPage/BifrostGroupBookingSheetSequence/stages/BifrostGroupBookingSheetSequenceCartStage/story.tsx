@@ -7,6 +7,7 @@ import {
   BifrostGroupBookingSheetSequenceCartStageProps,
 } from ".";
 import { BifrostGroupBookingSheetSequenceStage } from "../..";
+import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequenceCartStage> = {
   title:
@@ -19,6 +20,7 @@ type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceCartStage>;
 
 const exampleOneArguments: BifrostGroupBookingSheetSequenceCartStageProps = {
   setLocalStage: () => {},
+  cart: mockBifrostGroupBookingCheckoutCartOne,
 };
 
 export const Example: Story = {

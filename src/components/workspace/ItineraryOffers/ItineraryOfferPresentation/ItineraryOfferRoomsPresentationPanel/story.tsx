@@ -4,7 +4,7 @@ import {
   ItineraryOfferRoomsPresentationPanelProps,
 } from ".";
 import React from "react";
-import { mockRenderableItineraryOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
+import { mockRenderableItineraryOfferOne } from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof ItineraryOfferRoomsPresentationPanel> = {
   title:

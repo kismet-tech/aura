@@ -1,10 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { BifrostGroupBookingCheckoutHeader } from ".";
-import {
-  BifrostGroupBookingCheckoutCart,
-  BifrostGroupBookingCheckoutSessionSummary,
-} from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
+import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";
+import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostGroupBookingCheckoutHeader> = {
   title:
@@ -20,32 +18,16 @@ const StoryWrapper = () => {
     hotelRooms: [],
   };
 
-  const checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary = {
-    hotelName: "Knollcroft",
-    groupBookingCheckoutSessionHeroImageUrl:
-      "https://www.benziger.com/wp-content/uploads/2024/04/Benziger2023HARVESTPARTYbyAlexanderRubin_0104-scaled.jpg",
-    groupBookingCheckoutSessionTitle: "Rachel & Jack’s Wedding",
-    groupBookingCheckoutSessionCalendarDateRange: {
-      startCalendarDate: {
-        day: 2,
-        month: 1,
-        year: 2025,
-      },
-      endCalendarDate: {
-        day: 4,
-        month: 1,
-        year: 2025,
-      },
-    },
-  };
-
   return (
     <BifrostGroupBookingCheckoutHeader
       onClickLogin={() => {
         console.log("Login clicked");
       }}
+      onClickCart={() => {
+        console.log(`Cart clicked`);
+      }}
       cart={cart}
-      checkoutSessionSummary={checkoutSessionSummary}
+      checkoutSessionSummary={mockBifrostGroupBookingCheckoutSessionSummaryOne}
       authenticatedGuestUser={undefined}
     />
   );
@@ -67,6 +49,9 @@ const LoadingStoryWrapper = () => {
     <BifrostGroupBookingCheckoutHeader
       onClickLogin={() => {
         console.log("Login clicked");
+      }}
+      onClickCart={() => {
+        console.log(`Cart clicked`);
       }}
       cart={cart}
       checkoutSessionSummary={checkoutSessionSummary}

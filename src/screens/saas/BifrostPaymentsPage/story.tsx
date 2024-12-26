@@ -1,21 +1,15 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutRootPage } from ".";
-import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
 import {
   BifrostGroupBookingCheckoutCart,
-  BifrostGroupBookingCheckoutSessionSummary,
-} from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
-import {
-  mockRenderableItineraryHotelRoomOfferFive,
-  mockRenderableItineraryHotelRoomOfferFour,
-  mockRenderableItineraryHotelRoomOfferOne,
-  mockRenderableItineraryHotelRoomOfferSix,
-  mockRenderableItineraryHotelRoomOfferThree,
-  mockRenderableItineraryHotelRoomOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
+import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
+import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";
 import { AuthenticatedGuestUser } from "../../../models/guests/AuthenticatedGuestUser";
 import { useReactStateCache } from "@/utilities/core/react/useReactStateCache";
+import { mockCreatePaymentIntent } from "@/components/molecules/StripePaymentForm/mockCreatePaymentIntent";
 
 const meta: Meta<typeof BifrostGroupBookingCheckoutRootPage> = {
   title: "Applications/BifrostGroupBookingCheckoutRootPage",
@@ -30,37 +24,8 @@ const StoryWrapper = () => {
     hotelRooms: [],
   };
 
-  const checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary = {
-    hotelName: "Knollcroft",
-    groupBookingCheckoutSessionHeroImageUrl:
-      "https://www.benziger.com/wp-content/uploads/2024/04/Benziger2023HARVESTPARTYbyAlexanderRubin_0104-scaled.jpg",
-    groupBookingCheckoutSessionTitle: "Rachel & Jack’s Wedding",
-    groupBookingCheckoutSessionCalendarDateRange: {
-      startCalendarDate: {
-        day: 2,
-        month: 1,
-        year: 2025,
-      },
-      endCalendarDate: {
-        day: 4,
-        month: 1,
-        year: 2025,
-      },
-    },
-  };
-
-  const mockRenderableItineraryHotelRoomOffers: RenderableItineraryHotelRoomOffer[] =
-    [
-      mockRenderableItineraryHotelRoomOfferOne,
-      mockRenderableItineraryHotelRoomOfferTwo,
-      mockRenderableItineraryHotelRoomOfferThree,
-      mockRenderableItineraryHotelRoomOfferFour,
-      mockRenderableItineraryHotelRoomOfferFive,
-      mockRenderableItineraryHotelRoomOfferSix,
-    ];
-
   const initialAvailableHotelRooms: RenderableItineraryHotelRoomOffer[] =
-    mockRenderableItineraryHotelRoomOffers.map(
+    mockBifrostGroupBookingCheckoutCartOne.hotelRooms.map(
       (offer: RenderableItineraryHotelRoomOffer) => {
         return {
           ...offer,
@@ -91,7 +56,7 @@ const StoryWrapper = () => {
         });
       }}
       authenticatedGuestUser={authenticatedGuestUser}
-      checkoutSessionSummary={checkoutSessionSummary}
+      checkoutSessionSummary={mockBifrostGroupBookingCheckoutSessionSummaryOne}
       cart={cart}
       availableHotelRooms={hotelRoomOffers}
       onClickUpdateHotelRoomCountInCart={({
@@ -141,6 +106,10 @@ const StoryWrapper = () => {
       }}
       onClickCheckout={() => {
         console.log("Checkout clicked");
+      }}
+      getStripePaymentIntent={async ({}: {}) => {
+        const { clientSecret } = await mockCreatePaymentIntent({});
+        return { clientSecret };
       }}
     />
   );
@@ -158,18 +127,8 @@ const LoadingStoryWrapper = () => {
 
   const checkoutSessionSummary = undefined;
 
-  const mockRenderableItineraryHotelRoomOffers: RenderableItineraryHotelRoomOffer[] =
-    [
-      mockRenderableItineraryHotelRoomOfferOne,
-      mockRenderableItineraryHotelRoomOfferTwo,
-      mockRenderableItineraryHotelRoomOfferThree,
-      mockRenderableItineraryHotelRoomOfferFour,
-      mockRenderableItineraryHotelRoomOfferFive,
-      mockRenderableItineraryHotelRoomOfferSix,
-    ];
-
   const initialAvailableHotelRooms: RenderableItineraryHotelRoomOffer[] =
-    mockRenderableItineraryHotelRoomOffers.map(
+    mockBifrostGroupBookingCheckoutCartOne.hotelRooms.map(
       (offer: RenderableItineraryHotelRoomOffer) => {
         return {
           ...offer,
@@ -250,6 +209,10 @@ const LoadingStoryWrapper = () => {
       }}
       onClickCheckout={() => {
         console.log("Checkout clicked");
+      }}
+      getStripePaymentIntent={async ({}: {}) => {
+        const { clientSecret } = await mockCreatePaymentIntent({});
+        return { clientSecret };
       }}
     />
   );

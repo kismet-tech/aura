@@ -4,6 +4,8 @@ import {
   BifrostGroupBookingSheetSequenceCheckoutStage,
   BifrostGroupBookingSheetSequenceCheckoutStageProps,
 } from ".";
+import { mockCreatePaymentIntent } from "@/components/molecules/StripePaymentForm/mockCreatePaymentIntent";
+import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequenceCheckoutStage> = {
   title:
@@ -16,7 +18,12 @@ type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceCheckoutStage>;
 
 const exampleOneArguments: BifrostGroupBookingSheetSequenceCheckoutStageProps =
   {
-    setLocalStage: () => {},
+    initialAcceptedState: false,
+    getStripePaymentIntent: async ({}: {}) => {
+      const { clientSecret } = await mockCreatePaymentIntent({});
+      return { clientSecret };
+    },
+    cart: mockBifrostGroupBookingCheckoutCartOne,
   };
 
 export const Example: Story = {

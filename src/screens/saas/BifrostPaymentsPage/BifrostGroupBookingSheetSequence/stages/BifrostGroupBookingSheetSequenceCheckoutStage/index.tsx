@@ -4,41 +4,23 @@
  */
 
 import React from "react";
-import { BifrostGroupBookingSheetSequenceStage } from "../..";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/shadcn/breadcrumb";
+import { BifrostGroupBookingSheetSequenceCheckoutStageBody } from "./BifrostGroupBookingSheetSequenceCheckoutStageBody";
+import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
 
 export interface BifrostGroupBookingSheetSequenceCheckoutStageProps {
-  setLocalStage: React.Dispatch<
-    React.SetStateAction<BifrostGroupBookingSheetSequenceStage>
-  >;
+  initialAcceptedState?: boolean;
+  cart: BifrostGroupBookingCheckoutCart;
+  getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
 }
 
 export function BifrostGroupBookingSheetSequenceCheckoutStage({
-  setLocalStage,
+  initialAcceptedState = false,
+  getStripePaymentIntent,
 }: BifrostGroupBookingSheetSequenceCheckoutStageProps) {
-  const handleMoveToCartStage: React.MouseEventHandler<HTMLLIElement> = (
-    event
-  ) => {
-    event.preventDefault();
-    setLocalStage(BifrostGroupBookingSheetSequenceStage.CART);
-  };
-
-  const handleMoveToSummaryStage: React.MouseEventHandler<HTMLLIElement> = (
-    event
-  ) => {
-    event.preventDefault();
-    setLocalStage(BifrostGroupBookingSheetSequenceStage.SUMMARY);
-  };
-
   return (
-    <div>
-      
-    </div>
+    <BifrostGroupBookingSheetSequenceCheckoutStageBody
+      initialAcceptedState={initialAcceptedState}
+      getStripePaymentIntent={getStripePaymentIntent}
+    />
   );
 }

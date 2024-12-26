@@ -5,6 +5,10 @@ import { BifrostGroupBookingSheetSequenceSummaryStage } from "./stages/BifrostGr
 import { BifrostGroupBookingSheetSequenceCheckoutStage } from "./stages/BifrostGroupBookingSheetSequenceCheckoutStage";
 import { BifrostGroupBookingSheetSequenceHeader } from "./components/BifrostGroupBookingSheetSequenceHeader";
 import { BifrostGroupBookingSheetSequenceFooter } from "./components/BifrostGroupBookingSheetSequenceFooter";
+import {
+  BifrostGroupBookingCheckoutCart,
+  BifrostGroupBookingCheckoutSessionSummary,
+} from "@kismet_ai/foundation";
 
 export enum BifrostGroupBookingSheetSequenceStage {
   CART = "CART",
@@ -13,13 +17,21 @@ export enum BifrostGroupBookingSheetSequenceStage {
 }
 
 export interface BifrostGroupBookingSheetSequenceProps {
-  stage: BifrostGroupBookingSheetSequenceStage;
+  stage?: BifrostGroupBookingSheetSequenceStage;
+  cart: BifrostGroupBookingCheckoutCart;
+  getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
+  checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
 }
 
 export function BifrostGroupBookingSheetSequence({
   stage,
+  cart,
+  getStripePaymentIntent,
+  checkoutSessionSummary,
 }: BifrostGroupBookingSheetSequenceProps) {
-  const [localStage, setLocalStage] = useState(stage);
+  const [localStage, setLocalStage] = useState(
+    stage || BifrostGroupBookingSheetSequenceStage.CART
+  );
   const [isValid, setIsValid] = useState(true);
 
   const itineraryName = "Smith Wedding";
@@ -27,7 +39,7 @@ export function BifrostGroupBookingSheetSequence({
   const getStageTitle = (stage: BifrostGroupBookingSheetSequenceStage) => {
     switch (stage) {
       case BifrostGroupBookingSheetSequenceStage.CART:
-        return itineraryName;
+        return checkoutSessionSummary.groupBookingCheckoutSessionTitle || "";
       case BifrostGroupBookingSheetSequenceStage.SUMMARY:
         return "Summary";
       case BifrostGroupBookingSheetSequenceStage.CHECKOUT:
@@ -48,18 +60,19 @@ export function BifrostGroupBookingSheetSequence({
     renderedStage = (
       <BifrostGroupBookingSheetSequenceCartStage
         setLocalStage={setLocalStage}
+        cart={cart}
       />
     );
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.SUMMARY) {
     renderedStage = (
-      <BifrostGroupBookingSheetSequenceSummaryStage
-        setLocalStage={setLocalStage}
-      />
+      <BifrostGroupBookingSheetSequenceSummaryStage cart={cart} />
     );
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT) {
     renderedStage = (
       <BifrostGroupBookingSheetSequenceCheckoutStage
-        setLocalStage={setLocalStage}
+        initialAcceptedState={true}
+        cart={cart}
+        getStripePaymentIntent={getStripePaymentIntent}
       />
     );
   }
@@ -79,12 +92,14 @@ export function BifrostGroupBookingSheetSequence({
           - Handles back navigation between stages
           - Extends edge-to-edge with negative margins
         */}
-        <BifrostGroupBookingSheetSequenceHeader 
+        <BifrostGroupBookingSheetSequenceHeader
           title={getStageTitle(localStage)}
           onClickBack={() => {
             if (localStage === BifrostGroupBookingSheetSequenceStage.SUMMARY) {
               setLocalStage(BifrostGroupBookingSheetSequenceStage.CART);
-            } else if (localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT) {
+            } else if (
+              localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT
+            ) {
               setLocalStage(BifrostGroupBookingSheetSequenceStage.SUMMARY);
             }
           }}
@@ -96,9 +111,7 @@ export function BifrostGroupBookingSheetSequence({
           - overflow-auto: Enables scrolling if content is too tall
           - pt-5: Adds spacing below header
         */}
-        <div className="flex-1 overflow-auto pt-5">
-          {renderedStage}
-        </div>
+        <div className="flex-1 overflow-auto pt-5">{renderedStage}</div>
 
         {/* 
           Footer Component:
@@ -108,10 +121,11 @@ export function BifrostGroupBookingSheetSequence({
           - Extends edge-to-edge with negative margins
           - Button takes up 50% width on right side
         */}
-        <BifrostGroupBookingSheetSequenceFooter 
+        <BifrostGroupBookingSheetSequenceFooter
           onClickContinue={handleContinue}
           isValid={isValid}
           currentStage={localStage}
+          cart={cart}
         />
       </div>
     </SheetContent>

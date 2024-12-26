@@ -3,9 +3,9 @@ import {
   ItineraryOfferRoomEditorRoomDetails,
   ItineraryOfferRoomEditorRoomDetailsProps,
 } from ".";
+import { mockRenderableItineraryHotelRoomOfferOne } from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/RenderableItineraryHotelRoomOffer";
 
 import React from "react";
-import { mockRenderableItineraryHotelRoomOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
 
 const meta: Meta<typeof ItineraryOfferRoomEditorRoomDetails> = {
   title:

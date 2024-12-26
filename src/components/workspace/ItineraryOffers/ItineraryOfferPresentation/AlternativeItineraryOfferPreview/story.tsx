@@ -7,7 +7,7 @@ import React from "react";
 import {
   mockRenderableItineraryOfferOne,
   mockRenderableItineraryOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof AlternativeItineraryOfferPreview> = {
   title:

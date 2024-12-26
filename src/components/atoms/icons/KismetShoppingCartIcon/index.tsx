@@ -1,8 +1,11 @@
 import React from "react";
 
-export function KismetShoppingCartIcon() {
+type KismetShoppingCartIconProps = React.SVGProps<SVGSVGElement>;
+
+export function KismetShoppingCartIcon(props: KismetShoppingCartIconProps) {
   return (
     <svg
+      {...props}
       width="22"
       height="24"
       viewBox="0 0 22 24"
