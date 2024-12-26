@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { ItineraryOfferPresentation, ItineraryOfferPresentationProps } from ".";
-import {
-  mockRenderableItineraryOfferFour,
-  mockRenderableItineraryOfferOne,
-  mockRenderableItineraryOfferThree,
-  mockRenderableItineraryOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
 import { AppViewport } from "@/components/atoms/AppViewport";
 import { AppViewportScrollArea } from "@/components/atoms/AppViewportScrollArea";
+import {
+  mockRenderableItineraryOfferOne,
+  mockRenderableItineraryOfferTwo,
+  mockRenderableItineraryOfferThree,
+  mockRenderableItineraryOfferFour,
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof ItineraryOfferPresentation> = {
   title: "ItineraryOffer/ItineraryOfferPresentation/ItineraryOfferPresentation",

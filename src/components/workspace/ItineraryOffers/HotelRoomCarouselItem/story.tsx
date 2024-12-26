@@ -5,8 +5,10 @@ import {
   HotelRoomCarouselItemProps,
 } from ".";
 import React from "react";
-import { mockRenderableItineraryHotelRoomOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
-import { mockRunOfHouseRenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
+import {
+  mockRenderableItineraryHotelRoomOfferOne,
+  mockRunOfHouseRenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/RenderableItineraryHotelRoomOffer";
 
 const meta: Meta<typeof HotelRoomCarouselItem> = {
   title: "ItineraryOffer/HotelRoomCarouselItem",

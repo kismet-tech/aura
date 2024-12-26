@@ -5,7 +5,7 @@ import {
 } from ".";
 
 import React from "react";
-import { mockRenderableItineraryHotelRoomOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
+import { mockRenderableItineraryHotelRoomOfferOne } from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/RenderableItineraryHotelRoomOffer";
 
 const meta: Meta<typeof ItineraryOfferRoomEditorRoomDetailsImageList> = {
   title:

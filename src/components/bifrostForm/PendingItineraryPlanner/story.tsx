@@ -3,11 +3,11 @@ import React from "react";
 import { PendingItineraryPlanner, PendingItineraryPlannerProps } from ".";
 import { mockRenderablePendingItineraryTwo } from "@/mockData/bifrost/mockRenderablePendingItineraries";
 import {
-  mockRenderableItineraryOfferFour,
   mockRenderableItineraryOfferOne,
-  mockRenderableItineraryOfferThree,
   mockRenderableItineraryOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
+  mockRenderableItineraryOfferThree,
+  mockRenderableItineraryOfferFour,
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof PendingItineraryPlanner> = {
   title: "BifrostForm/PendingItineraryPlanner",

@@ -7,6 +7,8 @@ import {
   BifrostGroupBookingSheetSequenceProps,
   BifrostGroupBookingSheetSequenceStage,
 } from ".";
+import { mockCreatePaymentIntent } from "@/components/molecules/StripePaymentForm/mockCreatePaymentIntent";
+import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequence> = {
   title:
@@ -32,6 +34,11 @@ function ExampleWrapper(props: BifrostGroupBookingSheetSequenceProps) {
 
 const cartExampleArguments: BifrostGroupBookingSheetSequenceProps = {
   stage: BifrostGroupBookingSheetSequenceStage.CART,
+  getStripePaymentIntent: async ({}: {}) => {
+    const { clientSecret } = await mockCreatePaymentIntent({});
+    return { clientSecret };
+  },
+  checkoutSessionSummary: mockBifrostGroupBookingCheckoutSessionSummaryOne,
 };
 
 export const CartExample: Story = {
@@ -43,6 +50,11 @@ export const CartExample: Story = {
 
 const summaryExampleArguments: BifrostGroupBookingSheetSequenceProps = {
   stage: BifrostGroupBookingSheetSequenceStage.SUMMARY,
+  getStripePaymentIntent: async ({}: {}) => {
+    const { clientSecret } = await mockCreatePaymentIntent({});
+    return { clientSecret };
+  },
+  checkoutSessionSummary: mockBifrostGroupBookingCheckoutSessionSummaryOne,
 };
 
 export const SummaryExample: Story = {
@@ -54,6 +66,11 @@ export const SummaryExample: Story = {
 
 const checkoutExampleArguments: BifrostGroupBookingSheetSequenceProps = {
   stage: BifrostGroupBookingSheetSequenceStage.CHECKOUT,
+  getStripePaymentIntent: async ({}: {}) => {
+    const { clientSecret } = await mockCreatePaymentIntent({});
+    return { clientSecret };
+  },
+  checkoutSessionSummary: mockBifrostGroupBookingCheckoutSessionSummaryOne,
 };
 
 export const CheckoutExample: Story = {

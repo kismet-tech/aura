@@ -4,6 +4,7 @@ import {
   BifrostGroupBookingSheetSequenceCheckoutStage,
   BifrostGroupBookingSheetSequenceCheckoutStageProps,
 } from ".";
+import { mockCreatePaymentIntent } from "@/components/molecules/StripePaymentForm/mockCreatePaymentIntent";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequenceCheckoutStage> = {
   title:
@@ -17,6 +18,10 @@ type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceCheckoutStage>;
 const exampleOneArguments: BifrostGroupBookingSheetSequenceCheckoutStageProps =
   {
     initialAcceptedState: false,
+    getStripePaymentIntent: async ({}: {}) => {
+      const { clientSecret } = await mockCreatePaymentIntent({});
+      return { clientSecret };
+    },
   };
 
 export const Example: Story = {

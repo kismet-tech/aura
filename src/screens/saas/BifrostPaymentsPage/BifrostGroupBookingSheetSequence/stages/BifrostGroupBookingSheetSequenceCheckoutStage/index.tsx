@@ -8,14 +8,17 @@ import { BifrostGroupBookingSheetSequenceCheckoutStageBody } from "./BifrostGrou
 
 export interface BifrostGroupBookingSheetSequenceCheckoutStageProps {
   initialAcceptedState?: boolean;
+  getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
 }
 
 export function BifrostGroupBookingSheetSequenceCheckoutStage({
   initialAcceptedState = false,
+  getStripePaymentIntent,
 }: BifrostGroupBookingSheetSequenceCheckoutStageProps) {
   return (
     <BifrostGroupBookingSheetSequenceCheckoutStageBody
       initialAcceptedState={initialAcceptedState}
+      getStripePaymentIntent={getStripePaymentIntent}
     />
   );
 }

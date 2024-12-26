@@ -17,7 +17,7 @@ export function BifrostGroupBookingSheetSequenceCartStage({
 
   return (
     <div className="overflow-x-hidden">
-      <BifrostGroupBookingSheetSequenceCartContent 
+      <BifrostGroupBookingSheetSequenceCartContent
         onOpenGuestList={handleOpenGuestList}
       />
     </div>

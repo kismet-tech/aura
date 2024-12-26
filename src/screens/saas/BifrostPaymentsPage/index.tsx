@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutHeader } from "./BifrostGroupBookingCheckoutHeader";
 import { BifrostGroupBookingCheckoutBody } from "./BifrostGroupBookingCheckoutBody";
 import { MadeWithKismetLogo } from "@/components/atoms/icons/MadeWithKismetLogo";
+import { BifrostGroupBookingCheckoutCart } from "../../../providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
 import {
-  BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
-} from "../../../providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
-import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
 import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
 import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
 import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 import { AuthenticatedGuestUser } from "../../../../src/models/guests/AuthenticatedGuestUser";
 import { Button } from "@/components/shadcn/button";
 import { Skeleton } from "@/components/shadcn/skeleton";
+import { Sheet } from "@/components/shadcn/sheet";
+import { BifrostGroupBookingSheetSequence } from "./BifrostGroupBookingSheetSequence";
 
 interface BifrostGroupBookingCheckoutRootPageProps {
   authenticatedGuestUser: AuthenticatedGuestUser | undefined;
@@ -28,6 +30,7 @@ interface BifrostGroupBookingCheckoutRootPageProps {
     hotelRoomOfferId: string;
   }) => void;
   onClickCheckout: () => void;
+  getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
 }
 
 export function BifrostGroupBookingCheckoutRootPage({
@@ -38,7 +41,10 @@ export function BifrostGroupBookingCheckoutRootPage({
   onClickLogin,
   onClickUpdateHotelRoomCountInCart,
   onClickCheckout,
+  getStripePaymentIntent,
 }: BifrostGroupBookingCheckoutRootPageProps) {
+  const [isGroupBookingSheetOpen, setIsGroupBookingSheetOpen] = useState(false);
+
   let renderedCheckoutButton: JSX.Element = <></>;
   if (cart.hotelRooms.length > 0) {
     if (authenticatedGuestUser) {
@@ -64,6 +70,10 @@ export function BifrostGroupBookingCheckoutRootPage({
       );
     }
   }
+  const onClickCart = () => {
+    console.log(`Cart clicked`);
+    setIsGroupBookingSheetOpen(true);
+  };
 
   return (
     <div className="h-screen max-h-screen min-h-screen flex flex-col">
@@ -71,6 +81,7 @@ export function BifrostGroupBookingCheckoutRootPage({
         <BifrostGroupBookingCheckoutHeader
           authenticatedGuestUser={authenticatedGuestUser}
           onClickLogin={onClickLogin}
+          onClickCart={onClickCart}
           cart={cart}
           checkoutSessionSummary={checkoutSessionSummary}
         />
@@ -131,6 +142,21 @@ export function BifrostGroupBookingCheckoutRootPage({
           <MadeWithKismetLogo />
         </div>
       </footer>
+      {checkoutSessionSummary ? (
+        <Sheet
+          open={isGroupBookingSheetOpen}
+          onOpenChange={(updatedOpenValue) => {
+            setIsGroupBookingSheetOpen(updatedOpenValue);
+          }}
+        >
+          <BifrostGroupBookingSheetSequence
+            getStripePaymentIntent={getStripePaymentIntent}
+            checkoutSessionSummary={checkoutSessionSummary}
+          />
+        </Sheet>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

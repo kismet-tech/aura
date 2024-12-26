@@ -18,13 +18,13 @@ import { MockBifrostApi } from "@/apis/bifrostApi/mockBifrostApi";
 import { AppViewport } from "@/components/atoms/AppViewport";
 import { BifrostFormStateProvider } from "@/providers/BifrostFormStateProvider";
 import { MockBifrostFormStateProvider } from "@/providers/MockBifrostFormStateProvider";
-import {
-  mockRenderableItineraryOfferOne,
-  mockRenderableItineraryOfferTwo,
-  mockRenderableItineraryOfferThree,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
 import { useBifrostFormState } from "@/providers/BifrostFormStateProvider/useBifrostFormState";
 import { RenderableItineraryOffer } from "@kismet_ai/foundation";
+import {
+  mockRenderableItineraryOfferOne,
+  mockRenderableItineraryOfferThree,
+  mockRenderableItineraryOfferTwo,
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof BifrostItineraryOfferPresentationScreen> = {
   title: "BifrostForm/Screens/BifrostItineraryOfferPresentationScreen",

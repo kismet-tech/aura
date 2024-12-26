@@ -2,17 +2,16 @@ import { KismetShoppingCartIcon } from "@/components/atoms/icons/KismetShoppingC
 import { UserAvatar } from "@/components/atoms/UserAvatar";
 import { Skeleton } from "@/components/shadcn/skeleton";
 import { AuthenticatedGuestUser } from "../../../../../src/models/guests/AuthenticatedGuestUser";
-import {
-  BifrostGroupBookingCheckoutCart,
-  BifrostGroupBookingCheckoutSessionSummary,
-} from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
+import { BifrostGroupBookingCheckoutCart } from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
 import React from "react";
+import { BifrostGroupBookingCheckoutSessionSummary } from "@kismet_ai/foundation";
 
 interface BifrostGroupBookingCheckoutHeaderProps {
   authenticatedGuestUser: AuthenticatedGuestUser | undefined;
   cart: BifrostGroupBookingCheckoutCart;
   checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary | undefined;
   onClickLogin: () => void;
+  onClickCart: () => void;
 }
 
 export function BifrostGroupBookingCheckoutHeader({
@@ -20,6 +19,7 @@ export function BifrostGroupBookingCheckoutHeader({
   cart,
   checkoutSessionSummary,
   onClickLogin,
+  onClickCart,
 }: BifrostGroupBookingCheckoutHeaderProps) {
   const countOfHotelRoomsInCart = cart.hotelRooms.reduce(
     (acc, hotelRoom) => acc + hotelRoom.countOffered,
@@ -31,8 +31,9 @@ export function BifrostGroupBookingCheckoutHeader({
     cartRoomIndicator = (
       <div className="ml-3">
         {" "}
-        {`${countOfHotelRoomsInCart} ${countOfHotelRoomsInCart > 1 ? "Rooms" : "Room"
-          }`}
+        {`${countOfHotelRoomsInCart} ${
+          countOfHotelRoomsInCart > 1 ? "Rooms" : "Room"
+        }`}
       </div>
     );
   }
@@ -42,8 +43,9 @@ export function BifrostGroupBookingCheckoutHeader({
     cartAddOnIndicator = (
       <div className="ml-3">
         {" "}
-        {`${(cart as any).addOnCount.length} ${(cart as any).addOnCount.length > 1 ? "Add-Ons" : "Add-On"
-          }`}
+        {`${(cart as any).addOnCount.length} ${
+          (cart as any).addOnCount.length > 1 ? "Add-Ons" : "Add-On"
+        }`}
       </div>
     );
   }
@@ -58,7 +60,7 @@ export function BifrostGroupBookingCheckoutHeader({
         )}
       </div>
       <div className="ml-auto flex items-center">
-        <KismetShoppingCartIcon />
+        <KismetShoppingCartIcon onClick={onClickCart} />
         {cartRoomIndicator}
         {cartAddOnIndicator}
         <div className="ml-3 items-center">

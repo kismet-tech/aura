@@ -5,11 +5,11 @@ import {
   ItineraryOfferPresentationBodyProps,
 } from ".";
 import {
-  mockRenderableItineraryOfferFour,
   mockRenderableItineraryOfferOne,
-  mockRenderableItineraryOfferThree,
   mockRenderableItineraryOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
+  mockRenderableItineraryOfferThree,
+  mockRenderableItineraryOfferFour,
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof ItineraryOfferPresentationBody> = {
   title:

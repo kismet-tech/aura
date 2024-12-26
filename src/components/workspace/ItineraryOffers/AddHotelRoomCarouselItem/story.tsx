@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { AddHotelRoomCarouselItem, AddHotelRoomCarouselItemProps } from ".";
 import React from "react";
-import { mockRenderableItineraryHotelRoomOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
 
 const meta: Meta<typeof AddHotelRoomCarouselItem> = {
   title: "ItineraryOffer/AddHotelRoomCarouselItem",

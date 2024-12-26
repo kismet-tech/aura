@@ -5,6 +5,7 @@ import { BifrostGroupBookingSheetSequenceSummaryStage } from "./stages/BifrostGr
 import { BifrostGroupBookingSheetSequenceCheckoutStage } from "./stages/BifrostGroupBookingSheetSequenceCheckoutStage";
 import { BifrostGroupBookingSheetSequenceHeader } from "./components/BifrostGroupBookingSheetSequenceHeader";
 import { BifrostGroupBookingSheetSequenceFooter } from "./components/BifrostGroupBookingSheetSequenceFooter";
+import { BifrostGroupBookingCheckoutSessionSummary } from "@kismet_ai/foundation";
 
 export enum BifrostGroupBookingSheetSequenceStage {
   CART = "CART",
@@ -13,13 +14,19 @@ export enum BifrostGroupBookingSheetSequenceStage {
 }
 
 export interface BifrostGroupBookingSheetSequenceProps {
-  stage: BifrostGroupBookingSheetSequenceStage;
+  stage?: BifrostGroupBookingSheetSequenceStage;
+  getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
+  checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
 }
 
 export function BifrostGroupBookingSheetSequence({
   stage,
+  getStripePaymentIntent,
+  checkoutSessionSummary,
 }: BifrostGroupBookingSheetSequenceProps) {
-  const [localStage, setLocalStage] = useState(stage);
+  const [localStage, setLocalStage] = useState(
+    stage || BifrostGroupBookingSheetSequenceStage.CART
+  );
   const [isValid, setIsValid] = useState(true);
 
   const itineraryName = "Smith Wedding";
@@ -27,7 +34,7 @@ export function BifrostGroupBookingSheetSequence({
   const getStageTitle = (stage: BifrostGroupBookingSheetSequenceStage) => {
     switch (stage) {
       case BifrostGroupBookingSheetSequenceStage.CART:
-        return itineraryName;
+        return checkoutSessionSummary.groupBookingCheckoutSessionTitle || "";
       case BifrostGroupBookingSheetSequenceStage.SUMMARY:
         return "Summary";
       case BifrostGroupBookingSheetSequenceStage.CHECKOUT:
@@ -56,6 +63,7 @@ export function BifrostGroupBookingSheetSequence({
     renderedStage = (
       <BifrostGroupBookingSheetSequenceCheckoutStage
         initialAcceptedState={true}
+        getStripePaymentIntent={getStripePaymentIntent}
       />
     );
   }

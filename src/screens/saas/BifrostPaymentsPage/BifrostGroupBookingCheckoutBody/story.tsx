@@ -1,15 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutBody } from ".";
-import {
-  mockRenderableItineraryHotelRoomOfferFive,
-  mockRenderableItineraryHotelRoomOfferFour,
-  mockRenderableItineraryHotelRoomOfferOne,
-  mockRenderableItineraryHotelRoomOfferSix,
-  mockRenderableItineraryHotelRoomOfferThree,
-  mockRenderableItineraryHotelRoomOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
 import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
+import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 
 const meta: Meta<typeof BifrostGroupBookingCheckoutBody> = {
   title:
@@ -21,18 +14,8 @@ export default meta;
 type Story = StoryObj<typeof BifrostGroupBookingCheckoutBody>;
 
 const StoryWrapper = () => {
-  const mockRenderableItineraryHotelRoomOffers: RenderableItineraryHotelRoomOffer[] =
-    [
-      mockRenderableItineraryHotelRoomOfferOne,
-      mockRenderableItineraryHotelRoomOfferTwo,
-      mockRenderableItineraryHotelRoomOfferThree,
-      mockRenderableItineraryHotelRoomOfferFour,
-      mockRenderableItineraryHotelRoomOfferFive,
-      mockRenderableItineraryHotelRoomOfferSix,
-    ];
-
   const initialAvailableHotelRooms: RenderableItineraryHotelRoomOffer[] =
-    mockRenderableItineraryHotelRoomOffers.map(
+    mockBifrostGroupBookingCheckoutCartOne.hotelRooms.map(
       (offer: RenderableItineraryHotelRoomOffer) => {
         return {
           ...offer,

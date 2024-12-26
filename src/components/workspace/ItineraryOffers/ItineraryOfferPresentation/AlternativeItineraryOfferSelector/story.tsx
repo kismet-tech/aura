@@ -5,13 +5,13 @@ import {
 } from ".";
 
 import React from "react";
+import { AppViewport } from "@/components/atoms/AppViewport";
 import {
   mockRenderableItineraryOfferFour,
   mockRenderableItineraryOfferOne,
   mockRenderableItineraryOfferThree,
   mockRenderableItineraryOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
-import { AppViewport } from "@/components/atoms/AppViewport";
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof AlternativeItineraryOfferSelector> = {
   title:

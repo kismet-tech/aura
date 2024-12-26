@@ -9,11 +9,6 @@ import {
   mockBifrostFormQuestionWithTextResponseTwo,
   mockBifrostToggleButtonGroupFormQuestionWithTextResponseThree,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockBifrostFormQuestionWithResponses";
-import {
-  mockRenderableItineraryOfferOne,
-  mockRenderableItineraryOfferThree,
-  mockRenderableItineraryOfferTwo,
-} from "@/mockData/bifrost/mockRenderableItineraryOffers";
 import { v4 as uuidv4 } from "uuid";
 import { deepClone } from "@/utilities/core/deepClone";
 import {
@@ -50,6 +45,11 @@ import {
   GetBifrostFormItineraryOffersRequestDto,
   GetBifrostFormItineraryOffersSuccessResponseDataDto,
 } from "../bifrostApi/core/getBifrostFormItineraryOffers/GetBifrostFormItineraryOffers.dto";
+import {
+  mockRenderableItineraryOfferOne,
+  mockRenderableItineraryOfferTwo,
+  mockRenderableItineraryOfferThree,
+} from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 export class MockBifrostApi implements BifrostApiInterface {
   apiState = {

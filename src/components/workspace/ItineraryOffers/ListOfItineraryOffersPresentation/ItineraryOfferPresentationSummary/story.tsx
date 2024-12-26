@@ -1,10 +1,10 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { mockRenderableItineraryOfferOne } from "@/mockData/bifrost/mockRenderableItineraryOffers";
 import {
   ItineraryOfferPresentationSummary,
   ItineraryOfferPresentationSummaryProps,
 } from ".";
+import { mockRenderableItineraryOfferOne } from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
 
 const meta: Meta<typeof ItineraryOfferPresentationSummary> = {
   title:
