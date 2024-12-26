@@ -65,6 +65,10 @@ export function ActiveBifrostFormQuestions({
   suggestCalendarDateRangesFromConstraints,
   onMountBifrostFormQuestion,
 }: ActiveBifrostFormQuestionsProps) {
+  const questionIds = activeBifrostFormQuestionsWithResponses.map(
+    (q) => q.bifrostFormQuestion.bifrostFormQuestionId
+  );
+
   const [
     mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
     setMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
@@ -180,6 +184,16 @@ export function ActiveBifrostFormQuestions({
     setBifrostFormQuestionIdsWithValidResponses,
     setBifrostFormQuestionIdsRespondedTo,
   ]);
+
+  useEffect(() => {
+    Object.values(internalScrollRefs.current)
+      .filter(Boolean)[0]
+      ?.scrollIntoView({ behavior: "smooth", block: "end" }); // JASON may want nearest instead of end here let him decide
+    console.log(
+      "aabaa",
+      Object.values(internalScrollRefs.current).filter(Boolean)[0]
+    );
+  }, questionIds);
 
   const handleSetIsResponseValid = useCallback(
     ({
