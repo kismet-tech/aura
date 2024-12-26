@@ -5,7 +5,7 @@ import {
   RenderableItineraryOffer,
   RenderableItineraryEventOffer,
 } from "@kismet_ai/foundation";
-import { EventOfferCarouselItem } from "../../../../atoms/EventOfferCarouselItem";
+import { EventOfferCarouselItemSaaS } from "../../../../atoms/EventOfferCarouselItemSaaS";
 
 export interface ItineraryOfferEventsPresentationPanelProps {
   renderableItineraryOffer: RenderableItineraryOffer;
@@ -35,7 +35,7 @@ export function ItineraryOfferEventsPresentationPanel({
         items={eventOffers}
         renderItem={(eventOffer: RenderableItineraryEventOffer) => {
           return (
-            <EventOfferCarouselItem
+            <EventOfferCarouselItemSaaS
               eventOffer={eventOffer}
               onClick={() => { }}
             />
