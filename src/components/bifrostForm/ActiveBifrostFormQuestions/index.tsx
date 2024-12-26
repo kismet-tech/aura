@@ -4,7 +4,7 @@ import {
   HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
 import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   RenderedBifrostFormQuestion,
   RenderedBifrostFormQuestionProps,
@@ -82,6 +82,8 @@ export function ActiveBifrostFormQuestions({
       4
     )}`
   );
+
+  const internalScrollRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     const updatedActiveBifrostFormQuestionIds: string[] =
@@ -331,15 +333,18 @@ export function ActiveBifrostFormQuestions({
                 bifrostFormQuestionWithResponse.bifrostFormQuestion
                   .bifrostFormQuestionId
               }
-              ref={(element: HTMLDivElement | null) =>
+              ref={(element: HTMLDivElement | null) => {
                 onMountBifrostFormQuestion?.({
                   bifrostFormQuestionId:
                     bifrostFormQuestionWithResponse.bifrostFormQuestion
                       .bifrostFormQuestionId,
 
                   element,
-                })
-              }
+                });
+                internalScrollRefs.current[
+                  bifrostFormQuestionWithResponse.bifrostFormQuestion.bifrostFormQuestionId
+                ] = element;
+              }}
             >
               <MemoizedRenderedBifrostFormQuestion
                 bifrostFormMetadata={bifrostFormMetadata}
