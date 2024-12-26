@@ -187,7 +187,13 @@ export function ActiveBifrostFormQuestions({
 
   useEffect(() => {
     Object.values(internalScrollRefs.current)
-      .filter(Boolean)[0]
+      .filter(Boolean)
+      .toSorted((a, b) => {
+        if (a && b) {
+          return b.offsetTop - a.offsetTop;
+        }
+        return 0;
+      })[0]
       ?.scrollIntoView({ behavior: "smooth", block: "end" }); // JASON may want nearest instead of end here let him decide
     console.log(
       "aabaa",
