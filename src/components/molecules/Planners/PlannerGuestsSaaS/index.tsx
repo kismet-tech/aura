@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-interface PlannerGuestsProps {
+export interface PlannerGuestsProps {
   initialGuestCount?: number;
   minGuests?: number;
   maxGuests?: number;

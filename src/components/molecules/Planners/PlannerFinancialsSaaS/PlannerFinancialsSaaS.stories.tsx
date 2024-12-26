@@ -16,6 +16,5 @@ export const Default: Story = {
   args: {
     startDateTime: new Date().toISOString(),
     paymentSplitType: 'SINGLE_PAYER',
-    onNotifyChange: (values) => console.log('Values changed:', values),
   }
 }; 

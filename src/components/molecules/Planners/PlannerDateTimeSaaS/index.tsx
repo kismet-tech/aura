@@ -2,7 +2,7 @@ import React from 'react';
 import { format, addMinutes, subMinutes } from 'date-fns';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-interface PlannerDateTimeProps {
+export interface PlannerDateTimeProps {
   initialStartDate?: Date | null;
   initialEndDate?: Date | null;
   initialSetupMinutes?: number | null;
@@ -292,7 +292,7 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
           {startDate && endDate && (
             <div className="text-sm text-gray-500">
               <div>Event Duration: {Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60))} minutes</div>
-              {(setupMinutes > 0 || teardownMinutes > 0) && (
+              {((setupMinutes || 0)> 0 || (teardownMinutes || 0) > 0) && (
                 <div>
                   Total Duration (including setup/teardown): {Math.round(
                     ((teardownEndDate?.getTime() || endDate.getTime()) - 

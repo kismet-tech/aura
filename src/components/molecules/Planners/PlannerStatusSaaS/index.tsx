@@ -2,9 +2,10 @@ import React from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
+
 export type EventStatus = 'PROSPECT' | 'TENTATIVE' | 'DEFINITIVE' | 'CLOSED' | 'LOST' | 'WAITLISTED';
 
-interface PlannerStatusProps {
+export interface PlannerStatusProps {
   initialStatus?: EventStatus;
   onChange?: (status: EventStatus) => void;
   open?: boolean;

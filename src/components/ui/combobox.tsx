@@ -3,15 +3,10 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 
 import { cn } from "../../lib/utils"
-import { Button } from "./button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "./command"
-import { Popover, PopoverContent, PopoverTrigger } from "./popover"
+import { Popover, PopoverContent, PopoverTrigger } from "../shadcn/popover"
+import { Button } from "../shadcn/button"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./command"
+
 
 interface ComboboxProps {
   options: { value: string; label: string }[]
