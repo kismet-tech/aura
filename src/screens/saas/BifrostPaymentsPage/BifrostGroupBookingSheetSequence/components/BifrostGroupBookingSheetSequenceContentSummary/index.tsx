@@ -104,7 +104,7 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
     confirmedEvents: false,
   });
 
-  const yourRooms: { count: number; dates: string; total: number } = {
+  const yourRoomsSummary: { count: number; dates: string; total: number } = {
     count: cart.hotelRooms.reduce((accum: number, hotelRoomOffer) => {
       return accum + hotelRoomOffer.countOffered;
     }, 0),
@@ -119,17 +119,19 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
     ),
   };
 
+  const yourRooms = cart.hotelRooms;
+
   const isAccordionEnabled = stage !== "summary" && stage !== "checkout";
   return (
     <div className="space-y-6">
       <h2 className="font-semibold">In Cart</h2>
 
       <div className="space-y-4">
-        {yourRooms.count > 0 && (
+        {yourRoomsSummary.count > 0 && (
           <div>
             <div className="flex justify-between mb-2">
               <h3 className="font-medium">
-                {yourRooms.count === 1 ? "Your Room" : "Your Rooms"}
+                {yourRoomsSummary.count === 1 ? "Your Room" : "Your Rooms"}
               </h3>
               <button
                 onClick={() =>
@@ -150,9 +152,9 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
 
             {!expandedSections.yourRooms && (
               <div className="flex justify-between text-sm pt-2 border-t">
-                <div>{yourRooms.count} Room Total</div>
+                <div>{yourRoomsSummary.count} Room Total</div>
                 <div className="flex items-center gap-1">
-                  <span>${yourRooms.total / 100}</span>
+                  <span>${yourRoomsSummary.total / 100}</span>
                   <MoreInfoTooltip content="Room is comped based on 25 rooms from room block getting picked up for at least 2 nights and confirmed Rehearsal Dinner event with $7,000 F&B minimum" />
                 </div>
               </div>
@@ -160,29 +162,33 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
 
             {expandedSections.yourRooms && (
               <div className="space-y-4">
-                <BifrostGroupBookingSheetSequenceContentSummaryLineItem
-                  roomCount={1}
-                  title="King Suite"
-                  nights={3}
-                  dates="Dec 18 - 21, 2025"
-                  price={{
-                    amountInCents: 0,
-                    label: "/room/night + taxes and fees",
-                  }}
-                  keyTerms={[
-                    "Comped based on 25 rooms from room block getting picked up for at least 2 nights",
-                    "Rehearsal dinner held at hotel with a $7,000 F&B minimum",
-                    "Failure to meet these terms will result in a charge for King Room of $1,295/night + taxes and fees",
-                  ]}
-                  termTitle="Comped Room Terms"
-                  termInfoTip="Terms and conditions for complimentary room rates."
-                  imageUrl="https://placehold.co/48x48"
-                />
+                {yourRooms.map((hotelRoomOffer) => {
+                  return (
+                    <BifrostGroupBookingSheetSequenceContentSummaryLineItem
+                      roomCount={hotelRoomOffer.countOffered}
+                      title={hotelRoomOffer.hotelRoomName}
+                      nights={3}
+                      dates="Dec 18 - 21, 2025"
+                      price={{
+                        amountInCents: hotelRoomOffer.offerPriceInCents / 100,
+                        label: "/room/night + taxes and fees",
+                      }}
+                      keyTerms={[
+                        "Comped based on 25 rooms from room block getting picked up for at least 2 nights",
+                        "Rehearsal dinner held at hotel with a $7,000 F&B minimum",
+                        "Failure to meet these terms will result in a charge for King Room of $1,295/night + taxes and fees",
+                      ]}
+                      termTitle="Comped Room Terms"
+                      termInfoTip="Terms and conditions for complimentary room rates."
+                      imageUrl={hotelRoomOffer.heroImageUrl}
+                    />
+                  );
+                })}
 
                 <div className="flex justify-between text-sm pt-2 border-t">
-                  <div>{yourRooms.count} Room Total</div>
+                  <div>{yourRoomsSummary.count} Room Total</div>
                   <div className="flex items-center gap-1">
-                    <span>$0</span>
+                    <span>${(yourRoomsSummary.total / 100).toFixed(0)}</span>
                     <MoreInfoTooltip content="Room is comped based on 25 rooms from room block getting picked up for at least 2 nights and confirmed Rehearsal Dinner event with $7,000 F&B minimum" />
                   </div>
                 </div>
