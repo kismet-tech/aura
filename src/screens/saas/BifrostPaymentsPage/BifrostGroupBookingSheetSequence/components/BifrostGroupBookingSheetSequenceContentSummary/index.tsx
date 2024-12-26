@@ -3,6 +3,10 @@ import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { BifrostGroupBookingSheetSequenceContentSummaryLineItem } from "../BifrostGroupBookingSheetSequenceContentSummaryLineItem";
 import { BifrostGroupBookingSheetSequenceContentSummaryEventLineItem } from "../BifrostGroupBookingSheetSequenceContentSummaryEventLineItem";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import {
+  BifrostGroupBookingCheckoutCart,
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
 
 /**
  * Terms Data Structure from Backend
@@ -59,6 +63,7 @@ import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
  */
 
 interface BifrostGroupBookingSheetSequenceContentSummaryProps {
+  cart: BifrostGroupBookingCheckoutCart;
   yourRooms: {
     count: number;
     dates: string;
@@ -80,7 +85,8 @@ interface BifrostGroupBookingSheetSequenceContentSummaryProps {
 }
 
 export function BifrostGroupBookingSheetSequenceContentSummary({
-  yourRooms = { count: 0, dates: "", total: 0 },
+  cart,
+  // yourRooms = { count: 0, dates: "", total: 0 },
   heldRooms = { count: 0, dates: "" },
   pendingEvents = { count: 0, total: 0 },
   confirmedEvents = { count: 0, total: 0 },
@@ -97,6 +103,21 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
     pendingEvents: false,
     confirmedEvents: false,
   });
+
+  const yourRooms: { count: number; dates: string; total: number } = {
+    count: cart.hotelRooms.reduce((accum: number, hotelRoomOffer) => {
+      return accum + hotelRoomOffer.countOffered;
+    }, 0),
+    dates: "Dec 18 - 21, 2025",
+    total: cart.hotelRooms.reduce(
+      (accum: number, hotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
+        return (
+          accum + hotelRoomOffer.countOffered * hotelRoomOffer.offerPriceInCents
+        );
+      },
+      0
+    ),
+  };
 
   const isAccordionEnabled = stage !== "summary" && stage !== "checkout";
   return (
@@ -131,7 +152,7 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
               <div className="flex justify-between text-sm pt-2 border-t">
                 <div>{yourRooms.count} Room Total</div>
                 <div className="flex items-center gap-1">
-                  <span>$0</span>
+                  <span>${yourRooms.total / 100}</span>
                   <MoreInfoTooltip content="Room is comped based on 25 rooms from room block getting picked up for at least 2 nights and confirmed Rehearsal Dinner event with $7,000 F&B minimum" />
                 </div>
               </div>

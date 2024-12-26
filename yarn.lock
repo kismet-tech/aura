@@ -535,10 +535,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@kismet_ai/foundation@^1.0.94":
-  version "1.0.94"
-  resolved "https://registry.yarnpkg.com/@kismet_ai/foundation/-/foundation-1.0.94.tgz#e1aa9a154b7699d988408dcdd195a635933978e2"
-  integrity sha512-ECXaDnlexvrY72lYnbhAXgsSBWFVfcBTHXJu3t28RlHSLxxBPCzr732dDSjEyUQNOM5fP+Htlq85m7j34hwHmg==
+"@kismet_ai/foundation@^1.0.97":
+  version "1.0.97"
+  resolved "https://registry.yarnpkg.com/@kismet_ai/foundation/-/foundation-1.0.97.tgz#c8a8f48793b660c994cbb366a698dfd6cedfcda9"
+  integrity sha512-0amfqGOtAADon2DQWpFNdRJFEwz7lJ6pHcw0vq1dxSA1YHQolwiV6oTnKARB7FIqVQWQsOXJewdWGaelVV5E2A==
   dependencies:
     date-fns "^4.1.0"
     validator "^13.12.0"

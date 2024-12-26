@@ -5,9 +5,11 @@
 
 import React from "react";
 import { BifrostGroupBookingSheetSequenceCheckoutStageBody } from "./BifrostGroupBookingSheetSequenceCheckoutStageBody";
+import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
 
 export interface BifrostGroupBookingSheetSequenceCheckoutStageProps {
   initialAcceptedState?: boolean;
+  cart: BifrostGroupBookingCheckoutCart;
   getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
 }
 

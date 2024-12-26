@@ -1,10 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutRootPage } from ".";
-import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
+import {
+  BifrostGroupBookingCheckoutCart,
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
 import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";
-import { BifrostGroupBookingCheckoutCart } from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
 import { AuthenticatedGuestUser } from "../../../models/guests/AuthenticatedGuestUser";
 import { useReactStateCache } from "@/utilities/core/react/useReactStateCache";
 import { mockCreatePaymentIntent } from "@/components/molecules/StripePaymentForm/mockCreatePaymentIntent";

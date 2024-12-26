@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { BifrostGroupBookingCheckoutHeader } from ".";
-import { BifrostGroupBookingCheckoutCart } from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
 import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";
+import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof BifrostGroupBookingCheckoutHeader> = {
   title:

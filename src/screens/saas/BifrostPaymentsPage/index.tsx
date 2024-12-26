@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { BifrostGroupBookingCheckoutHeader } from "./BifrostGroupBookingCheckoutHeader";
 import { BifrostGroupBookingCheckoutBody } from "./BifrostGroupBookingCheckoutBody";
 import { MadeWithKismetLogo } from "@/components/atoms/icons/MadeWithKismetLogo";
-import { BifrostGroupBookingCheckoutCart } from "../../../providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
 import {
+  BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
   RenderableItineraryHotelRoomOffer,
 } from "@kismet_ai/foundation";
@@ -152,6 +152,7 @@ export function BifrostGroupBookingCheckoutRootPage({
           <BifrostGroupBookingSheetSequence
             getStripePaymentIntent={getStripePaymentIntent}
             checkoutSessionSummary={checkoutSessionSummary}
+            cart={cart}
           />
         </Sheet>
       ) : (

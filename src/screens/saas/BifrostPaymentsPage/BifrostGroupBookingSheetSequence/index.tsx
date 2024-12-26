@@ -5,7 +5,10 @@ import { BifrostGroupBookingSheetSequenceSummaryStage } from "./stages/BifrostGr
 import { BifrostGroupBookingSheetSequenceCheckoutStage } from "./stages/BifrostGroupBookingSheetSequenceCheckoutStage";
 import { BifrostGroupBookingSheetSequenceHeader } from "./components/BifrostGroupBookingSheetSequenceHeader";
 import { BifrostGroupBookingSheetSequenceFooter } from "./components/BifrostGroupBookingSheetSequenceFooter";
-import { BifrostGroupBookingCheckoutSessionSummary } from "@kismet_ai/foundation";
+import {
+  BifrostGroupBookingCheckoutCart,
+  BifrostGroupBookingCheckoutSessionSummary,
+} from "@kismet_ai/foundation";
 
 export enum BifrostGroupBookingSheetSequenceStage {
   CART = "CART",
@@ -15,12 +18,14 @@ export enum BifrostGroupBookingSheetSequenceStage {
 
 export interface BifrostGroupBookingSheetSequenceProps {
   stage?: BifrostGroupBookingSheetSequenceStage;
+  cart: BifrostGroupBookingCheckoutCart;
   getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
   checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
 }
 
 export function BifrostGroupBookingSheetSequence({
   stage,
+  cart,
   getStripePaymentIntent,
   checkoutSessionSummary,
 }: BifrostGroupBookingSheetSequenceProps) {
@@ -55,14 +60,18 @@ export function BifrostGroupBookingSheetSequence({
     renderedStage = (
       <BifrostGroupBookingSheetSequenceCartStage
         setLocalStage={setLocalStage}
+        cart={cart}
       />
     );
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.SUMMARY) {
-    renderedStage = <BifrostGroupBookingSheetSequenceSummaryStage />;
+    renderedStage = (
+      <BifrostGroupBookingSheetSequenceSummaryStage cart={cart} />
+    );
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT) {
     renderedStage = (
       <BifrostGroupBookingSheetSequenceCheckoutStage
         initialAcceptedState={true}
+        cart={cart}
         getStripePaymentIntent={getStripePaymentIntent}
       />
     );
@@ -116,6 +125,7 @@ export function BifrostGroupBookingSheetSequence({
           onClickContinue={handleContinue}
           isValid={isValid}
           currentStage={localStage}
+          cart={cart}
         />
       </div>
     </SheetContent>

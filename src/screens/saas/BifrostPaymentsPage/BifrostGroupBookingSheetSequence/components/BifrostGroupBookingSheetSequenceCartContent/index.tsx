@@ -1,82 +1,165 @@
 import React, { useState } from "react";
 import { BifrostGroupBookingSheetSequenceCartContentScroll } from "./BifrostGroupBookingSheetSequenceCartContentScroll";
-import { BifrostGroupBookingSheetSequenceCartContentRoomCard } from "./BifrostGroupBookingSheetSequenceCartContentRoomCard";
+import {
+  BifrostGroupBookingSheetSequenceCartContentRoomCard,
+  BifrostGroupBookingSheetSequenceCartContentRoomCardProps,
+} from "./BifrostGroupBookingSheetSequenceCartContentRoomCard";
 import { BifrostGroupBookingSheetSequenceCartContentEventCard } from "./BifrostGroupBookingSheetSequenceCartContentEventCard";
 import { BifrostGroupBookingSheetSequenceCartContentAddCard } from "./BifrostGroupBookingSheetSequenceCartContentAddCard";
-import { BifrostGroupBookingSheetSequenceGuestList } from "../BifrostGroupBookingSheetSequenceGuestList";
 import { BifrostGroupBookingSheetSequenceEditor } from "../BifrostGroupBookingSheetSequenceEditor";
+import {
+  BifrostGroupBookingCheckoutCart,
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
+
+export interface BifrostGroupBookingSheetSequenceCartContentProps {
+  onOpenGuestList: (roomName: string) => void;
+  cart: BifrostGroupBookingCheckoutCart;
+}
 
 export function BifrostGroupBookingSheetSequenceCartContent({
-  onOpenGuestList
-}: {
-  onOpenGuestList: (roomName: string) => void;
-}) {
-  const [guestListRoom, setGuestListRoom] = useState<{name: string} | null>(null);
+  onOpenGuestList,
+  cart,
+}: BifrostGroupBookingSheetSequenceCartContentProps) {
+  const [guestListRoom, setGuestListRoom] = useState<{ name: string } | null>(
+    null
+  );
+
+  const bifrostGroupBookingSheetSequenceCartContentRoomCardElements: BifrostGroupBookingSheetSequenceCartContentRoomCardProps[] =
+    cart.hotelRooms.map(
+      (
+        renderableItineraryHotelRoomOffer: RenderableItineraryHotelRoomOffer
+      ) => {
+        if ("runOfHouseDetails" in renderableItineraryHotelRoomOffer) {
+          return {
+            id: renderableItineraryHotelRoomOffer.hotelRoomOfferId,
+            name: renderableItineraryHotelRoomOffer.hotelRoomName,
+            moreInfo: {
+              type: "tooltip" as const,
+              text: "(any room)",
+              tooltipContent:
+                "Run of House means you will be assigned any available room type upon check-in",
+            },
+            price: renderableItineraryHotelRoomOffer.offerPriceInCents / 100,
+            originalPrice:
+              renderableItineraryHotelRoomOffer.listPriceInCents / 100,
+            quantity: renderableItineraryHotelRoomOffer.countOffered,
+            type: "Room",
+            imageUrl: renderableItineraryHotelRoomOffer.heroImageUrl,
+            onClick: () =>
+              setEditor({
+                type: "room-details",
+                title: "Run of House Details",
+                name: "Run of House",
+              }),
+          };
+        } else if ("hotelRoomId" in renderableItineraryHotelRoomOffer) {
+          return {
+            id: renderableItineraryHotelRoomOffer.hotelRoomOfferId,
+            name: renderableItineraryHotelRoomOffer.hotelRoomName,
+            moreInfo: {
+              type: "link" as const,
+              text: "guest list",
+              onClick: () =>
+                setEditor({
+                  type: "guest-list",
+                  title: `Guest List - ${renderableItineraryHotelRoomOffer.hotelRoomName}`,
+                  name: renderableItineraryHotelRoomOffer.hotelRoomName,
+                }),
+            },
+            onClick: () =>
+              setEditor({
+                type: "room-details",
+                title: `${renderableItineraryHotelRoomOffer.hotelRoomName} Details`,
+                name: renderableItineraryHotelRoomOffer.hotelRoomName,
+              }),
+            price: renderableItineraryHotelRoomOffer.offerPriceInCents / 100,
+            originalPrice:
+              renderableItineraryHotelRoomOffer.listPriceInCents / 100,
+            quantity: renderableItineraryHotelRoomOffer.countOffered,
+            type: "Your Room",
+            imageUrl: renderableItineraryHotelRoomOffer.heroImageUrl,
+          };
+        } else {
+          throw new Error("Invalid hotel room offer");
+        }
+      }
+    );
 
   const [editor, setEditor] = useState<{
-    type: 'guest-list' | 'room-details' | 'event-details' | 'add-room' | 'add-event';
+    type:
+      | "guest-list"
+      | "room-details"
+      | "event-details"
+      | "add-room"
+      | "add-event";
     title: string;
     name: string;
   } | null>(null);
 
-  const rooms = [
-    {
-      id: 1,
-      name: "Run of House",
-      moreInfo: {
-        type: 'tooltip' as const,
-        text: '(any room)',
-        tooltipContent: 'Run of House means you will be assigned any available room type upon check-in'
-      },
-      onClick: () => setEditor({
-        type: 'room-details',
-        title: 'Run of House Details',
-        name: "Run of House"
-      }),
-      price: 323,
-      originalPrice: 387,
-      quantity: 29,
-      type: "ROH",
-      imageUrl: "https://placehold.co/160x120"
-    },
-    {
-      id: 2,
-      name: "Bridal Suite",
-      moreInfo: {
-        type: 'link' as const,
-        text: 'guest list',
-        onClick: () => setEditor({
-          type: 'guest-list',
-          title: 'Guest List - Bridal Suite',
-          name: "Bridal Suite"
-        })
-      },
-      onClick: () => setEditor({
-        type: 'room-details',
-        title: 'Bridal Suite Details',
-        name: "Bridal Suite"
-      }),
-      price: 0,
-      originalPrice: 1295,
-      quantity: 1,
-      type: "Your Room",
-      imageUrl: "https://placehold.co/160x120"
-    }
-  ];
+  // const rooms = [
+  //   {
+  //     id: 1,
+  //     name: "Run of House",
+  //     moreInfo: {
+  //       type: "tooltip" as const,
+  //       text: "(any room)",
+  //       tooltipContent:
+  //         "Run of House means you will be assigned any available room type upon check-in",
+  //     },
+  //     onClick: () =>
+  //       setEditor({
+  //         type: "room-details",
+  //         title: "Run of House Details",
+  //         name: "Run of House",
+  //       }),
+  //     price: 323,
+  //     originalPrice: 387,
+  //     quantity: 29,
+  //     type: "ROH",
+  //     imageUrl: "https://placehold.co/160x120",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Bridal Suite",
+  //     moreInfo: {
+  //       type: "link" as const,
+  //       text: "guest list",
+  //       onClick: () =>
+  //         setEditor({
+  //           type: "guest-list",
+  //           title: "Guest List - Bridal Suite",
+  //           name: "Bridal Suite",
+  //         }),
+  //     },
+  //     onClick: () =>
+  //       setEditor({
+  //         type: "room-details",
+  //         title: "Bridal Suite Details",
+  //         name: "Bridal Suite",
+  //       }),
+  //     price: 0,
+  //     originalPrice: 1295,
+  //     quantity: 1,
+  //     type: "Your Room",
+  //     imageUrl: "https://placehold.co/160x120",
+  //   },
+  // ];
 
   const events = [
     {
       id: 1,
       name: "Welcome Reception",
-      onClick: () => setEditor({
-        type: 'event-details',
-        title: 'Welcome Reception Details',
-        name: "Welcome Reception"
-      }),
+      onClick: () =>
+        setEditor({
+          type: "event-details",
+          title: "Welcome Reception Details",
+          name: "Welcome Reception",
+        }),
       date: "Dec 19",
       status: "Pending",
-      imageUrl: "https://placehold.co/160x120"
-    }
+      imageUrl: "https://placehold.co/160x120",
+    },
   ];
 
   if (editor) {
@@ -98,19 +181,23 @@ export function BifrostGroupBookingSheetSequenceCartContent({
         title="Rooms"
         description="You have a room block of 30 rooms including the bridal suite"
       >
-        {rooms.map(room => (
-          <BifrostGroupBookingSheetSequenceCartContentRoomCard
-            key={room.id}
-            {...room}
-          />
-        ))}
-        <BifrostGroupBookingSheetSequenceCartContentAddCard 
+        {bifrostGroupBookingSheetSequenceCartContentRoomCardElements.map(
+          (bifrostGroupBookingSheetSequenceCartContentRoomCardElement) => (
+            <BifrostGroupBookingSheetSequenceCartContentRoomCard
+              key={
+                bifrostGroupBookingSheetSequenceCartContentRoomCardElement.id
+              }
+              {...bifrostGroupBookingSheetSequenceCartContentRoomCardElement}
+            />
+          )
+        )}
+        <BifrostGroupBookingSheetSequenceCartContentAddCard
           title="room"
           onClick={() => {
             setEditor({
-              type: 'add-room',
-              title: 'Add Room',
-              name: 'New Room'
+              type: "add-room",
+              title: "Add Room",
+              name: "New Room",
             });
           }}
         />
@@ -120,19 +207,19 @@ export function BifrostGroupBookingSheetSequenceCartContent({
         title="Events"
         description="You have 1 event added to your itinerary."
       >
-        {events.map(event => (
+        {events.map((event) => (
           <BifrostGroupBookingSheetSequenceCartContentEventCard
             key={event.id}
             {...event}
           />
         ))}
-        <BifrostGroupBookingSheetSequenceCartContentAddCard 
+        <BifrostGroupBookingSheetSequenceCartContentAddCard
           title="event"
           onClick={() => {
             setEditor({
-              type: 'add-event',
-              title: 'Add Event',
-              name: 'New Event'
+              type: "add-event",
+              title: "Add Event",
+              name: "New Event",
             });
           }}
         />

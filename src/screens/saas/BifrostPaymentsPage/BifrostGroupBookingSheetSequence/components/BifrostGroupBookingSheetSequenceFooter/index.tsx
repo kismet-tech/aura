@@ -1,7 +1,9 @@
 import React from "react";
 import { Button } from "@/components/shadcn/button";
+import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
 
 interface BifrostGroupBookingSheetSequenceFooterProps {
+  cart: BifrostGroupBookingCheckoutCart;
   onClickContinue: () => void;
   isValid: boolean;
   currentStage: "CART" | "SUMMARY" | "CHECKOUT";
@@ -13,32 +15,44 @@ interface BifrostGroupBookingSheetSequenceFooterProps {
 }
 
 export function BifrostGroupBookingSheetSequenceFooter({
+  cart,
   onClickContinue,
   isValid,
   currentStage,
-  paymentAmount = 100.00,
+  // paymentAmount = 100.0,
   hasRooms = true,
   hasHold = true,
   hasRoomBlock = true,
-  needsQuote = false
+  needsQuote = false,
 }: BifrostGroupBookingSheetSequenceFooterProps) {
+  const paymentAmountInCents = cart.hotelRooms.reduce(
+    (accum, hotelRoomOffer) => {
+      return (
+        accum + hotelRoomOffer.offerPriceInCents * hotelRoomOffer.countOffered
+      );
+    },
+    0
+  );
+
   const getButtonText = () => {
     if (currentStage === "CART") return "Continue";
     if (needsQuote) return "Request Quote";
-    if (hasRooms && hasRoomBlock && hasHold) return (
-      <>
-        Book & Block Rooms,
-        <br />
-        Place Hold
-      </>
-    );
-    if (hasRoomBlock && hasHold) return (
-      <>
-        Block Rooms,
-        <br />
-        Place Hold
-      </>
-    );
+    if (hasRooms && hasRoomBlock && hasHold)
+      return (
+        <>
+          Book & Block Rooms,
+          <br />
+          Place Hold
+        </>
+      );
+    if (hasRoomBlock && hasHold)
+      return (
+        <>
+          Block Rooms,
+          <br />
+          Place Hold
+        </>
+      );
     if (hasRoomBlock) return "Block Rooms";
     if (hasHold) return "Place Hold";
     return "Checkout";
@@ -50,7 +64,9 @@ export function BifrostGroupBookingSheetSequenceFooter({
         {(currentStage === "SUMMARY" || currentStage === "CHECKOUT") && (
           <>
             <span className="text-sm">Total</span>
-            <span className="text-lg font-semibold">${paymentAmount.toFixed(2)}</span>
+            <span className="text-lg font-semibold">
+              ${(paymentAmountInCents / 100).toFixed(2)}
+            </span>
           </>
         )}
       </div>

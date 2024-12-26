@@ -1,6 +1,9 @@
 import React from "react";
 import { BifrostGroupBookingSheetSequenceContentSummary } from "../../components/BifrostGroupBookingSheetSequenceContentSummary";
-import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
+import {
+  BifrostGroupBookingCheckoutCart,
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
 
 // interface RoomSummary {
 //   count: number;
@@ -40,6 +43,7 @@ interface EventSummary {
 }
 
 export interface BifrostGroupBookingSheetSequenceSummaryStageProps {
+  cart: BifrostGroupBookingCheckoutCart;
   yourRooms?: RenderableItineraryHotelRoomOffer;
   heldRooms?: RenderableItineraryHotelRoomOffer;
   pendingEvents?: EventSummary;
@@ -47,6 +51,7 @@ export interface BifrostGroupBookingSheetSequenceSummaryStageProps {
 }
 
 export function BifrostGroupBookingSheetSequenceSummaryStage({
+  cart,
   yourRooms,
   heldRooms,
   pendingEvents,
@@ -72,6 +77,7 @@ export function BifrostGroupBookingSheetSequenceSummaryStage({
           count: 0,
           total: 0,
         }}
+        cart={cart}
       />
     </div>
   );

@@ -4,6 +4,7 @@ import {
   BifrostGroupBookingSheetSequenceSummaryStage,
   BifrostGroupBookingSheetSequenceSummaryStageProps,
 } from ".";
+import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequenceSummaryStage> = {
   title:
@@ -14,8 +15,9 @@ export default meta;
 
 type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceSummaryStage>;
 
-const exampleOneArguments: BifrostGroupBookingSheetSequenceSummaryStageProps =
-  {};
+const exampleOneArguments: BifrostGroupBookingSheetSequenceSummaryStageProps = {
+  cart: mockBifrostGroupBookingCheckoutCartOne,
+};
 
 export const Example: Story = {
   render: (args) => {

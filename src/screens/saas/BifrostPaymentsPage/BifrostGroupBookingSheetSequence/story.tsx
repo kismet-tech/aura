@@ -9,6 +9,7 @@ import {
 } from ".";
 import { mockCreatePaymentIntent } from "@/components/molecules/StripePaymentForm/mockCreatePaymentIntent";
 import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";
+import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequence> = {
   title:
@@ -39,6 +40,7 @@ const cartExampleArguments: BifrostGroupBookingSheetSequenceProps = {
     return { clientSecret };
   },
   checkoutSessionSummary: mockBifrostGroupBookingCheckoutSessionSummaryOne,
+  cart: mockBifrostGroupBookingCheckoutCartOne,
 };
 
 export const CartExample: Story = {
@@ -55,6 +57,7 @@ const summaryExampleArguments: BifrostGroupBookingSheetSequenceProps = {
     return { clientSecret };
   },
   checkoutSessionSummary: mockBifrostGroupBookingCheckoutSessionSummaryOne,
+  cart: mockBifrostGroupBookingCheckoutCartOne,
 };
 
 export const SummaryExample: Story = {
@@ -71,6 +74,7 @@ const checkoutExampleArguments: BifrostGroupBookingSheetSequenceProps = {
     return { clientSecret };
   },
   checkoutSessionSummary: mockBifrostGroupBookingCheckoutSessionSummaryOne,
+  cart: mockBifrostGroupBookingCheckoutCartOne,
 };
 
 export const CheckoutExample: Story = {

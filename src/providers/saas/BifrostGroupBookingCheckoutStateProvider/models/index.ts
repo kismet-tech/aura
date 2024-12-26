@@ -1,8 +1,4 @@
-import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
-
-export interface BifrostGroupBookingCheckoutCart {
-  hotelRooms: RenderableItineraryHotelRoomOffer[];
-}
+import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
 
 export interface BifrostGroupBookingCheckoutStateContextValue {
   cart: BifrostGroupBookingCheckoutCart;

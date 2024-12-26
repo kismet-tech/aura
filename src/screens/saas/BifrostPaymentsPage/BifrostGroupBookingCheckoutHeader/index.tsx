@@ -2,9 +2,11 @@ import { KismetShoppingCartIcon } from "@/components/atoms/icons/KismetShoppingC
 import { UserAvatar } from "@/components/atoms/UserAvatar";
 import { Skeleton } from "@/components/shadcn/skeleton";
 import { AuthenticatedGuestUser } from "../../../../../src/models/guests/AuthenticatedGuestUser";
-import { BifrostGroupBookingCheckoutCart } from "@/providers/saas/BifrostGroupBookingCheckoutStateProvider/models";
 import React from "react";
-import { BifrostGroupBookingCheckoutSessionSummary } from "@kismet_ai/foundation";
+import {
+  BifrostGroupBookingCheckoutCart,
+  BifrostGroupBookingCheckoutSessionSummary,
+} from "@kismet_ai/foundation";
 
 interface BifrostGroupBookingCheckoutHeaderProps {
   authenticatedGuestUser: AuthenticatedGuestUser | undefined;
@@ -60,7 +62,10 @@ export function BifrostGroupBookingCheckoutHeader({
         )}
       </div>
       <div className="ml-auto flex items-center">
-        <KismetShoppingCartIcon onClick={onClickCart} />
+        <KismetShoppingCartIcon
+          className="cursor-pointer"
+          onClick={onClickCart}
+        />
         {cartRoomIndicator}
         {cartAddOnIndicator}
         <div className="ml-3 items-center">
