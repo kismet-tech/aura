@@ -1,6 +1,9 @@
 import React from "react";
 import { Button } from "@/components/shadcn/button";
-import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
+import {
+  BifrostGroupBookingCheckoutCart,
+  getDaysBetweenCalendarDates,
+} from "@kismet_ai/foundation";
 
 interface BifrostGroupBookingSheetSequenceFooterProps {
   cart: BifrostGroupBookingCheckoutCart;
@@ -28,7 +31,14 @@ export function BifrostGroupBookingSheetSequenceFooter({
   const paymentAmountInCents = cart.hotelRooms.reduce(
     (accum, hotelRoomOffer) => {
       return (
-        accum + hotelRoomOffer.offerPriceInCents * hotelRoomOffer.countOffered
+        accum +
+        hotelRoomOffer.offerPriceInCents *
+          hotelRoomOffer.countOffered *
+          getDaysBetweenCalendarDates({
+            startCalendarDate:
+              hotelRoomOffer.calendarDateRange.startCalendarDate,
+            endCalendarDate: hotelRoomOffer.calendarDateRange.endCalendarDate,
+          }).days
       );
     },
     0

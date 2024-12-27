@@ -6,7 +6,6 @@ import {
   BifrostGroupBookingSheetSequenceCartStage,
   BifrostGroupBookingSheetSequenceCartStageProps,
 } from ".";
-import { BifrostGroupBookingSheetSequenceStage } from "../..";
 import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 
 const meta: Meta<typeof BifrostGroupBookingSheetSequenceCartStage> = {
