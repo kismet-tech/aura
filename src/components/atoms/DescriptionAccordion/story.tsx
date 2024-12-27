@@ -29,6 +29,18 @@ export const Example_One: Story = {
             countAvailable: 1,
             offerPriceInCents: 10000,
             listPriceInCents: 12000,
+            calendarDateRange: {
+              startCalendarDate: {
+                year: new Date().getFullYear(),
+                month: new Date().getMonth() + 1,
+                day: new Date().getDate(),
+              },
+              endCalendarDate: {
+                year: new Date().getFullYear(),
+                month: new Date().getMonth() + 1,
+                day: new Date().getDate() + 1,
+              },
+            },
             runOfHouseDetails: {
               isRunOfHouse: false,
               runOfHouseRoomTypes: [],
