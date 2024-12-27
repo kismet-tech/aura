@@ -16,6 +16,7 @@ import { Button } from "@/components/shadcn/button";
 import { Skeleton } from "@/components/shadcn/skeleton";
 import { Sheet } from "@/components/shadcn/sheet";
 import { BifrostGroupBookingSheetSequence } from "./BifrostGroupBookingSheetSequence";
+import { BifrostBookingSequenceAttendee } from "./BifrostBookingSequenceAttendee";
 import { BifrostEventsPage } from "./BifrostEventsPage";
 import { BifrostRoomBlockPage } from "./BifrostRoomBlockPage";
 import { BifrostSettingsPage } from "./BifrostSettingsPage";
@@ -74,6 +75,17 @@ export function BifrostGroupBookingCheckoutRootPage({
     if (variant === "attendee") {
       setSelectedRoom(room);
       setIsGroupBookingSheetOpen(true);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (selectedRoom) {
+      onClickUpdateHotelRoomCountInCart({
+        updatedCountOffered: 1,
+        hotelRoomOfferId: selectedRoom.hotelRoomOfferId,
+      });
+      setIsGroupBookingSheetOpen(false);
+      setSelectedRoom(null);
     }
   };
 
@@ -228,7 +240,7 @@ export function BifrostGroupBookingCheckoutRootPage({
           <MadeWithKismetLogo />
         </div>
       </footer>
-      {checkoutSessionSummary ? (
+      {checkoutSessionSummary && (
         <Sheet
           open={isGroupBookingSheetOpen}
           onOpenChange={(updatedOpenValue) => {
@@ -238,15 +250,21 @@ export function BifrostGroupBookingCheckoutRootPage({
             }
           }}
         >
-          <BifrostGroupBookingSheetSequence
-            getStripePaymentIntent={getStripePaymentIntent}
-            checkoutSessionSummary={checkoutSessionSummary}
-            cart={cart}
-            selectedRoom={selectedRoom}
-          />
+          {variant === "attendee" && selectedRoom ? (
+            <BifrostBookingSequenceAttendee
+              selectedRoom={selectedRoom}
+              checkoutSessionSummary={checkoutSessionSummary}
+              onAddToCart={handleAddToCart}
+            />
+          ) : (
+            <BifrostGroupBookingSheetSequence
+              getStripePaymentIntent={getStripePaymentIntent}
+              checkoutSessionSummary={checkoutSessionSummary}
+              cart={cart}
+              selectedRoom={selectedRoom}
+            />
+          )}
         </Sheet>
-      ) : (
-        ""
       )}
     </div>
   );

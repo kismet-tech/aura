@@ -19,7 +19,7 @@ const mockEvent = {
   eventOfferName: "Rehearsal Dinner",
   startDateTime: "2024-12-19T19:00:00Z",
   endDateTime: "2024-12-19T22:00:00Z",
-  status: HotelEventOfferStatus.PENDING,
+  status: HotelEventOfferStatus.TENTATIVE,
   numberOfGuests: 60,
   imageUrl: "https://placehold.co/400x300",
   isEventOfferPriceEnabled: false,
@@ -46,7 +46,7 @@ const mockUpgradeEvent = {
   numberOfGuests: 100,
   eventOfferPriceInCents: 1000000,
   badgeText: "Upgrade Option",
-  status: HotelEventOfferStatus.CONFIRMED,
+  status: HotelEventOfferStatus.TENTATIVE,
 };
 
 export const HostView: Story = {

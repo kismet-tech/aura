@@ -18,7 +18,7 @@ export default meta;
 
 type Story = StoryObj<typeof BifrostGroupBookingSheetSequenceCartStage>;
 
-const exampleOneArguments: BifrostGroupBookingSheetSequenceCartStageProps = {
+export const exampleOneArguments: BifrostGroupBookingSheetSequenceCartStageProps = {
   setLocalStage: () => {},
   cart: mockBifrostGroupBookingCheckoutCartOne,
 };

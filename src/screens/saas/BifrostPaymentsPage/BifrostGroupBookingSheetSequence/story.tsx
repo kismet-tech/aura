@@ -4,7 +4,6 @@ import { Sheet, SheetTrigger } from "@/components/shadcn/sheet";
 import { Meta, StoryObj } from "@storybook/react";
 import {
   BifrostGroupBookingSheetSequence,
-  BifrostGroupBookingSheetSequenceProps,
   BifrostGroupBookingSheetSequenceStage,
 } from ".";
 import { mockCreatePaymentIntent } from "@/components/molecules/StripePaymentForm/mockCreatePaymentIntent";
@@ -20,7 +19,9 @@ export default meta;
 
 type Story = StoryObj<typeof BifrostGroupBookingSheetSequence>;
 
-function ExampleWrapper(props: BifrostGroupBookingSheetSequenceProps) {
+type Props = React.ComponentProps<typeof BifrostGroupBookingSheetSequence>;
+
+function ExampleWrapper(props: Props) {
   return (
     <div style={{ width: "50%", margin: "0 auto" }}>
       <Sheet open>
@@ -33,7 +34,7 @@ function ExampleWrapper(props: BifrostGroupBookingSheetSequenceProps) {
   );
 }
 
-const cartExampleArguments: BifrostGroupBookingSheetSequenceProps = {
+const cartExampleArguments: Props = {
   stage: BifrostGroupBookingSheetSequenceStage.CART,
   getStripePaymentIntent: async ({}: {}) => {
     const { clientSecret } = await mockCreatePaymentIntent({});
@@ -50,7 +51,7 @@ export const CartExample: Story = {
   args: cartExampleArguments,
 };
 
-const summaryExampleArguments: BifrostGroupBookingSheetSequenceProps = {
+const summaryExampleArguments: Props = {
   stage: BifrostGroupBookingSheetSequenceStage.SUMMARY,
   getStripePaymentIntent: async ({}: {}) => {
     const { clientSecret } = await mockCreatePaymentIntent({});
@@ -67,7 +68,7 @@ export const SummaryExample: Story = {
   args: summaryExampleArguments,
 };
 
-const checkoutExampleArguments: BifrostGroupBookingSheetSequenceProps = {
+const checkoutExampleArguments: Props = {
   stage: BifrostGroupBookingSheetSequenceStage.CHECKOUT,
   getStripePaymentIntent: async ({}: {}) => {
     const { clientSecret } = await mockCreatePaymentIntent({});
