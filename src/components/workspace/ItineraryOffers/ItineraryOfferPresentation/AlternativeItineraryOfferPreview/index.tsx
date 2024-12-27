@@ -1,13 +1,13 @@
 import {
+  getRoomCountFromRenderableItineraryOffer,
+  getTotalListPriceInCentsFromRenderableItineraryOffer,
+  getTotalOfferPriceInCentsFromRenderableItineraryOffer,
   RenderableItineraryOffer,
   renderCalendarDateRange,
+  renderDiscount,
   RenderedCalendarDateFormat,
   RenderedCalendarDateRangeJoinFormat,
 } from "@kismet_ai/foundation";
-import { getRoomCountFromRenderableItineraryOffer } from "@/utilities/entities/itineraryOffer/getRoomCountFromRenderableItineraryOffer";
-import { getTotalListPriceInCentsFromRenderableItineraryOffer } from "@/utilities/entities/itineraryOffer/getTotalListPriceInCentsFromRenderableItineraryOffer";
-import { getTotalOfferPriceInCentsFromRenderableItineraryOffer } from "@/utilities/entities/itineraryOffer/getTotalOfferPriceInCents";
-import { renderDiscount } from "@/utilities/entities/itineraryOffer/renderDiscount";
 import React from "react";
 
 export interface AlternativeItineraryOfferPreviewProps {
