@@ -34,8 +34,6 @@ export function BifrostGroupBookingSheetSequence({
   );
   const [isValid, setIsValid] = useState(true);
 
-  const itineraryName = "Smith Wedding";
-
   const getStageTitle = (stage: BifrostGroupBookingSheetSequenceStage) => {
     switch (stage) {
       case BifrostGroupBookingSheetSequenceStage.CART:

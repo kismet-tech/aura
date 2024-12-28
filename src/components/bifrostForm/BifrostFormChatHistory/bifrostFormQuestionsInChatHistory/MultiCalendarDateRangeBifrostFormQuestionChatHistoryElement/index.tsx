@@ -2,11 +2,13 @@ import { BifrostChatText } from "@/components/atoms/BifrostChatText";
 import React from "react";
 import { KismetChatHistoryMessage } from "../../KismetChatHistoryMessage";
 import { GuestChatHistoryMessage } from "../../GuestChatHistoryMessage";
-import { BifrostFormQuestionWithMultiCalendarDateRangeResponse } from "@kismet_ai/foundation";
-import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
+import {
+  BifrostFormQuestionWithMultiCalendarDateRangeResponse,
+  renderCalendarDateRange,
+  RenderedCalendarDateFormat,
+  RenderedCalendarDateRangeJoinFormat,
+} from "@kismet_ai/foundation";
 import { CalendarDateRange } from "@kismet_ai/foundation";
-import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
-import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 
 export interface MultiCalendarDateRangeBifrostFormQuestionChatHistoryElementProps {
   guestFirstName: string;

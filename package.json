@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "rollup-build-lib": "rollup -c",
     "prepublishOnly": "yarn build && yarn rollup-build-lib && npm version patch --no-git-tag-version",
-    "preparepublish": "yarn run upgrade_libraries && tsc -b && yarn build && npm version patch --no-git-tag-version",
+    "preparepublish": "rm -rf ./dist && yarn run upgrade_libraries && tsc -b && yarn build && npm version patch --no-git-tag-version",
     "release": "yarn run preparepublish && (npx npm publish --access public)",
     "prestorybook": "yarn run upgrade_libraries",
     "storybook": "storybook dev -p 6006",

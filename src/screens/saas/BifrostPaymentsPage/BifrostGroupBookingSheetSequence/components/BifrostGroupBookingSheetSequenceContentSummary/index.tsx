@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { Info, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { BifrostGroupBookingSheetSequenceContentSummaryLineItem } from "../BifrostGroupBookingSheetSequenceContentSummaryLineItem";
 import { BifrostGroupBookingSheetSequenceContentSummaryEventLineItem } from "../BifrostGroupBookingSheetSequenceContentSummaryEventLineItem";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import {
   BifrostGroupBookingCheckoutCart,
+  getDaysBetweenCalendarDates,
+  getEarliestCalendarDate,
+  getLatestCalendarDate,
   RenderableItineraryHotelRoomOffer,
+  renderCalendarDateRange,
+  RenderedCalendarDateFormat,
+  RenderedCalendarDateRangeJoinFormat,
 } from "@kismet_ai/foundation";
 
 /**
@@ -104,15 +110,46 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
     confirmedEvents: false,
   });
 
+  const yourRoomsStartCalendarDate = getEarliestCalendarDate(
+    cart.hotelRooms.map(
+      (hotelRoomOffer) => hotelRoomOffer.calendarDateRange.startCalendarDate
+    )
+  );
+  const yourRoomsEndCalendarDate = getLatestCalendarDate(
+    cart.hotelRooms.map(
+      (hotelRoomOffer) => hotelRoomOffer.calendarDateRange.startCalendarDate
+    )
+  );
+
   const yourRoomsSummary: { count: number; dates: string; total: number } = {
     count: cart.hotelRooms.reduce((accum: number, hotelRoomOffer) => {
       return accum + hotelRoomOffer.countOffered;
     }, 0),
-    dates: "Dec 18 - 21, 2025",
+    dates: renderCalendarDateRange({
+      calendarDateRange: {
+        startCalendarDate: yourRoomsStartCalendarDate,
+        endCalendarDate: yourRoomsEndCalendarDate,
+      },
+      renderedCalendarDateFormat:
+        RenderedCalendarDateFormat.ABBREVIATED_MONTH_DAY_OPTIONAL_YEAR,
+      renderedCalendarDateRangeJoinFormat:
+        RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+      collapseStrategy: {
+        collapseSameDay: true,
+        collapseSameMonth: true,
+      },
+    }),
     total: cart.hotelRooms.reduce(
       (accum: number, hotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
         return (
-          accum + hotelRoomOffer.countOffered * hotelRoomOffer.offerPriceInCents
+          accum +
+          hotelRoomOffer.countOffered *
+            hotelRoomOffer.offerPriceInCents *
+            getDaysBetweenCalendarDates({
+              startCalendarDate:
+                hotelRoomOffer.calendarDateRange.startCalendarDate,
+              endCalendarDate: hotelRoomOffer.calendarDateRange.endCalendarDate,
+            }).days
         );
       },
       0
@@ -162,28 +199,44 @@ export function BifrostGroupBookingSheetSequenceContentSummary({
 
             {expandedSections.yourRooms && (
               <div className="space-y-4">
-                {yourRooms.map((hotelRoomOffer) => {
-                  return (
-                    <BifrostGroupBookingSheetSequenceContentSummaryLineItem
-                      roomCount={hotelRoomOffer.countOffered}
-                      title={hotelRoomOffer.hotelRoomName}
-                      nights={3}
-                      dates="Dec 18 - 21, 2025"
-                      price={{
-                        amountInCents: hotelRoomOffer.offerPriceInCents / 100,
-                        label: "/room/night + taxes and fees",
-                      }}
-                      keyTerms={[
-                        "Comped based on 25 rooms from room block getting picked up for at least 2 nights",
-                        "Rehearsal dinner held at hotel with a $7,000 F&B minimum",
-                        "Failure to meet these terms will result in a charge for King Room of $1,295/night + taxes and fees",
-                      ]}
-                      termTitle="Comped Room Terms"
-                      termInfoTip="Terms and conditions for complimentary room rates."
-                      imageUrl={hotelRoomOffer.heroImageUrl}
-                    />
-                  );
-                })}
+                {yourRooms.map(
+                  (hotelRoomOffer: RenderableItineraryHotelRoomOffer) => {
+                    console.log(
+                      `hotelRoomOffer: ${JSON.stringify(hotelRoomOffer)}`
+                    );
+
+                    return (
+                      <BifrostGroupBookingSheetSequenceContentSummaryLineItem
+                        roomCount={hotelRoomOffer.countOffered}
+                        title={hotelRoomOffer.hotelRoomName}
+                        nights={3}
+                        dates={renderCalendarDateRange({
+                          calendarDateRange: hotelRoomOffer.calendarDateRange,
+                          renderedCalendarDateFormat:
+                            RenderedCalendarDateFormat.ABBREVIATED_MONTH_DAY_OPTIONAL_YEAR,
+                          renderedCalendarDateRangeJoinFormat:
+                            RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+                          collapseStrategy: {
+                            collapseSameDay: true,
+                            collapseSameMonth: true,
+                          },
+                        })}
+                        price={{
+                          amountInCents: hotelRoomOffer.offerPriceInCents,
+                          label: "/room/night + taxes and fees",
+                        }}
+                        keyTerms={[
+                          "Comped based on 25 rooms from room block getting picked up for at least 2 nights",
+                          "Rehearsal dinner held at hotel with a $7,000 F&B minimum",
+                          "Failure to meet these terms will result in a charge for King Room of $1,295/night + taxes and fees",
+                        ]}
+                        termTitle="Comped Room Terms"
+                        termInfoTip="Terms and conditions for complimentary room rates."
+                        imageUrl={hotelRoomOffer.heroImageUrl}
+                      />
+                    );
+                  }
+                )}
 
                 <div className="flex justify-between text-sm pt-2 border-t">
                   <div>{yourRoomsSummary.count} Room Total</div>
