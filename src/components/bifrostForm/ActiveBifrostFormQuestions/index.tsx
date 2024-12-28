@@ -186,6 +186,7 @@ export function ActiveBifrostFormQuestions({
   ]);
 
   useEffect(() => {
+    // Scroll to the last question
     Object.values(internalScrollRefs.current)
       .filter(Boolean)
       .toSorted((a, b) => {
@@ -194,11 +195,22 @@ export function ActiveBifrostFormQuestions({
         }
         return 0;
       })[0]
-      ?.scrollIntoView({ behavior: "smooth", block: "end" }); // JASON may want nearest instead of end here let him decide
+      ?.scrollIntoView({ behavior: "smooth", block: "end" });
     console.log(
       "aabaa",
       Object.values(internalScrollRefs.current).filter(Boolean)[0]
     );
+    // Ensure first scroll is completed first
+    // Use a nearest scroll to ensure the first new question is shown
+    Object.values(internalScrollRefs.current)
+      .filter(Boolean)
+      .toSorted((a, b) => {
+        if (a && b) {
+          return a.offsetTop - b.offsetTop;
+        }
+        return 0;
+      })[0]
+      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, questionIds);
 
   const handleSetIsResponseValid = useCallback(
