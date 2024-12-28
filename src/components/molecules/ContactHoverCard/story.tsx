@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { ContactHoverCard } from '.';
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ContactHoverCard } from './index';
 import { ContactDataSource } from '../../atoms/ContactData';
 
 const meta: Meta<typeof ContactHoverCard> = {
   title: 'Molecules/ContactHoverCard',
   component: ContactHoverCard,
-  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
@@ -20,90 +20,85 @@ const defaultData = {
   imageUrl: 'https://i.pravatar.cc/300?u=john_doe',
   dataSources: [
     { type: 'LinkedIn' as const, url: 'https://linkedin.com/in/johndoe' },
-    { type: 'WhatsApp' as const, url: 'https://wa.me/1234567890' },
+    { type: 'WhatsApp' as const, url: 'https://wa.me/1234567890' }
   ] as ContactDataSource[],
-  bio: 'Frequent business traveler, prefers room service, allergic to nuts.',
-  sessions: [
-    {
-      title: 'Business Conference',
-      date: '2024-03-15',
-      roomCount: 1,
-      events: ['Keynote Speech', 'Networking Dinner'],
-      revenue: '$1,500',
-      sessionId: 'conf-2024',
-      sessionDateId: 'date-2024-03-15',
-      eventIds: ['event-1', 'event-2'],
-    },
-    {
-      title: 'Summer Vacation',
-      date: '2024-07-01',
-      roomCount: 2,
-      events: ['Pool Party'],
-      revenue: '$2,500',
-      sessionId: 'vacation-2024',
-      sessionDateId: 'date-2024-07-01',
-      eventIds: ['event-3'],
-    },
-  ],
+  bio: 'Director of Events at Luxury Hotels Inc.',
   contactInfo: {
     phone: '+1 (555) 123-4567',
     email: 'john.doe@example.com',
-    address: '123 Main St, San Francisco, CA 94105',
+    address: '123 Main St, San Francisco, CA 94105'
   },
+  sessions: [
+    {
+      title: 'Annual Tech Conference',
+      date: '2024-06-15',
+      roomCount: 2,
+      events: ['Keynote', 'Networking Lunch'],
+      revenue: '$5,000'
+    },
+    {
+      title: 'Team Offsite',
+      date: '2024-07-20',
+      roomCount: 1,
+      events: ['Workshop', 'Team Dinner'],
+      revenue: '$3,000'
+    }
+  ]
+};
+
+const emailOnlyData = {
+  firstName: 'Sarah',
+  lastName: 'Smith',
+  imageUrl: 'https://i.pravatar.cc/300?u=sarah_smith',
+  dataSources: [
+    { type: 'LinkedIn' as const, url: 'https://linkedin.com/in/sarahsmith' }
+  ] as ContactDataSource[],
+  bio: 'Event Coordinator at Tech Startups Ltd.',
+  contactInfo: {
+    email: 'sarah.smith@example.com'
+  },
+  sessions: [
+    {
+      title: 'Startup Launch Party',
+      date: '2024-05-10',
+      roomCount: 1,
+      events: ['Product Launch', 'Networking'],
+      revenue: '$2,500'
+    }
+  ]
+};
+
+const noBioData = {
+  firstName: 'Alex',
+  lastName: 'Johnson',
+  imageUrl: 'https://i.pravatar.cc/300?u=alex_johnson',
+  dataSources: [
+    { type: 'LinkedIn' as const, url: 'https://linkedin.com/in/alexjohnson' }
+  ] as ContactDataSource[],
+  bio: '',
+  contactInfo: {
+    phone: '+1 (555) 987-6543',
+    email: 'alex.johnson@example.com'
+  },
+  sessions: [
+    {
+      title: 'Company Retreat',
+      date: '2024-08-01',
+      roomCount: 3,
+      events: ['Team Building', 'Strategy Session'],
+      revenue: '$7,500'
+    }
+  ]
 };
 
 export const Default: Story = {
-  args: {
-    ...defaultData,
-    onBioEdit: (updatedBio) => {
-      console.log('Updated bio:', updatedBio);
-      alert('Bio updated!');
-    },
-    onSessionClick: (sessionId) => console.log('Session clicked:', sessionId),
-    onDateClick: (dateId) => console.log('Date clicked:', dateId),
-    onEventClick: (eventId) => console.log('Event clicked:', eventId),
-    onContactInfoEdit: (updatedInfo) => {
-      console.log('Updated contact info:', updatedInfo);
-      alert('Contact info updated!');
-    },
-  },
+  args: defaultData
 };
 
-export const NoImage: Story = {
-  args: {
-    ...defaultData,
-    imageUrl: undefined,
-  },
+export const EmailOnly: Story = {
+  args: emailOnlyData
 };
 
-export const NoDataSources: Story = {
-  args: {
-    ...defaultData,
-    dataSources: [],
-  },
-};
-
-export const WithBioOnly: Story = {
-  args: {
-    ...defaultData,
-    dataSources: [],
-    sessions: [],
-    contactInfo: undefined,
-  },
-};
-
-export const WithSessionsOnly: Story = {
-  args: {
-    ...defaultData,
-    bio: undefined,
-    contactInfo: undefined,
-  },
-};
-
-export const WithContactInfoOnly: Story = {
-  args: {
-    ...defaultData,
-    bio: undefined,
-    sessions: [],
-  },
+export const NoBio: Story = {
+  args: noBioData
 }; 
