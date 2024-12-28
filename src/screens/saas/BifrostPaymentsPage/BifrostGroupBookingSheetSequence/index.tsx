@@ -37,6 +37,7 @@ export function BifrostGroupBookingSheetSequence({
   );
   const [isValid, setIsValid] = useState(true);
 
+
   useEffect(() => {
     if (selectedRoom) {
       setLocalStage(BifrostGroupBookingSheetSequenceStage.CART);
@@ -44,6 +45,7 @@ export function BifrostGroupBookingSheetSequence({
   }, [selectedRoom]);
 
   const itineraryName = "Smith Wedding";
+
 
   const getStageTitle = (stage: BifrostGroupBookingSheetSequenceStage) => {
     switch (stage) {

@@ -41,6 +41,18 @@ export const Example_One: Story = {
               "Luxurious oceanfront room featuring floor-to-ceiling windows with panoramic views of the Pacific. The spacious 45 sq.m. interior boasts contemporary design with local artisan touches, a plush king-size bed, and a marble bathroom complete with deep soaking tub. Private furnished balcony perfect for watching spectacular sunsets. Modern amenities include smart TV, Nespresso machine, and high-speed WiFi.",
             heroImageUrl: "https://example.com/hero.jpg",
             hotelRoomImageUrls: ["https://example.com/hero.jpg"],
+            calendarDateRange: {
+              startCalendarDate: {
+                year: 2025,
+                month: 3,
+                day: 10,
+              },
+              endCalendarDate: {
+                year: 2025,
+                month: 3,
+                day: 15,
+              },
+            },
           }}
         />
       </AppViewport>

@@ -7,10 +7,10 @@ import {
   BifrostGroupBookingCheckoutSessionSummary,
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryEventOffer,
+  renderCalendarDateRange,
+  RenderedCalendarDateFormat,
+  RenderedCalendarDateRangeJoinFormat,
 } from "@kismet_ai/foundation";
-import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
-import { RenderedCalendarDateFormat } from "@/utilities/dates/render/RenderedCalendarDateFormat";
-import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 import { AuthenticatedGuestUser } from "../../../../src/models/guests/AuthenticatedGuestUser";
 import { Button } from "@/components/shadcn/button";
 import { Skeleton } from "@/components/shadcn/skeleton";
