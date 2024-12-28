@@ -3,7 +3,7 @@
     "target": "es2017",
     "jsx": "react",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist",
