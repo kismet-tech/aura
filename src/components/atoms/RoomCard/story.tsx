@@ -28,6 +28,10 @@ const mockRoom = {
     hotelRoomOfferId: "123",
     hotelRoomName: "Standard Room",
   },
+  calendarDateRange: {
+    startDate: new Date().toISOString(),
+    endDate: new Date(Date.now() + 86400000).toISOString()
+  },
 };
 
 const mockExecutiveSuite = {
