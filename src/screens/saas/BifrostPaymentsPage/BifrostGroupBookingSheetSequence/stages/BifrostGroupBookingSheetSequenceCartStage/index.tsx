@@ -1,29 +1,29 @@
 import React from "react";
-import { BifrostGroupBookingSheetSequenceStage } from "../..";
+import {
+  BifrostGroupBookingCheckoutCart,
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
 import { BifrostGroupBookingSheetSequenceCartContent } from "../../components/BifrostGroupBookingSheetSequenceCartContent";
-import { BifrostGroupBookingCheckoutCart } from "@kismet_ai/foundation";
+import { BifrostGroupBookingSheetSequenceStage } from "../..";
 
 export interface BifrostGroupBookingSheetSequenceCartStageProps {
-  setLocalStage: React.Dispatch<
-    React.SetStateAction<BifrostGroupBookingSheetSequenceStage>
-  >;
+  setLocalStage: (stage: BifrostGroupBookingSheetSequenceStage) => void;
   cart: BifrostGroupBookingCheckoutCart;
+  selectedRoom?: RenderableItineraryHotelRoomOffer | null;
 }
 
 export function BifrostGroupBookingSheetSequenceCartStage({
   setLocalStage,
   cart,
+  selectedRoom,
 }: BifrostGroupBookingSheetSequenceCartStageProps) {
-  const handleOpenGuestList = (roomName: string) => {
-    // Handle guest list opening logic here
-  };
-
   return (
-    <div className="overflow-x-hidden">
-      <BifrostGroupBookingSheetSequenceCartContent
-        onOpenGuestList={handleOpenGuestList}
-        cart={cart}
-      />
-    </div>
+    <BifrostGroupBookingSheetSequenceCartContent
+      onOpenGuestList={(roomName: string) => {
+        console.log(`Opening guest list for ${roomName}`);
+      }}
+      cart={cart}
+      selectedRoom={selectedRoom}
+    />
   );
 }

@@ -15,11 +15,13 @@ import {
 export interface BifrostGroupBookingSheetSequenceCartContentProps {
   onOpenGuestList: (roomName: string) => void;
   cart: BifrostGroupBookingCheckoutCart;
+  selectedRoom?: RenderableItineraryHotelRoomOffer | null;
 }
 
 export function BifrostGroupBookingSheetSequenceCartContent({
   onOpenGuestList,
   cart,
+  selectedRoom,
 }: BifrostGroupBookingSheetSequenceCartContentProps) {
   const [guestListRoom, setGuestListRoom] = useState<{ name: string } | null>(
     null
@@ -95,56 +97,43 @@ export function BifrostGroupBookingSheetSequenceCartContent({
       | "add-event";
     title: string;
     name: string;
-  } | null>(null);
+  } | null>(selectedRoom ? {
+    type: "room-details",
+    title: `${selectedRoom.hotelRoomName} Details`,
+    name: selectedRoom.hotelRoomName,
+  } : null);
 
-  // const rooms = [
-  //   {
-  //     id: 1,
-  //     name: "Run of House",
-  //     moreInfo: {
-  //       type: "tooltip" as const,
-  //       text: "(any room)",
-  //       tooltipContent:
-  //         "Run of House means you will be assigned any available room type upon check-in",
-  //     },
-  //     onClick: () =>
-  //       setEditor({
-  //         type: "room-details",
-  //         title: "Run of House Details",
-  //         name: "Run of House",
-  //       }),
-  //     price: 323,
-  //     originalPrice: 387,
-  //     quantity: 29,
-  //     type: "ROH",
-  //     imageUrl: "https://placehold.co/160x120",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Bridal Suite",
-  //     moreInfo: {
-  //       type: "link" as const,
-  //       text: "guest list",
-  //       onClick: () =>
-  //         setEditor({
-  //           type: "guest-list",
-  //           title: "Guest List - Bridal Suite",
-  //           name: "Bridal Suite",
-  //         }),
-  //     },
-  //     onClick: () =>
-  //       setEditor({
-  //         type: "room-details",
-  //         title: "Bridal Suite Details",
-  //         name: "Bridal Suite",
-  //       }),
-  //     price: 0,
-  //     originalPrice: 1295,
-  //     quantity: 1,
-  //     type: "Your Room",
-  //     imageUrl: "https://placehold.co/160x120",
-  //   },
-  // ];
+  // If we have a selected room, show it in the BifrostGroupBookingSheetSequenceCartContentRoomCard format
+  if (selectedRoom) {
+    return (
+      <div className="p-4">
+        <BifrostGroupBookingSheetSequenceCartContentRoomCard
+          id={selectedRoom.hotelRoomOfferId}
+          name={selectedRoom.hotelRoomName}
+          price={selectedRoom.offerPriceInCents / 100}
+          originalPrice={selectedRoom.listPriceInCents / 100}
+          quantity={selectedRoom.countOffered}
+          type={selectedRoom.hotelRoomName}
+          imageUrl={selectedRoom.heroImageUrl}
+          isSelected={true}
+        />
+      </div>
+    );
+  }
+
+  // If we have an editor state, show the editor
+  if (editor) {
+    return (
+      <div className="absolute inset-0 bg-white z-10">
+        <BifrostGroupBookingSheetSequenceEditor
+          title={editor.title}
+          type={editor.type}
+          name={editor.name}
+          onBack={() => setEditor(null)}
+        />
+      </div>
+    );
+  }
 
   const events = [
     {
@@ -162,19 +151,7 @@ export function BifrostGroupBookingSheetSequenceCartContent({
     },
   ];
 
-  if (editor) {
-    return (
-      <div className="absolute inset-0 bg-white z-10">
-        <BifrostGroupBookingSheetSequenceEditor
-          title={editor.title}
-          type={editor.type}
-          name={editor.name}
-          onBack={() => setEditor(null)}
-        />
-      </div>
-    );
-  }
-
+  // Otherwise show the default cart content
   return (
     <div className="space-y-8">
       <BifrostGroupBookingSheetSequenceCartContentScroll
