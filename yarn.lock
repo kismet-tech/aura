@@ -537,7 +537,7 @@
 
 "@kismet_ai/foundation@^1.0.101":
   version "1.0.101"
-  resolved "https://registry.yarnpkg.com/@kismet_ai/foundation/-/foundation-1.0.101.tgz#f7092a4ea41a27c4c1b5f1bf96874f542ccdcec0"
+  resolved "https://registry.npmjs.org/@kismet_ai/foundation/-/foundation-1.0.101.tgz"
   integrity sha512-Mu87tFRrOhrGPFN/Ynodm/5SZh8lYAKm/xfekizPRMb5LIPsyHQAHiMwZ7YDOCRBMVeJungHmWjeXY/Dc++bkQ==
   dependencies:
     date-fns "^4.1.0"
