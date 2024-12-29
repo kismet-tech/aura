@@ -79,6 +79,13 @@ interface GroupReservation {
   leadScore: number;
   qualificationStatus: 'pending' | 'qualified' | 'not_qualified';
   intentScore: number;
+  intentMetrics?: {
+    websiteVisits: number;
+    mostRecentVisit: string | null;
+    lastEmailOpen: string | null;
+    numberOfContacts: number;
+    researchedHotel: boolean;
+  };
   assignedSalesAgent: {
     name: string;
     id: string;
@@ -86,10 +93,49 @@ interface GroupReservation {
   publicNotes: string;
   privateNotes: string;
   itineraryName?: string;
+  pmsType?: 'Cloudbeds' | 'Mews';
   itineraries?: Array<{
     id: string;
     name: string;
     isActive?: boolean;
+    rooms?: Array<{
+      id: string;
+      name: string;
+    }>;
+    events?: Array<{
+      id: string;
+      name: string;
+    }>;
+    eventData?: Record<string, {
+      startDateTime: string;
+      endDateTime: string;
+      status: HotelEventOfferStatus;
+      numberOfGuests: number;
+      imageUrl: string;
+      isEventOfferPriceEnabled: boolean;
+      eventOfferPriceInCents: number;
+      venueOffers: Array<{
+        venueOfferId: string;
+        venueName: string;
+        pricingInfo: {
+          priceInCents: number;
+          pricingType: VenueOfferPricingType;
+        };
+      }>;
+      details: {
+        description: string;
+      };
+    }>;
+    addOns?: Array<{
+      id: string;
+      name: string;
+    }>;
+    extras?: Array<{
+      id: string;
+      name: string;
+      description?: string;
+      priceInCents: number;
+    }>;
   }>;
   account?: {
     id: string;
@@ -133,6 +179,13 @@ interface GroupReservation {
     description?: string;
     priceInCents: number;
   }>;
+  upsellRevenue?: {
+    roomUpgrades: number;
+  };
+  requiresContract?: boolean;
+  attritionPercentage?: number;
+  cancellationDeadlineDays?: number;
+  contractStatus?: 'not_required' | 'pending' | 'on_file';
 }
 
 const QUALIFICATION_COLORS = {
@@ -618,7 +671,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
 
   const handleAddItinerary = () => {
     if (!reservation.itineraries) {
-      // If no itineraries array exists, create it with the current one as active and add a new one
+      // If no itineraries array exists, create it with the current one as active and add a new blank one
       const currentItinerary = {
         id: 'current',
         name: reservation.itineraryName || 'Itinerary',
@@ -634,7 +687,13 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
       onReservationUpdate?.({
         ...reservation,
         itineraryName: newItinerary.name, // Switch to new itinerary
-        itineraries: [currentItinerary, newItinerary]
+        itineraries: [currentItinerary, newItinerary],
+        // Clear all content for the new itinerary
+        rooms: [],
+        events: [],
+        addOns: [],
+        extras: [],
+        eventData: {}
       });
     } else {
       // Find the highest number in existing "Itinerary (n)" names
@@ -654,7 +713,13 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
       onReservationUpdate?.({
         ...reservation,
         itineraryName: newItinerary.name, // Switch to new itinerary
-        itineraries: [...reservation.itineraries, newItinerary]
+        itineraries: [...reservation.itineraries, newItinerary],
+        // Clear all content for the new itinerary
+        rooms: [],
+        events: [],
+        addOns: [],
+        extras: [],
+        eventData: {}
       });
     }
   };
@@ -693,13 +758,78 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
     });
   };
 
-  const handleDeleteEvent = (eventId: string) => {
-    // TODO: Implement backend deletion
-    const updatedEvents = reservation.events?.filter(event => event.id !== eventId) || [];
-    const { [eventId]: deletedEvent, ...updatedEventData } = reservation.eventData || {};
-    
+  // Helper to get the current itinerary data
+  const getCurrentItineraryData = () => {
+    if (!reservation.itineraries) {
+      // If no itineraries exist, return root level data
+      return {
+        rooms: reservation.rooms || [],
+        events: reservation.events || [],
+        eventData: reservation.eventData || {},
+        addOns: reservation.addOns || [],
+        extras: reservation.extras || []
+      };
+    }
+
+    const currentItinerary = reservation.itineraries.find(i => i.name === reservation.itineraryName);
+    if (!currentItinerary) {
+      return {
+        rooms: [],
+        events: [],
+        eventData: {},
+        addOns: [],
+        extras: []
+      };
+    }
+
+    return {
+      rooms: currentItinerary.rooms || [],
+      events: currentItinerary.events || [],
+      eventData: currentItinerary.eventData || {},
+      addOns: currentItinerary.addOns || [],
+      extras: currentItinerary.extras || []
+    };
+  };
+
+  // Helper to update the current itinerary data
+  const updateCurrentItineraryData = (updates: {
+    rooms?: Array<any>;
+    events?: Array<any>;
+    eventData?: Record<string, any>;
+    addOns?: Array<any>;
+    extras?: Array<any>;
+  }) => {
+    if (!reservation.itineraries) {
+      // If no itineraries exist, update at root level
+      onReservationUpdate?.({
+        ...reservation,
+        ...updates
+      });
+      return;
+    }
+
+    const updatedItineraries = reservation.itineraries.map(itinerary => {
+      if (itinerary.name === reservation.itineraryName) {
+        return {
+          ...itinerary,
+          ...updates
+        };
+      }
+      return itinerary;
+    });
+
     onReservationUpdate?.({
       ...reservation,
+      itineraries: updatedItineraries
+    });
+  };
+
+  const handleDeleteEvent = (eventId: string) => {
+    const currentData = getCurrentItineraryData();
+    const updatedEvents = currentData.events.filter(event => event.id !== eventId);
+    const { [eventId]: deletedEvent, ...updatedEventData } = currentData.eventData;
+    
+    updateCurrentItineraryData({
       events: updatedEvents,
       eventData: updatedEventData
     });
@@ -1106,7 +1236,51 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                 </div>
                 <div className="flex items-center">
                   <span className="text-gray-600 w-32">Intent Score:</span>
-                  <span>{reservation.intentScore}/100</span>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="cursor-help">{(() => {
+                          if (reservation.intentScore >= 80) return 'Very High';
+                          if (reservation.intentScore >= 60) return 'High';
+                          if (reservation.intentScore >= 40) return 'Medium';
+                          if (reservation.intentScore >= 20) return 'Low';
+                          return 'Very Low';
+                        })()}</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="p-4 space-y-2 w-64">
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Website Visits:</span>
+                            <span>{reservation.intentMetrics?.websiteVisits || 0}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Most Recent Visit:</span>
+                            <span>
+                              {reservation.intentMetrics?.mostRecentVisit ? 
+                                new Date(reservation.intentMetrics.mostRecentVisit).toLocaleString() : 
+                                'Never'}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Last Email Open:</span>
+                            <span>
+                              {reservation.intentMetrics?.lastEmailOpen ? 
+                                new Date(reservation.intentMetrics.lastEmailOpen).toLocaleString() : 
+                                'Never'}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Number of Contacts:</span>
+                            <span>{reservation.intentMetrics?.numberOfContacts || 0}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Researched Hotel:</span>
+                            <span>{reservation.intentMetrics?.researchedHotel ? 'Yes' : 'No'}</span>
+                          </div>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </div>
             </div>
@@ -1171,7 +1345,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
           {/* Contact Section */}
           <section className="bg-white rounded-lg shadow p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Contact</h2>
+              <h2 className="text-lg font-semibold">Contact/Host</h2>
               <div className="relative">
                 <button
                   onClick={() => setShowHostSearch(!showHostSearch)}
@@ -1476,16 +1650,16 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                       </button>
                     )
                   )}
-                  <Button
+              <Button
                     variant="outline"
                     size="sm"
                     className="flex items-center gap-2 bg-white hover:bg-white border-black ml-2"
-                    onClick={() => {
-                      // TODO: Implement Kismet generation functionality
-                    }}
-                  >
-                    <img src={KISMET_LOGO_URL} alt="Kismet" className="w-4 h-4" />
-                    Generate with Kismet
+                onClick={() => {
+                  // TODO: Implement Kismet generation functionality
+                }}
+              >
+                <img src={KISMET_LOGO_URL} alt="Kismet" className="w-4 h-4" />
+                Generate with Kismet
                   </Button>
                 </div>
               )}
@@ -1515,12 +1689,15 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
           </div>
           <div className="grid grid-cols-4 gap-4">
             <div>
-              {reservation.rooms?.length ? (
+              {(reservation.rooms?.some(room => room.id)) ? (
                 <div className="flex items-center gap-2">
                   <span className="font-medium">Rooms</span>
-                  <span className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                  <button
+                    onClick={() => setShowRoomsSection(true)}
+                    className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full hover:bg-gray-200"
+                  >
                     {reservation.rooms.length}
-                  </span>
+                  </button>
                 </div>
               ) : (
                 <button 
@@ -1532,12 +1709,15 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
               )}
             </div>
             <div>
-              {reservation.events?.length ? (
+              {(reservation.events?.some(event => event.id && reservation.eventData?.[event.id])) ? (
                 <div className="flex items-center gap-2">
                   <span className="font-medium">Events</span>
-                  <span className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                  <button
+                    onClick={() => setShowEventsSection(true)}
+                    className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full hover:bg-gray-200"
+                  >
                     {reservation.events.length}
-                  </span>
+                  </button>
                 </div>
               ) : (
                 <button 
@@ -1549,12 +1729,14 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
               )}
             </div>
             <div>
-              {reservation.addOns?.length ? (
+              {(reservation.addOns?.some(addon => addon.id)) ? (
                 <div className="flex items-center gap-2">
                   <span className="font-medium">Add-Ons</span>
-                  <span className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                  <button
+                    className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full cursor-not-allowed"
+                  >
                     {reservation.addOns.length}
-                  </span>
+                  </button>
                 </div>
               ) : (
                 <button 
@@ -1566,12 +1748,15 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
               )}
             </div>
             <div>
-              {reservation.extras?.length ? (
+              {(reservation.extras?.some(extra => extra.id)) ? (
                 <div className="flex items-center gap-2">
                   <span className="font-medium">Extras</span>
-                  <span className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                  <button
+                    onClick={() => setShowExtrasSection(true)}
+                    className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full hover:bg-gray-200"
+                  >
                     {reservation.extras.length}
-                  </span>
+                  </button>
                 </div>
               ) : (
                 <button 
@@ -1586,15 +1771,27 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         </section>
 
         {/* Rooms Section */}
-        {((reservation.rooms?.length ?? 0) > 0 || showRoomsSection) && (
+        {((reservation.rooms && reservation.rooms.some(room => room.id)) || showRoomsSection) && (
           <section className="bg-white rounded-lg shadow p-6 mt-4">
-            <h2 className="text-lg font-semibold mb-4">Rooms</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Rooms</h2>
+              {/* TODO @Julian: This button should trigger the create block flow in the PMS integration.
+                  For Cloudbeds: Create block in Cloudbeds with current dates and room count
+                  For Mews: Create block in Mews with current dates and room count */}
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="bg-white hover:bg-gray-50"
+              >
+                Block on {reservation.pmsType || 'Cloudbeds'}
+              </Button>
+            </div>
             <p className="text-gray-600 italic">Use Existing Rooms SaaS Tool</p>
           </section>
         )}
 
         {/* Events Section */}
-        {((reservation.events?.length ?? 0) > 0 || showEventsSection) && (
+        {((reservation.events && reservation.events.some(event => event.id && reservation.eventData?.[event.id])) || showEventsSection) && (
           <section className="bg-white rounded-lg shadow p-6 mt-4">
             <h2 className="text-lg font-semibold mb-4">Events</h2>
             <div className="flex flex-wrap gap-4">
@@ -1680,10 +1877,12 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
             visibility: 'PUBLIC'
           }}
           onSave={(event) => {
+            const currentData = getCurrentItineraryData();
+            
             if (selectedEventId) {
               // Update existing event
               const updatedEventData = {
-                ...reservation.eventData?.[selectedEventId],
+                ...currentData.eventData[selectedEventId],
                 eventOfferName: event.name || 'Untitled Event',
                 startDateTime: event.startDate?.toISOString() || new Date().toISOString(),
                 endDateTime: event.endDate?.toISOString() || new Date().toISOString(),
@@ -1705,23 +1904,20 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                 }
               };
 
-              onReservationUpdate?.({
-                ...reservation,
-                events: reservation.events?.map(e => 
+              updateCurrentItineraryData({
+                events: currentData.events.map(e => 
                   e.id === selectedEventId 
                     ? { ...e, name: event.name || 'Untitled Event' }
                     : e
-                ) || [],
+                ),
                 eventData: {
-                  ...(reservation.eventData || {}),
+                  ...currentData.eventData,
                   [selectedEventId]: updatedEventData
                 }
               });
             } else {
-              // Create a new event with a unique ID
+              // Create a new event
               const eventId = `event-${Date.now()}`;
-
-              // Create the full event data
               const eventData = {
                 eventOfferName: event.name || 'Untitled Event',
                 startDateTime: event.startDate?.toISOString() || new Date().toISOString(),
@@ -1744,15 +1940,13 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                 }
               };
 
-              // Update the reservation with both the event reference and full data
-              onReservationUpdate?.({
-                ...reservation,
-                events: [...(reservation.events || []), {
+              updateCurrentItineraryData({
+                events: [...currentData.events, {
                   id: eventId,
                   name: event.name || 'New Event'
                 }],
                 eventData: {
-                  ...(reservation.eventData || {}),
+                  ...currentData.eventData,
                   [eventId]: eventData
                 }
               });
@@ -1764,7 +1958,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         />
 
         {/* Add-Ons Section */}
-        {((reservation.addOns?.length ?? 0) > 0 || showAddOnsSection) && (
+        {((reservation.addOns && reservation.addOns.some(addon => addon.id)) || showAddOnsSection) && (
           <section className="bg-white rounded-lg shadow p-6 mt-4">
             <h2 className="text-lg font-semibold mb-4">Add-Ons</h2>
             <p className="text-gray-600 italic">Coming Soon</p>
@@ -1772,21 +1966,21 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         )}
 
         {/* Extras Section */}
-        {((reservation.extras?.length ?? 0) > 0 || showExtrasSection) && (
+        {(getCurrentItineraryData().extras?.length > 0 || showExtrasSection) && (
           <section className="bg-white rounded-lg shadow p-6 mt-4">
             <h2 className="text-lg font-semibold mb-4">Extras</h2>
             <div className="space-y-4">
               {/* List existing extras */}
-              {reservation.extras?.map((extra) => (
+              {getCurrentItineraryData().extras?.map((extra) => (
                 <ExtraLineItem
                   key={extra.id}
                   name={extra.name}
                   description={extra.description}
                   priceInCents={extra.priceInCents}
                   onDelete={() => {
-                    onReservationUpdate?.({
-                      ...reservation,
-                      extras: reservation.extras?.filter(e => e.id !== extra.id)
+                    const currentData = getCurrentItineraryData();
+                    updateCurrentItineraryData({
+                      extras: currentData.extras.filter(e => e.id !== extra.id)
                     });
                   }}
                 />
@@ -1802,6 +1996,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                   const priceInput = form.elements.namedItem('extraPrice') as HTMLInputElement;
                   
                   if (nameInput.value && priceInput.value) {
+                    const currentData = getCurrentItineraryData();
                     const newExtra = {
                       id: `extra-${Date.now()}`,
                       name: nameInput.value,
@@ -1809,9 +2004,8 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                       priceInCents: Math.max(0, Math.round(parseFloat(priceInput.value) * 100))
                     };
 
-                    onReservationUpdate?.({
-                      ...reservation,
-                      extras: [...(reservation.extras || []), newExtra]
+                    updateCurrentItineraryData({
+                      extras: [...currentData.extras, newExtra]
                     });
 
                     // Reset form
@@ -1862,8 +2056,555 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
           <hr className="border-gray-200" />
 
           {/* Financials Section */}
-          <section className="bg-white rounded-lg shadow p-6 mt-4">
+          <section className="bg-white rounded-lg shadow p-6 mt-4 relative">
             <h2 className="text-lg font-semibold mb-4">Financials</h2>
+            {!isCurrentItineraryActive() && (
+              <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-600">
+                    <Badge variant="outline" className="bg-gray-100 text-gray-600 border-0">DRAFT</Badge>
+                  </span>
+                  <span className="text-sm text-gray-600">
+                    Viewing draft financials - changes will only apply when this itinerary is set as active
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSetActiveItinerary}
+                  className="bg-white hover:bg-gray-50"
+                >
+                  Make Active
+                </Button>
+              </div>
+            )}
+            <div className="grid lg:grid-cols-[1fr,400px] gap-4">
+              {/* Summary Section - Left Side */}
+              <section className="bg-gray-50 rounded-lg p-4">
+                <div className="space-y-6">
+                  {/* Deposits subsection */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Deposits</h4>
+                    {/* Room deposits */}
+                    {reservation.rooms?.map((room) => {
+                      const defaultDueDate = new Date(); // TODO: Get from room block dates
+                      const [isEditingDate, setIsEditingDate] = useState(false);
+                      const [dueDate, setDueDate] = useState(defaultDueDate);
+
+                      return (
+                        <div key={`room-deposit-${room.id}`} className="flex items-center justify-between py-2 border-b">
+                          <div className="flex flex-col">
+                            <span className="text-sm">Room Block Deposit</span>
+                            {isEditingDate ? (
+                              <input
+                                type="date"
+                                value={dueDate.toISOString().split('T')[0]}
+                                onChange={(e) => setDueDate(new Date(e.target.value))}
+                                onBlur={() => setIsEditingDate(false)}
+                                className="text-xs border rounded px-1"
+                                autoFocus
+                              />
+                            ) : (
+                              <button 
+                                onClick={() => setIsEditingDate(true)}
+                                className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                              >
+                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge 
+                              variant="outline" 
+                              className="bg-red-100 text-red-700 border-0"
+                            >
+                              Unpaid
+                            </Badge>
+                            <span className="font-medium">$2,500.00</span>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs"
+                              disabled={!isCurrentItineraryActive()}
+                            >
+                              Request
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {/* Event deposits */}
+                    {reservation.events?.map((event) => {
+                      const eventData = reservation.eventData?.[event.id];
+                      if (!eventData) return null;
+                      
+                      const defaultDueDate = new Date(eventData.startDateTime);
+                      const [isEditingDate, setIsEditingDate] = useState(false);
+                      const [dueDate, setDueDate] = useState(defaultDueDate);
+
+                      return (
+                        <div key={`event-deposit-${event.id}`} className="flex items-center justify-between py-2 border-b">
+                          <div className="flex flex-col">
+                            <span className="text-sm">{event.name} Deposit</span>
+                            {isEditingDate ? (
+                              <input
+                                type="date"
+                                value={dueDate.toISOString().split('T')[0]}
+                                onChange={(e) => setDueDate(new Date(e.target.value))}
+                                onBlur={() => setIsEditingDate(false)}
+                                className="text-xs border rounded px-1"
+                                autoFocus
+                              />
+                            ) : (
+                              <button 
+                                onClick={() => setIsEditingDate(true)}
+                                className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                              >
+                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge 
+                              variant="outline" 
+                              className="bg-red-100 text-red-700 border-0"
+                            >
+                              Unpaid
+                            </Badge>
+                            <span className="font-medium">
+                              ${((eventData.eventOfferPriceInCents || 0) * 0.25 / 100).toFixed(2)}
+                            </span>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs"
+                              disabled={!isCurrentItineraryActive()}
+                            >
+                              Request
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Remaining Fees subsection */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Remaining Fees</h4>
+                    {/* Room Block Balance */}
+                    {(() => {
+                      const earliestDate = [
+                        ...(reservation.events?.map(event => reservation.eventData?.[event.id]?.startDateTime) || []),
+                        // TODO: Add room dates here when available
+                      ]
+                        .filter((date): date is string => !!date)
+                        .map(date => new Date(date))
+                        .sort((a, b) => a.getTime() - b.getTime())[0];
+
+                      const defaultDueDate = earliestDate ? 
+                        new Date(earliestDate.setDate(earliestDate.getDate() - 7)) : 
+                        new Date();
+
+                      const [isEditingDate, setIsEditingDate] = useState(false);
+                      const [dueDate, setDueDate] = useState(defaultDueDate);
+
+                      return (
+                        <div className="flex items-center justify-between py-2 border-b">
+                          <div className="flex flex-col">
+                            <span className="text-sm">Room Block Balance</span>
+                            {isEditingDate ? (
+                              <input
+                                type="date"
+                                value={dueDate.toISOString().split('T')[0]}
+                                onChange={(e) => setDueDate(new Date(e.target.value))}
+                                onBlur={() => setIsEditingDate(false)}
+                                className="text-xs border rounded px-1"
+                                autoFocus
+                              />
+                            ) : (
+                              <button 
+                                onClick={() => setIsEditingDate(true)}
+                                className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                              >
+                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge 
+                              variant="outline" 
+                              className="bg-red-100 text-red-700 border-0"
+                            >
+                              Unpaid
+                            </Badge>
+                            <span className="font-medium">$2,500.00</span>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs"
+                              disabled={!isCurrentItineraryActive()}
+                            >
+                              Request
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* Extras Line Item */}
+                    {getCurrentItineraryData().extras.length > 0 && (
+                      <div className="flex items-center justify-between py-2 border-b">
+                        <div className="flex flex-col">
+                          <span className="text-sm">Extras</span>
+                          {/* Due Date Editor */}
+                          {(() => {
+                            // Find the latest date from events
+                            const latestDate = [
+                              ...(reservation.events?.map(event => 
+                                event && reservation.eventData?.[event.id]?.endDateTime
+                              ) || []),
+                              // TODO: Add room dates here when available
+                            ]
+                              .filter((date): date is string => !!date)
+                              .map(date => new Date(date))
+                              .sort((a, b) => b.getTime() - a.getTime())[0] || new Date();
+
+                            const [isEditingDate, setIsEditingDate] = useState(false);
+                            const [dueDate, setDueDate] = useState(latestDate);
+
+                            return (
+                              <div>
+                                {isEditingDate ? (
+                                  <input
+                                    type="date"
+                                    value={dueDate.toISOString().split('T')[0]}
+                                    onChange={(e) => setDueDate(new Date(e.target.value))}
+                                    onBlur={() => setIsEditingDate(false)}
+                                    className="text-xs border rounded px-1"
+                                    autoFocus
+                                  />
+                                ) : (
+                                  <button 
+                                    onClick={() => setIsEditingDate(true)}
+                                    className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                                  >
+                                    Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                  </button>
+                                )}
+                              </div>
+                            );
+                          })()}
+                          <div className="text-xs text-gray-500 mt-1">
+                            {getCurrentItineraryData().extras.map((extra, index) => (
+                              <div key={extra.id} className="flex justify-between">
+                                <span>• {extra.name}</span>
+                                <span className="ml-4">${(extra.priceInCents / 100).toFixed(2)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Badge 
+                            variant="outline" 
+                            className="bg-red-100 text-red-700 border-0"
+                          >
+                            Unpaid
+                          </Badge>
+                          <span className="font-medium">
+                            ${(getCurrentItineraryData().extras.reduce((sum, extra) => sum + extra.priceInCents, 0) / 100).toFixed(2)}
+                          </span>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="text-xs"
+                            disabled={!isCurrentItineraryActive()}
+                          >
+                            Request
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* F&B Minimums subsection */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">F&B Minimums</h4>
+                    {reservation.events?.map((event) => {
+                      const eventData = reservation.eventData?.[event.id];
+                      if (!eventData) return null;
+                      
+                      // Set default due date to one day after event
+                      const defaultDueDate = new Date(eventData.startDateTime);
+                      defaultDueDate.setDate(defaultDueDate.getDate() + 1);
+                      
+                      const [isEditingDate, setIsEditingDate] = useState(false);
+                      const [dueDate, setDueDate] = useState(defaultDueDate);
+
+                      return (
+                        <div key={`fb-minimum-${event.id}`} className="flex items-center justify-between py-2 border-b">
+                          <div className="flex flex-col">
+                            <span className="text-sm">{event.name}</span>
+                            {isEditingDate ? (
+                              <input
+                                type="date"
+                                value={dueDate.toISOString().split('T')[0]}
+                                onChange={(e) => setDueDate(new Date(e.target.value))}
+                                onBlur={() => setIsEditingDate(false)}
+                                className="text-xs border rounded px-1"
+                                autoFocus
+                              />
+                            ) : (
+                              <button 
+                                onClick={() => setIsEditingDate(true)}
+                                className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                              >
+                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge 
+                              variant="outline" 
+                              className="bg-red-100 text-red-700 border-0"
+                            >
+                              Unpaid
+                            </Badge>
+                            <span className="font-medium">$5,000.00</span>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs"
+                              disabled={!isCurrentItineraryActive()}
+                            >
+                              Request
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* TODO @Julian: Discuss with Jason how to calculate Upsell Revenue.
+                      Potential factors to consider:
+                      - Additional room upgrades
+                      - Extra F&B spend above minimums
+                      - Add-on services
+                      - Premium venue selections */}
+                  {reservation.upsellRevenue && (
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Upsell Revenue</h4>
+                      <div className="flex items-center justify-between py-2 border-b">
+                        <div className="flex flex-col">
+                          <span className="text-sm">Room Upgrades</span>
+                          <span className="text-xs text-gray-500">Confirmed</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Badge 
+                            variant="outline" 
+                            className="bg-green-100 text-green-700 border-0"
+                          >
+                            Booked
+                          </Badge>
+                          <span className="font-medium">$1,200.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Total subsection */}
+                  <div className="pt-4 border-t-2">
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-sm font-medium text-gray-700">Total</h4>
+                      <span className="text-lg font-semibold">
+                        ${(() => {
+                          // Calculate room deposits
+                          const roomDeposits = (reservation.rooms?.length || 0) * 2500; // $2,500 per room
+
+                          // Calculate event deposits (25% of event price)
+                          const eventDeposits = reservation.events?.reduce((sum, event) => {
+                            const eventData = reservation.eventData?.[event.id];
+                            return sum + ((eventData?.eventOfferPriceInCents || 0) * 0.25);
+                          }, 0) || 0;
+
+                          // Calculate remaining room fees
+                          const remainingRoomFees = (reservation.rooms?.length || 0) * 2500; // $2,500 per room
+
+                          // Calculate extras total
+                          const extrasTotal = getCurrentItineraryData().extras.reduce((sum, extra) => 
+                            sum + extra.priceInCents, 0);
+
+                          // Calculate F&B minimums ($5,000 per event)
+                          const fbMinimums = (reservation.events?.length || 0) * 5000 * 100; // Convert to cents
+
+                          // Sum all and convert to dollars
+                          const totalCents = roomDeposits * 100 + eventDeposits + remainingRoomFees * 100 + extrasTotal + fbMinimums;
+                          return (totalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        })()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Right Side Sections */}
+              <div className="space-y-4">
+                {/* Promos Section */}
+                <section className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-base font-medium mb-3">Promos</h3>
+                  <p className="text-gray-600 italic text-sm">Coming Soon</p>
+                </section>
+
+                {/* Contract Section */}
+                <section className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="text-base font-medium">Contract</h3>
+                    <div className="flex items-center gap-2">
+                      {/* TODO @Backend: Add contract status tracking
+                          - Add contractStatus field to GroupReservation type
+                          - Status options: 'not_required' | 'pending' | 'on_file'
+                          - Track contract document URL and signed date
+                      */}
+                      {reservation.contractStatus === 'on_file' ? (
+                        <Badge 
+                          variant="outline" 
+                          className="bg-green-100 text-green-700 border-0"
+                        >
+                          On File
+                        </Badge>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id="requiresContract"
+                            className="rounded border-gray-300"
+                            checked={reservation.requiresContract}
+                            onChange={(e) => {
+                              onReservationUpdate?.({
+                                ...reservation,
+                                requiresContract: e.target.checked
+                              });
+                            }}
+                          />
+                          <label htmlFor="requiresContract" className="text-sm text-gray-600">
+                            Requires Contract
+                          </label>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {reservation.requiresContract && (
+                      <>
+                        {/* Attrition Rate */}
+                        <div className="flex items-center justify-between">
+                          <label className="text-sm text-gray-600">Allowed Attrition</label>
+                          <div className="flex items-center gap-1">
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              className="w-16 px-2 py-1 text-sm border rounded"
+                              value={reservation.attritionPercentage || 0}
+                              onChange={(e) => {
+                                const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+                                onReservationUpdate?.({
+                                  ...reservation,
+                                  attritionPercentage: value
+                                });
+                              }}
+                            />
+                            <span className="text-sm text-gray-600">%</span>
+                          </div>
+                        </div>
+
+                        {/* Cancellation Deadline */}
+                        <div className="flex items-center justify-between">
+                          <label className="text-sm text-gray-600">Cancellation Deadline</label>
+                          <div className="flex items-center gap-1">
+                            <input
+                              type="number"
+                              min="0"
+                              className="w-16 px-2 py-1 text-sm border rounded"
+                              value={reservation.cancellationDeadlineDays || 7}
+                              onChange={(e) => {
+                                const value = Math.max(0, parseInt(e.target.value) || 0);
+                                onReservationUpdate?.({
+                                  ...reservation,
+                                  cancellationDeadlineDays: value
+                                });
+                              }}
+                            />
+                            <span className="text-sm text-gray-600">days prior</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* Generate Button */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full mt-2"
+                      disabled={!reservation.requiresContract || reservation.contractStatus === 'on_file'}
+                      onClick={() => {
+                        // TODO: Implement contract generation
+                      }}
+                    >
+                      {reservation.contractStatus === 'on_file' ? 'Contract On File' : 'Generate Contract'}
+                    </Button>
+                  </div>
+                </section>
+
+                {/* Payment Sources Section */}
+                <section className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-base font-medium mb-3">Payment Sources</h3>
+                  <div className="space-y-3">
+                    {/* Credit Card */}
+                    <div className="flex items-center justify-between py-2 border-b">
+                      <div className="flex flex-col">
+                        <span className="text-sm">Credit Card</span>
+                        <span className="text-xs text-gray-500">Visa ending in 4242</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Badge 
+                          variant="outline" 
+                          className="bg-green-100 text-green-700 border-0"
+                        >
+                          On File
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {/* ACH */}
+                    <div className="flex items-center justify-between py-2 border-b">
+                      <div className="flex flex-col">
+                        <span className="text-sm">ACH / Bank Transfer</span>
+                        <span className="text-xs text-gray-500">Not yet provided</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs"
+                          disabled={!isCurrentItineraryActive()}
+                        >
+                          Request
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Add Payment Source button */}
+                    <button
+                      className="w-full mt-3 text-sm text-blue-600 hover:text-blue-800 flex items-center justify-center gap-2"
+                    >
+                      <FaPlus className="h-3 w-3" />
+                      Add Payment Source
+                    </button>
+                  </div>
+                </section>
+              </div>
+            </div>
           </section>
         </div>
       </div>
