@@ -15,8 +15,12 @@ export type PaymentSplitType = 'SINGLE_PAYER' | 'SPLIT_PAYER';
 
 // Add new interface for deposit
 export interface Deposit {
+  id: string;
+  name?: string;
   amountInCents: number;
-  dueDate: Date | null;
+  dueDateISO: string;
+  status: 'pending' | 'paid' | 'overdue';
+  note?: string;
 }
 
 interface PlannerFinancialsProps {
@@ -45,7 +49,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
   initialUndiscountedPriceInCents = 0,
   initialPricePerHourInCents = 0,
   initialAltFoodBevPriceInCents = 0,
-  initialDeposits = [{ amountInCents: 0, dueDate: null }],
+  initialDeposits = [{ id: '', amountInCents: 0, dueDateISO: '', status: 'pending' }],
   paymentSplitType,
   hasSelectedVenue = false,
   hasVenueDefaults = false,
@@ -102,7 +106,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
 
   // Function to add a new deposit
   const addDeposit = () => {
-    setDeposits([...deposits, { amountInCents: 0, dueDate: null }]);
+    setDeposits([...deposits, { id: '', amountInCents: 0, dueDateISO: '', status: 'pending' }]);
     setActiveDepositIndex(deposits.length);
   };
 
@@ -184,13 +188,23 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
   // Calculate preset dates
   const getPresetDates = () => {
     const today = new Date();
-    const eventDate = startDateTime ? new Date(startDateTime) : new Date();
+    const fourteenDays = new Date();
+    fourteenDays.setDate(today.getDate() + 14);
+    
+    const thirtyDays = startDateTime ? new Date(startDateTime) : new Date();
+    thirtyDays.setDate(thirtyDays.getDate() - 30);
+    
+    const sixtyDays = startDateTime ? new Date(startDateTime) : new Date();
+    sixtyDays.setDate(sixtyDays.getDate() - 60);
+    
+    const ninetyDays = startDateTime ? new Date(startDateTime) : new Date();
+    ninetyDays.setDate(ninetyDays.getDate() - 90);
     
     return {
-      fourteenDays: new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000)),
-      thirtyDays: new Date(eventDate.getTime() - (30 * 24 * 60 * 60 * 1000)),
-      sixtyDays: new Date(eventDate.getTime() - (60 * 24 * 60 * 60 * 1000)),
-      ninetyDays: new Date(eventDate.getTime() - (90 * 24 * 60 * 60 * 1000))
+      fourteenDays: fourteenDays.toISOString(),
+      thirtyDays: thirtyDays.toISOString(),
+      sixtyDays: sixtyDays.toISOString(),
+      ninetyDays: ninetyDays.toISOString(),
     };
   };
 
@@ -309,7 +323,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
                               <div className="flex items-center gap-4">
                                 <span>{formatPrice(deposit.amountInCents)}</span>
                                 <span className="text-gray-400">
-                                  {deposit.dueDate ? `Due ${formatDate(deposit.dueDate)}` : 'No due date'}
+                                  {deposit.dueDateISO ? `Due ${formatDate(new Date(deposit.dueDateISO))}` : 'No due date'}
                                 </span>
                               </div>
                             </div>
@@ -430,7 +444,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
                         onClick={() => setShowDepositDueDate(!showDepositDueDate)}
                         className="text-sm text-indigo-600 hover:text-indigo-500"
                       >
-                        {deposits[activeDepositIndex].dueDate ? formatDate(deposits[activeDepositIndex].dueDate) : 'Select date'}
+                        {deposits[activeDepositIndex].dueDateISO ? formatDate(new Date(deposits[activeDepositIndex].dueDateISO)) : 'Select date'}
                       </button>
                     </div>
                     
@@ -441,7 +455,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
                             <button
                               type="button"
                               onClick={() => {
-                                updateDeposit(activeDepositIndex, { dueDate: getPresetDates().fourteenDays });
+                                updateDeposit(activeDepositIndex, { dueDateISO: getPresetDates().fourteenDays });
                                 setShowDepositDueDate(false);
                               }}
                               className="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
@@ -451,7 +465,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
                             <button
                               type="button"
                               onClick={() => {
-                                updateDeposit(activeDepositIndex, { dueDate: getPresetDates().thirtyDays });
+                                updateDeposit(activeDepositIndex, { dueDateISO: getPresetDates().thirtyDays });
                                 setShowDepositDueDate(false);
                               }}
                               disabled={!startDateTime}
@@ -466,7 +480,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
                             <button
                               type="button"
                               onClick={() => {
-                                updateDeposit(activeDepositIndex, { dueDate: getPresetDates().sixtyDays });
+                                updateDeposit(activeDepositIndex, { dueDateISO: getPresetDates().sixtyDays });
                                 setShowDepositDueDate(false);
                               }}
                               disabled={!startDateTime}
@@ -481,7 +495,7 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
                             <button
                               type="button"
                               onClick={() => {
-                                updateDeposit(activeDepositIndex, { dueDate: getPresetDates().ninetyDays });
+                                updateDeposit(activeDepositIndex, { dueDateISO: getPresetDates().ninetyDays });
                                 setShowDepositDueDate(false);
                               }}
                               disabled={!startDateTime}
@@ -506,20 +520,20 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
                                     variant="outline"
                                     className={cn(
                                       "justify-start text-left font-normal",
-                                      !deposits[activeDepositIndex].dueDate && "text-muted-foreground"
+                                      !deposits[activeDepositIndex].dueDateISO && "text-muted-foreground"
                                     )}
                                   >
                                     <Calendar className="mr-2 h-4 w-4" />
-                                    {deposits[activeDepositIndex].dueDate ? formatDate(deposits[activeDepositIndex].dueDate) : "Pick a date"}
+                                    {deposits[activeDepositIndex].dueDateISO ? formatDate(new Date(deposits[activeDepositIndex].dueDateISO)) : "Pick a date"}
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0" align="start">
                                   <CalendarComponent
                                     mode="single"
-                                    selected={deposits[activeDepositIndex].dueDate ?? undefined}
+                                    selected={deposits[activeDepositIndex].dueDateISO ? new Date(deposits[activeDepositIndex].dueDateISO) : undefined}
                                     onSelect={(date) => {
                                       if (date instanceof Date) {
-                                        updateDeposit(activeDepositIndex, { dueDate: date });
+                                        updateDeposit(activeDepositIndex, { dueDateISO: date.toISOString() });
                                         setShowDepositDueDate(false);
                                       }
                                     }}

@@ -1,10 +1,11 @@
-import "../src/styles/globals.css";
+import "../src/app/globals.css";
+import React from 'react';
 import type { Preview } from "@storybook/react";
-
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 
 const preview: Preview = {
   parameters: {
+    actions: { argTypesRegex: "^on[A-Z].*" },
     backgrounds: {
       default: "custom-light",
       values: [
@@ -25,17 +26,20 @@ const preview: Preview = {
       },
     },
   },
-
   decorators: [
     withThemeByDataAttribute({
       themes: {
-        // nameOfTheme: 'dataAttributeForTheme',
-        light: "",
+        light: "light",
         dark: "dark",
       },
       defaultTheme: "light",
-      dataAttribute: "data-theme",
+      attributeName: "data-theme",
     }),
+    (Story: React.ComponentType) => {
+      return React.createElement('div', { className: 'font-sans' },
+        React.createElement(Story)
+      );
+    },
   ],
 };
 

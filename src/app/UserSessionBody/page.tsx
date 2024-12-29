@@ -114,6 +114,14 @@ interface GroupReservation {
       imageUrl: string;
       isEventOfferPriceEnabled: boolean;
       eventOfferPriceInCents: number;
+      deposits: Array<{
+        id: string;
+        name?: string;
+        amountInCents: number;
+        dueDateISO: string;
+        status: 'pending' | 'paid' | 'overdue';
+        note?: string;
+      }>;
       venueOffers: Array<{
         venueOfferId: string;
         venueName: string;
@@ -157,6 +165,14 @@ interface GroupReservation {
     imageUrl: string;
     isEventOfferPriceEnabled: boolean;
     eventOfferPriceInCents: number;
+    deposits: Array<{
+      id: string;
+      name?: string;
+      amountInCents: number;
+      dueDateISO: string;
+      status: 'pending' | 'paid' | 'overdue';
+      note?: string;
+    }>;
     venueOffers: Array<{
       venueOfferId: string;
       venueName: string;
@@ -323,6 +339,79 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
   
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const groupReservationContentRef = useRef<HTMLDivElement>(null);
+
+  // State for extras due date editing
+  const [isEditingExtrasDate, setIsEditingExtrasDate] = useState(false);
+  const [extrasDueDate, setExtrasDueDate] = useState<Date>(new Date());
+
+  // State for room deposits date editing
+  const [editingRoomDepositId, setEditingRoomDepositId] = useState<string | null>(null);
+  const [roomDepositDates, setRoomDepositDates] = useState<Record<string, Date>>({});
+
+  // State for event deposits date editing
+  const [editingEventDepositId, setEditingEventDepositId] = useState<string | null>(null);
+  const [eventDepositDates, setEventDepositDates] = useState<Record<string, Date>>({});
+
+  // State for F&B minimums date editing
+  const [editingFBMinimumId, setEditingFBMinimumId] = useState<string | null>(null);
+  const [fbMinimumDates, setFBMinimumDates] = useState<Record<string, Date>>({});
+
+  // State for room block balance date editing
+  const [isEditingRoomBlockDate, setIsEditingRoomBlockDate] = useState(false);
+  const [roomBlockDueDate, setRoomBlockDueDate] = useState<Date>(new Date());
+
+  // Initialize dates when events or rooms change
+  useEffect(() => {
+    // Initialize room deposit dates
+    const newRoomDepositDates: Record<string, Date> = {};
+    reservation.rooms?.forEach(room => {
+      if (!roomDepositDates[room.id]) {
+        newRoomDepositDates[room.id] = new Date();
+      }
+    });
+    if (Object.keys(newRoomDepositDates).length > 0) {
+      setRoomDepositDates(prev => ({ ...prev, ...newRoomDepositDates }));
+    }
+
+    // Initialize event deposit dates
+    const newEventDepositDates: Record<string, Date> = {};
+    reservation.events?.forEach(event => {
+      if (!eventDepositDates[event.id] && reservation.eventData?.[event.id]) {
+        newEventDepositDates[event.id] = new Date(reservation.eventData[event.id].startDateTime);
+      }
+    });
+    if (Object.keys(newEventDepositDates).length > 0) {
+      setEventDepositDates(prev => ({ ...prev, ...newEventDepositDates }));
+    }
+
+    // Initialize F&B minimum dates
+    const newFBMinimumDates: Record<string, Date> = {};
+    reservation.events?.forEach(event => {
+      if (!fbMinimumDates[event.id] && reservation.eventData?.[event.id]) {
+        const eventDate = new Date(reservation.eventData[event.id].startDateTime);
+        eventDate.setDate(eventDate.getDate() + 1);
+        newFBMinimumDates[event.id] = eventDate;
+      }
+    });
+    if (Object.keys(newFBMinimumDates).length > 0) {
+      setFBMinimumDates(prev => ({ ...prev, ...newFBMinimumDates }));
+    }
+
+    // Initialize room block balance date
+    const earliestDate = [
+      ...(reservation.events?.map(event => reservation.eventData?.[event.id]?.startDateTime) || []),
+      // TODO: Add room dates here when available
+    ]
+      .filter((date): date is string => !!date)
+      .map(date => new Date(date))
+      .sort((a, b) => a.getTime() - b.getTime())[0];
+
+    if (earliestDate) {
+      const defaultDueDate = new Date(earliestDate);
+      defaultDueDate.setDate(defaultDueDate.getDate() - 7);
+      setRoomBlockDueDate(defaultDueDate);
+    }
+  }, [reservation.rooms, reservation.events, reservation.eventData]);
 
   useEffect(() => {
     let animationFrame: number;
@@ -759,35 +848,44 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
   };
 
   // Helper to get the current itinerary data
-  const getCurrentItineraryData = () => {
-    if (!reservation.itineraries) {
-      // If no itineraries exist, return root level data
+  const getCurrentItineraryData = (): {
+    rooms: any[];
+    events: any[];
+    eventData: Record<string, any>;
+    addOns: any[];
+    extras: any[];
+  } => {
+    // First try to find the active itinerary
+    const activeItinerary = reservation.itineraries?.find(itin => itin.isActive);
+    
+    if (activeItinerary) {
       return {
-        rooms: reservation.rooms || [],
-        events: reservation.events || [],
-        eventData: reservation.eventData || {},
-        addOns: reservation.addOns || [],
-        extras: reservation.extras || []
+        rooms: activeItinerary.rooms || [],
+        events: activeItinerary.events || [],
+        eventData: activeItinerary.eventData || {},
+        addOns: activeItinerary.addOns || [],
+        extras: activeItinerary.extras || []
       };
     }
 
-    const currentItinerary = reservation.itineraries.find(i => i.name === reservation.itineraryName);
-    if (!currentItinerary) {
+    // If no active itinerary, try the first itinerary
+    if (reservation.itineraries?.[0]) {
       return {
-        rooms: [],
-        events: [],
-        eventData: {},
-        addOns: [],
-        extras: []
+        rooms: reservation.itineraries[0].rooms || [],
+        events: reservation.itineraries[0].events || [],
+        eventData: reservation.itineraries[0].eventData || {},
+        addOns: reservation.itineraries[0].addOns || [],
+        extras: reservation.itineraries[0].extras || []
       };
     }
 
+    // If no itineraries exist, return root level data
     return {
-      rooms: currentItinerary.rooms || [],
-      events: currentItinerary.events || [],
-      eventData: currentItinerary.eventData || {},
-      addOns: currentItinerary.addOns || [],
-      extras: currentItinerary.extras || []
+      rooms: reservation.rooms || [],
+      events: reservation.events || [],
+      eventData: reservation.eventData || {},
+      addOns: reservation.addOns || [],
+      extras: reservation.extras || []
     };
   };
 
@@ -1771,81 +1869,85 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         </section>
 
         {/* Rooms Section */}
-        {((reservation.rooms && reservation.rooms.some(room => room.id)) || showRoomsSection) && (
-          <section className="bg-white rounded-lg shadow p-6 mt-4">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Rooms</h2>
-              {/* TODO @Julian: This button should trigger the create block flow in the PMS integration.
-                  For Cloudbeds: Create block in Cloudbeds with current dates and room count
-                  For Mews: Create block in Mews with current dates and room count */}
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="bg-white hover:bg-gray-50"
-              >
-                Block on {reservation.pmsType || 'Cloudbeds'}
-              </Button>
+        <section className="bg-white rounded-lg shadow p-6 mt-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold">Rooms</h2>
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="bg-white hover:bg-gray-50"
+            >
+              Block on {reservation.pmsType || 'Cloudbeds'}
+            </Button>
+          </div>
+          {getCurrentItineraryData().rooms?.length ? (
+            <div className="space-y-4">
+              {getCurrentItineraryData().rooms.map((room) => (
+                <div key={room.id} className="flex justify-between items-center">
+                  <span>{room.name}</span>
+                </div>
+              ))}
             </div>
-            <p className="text-gray-600 italic">Use Existing Rooms SaaS Tool</p>
-          </section>
-        )}
+          ) : (
+            <p className="text-gray-600 italic">No rooms added yet</p>
+          )}
+        </section>
 
         {/* Events Section */}
-        {((reservation.events && reservation.events.some(event => event.id && reservation.eventData?.[event.id])) || showEventsSection) && (
-          <section className="bg-white rounded-lg shadow p-6 mt-4">
-            <h2 className="text-lg font-semibold mb-4">Events</h2>
-            <div className="flex flex-wrap gap-4">
-              {reservation.events?.map((event) => {
-                // Find the full event data in the reservation
-                const eventData = reservation.eventData?.[event.id];
-                if (!eventData) return null;
+        <section className="bg-white rounded-lg shadow p-6 mt-4">
+          <h2 className="text-lg font-semibold mb-4">Events</h2>
+          <div className="flex flex-wrap gap-4">
+            {getCurrentItineraryData().events?.map((event: { id: string; name: string }) => {
+              // Find the full event data in the reservation
+              const eventData = getCurrentItineraryData().eventData?.[event.id];
+              if (!eventData) return null;
 
-                const renderableEvent: RenderableItineraryEventOffer = {
-                  eventOfferId: event.id,
-                  eventOfferName: event.name,
-                  startDateTime: eventData.startDateTime,
-                  endDateTime: eventData.endDateTime,
-                  status: eventData.status as HotelEventOfferStatus,
-                  numberOfGuests: eventData.numberOfGuests,
-                  imageUrl: eventData.imageUrl,
-                  isEventOfferPriceEnabled: eventData.isEventOfferPriceEnabled,
-                  eventOfferPriceInCents: eventData.eventOfferPriceInCents,
-                  venueOffers: eventData.venueOffers.map(venue => ({
-                    ...venue,
-                    pricingInfo: {
-                      ...venue.pricingInfo,
-                      pricingType: venue.pricingInfo.pricingType as VenueOfferPricingType
-                    }
-                  })),
-                  details: eventData.details
-                };
+              const renderableEvent: RenderableItineraryEventOffer = {
+                eventOfferId: event.id,
+                eventOfferName: event.name,
+                startDateTime: eventData.startDateTime,
+                endDateTime: eventData.endDateTime,
+                status: eventData.status,
+                numberOfGuests: eventData.numberOfGuests,
+                imageUrl: eventData.imageUrl,
+                isEventOfferPriceEnabled: eventData.isEventOfferPriceEnabled,
+                eventOfferPriceInCents: eventData.eventOfferPriceInCents,
+                venueOffers: eventData.venueOffers.map(venue => ({
+                  venueOfferId: venue.venueOfferId,
+                  venueName: venue.venueName,
+                  pricingInfo: {
+                    priceInCents: venue.pricingInfo.priceInCents,
+                    pricingType: venue.pricingInfo.pricingType
+                  }
+                })),
+                details: eventData.details
+              };
 
-                return (
-                  <EventOfferCarouselItemSaaS
-                    key={event.id}
-                    eventOffer={renderableEvent}
-                    onClick={({ eventOfferId, section }) => {
-                      setSelectedEventId(eventOfferId);
-                      setShowModifyEvent(true);
-                    }}
-                  />
-                );
-              })}
-              <div 
-                className="flex-none w-[240px] h-[120px] cursor-pointer"
-                onClick={() => {
-                  setSelectedEventId(null);
-                  setShowModifyEvent(true);
-                }}
-              >
-                <div className="h-full flex flex-col items-center justify-center gap-2 border rounded-lg hover:bg-gray-50">
-                  <FaPlus className="h-6 w-6 text-gray-400" />
-                  <span className="text-sm text-gray-600">Add Event</span>
-                </div>
+              return (
+                <EventOfferCarouselItemSaaS
+                  key={event.id}
+                  eventOffer={renderableEvent}
+                  onClick={({ eventOfferId, section }: { eventOfferId: string; section?: 'date' | 'venue' | 'guests' | 'price' | 'details' }) => {
+                    setSelectedEventId(eventOfferId);
+                    setShowModifyEvent(true);
+                  }}
+                />
+              );
+            })}
+            <div 
+              className="flex-none w-[240px] h-[120px] cursor-pointer"
+              onClick={() => {
+                setSelectedEventId(null);
+                setShowModifyEvent(true);
+              }}
+            >
+              <div className="h-full flex flex-col items-center justify-center gap-2 border rounded-lg hover:bg-gray-50">
+                <FaPlus className="h-6 w-6 text-gray-400" />
+                <span className="text-sm text-gray-600">Add Event</span>
               </div>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* Event Offer Drawer */}
         <ModifyEventOffer
@@ -1853,20 +1955,18 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
           onOpenChange={setShowModifyEvent}
           defaultOpen={!selectedEventId}
           initialData={selectedEventId ? {
-            name: reservation.events?.find(e => e.id === selectedEventId)?.name,
-            status: reservation.eventData?.[selectedEventId]?.status,
-            startDate: reservation.eventData?.[selectedEventId]?.startDateTime ? new Date(reservation.eventData[selectedEventId].startDateTime) : undefined,
-            endDate: reservation.eventData?.[selectedEventId]?.endDateTime ? new Date(reservation.eventData[selectedEventId].endDateTime) : undefined,
-            guestCount: reservation.eventData?.[selectedEventId]?.numberOfGuests,
-            venues: reservation.eventData?.[selectedEventId]?.venueOffers.map(v => v.venueName),
-            priceInCents: reservation.eventData?.[selectedEventId]?.eventOfferPriceInCents,
-            publicNotes: reservation.eventData?.[selectedEventId]?.details.description,
-            // Add additional fields for complete event data
-            undiscountedPriceInCents: reservation.eventData?.[selectedEventId]?.venueOffers[0]?.pricingInfo.priceInCents,
-            paymentSplitType: 'SINGLE_PAYER', // Default value since it's not stored in eventData
-            visibility: 'PUBLIC' // Default value since it's not stored in eventData
+            name: getCurrentItineraryData().events?.find((e: { id: string }) => e.id === selectedEventId)?.name,
+            status: getCurrentItineraryData().eventData?.[selectedEventId]?.status,
+            startDate: getCurrentItineraryData().eventData?.[selectedEventId]?.startDateTime ? new Date(getCurrentItineraryData().eventData[selectedEventId].startDateTime) : undefined,
+            endDate: getCurrentItineraryData().eventData?.[selectedEventId]?.endDateTime ? new Date(getCurrentItineraryData().eventData[selectedEventId].endDateTime) : undefined,
+            guestCount: getCurrentItineraryData().eventData?.[selectedEventId]?.numberOfGuests,
+            venues: getCurrentItineraryData().eventData?.[selectedEventId]?.venueOffers.map(v => v.venueName),
+            priceInCents: getCurrentItineraryData().eventData?.[selectedEventId]?.eventOfferPriceInCents,
+            publicNotes: getCurrentItineraryData().eventData?.[selectedEventId]?.details.description,
+            undiscountedPriceInCents: getCurrentItineraryData().eventData?.[selectedEventId]?.venueOffers[0]?.pricingInfo.priceInCents,
+            paymentSplitType: 'SINGLE_PAYER',
+            visibility: 'PUBLIC'
           } : {
-            // Default values for a new event
             name: '',
             status: HotelEventOfferStatus.PROSPECT,
             startDate: null,
@@ -1941,7 +2041,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
               };
 
               updateCurrentItineraryData({
-                events: [...currentData.events, {
+                events: [...(currentData.events || []), {
                   id: eventId,
                   name: event.name || 'New Event'
                 }],
@@ -1957,100 +2057,88 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
           onDelete={selectedEventId ? () => handleDeleteEvent(selectedEventId) : undefined}
         />
 
-        {/* Add-Ons Section */}
-        {((reservation.addOns && reservation.addOns.some(addon => addon.id)) || showAddOnsSection) && (
-          <section className="bg-white rounded-lg shadow p-6 mt-4">
-            <h2 className="text-lg font-semibold mb-4">Add-Ons</h2>
-            <p className="text-gray-600 italic">Coming Soon</p>
-          </section>
-        )}
-
         {/* Extras Section */}
-        {(getCurrentItineraryData().extras?.length > 0 || showExtrasSection) && (
-          <section className="bg-white rounded-lg shadow p-6 mt-4">
-            <h2 className="text-lg font-semibold mb-4">Extras</h2>
-            <div className="space-y-4">
-              {/* List existing extras */}
-              {getCurrentItineraryData().extras?.map((extra) => (
-                <ExtraLineItem
-                  key={extra.id}
-                  name={extra.name}
-                  description={extra.description}
-                  priceInCents={extra.priceInCents}
-                  onDelete={() => {
-                    const currentData = getCurrentItineraryData();
-                    updateCurrentItineraryData({
-                      extras: currentData.extras.filter(e => e.id !== extra.id)
-                    });
-                  }}
-                />
-              ))}
-
-              {/* Add new extra form */}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const form = e.target as HTMLFormElement;
-                  const nameInput = form.elements.namedItem('extraName') as HTMLInputElement;
-                  const descriptionInput = form.elements.namedItem('extraDescription') as HTMLInputElement;
-                  const priceInput = form.elements.namedItem('extraPrice') as HTMLInputElement;
-                  
-                  if (nameInput.value && priceInput.value) {
-                    const currentData = getCurrentItineraryData();
-                    const newExtra = {
-                      id: `extra-${Date.now()}`,
-                      name: nameInput.value,
-                      description: descriptionInput.value || undefined,
-                      priceInCents: Math.max(0, Math.round(parseFloat(priceInput.value) * 100))
-                    };
-
-                    updateCurrentItineraryData({
-                      extras: [...currentData.extras, newExtra]
-                    });
-
-                    // Reset form
-                    form.reset();
-                  }
+        <section className="bg-white rounded-lg shadow p-6 mt-4">
+          <h2 className="text-lg font-semibold mb-4">Extras</h2>
+          <div className="space-y-4">
+            {/* List existing extras */}
+            {getCurrentItineraryData().extras?.map((extra) => (
+              <ExtraLineItem
+                key={extra.id}
+                name={extra.name}
+                description={extra.description}
+                priceInCents={extra.priceInCents}
+                onDelete={() => {
+                  const currentData = getCurrentItineraryData();
+                  updateCurrentItineraryData({
+                    extras: currentData.extras.filter(e => e.id !== extra.id)
+                  });
                 }}
-                className="space-y-3"
-              >
-                <div className="flex gap-4">
-                  <input
-                    type="text"
-                    name="extraName"
-                    placeholder="Name"
-                    className="flex-grow px-3 py-2 border rounded text-sm"
-                    required
-                  />
-                  <div className="relative w-32">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2">$</span>
-                    <input
-                      type="number"
-                      name="extraPrice"
-                      placeholder="0.00"
-                      step="0.01"
-                      min="0"
-                      className="w-full pl-7 pr-3 py-2 border rounded text-sm"
-                      defaultValue="0.00"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <input
-                    type="text"
-                    name="extraDescription"
-                    placeholder="Description (optional)"
-                    className="flex-grow px-3 py-2 border rounded text-sm"
-                  />
-                  <Button type="submit" variant="outline" size="sm" className="w-32">
-                    Add Extra
-                  </Button>
-                </div>
-              </form>
-            </div>
-          </section>
-        )}
+              />
+            ))}
+
+            {/* Add new extra form */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.target as HTMLFormElement;
+                const nameInput = form.elements.namedItem('extraName') as HTMLInputElement;
+                const descriptionInput = form.elements.namedItem('extraDescription') as HTMLInputElement;
+                const priceInput = form.elements.namedItem('extraPrice') as HTMLInputElement;
+                
+                if (nameInput.value && priceInput.value) {
+                  const currentData = getCurrentItineraryData();
+                  const newExtra = {
+                    id: `extra-${Date.now()}`,
+                    name: nameInput.value,
+                    description: descriptionInput.value || undefined,
+                    priceInCents: Math.max(0, Math.round(parseFloat(priceInput.value) * 100))
+                  };
+
+                  updateCurrentItineraryData({
+                    extras: [...(currentData.extras || []), newExtra]
+                  });
+
+                  // Reset form
+                  form.reset();
+                }
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <input
+                  type="text"
+                  name="extraName"
+                  placeholder="Extra Name"
+                  className="w-full px-3 py-2 border rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  name="extraDescription"
+                  placeholder="Description (optional)"
+                  className="w-full px-3 py-2 border rounded-md"
+                />
+              </div>
+              <div>
+                <input
+                  type="number"
+                  name="extraPrice"
+                  placeholder="Price"
+                  min="0"
+                  step="0.01"
+                  className="w-full px-3 py-2 border rounded-md"
+                  required
+                />
+              </div>
+              <Button type="submit" variant="outline" size="sm">
+                Add Extra
+              </Button>
+            </form>
+          </div>
+        </section>
 
         <div className="mt-4">
           <hr className="border-gray-200" />
@@ -2085,31 +2173,32 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                   {/* Deposits subsection */}
                   <div>
                     <h4 className="text-sm font-medium text-gray-700 mb-2">Deposits</h4>
-                    {/* Room deposits */}
-                    {reservation.rooms?.map((room) => {
-                      const defaultDueDate = new Date(); // TODO: Get from room block dates
-                      const [isEditingDate, setIsEditingDate] = useState(false);
-                      const [dueDate, setDueDate] = useState(defaultDueDate);
-
-                      return (
+                    <div className="pl-4">
+                      {/* Room deposits */}
+                      {reservation.rooms?.map((room) => (
                         <div key={`room-deposit-${room.id}`} className="flex items-center justify-between py-2 border-b">
                           <div className="flex flex-col">
                             <span className="text-sm">Room Block Deposit</span>
-                            {isEditingDate ? (
+                            {editingRoomDepositId === room.id ? (
                               <input
                                 type="date"
-                                value={dueDate.toISOString().split('T')[0]}
-                                onChange={(e) => setDueDate(new Date(e.target.value))}
-                                onBlur={() => setIsEditingDate(false)}
+                                value={roomDepositDates[room.id]?.toISOString().split('T')[0] || new Date().toISOString().split('T')[0]}
+                                onChange={(e) => {
+                                  setRoomDepositDates(prev => ({
+                                    ...prev,
+                                    [room.id]: new Date(e.target.value)
+                                  }));
+                                }}
+                                onBlur={() => setEditingRoomDepositId(null)}
                                 className="text-xs border rounded px-1"
                                 autoFocus
                               />
                             ) : (
                               <button 
-                                onClick={() => setIsEditingDate(true)}
+                                onClick={() => setEditingRoomDepositId(room.id)}
                                 className="text-xs text-gray-500 hover:text-blue-600 text-left"
                               >
-                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                Due {roomDepositDates[room.id]?.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                               </button>
                             )}
                           </div>
@@ -2131,38 +2220,165 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                             </Button>
                           </div>
                         </div>
-                      );
-                    })}
-                    {/* Event deposits */}
-                    {reservation.events?.map((event) => {
-                      const eventData = reservation.eventData?.[event.id];
-                      if (!eventData) return null;
-                      
-                      const defaultDueDate = new Date(eventData.startDateTime);
-                      const [isEditingDate, setIsEditingDate] = useState(false);
-                      const [dueDate, setDueDate] = useState(defaultDueDate);
+                      ))}
 
-                      return (
-                        <div key={`event-deposit-${event.id}`} className="flex items-center justify-between py-2 border-b">
-                          <div className="flex flex-col">
-                            <span className="text-sm">{event.name} Deposit</span>
-                            {isEditingDate ? (
-                              <input
-                                type="date"
-                                value={dueDate.toISOString().split('T')[0]}
-                                onChange={(e) => setDueDate(new Date(e.target.value))}
-                                onBlur={() => setIsEditingDate(false)}
-                                className="text-xs border rounded px-1"
-                                autoFocus
-                              />
-                            ) : (
-                              <button 
-                                onClick={() => setIsEditingDate(true)}
-                                className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                      {/* Event deposits */}
+                      {reservation.events?.map((event) => {
+                        const eventData = reservation.eventData?.[event.id];
+                        if (!eventData) return null;
+                        
+                        return eventData.deposits.map((deposit) => (
+                          <div key={`event-deposit-${event.id}-${deposit.id}`} className="flex items-center justify-between py-2 border-b">
+                            <div className="flex flex-col">
+                              <span className="text-sm">{event.name} {deposit.name || 'Deposit'}</span>
+                              {editingEventDepositId === event.id ? (
+                                <input
+                                  type="date"
+                                  value={new Date(deposit.dueDateISO).toISOString().split('T')[0]}
+                                  onChange={(e) => {
+                                    const updatedEventData = {
+                                      ...eventData,
+                                      deposits: eventData.deposits.map(d => 
+                                        d.id === deposit.id 
+                                          ? { ...d, dueDateISO: new Date(e.target.value).toISOString() }
+                                          : d
+                                      )
+                                    };
+                                    onReservationUpdate?.({
+                                      ...reservation,
+                                      eventData: {
+                                        ...reservation.eventData,
+                                        [event.id]: updatedEventData
+                                      }
+                                    });
+                                  }}
+                                  onBlur={() => setEditingEventDepositId(null)}
+                                  className="text-xs border rounded px-1"
+                                  autoFocus
+                                />
+                              ) : (
+                                <button 
+                                  onClick={() => setEditingEventDepositId(event.id)}
+                                  className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                                >
+                                  Due {new Date(deposit.dueDateISO).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                </button>
+                              )}
+                              {deposit.note && (
+                                <span className="text-xs text-gray-500">{deposit.note}</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Badge 
+                                variant="outline" 
+                                className={`${
+                                  deposit.status === 'paid' 
+                                    ? 'bg-green-100 text-green-700' 
+                                    : deposit.status === 'overdue'
+                                    ? 'bg-red-100 text-red-700'
+                                    : 'bg-yellow-100 text-yellow-700'
+                                } border-0`}
                               >
-                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </button>
-                            )}
+                                {deposit.status === 'paid' ? 'Paid' : deposit.status === 'overdue' ? 'Overdue' : 'Pending'}
+                              </Badge>
+                              <span className="font-medium">
+                                ${(deposit.amountInCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                              </span>
+                              {deposit.status !== 'paid' && (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-xs"
+                                  disabled={!isCurrentItineraryActive()}
+                                >
+                                  Request
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        ));
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Remaining Fees subsection */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Remaining Fees</h4>
+                    <div className="pl-4">
+                      {/* Room Block Balance */}
+                      <div className="flex items-center justify-between py-2 border-b">
+                        <div className="flex flex-col">
+                          <span className="text-sm">Room Block Balance</span>
+                          {isEditingRoomBlockDate ? (
+                            <input
+                              type="date"
+                              value={roomBlockDueDate.toISOString().split('T')[0]}
+                              onChange={(e) => setRoomBlockDueDate(new Date(e.target.value))}
+                              onBlur={() => setIsEditingRoomBlockDate(false)}
+                              className="text-xs border rounded px-1"
+                              autoFocus
+                            />
+                          ) : (
+                            <button 
+                              onClick={() => setIsEditingRoomBlockDate(true)}
+                              className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                            >
+                              Due {roomBlockDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Badge 
+                            variant="outline" 
+                            className="bg-red-100 text-red-700 border-0"
+                          >
+                            Unpaid
+                          </Badge>
+                          <span className="font-medium">$2,500.00</span>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="text-xs"
+                            disabled={!isCurrentItineraryActive()}
+                          >
+                            Request
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Extras Line Item */}
+                      {getCurrentItineraryData().extras.length > 0 && (
+                        <div className="flex items-center justify-between py-2 border-b">
+                          <div className="flex flex-col">
+                            <span className="text-sm">Extras</span>
+                            {/* Due Date Editor */}
+                            <div>
+                              {isEditingExtrasDate ? (
+                                <input
+                                  type="date"
+                                  value={extrasDueDate.toISOString().split('T')[0]}
+                                  onChange={(e) => setExtrasDueDate(new Date(e.target.value))}
+                                  onBlur={() => setIsEditingExtrasDate(false)}
+                                  className="text-xs border rounded px-1"
+                                  autoFocus
+                                />
+                              ) : (
+                                <button 
+                                  onClick={() => setIsEditingExtrasDate(true)}
+                                  className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                                >
+                                  Due {extrasDueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                </button>
+                              )}
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1 pl-4">
+                              {getCurrentItineraryData().extras.map((extra, index) => (
+                                <div key={extra.id} className="flex justify-between">
+                                  <span>• {extra.name}</span>
+                                  <span className="ml-4">${(extra.priceInCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                           <div className="flex items-center gap-3">
                             <Badge 
@@ -2172,7 +2388,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                               Unpaid
                             </Badge>
                             <span className="font-medium">
-                              ${((eventData.eventOfferPriceInCents || 0) * 0.25 / 100).toFixed(2)}
+                              ${(getCurrentItineraryData().extras.reduce((sum, extra) => sum + extra.priceInCents, 0) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </span>
                             <Button 
                               variant="outline" 
@@ -2184,261 +2400,158 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                             </Button>
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Remaining Fees subsection */}
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Remaining Fees</h4>
-                    {/* Room Block Balance */}
-                    {(() => {
-                      const earliestDate = [
-                        ...(reservation.events?.map(event => reservation.eventData?.[event.id]?.startDateTime) || []),
-                        // TODO: Add room dates here when available
-                      ]
-                        .filter((date): date is string => !!date)
-                        .map(date => new Date(date))
-                        .sort((a, b) => a.getTime() - b.getTime())[0];
-
-                      const defaultDueDate = earliestDate ? 
-                        new Date(earliestDate.setDate(earliestDate.getDate() - 7)) : 
-                        new Date();
-
-                      const [isEditingDate, setIsEditingDate] = useState(false);
-                      const [dueDate, setDueDate] = useState(defaultDueDate);
-
-                      return (
-                        <div className="flex items-center justify-between py-2 border-b">
-                          <div className="flex flex-col">
-                            <span className="text-sm">Room Block Balance</span>
-                            {isEditingDate ? (
-                              <input
-                                type="date"
-                                value={dueDate.toISOString().split('T')[0]}
-                                onChange={(e) => setDueDate(new Date(e.target.value))}
-                                onBlur={() => setIsEditingDate(false)}
-                                className="text-xs border rounded px-1"
-                                autoFocus
-                              />
-                            ) : (
-                              <button 
-                                onClick={() => setIsEditingDate(true)}
-                                className="text-xs text-gray-500 hover:text-blue-600 text-left"
-                              >
-                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </button>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <Badge 
-                              variant="outline" 
-                              className="bg-red-100 text-red-700 border-0"
-                            >
-                              Unpaid
-                            </Badge>
-                            <span className="font-medium">$2,500.00</span>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="text-xs"
-                              disabled={!isCurrentItineraryActive()}
-                            >
-                              Request
-                            </Button>
-                          </div>
-                        </div>
-                      );
-                    })()}
-
-                    {/* Extras Line Item */}
-                    {getCurrentItineraryData().extras.length > 0 && (
-                      <div className="flex items-center justify-between py-2 border-b">
-                        <div className="flex flex-col">
-                          <span className="text-sm">Extras</span>
-                          {/* Due Date Editor */}
-                          {(() => {
-                            // Find the latest date from events
-                            const latestDate = [
-                              ...(reservation.events?.map(event => 
-                                event && reservation.eventData?.[event.id]?.endDateTime
-                              ) || []),
-                              // TODO: Add room dates here when available
-                            ]
-                              .filter((date): date is string => !!date)
-                              .map(date => new Date(date))
-                              .sort((a, b) => b.getTime() - a.getTime())[0] || new Date();
-
-                            const [isEditingDate, setIsEditingDate] = useState(false);
-                            const [dueDate, setDueDate] = useState(latestDate);
-
-                            return (
-                              <div>
-                                {isEditingDate ? (
-                                  <input
-                                    type="date"
-                                    value={dueDate.toISOString().split('T')[0]}
-                                    onChange={(e) => setDueDate(new Date(e.target.value))}
-                                    onBlur={() => setIsEditingDate(false)}
-                                    className="text-xs border rounded px-1"
-                                    autoFocus
-                                  />
-                                ) : (
-                                  <button 
-                                    onClick={() => setIsEditingDate(true)}
-                                    className="text-xs text-gray-500 hover:text-blue-600 text-left"
-                                  >
-                                    Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                                  </button>
-                                )}
-                              </div>
-                            );
-                          })()}
-                          <div className="text-xs text-gray-500 mt-1">
-                            {getCurrentItineraryData().extras.map((extra, index) => (
-                              <div key={extra.id} className="flex justify-between">
-                                <span>• {extra.name}</span>
-                                <span className="ml-4">${(extra.priceInCents / 100).toFixed(2)}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Badge 
-                            variant="outline" 
-                            className="bg-red-100 text-red-700 border-0"
-                          >
-                            Unpaid
-                          </Badge>
-                          <span className="font-medium">
-                            ${(getCurrentItineraryData().extras.reduce((sum, extra) => sum + extra.priceInCents, 0) / 100).toFixed(2)}
-                          </span>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="text-xs"
-                            disabled={!isCurrentItineraryActive()}
-                          >
-                            Request
-                          </Button>
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
 
                   {/* F&B Minimums subsection */}
                   <div>
                     <h4 className="text-sm font-medium text-gray-700 mb-2">F&B Minimums</h4>
-                    {reservation.events?.map((event) => {
-                      const eventData = reservation.eventData?.[event.id];
-                      if (!eventData) return null;
-                      
-                      // Set default due date to one day after event
-                      const defaultDueDate = new Date(eventData.startDateTime);
-                      defaultDueDate.setDate(defaultDueDate.getDate() + 1);
-                      
-                      const [isEditingDate, setIsEditingDate] = useState(false);
-                      const [dueDate, setDueDate] = useState(defaultDueDate);
-
-                      return (
-                        <div key={`fb-minimum-${event.id}`} className="flex items-center justify-between py-2 border-b">
-                          <div className="flex flex-col">
-                            <span className="text-sm">{event.name}</span>
-                            {isEditingDate ? (
-                              <input
-                                type="date"
-                                value={dueDate.toISOString().split('T')[0]}
-                                onChange={(e) => setDueDate(new Date(e.target.value))}
-                                onBlur={() => setIsEditingDate(false)}
-                                className="text-xs border rounded px-1"
-                                autoFocus
-                              />
-                            ) : (
-                              <button 
-                                onClick={() => setIsEditingDate(true)}
-                                className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                    <div className="pl-4">
+                      {reservation.events?.map((event) => {
+                        const eventData = reservation.eventData?.[event.id];
+                        if (!eventData) return null;
+                        
+                        return (
+                          <div key={`fb-minimum-${event.id}`} className="flex items-center justify-between py-2 border-b">
+                            <div className="flex flex-col">
+                              <span className="text-sm">{event.name}</span>
+                              {editingFBMinimumId === event.id ? (
+                                <input
+                                  type="date"
+                                  value={fbMinimumDates[event.id]?.toISOString().split('T')[0] || new Date().toISOString().split('T')[0]}
+                                  onChange={(e) => {
+                                    setFBMinimumDates(prev => ({
+                                      ...prev,
+                                      [event.id]: new Date(e.target.value)
+                                    }));
+                                  }}
+                                  onBlur={() => setEditingFBMinimumId(null)}
+                                  className="text-xs border rounded px-1"
+                                  autoFocus
+                                />
+                              ) : (
+                                <button 
+                                  onClick={() => setEditingFBMinimumId(event.id)}
+                                  className="text-xs text-gray-500 hover:text-blue-600 text-left"
+                                >
+                                  Due {fbMinimumDates[event.id]?.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                </button>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Badge 
+                                variant="outline" 
+                                className="bg-red-100 text-red-700 border-0"
                               >
-                                Due {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                              </button>
-                            )}
+                                Unpaid
+                              </Badge>
+                              <span className="font-medium">$5,000.00</span>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="text-xs"
+                                disabled={!isCurrentItineraryActive()}
+                              >
+                                Request
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-3">
-                            <Badge 
-                              variant="outline" 
-                              className="bg-red-100 text-red-700 border-0"
-                            >
-                              Unpaid
-                            </Badge>
-                            <span className="font-medium">$5,000.00</span>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="text-xs"
-                              disabled={!isCurrentItineraryActive()}
-                            >
-                              Request
-                            </Button>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  {/* TODO @Julian: Discuss with Jason how to calculate Upsell Revenue.
-                      Potential factors to consider:
-                      - Additional room upgrades
-                      - Extra F&B spend above minimums
-                      - Add-on services
-                      - Premium venue selections */}
-                  {reservation.upsellRevenue && (
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Upsell Revenue</h4>
-                      <div className="flex items-center justify-between py-2 border-b">
-                        <div className="flex flex-col">
-                          <span className="text-sm">Room Upgrades</span>
-                          <span className="text-xs text-gray-500">Confirmed</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Badge 
-                            variant="outline" 
-                            className="bg-green-100 text-green-700 border-0"
-                          >
-                            Booked
-                          </Badge>
-                          <span className="font-medium">$1,200.00</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Total subsection */}
+                  {/* Totals section */}
                   <div className="pt-4 border-t-2">
-                    <div className="flex justify-between items-center">
-                      <h4 className="text-sm font-medium text-gray-700">Total</h4>
+                    {/* Contracted Revenue Subtotal */}
+                    <div className="flex justify-between items-center mb-4">
+                      <h4 className="text-sm font-medium text-gray-700">Contracted Revenue</h4>
                       <span className="text-lg font-semibold">
                         ${(() => {
-                          // Calculate room deposits
-                          const roomDeposits = (reservation.rooms?.length || 0) * 2500; // $2,500 per room
-
-                          // Calculate event deposits (25% of event price)
+                          // Calculate deposits section
+                          const roomDeposits = (reservation.rooms?.length || 0) * 2500 * 100; // Convert to cents
                           const eventDeposits = reservation.events?.reduce((sum, event) => {
                             const eventData = reservation.eventData?.[event.id];
                             return sum + ((eventData?.eventOfferPriceInCents || 0) * 0.25);
                           }, 0) || 0;
+                          const totalDeposits = roomDeposits + eventDeposits;
 
-                          // Calculate remaining room fees
-                          const remainingRoomFees = (reservation.rooms?.length || 0) * 2500; // $2,500 per room
-
-                          // Calculate extras total
+                          // Calculate remaining fees section (room fees + extras)
+                          const remainingRoomFees = (reservation.rooms?.length || 0) * 2500 * 100; // Convert to cents
                           const extrasTotal = getCurrentItineraryData().extras.reduce((sum, extra) => 
                             sum + extra.priceInCents, 0);
+                          const totalRemainingFees = remainingRoomFees + extrasTotal;
 
-                          // Calculate F&B minimums ($5,000 per event)
+                          // Calculate F&B minimums section
                           const fbMinimums = (reservation.events?.length || 0) * 5000 * 100; // Convert to cents
 
-                          // Sum all and convert to dollars
-                          const totalCents = roomDeposits * 100 + eventDeposits + remainingRoomFees * 100 + extrasTotal + fbMinimums;
-                          return (totalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                          // Sum all sections and convert to dollars
+                          const totalContractedCents = totalDeposits + totalRemainingFees + fbMinimums;
+                          return (totalContractedCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        })()}
+                      </span>
+                    </div>
+
+                    {/* Upsell Revenue */}
+                    {reservation.upsellRevenue && (
+                      <div className="flex justify-between items-center mb-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-700">Upsell Revenue</h4>
+                          <div className="text-xs text-gray-500 mt-1 pl-4">
+                            <div className="flex justify-between">
+                              <span>• Room Upgrade</span>
+                              <span className="ml-4">$75.00</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>• Spa Day</span>
+                              <span className="ml-4">$375.00</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>• Cabana Rental</span>
+                              <span className="ml-4">$800.00</span>
+                            </div>
+                          </div>
+                        </div>
+                        <span className="text-lg font-semibold">
+                          ${(1250).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Grand Total */}
+                    <div className="flex justify-between items-center pt-4 border-t">
+                      <h4 className="text-sm font-medium text-gray-700">Grand Total</h4>
+                      <span className="text-lg font-semibold">
+                        ${(() => {
+                          // Calculate Contracted Revenue
+                          // Deposits section
+                          const roomDeposits = (reservation.rooms?.length || 0) * 2500 * 100; // Convert to cents
+                          const eventDeposits = reservation.events?.reduce((sum, event) => {
+                            const eventData = reservation.eventData?.[event.id];
+                            return sum + ((eventData?.eventOfferPriceInCents || 0) * 0.25);
+                          }, 0) || 0;
+                          const totalDeposits = roomDeposits + eventDeposits;
+
+                          // Remaining fees section (room fees + extras)
+                          const remainingRoomFees = (reservation.rooms?.length || 0) * 2500 * 100; // Convert to cents
+                          const extrasTotal = getCurrentItineraryData().extras.reduce((sum, extra) => 
+                            sum + extra.priceInCents, 0);
+                          const totalRemainingFees = remainingRoomFees + extrasTotal;
+
+                          // F&B minimums section
+                          const fbMinimums = (reservation.events?.length || 0) * 5000 * 100; // Convert to cents
+
+                          // Total Contracted Revenue in cents
+                          const totalContractedCents = totalDeposits + totalRemainingFees + fbMinimums;
+
+                          // Upsell Revenue (fixed at $1,250 based on the line items)
+                          const upsellRevenueCents = 1250 * 100; // $1,250 in cents
+
+                          // Sum Contracted Revenue and Upsell Revenue
+                          const grandTotalCents = totalContractedCents + upsellRevenueCents;
+                          
+                          return (grandTotalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         })()}
                       </span>
                     </div>

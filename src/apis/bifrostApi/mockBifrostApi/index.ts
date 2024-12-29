@@ -50,6 +50,7 @@ import {
   mockRenderableItineraryOfferTwo,
   mockRenderableItineraryOfferThree,
 } from "@kismet_ai/foundation/dist/models/bifrost/ItineraryOffer/RenderableItineraryOffer/mockData";
+import { UpdateGroupReservationRequestDto, UpdateGroupReservationSuccessResponseDataDto } from "../models/UpdateGroupReservation.dto";
 
 export class MockBifrostApi implements BifrostApiInterface {
   apiState = {
@@ -276,6 +277,59 @@ export class MockBifrostApi implements BifrostApiInterface {
           endCalendarDate: { year: 2025, month: 7, day: 8 },
         },
       ],
+    };
+  }
+
+  //////////////////////////////////////////////////
+  // Group Reservation
+  //////////////////////////////////////////////////
+
+  async updateGroupReservation(
+    requestBody: UpdateGroupReservationRequestDto
+  ): Promise<UpdateGroupReservationSuccessResponseDataDto> {
+    // In a real implementation, this would update the database
+    // For now, we'll just return the updated data as if it was saved
+    const updatedReservation = {
+      title: requestBody.title || "",
+      isTransient: requestBody.isTransient || false,
+      status: requestBody.status || "pending",
+      accountId: requestBody.accountId,
+      contactHostId: requestBody.contactHostId,
+      assignedSalesAgentId: requestBody.assignedSalesAgentId,
+      qualificationStatus: requestBody.qualificationStatus || "pending",
+      leadScore: requestBody.leadScore || 0,
+      dateRange: requestBody.dateRange && {
+        start: requestBody.dateRange.start,
+        end: requestBody.dateRange.end,
+        type: requestBody.dateRange.type,
+        alternativeDates: requestBody.dateRange.alternativeDates,
+        decidingReason: requestBody.dateRange.decidingReason
+      },
+      publicNotes: requestBody.publicNotes || "",
+      privateNotes: requestBody.privateNotes || "",
+      itineraryName: requestBody.itineraryName,
+      itineraries: requestBody.itineraries?.map(itinerary => ({
+        ...itinerary,
+        rooms: itinerary.rooms || [],
+        events: itinerary.events || [],
+        eventData: Object.fromEntries(
+          Object.entries(itinerary.eventData || {}).map(([eventId, event]) => [
+            eventId,
+            {
+              ...event,
+              depositRequiredInCents: event.depositRequiredInCents,
+              depositDueDateISO: event.depositDueDateISO
+            }
+          ])
+        ),
+        addOns: itinerary.addOns || [],
+        extras: itinerary.extras || []
+      }))
+    };
+
+    return {
+      reservationId: requestBody.reservationId,
+      reservation: updatedReservation
     };
   }
 }

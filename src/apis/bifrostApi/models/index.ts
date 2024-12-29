@@ -28,6 +28,7 @@ import {
   GetBifrostFormItineraryOffersRequestDto,
   GetBifrostFormItineraryOffersSuccessResponseDataDto,
 } from "../bifrostApi/core/getBifrostFormItineraryOffers/GetBifrostFormItineraryOffers.dto";
+import { UpdateGroupReservationRequestDto, UpdateGroupReservationSuccessResponseDataDto } from "./UpdateGroupReservation.dto";
 
 export interface BifrostApiInterface {
   //////////////////////////////////////////////////
@@ -64,6 +65,14 @@ export interface BifrostApiInterface {
   selectBifrostItineraryOffer: (
     requestBody: SelectBifrostItineraryOfferRequestDto
   ) => Promise<SelectBifrostItineraryOfferSuccessResponseDataDto>;
+
+  //////////////////////////////////////////////////
+  // Group Reservation
+  //////////////////////////////////////////////////
+
+  updateGroupReservation: (
+    requestBody: UpdateGroupReservationRequestDto
+  ) => Promise<UpdateGroupReservationSuccessResponseDataDto>;
 
   //////////////////////////////////////////////////
   // Helpers

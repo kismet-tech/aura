@@ -21,10 +21,10 @@ export interface EventOfferCarouselItemSaaSProps {
   }) => void;
 }
 
-export function EventOfferCarouselItemSaaS({
+export const EventOfferCarouselItemSaaS: React.FC<EventOfferCarouselItemSaaSProps> = ({
   eventOffer,
   onClick,
-}: EventOfferCarouselItemSaaSProps) {
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const startDate = new Date(eventOffer.startDateTime);
   const endDate = new Date(eventOffer.endDateTime);
@@ -121,7 +121,7 @@ export function EventOfferCarouselItemSaaS({
   };
 
   return (
-    <div
+    <div 
       className={`${styles.container} w-[240px]`}
       onClick={(e) => handleClick(e)}
     >
@@ -211,4 +211,4 @@ export function EventOfferCarouselItemSaaS({
       </div>
     </div>
   );
-}
+};

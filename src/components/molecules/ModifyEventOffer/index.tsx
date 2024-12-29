@@ -39,6 +39,14 @@ interface EventData {
   visibility?: VisibilityType;
   publicNotes?: string;
   privateNotes?: string;
+  deposits?: Array<{
+    id: string;
+    name?: string;
+    amountInCents: number;
+    dueDateISO: string;
+    status: 'pending' | 'paid' | 'overdue';
+    note?: string;
+  }>;
 }
 
 export type { EventData };
@@ -69,15 +77,7 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
   const [showUnsavedDialog, setShowUnsavedDialog] = React.useState(false);
-
-  React.useEffect(() => {
-    if (initialData) {
-      setData(initialData);
-      setHasUnsavedChanges(false);
-    }
-  }, [initialData]);
-
-  const [selectedVenues, setSelectedVenues] = React.useState<string[]>(data.venues || []);
+  const [selectedVenues, setSelectedVenues] = React.useState<string[]>(initialData?.venues || []);
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const [componentStates, setComponentStates] = React.useState({
     status: defaultOpen,
@@ -89,6 +89,20 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
     publicNotes: defaultOpen,
     privateNotes: defaultOpen
   });
+
+  React.useEffect(() => {
+    if (initialData) {
+      setData(initialData);
+      setSelectedVenues(initialData.venues || []);
+      setHasUnsavedChanges(false);
+    }
+  }, [initialData]);
+
+  React.useEffect(() => {
+    if (selectedVenues !== data.venues) {
+      handleChange('venues', selectedVenues);
+    }
+  }, [selectedVenues, data.venues]);
 
   // Handle drawer close attempts
   const handleDrawerClose = (open: boolean) => {
@@ -119,16 +133,10 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
     setShowUnsavedDialog(false);
   };
 
-  React.useEffect(() => {
-    if (selectedVenues !== data.venues) {
-      handleChange('venues', selectedVenues);
-    }
-  }, [selectedVenues]);
-
-  const handleChange = (field: keyof EventData, value: EventData[keyof EventData]) => {
+  const handleChange = React.useCallback((field: keyof EventData, value: EventData[keyof EventData]) => {
     setHasUnsavedChanges(true);
     setData(prev => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
   const handleDelete = () => {
     onDelete?.();
@@ -137,12 +145,12 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
     onOpenChange(false);
   };
 
-  const handleComponentOpenChange = (component: keyof typeof componentStates, isOpen: boolean) => {
+  const handleComponentOpenChange = React.useCallback((component: keyof typeof componentStates, isOpen: boolean) => {
     setComponentStates(prev => ({
       ...prev,
       [component]: isOpen
     }));
-  };
+  }, []);
 
   // Reset unsaved changes when drawer closes
   React.useEffect(() => {

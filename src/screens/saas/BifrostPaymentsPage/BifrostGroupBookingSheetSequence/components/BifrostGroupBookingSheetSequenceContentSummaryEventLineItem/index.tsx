@@ -14,6 +14,14 @@ interface BifrostGroupBookingSheetSequenceContentSummaryEventLineItemProps {
     amount: number;
     label: string;
   };
+  deposits?: Array<{
+    id: string;
+    name?: string;
+    amountInCents: number;
+    dueDateISO: string;
+    status: 'pending' | 'paid' | 'overdue';
+    note?: string;
+  }>;
   keyTerms?: string[];
   image?: string;
 }
@@ -25,9 +33,15 @@ export function BifrostGroupBookingSheetSequenceContentSummaryEventLineItem({
   time,
   capacity,
   price,
+  deposits = [],
   keyTerms = [],
   image = "https://placehold.co/48x48"
 }: BifrostGroupBookingSheetSequenceContentSummaryEventLineItemProps) {
+  const totalDepositAmount = deposits.reduce((sum, deposit) => sum + deposit.amountInCents, 0);
+  const nextDueDeposit = deposits
+    .filter(d => d.status === 'pending')
+    .sort((a, b) => new Date(a.dueDateISO).getTime() - new Date(b.dueDateISO).getTime())[0];
+
   return (
     <div className="space-y-2">
       <div className="flex gap-3">
@@ -50,11 +64,16 @@ export function BifrostGroupBookingSheetSequenceContentSummaryEventLineItem({
             <div className="text-sm">
               ${price.amount.toLocaleString()} {price.label}
             </div>
+            {nextDueDeposit && (
+              <div className="text-xs text-gray-500">
+                Next deposit: ${(nextDueDeposit.amountInCents / 100).toLocaleString()} due {new Date(nextDueDeposit.dueDateISO).toLocaleDateString()}
+              </div>
+            )}
           </div>
         </div>
       </div>
       
-      {keyTerms.length > 0 && (
+      {(keyTerms.length > 0 || deposits.length > 0) && (
         <div role="complementary" aria-label="Event Terms">
           <div className="flex items-center gap-1 text-sm font-medium mb-1">
             Event Terms
@@ -66,6 +85,13 @@ export function BifrostGroupBookingSheetSequenceContentSummaryEventLineItem({
             </div>
           </div>
           <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+            {deposits.map((deposit, index) => (
+              <li key={`deposit-${deposit.id}`}>
+                {deposit.name || `Deposit ${index + 1}`}: ${(deposit.amountInCents / 100).toLocaleString()} 
+                ({deposit.status}) due {new Date(deposit.dueDateISO).toLocaleDateString()}
+                {deposit.note && <span className="text-xs ml-1">({deposit.note})</span>}
+              </li>
+            ))}
             {keyTerms.map((term, index) => (
               <li key={`term-${index}`}>{term}</li>
             ))}
