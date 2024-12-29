@@ -2,20 +2,35 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ContactAvatar } from '@/components/atoms/ContactAvatar';
 import { ContactName } from '@/components/atoms/ContactName';
 import { ContactHoverCard } from '@/components/molecules/ContactHoverCard';
-import { FaChevronDown, FaChevronUp, FaPlus, FaSearch, FaPencilAlt } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaPlus, FaSearch, FaPencilAlt, FaCopy } from 'react-icons/fa';
 import { PlannerPrivateNotes } from '@/components/molecules/Planners/PlannerPrivateNotesSaaS';
 import { PlannerPublicNotes } from '@/components/molecules/Planners/PlannerPublicNotesSaaS';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shadcn/button";
 import { format } from "date-fns";
 import { DateRange as DayPickerDateRange } from "react-day-picker";
 import { DateRangePicker } from '@/components/atoms/DateRangePicker';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/shadcn/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/shadcn/dropdown-menu";
+import { ModifyEventOffer } from '@/components/molecules/ModifyEventOffer';
+import { EventOfferCarouselItemSaaS } from '@/components/atoms/EventOfferCarouselItemSaaS';
+import { RenderableItineraryEventOffer, HotelEventOfferStatus, VenueOfferPricingType } from "@kismet_ai/foundation";
+import { ExtraLineItem } from '@/components/atoms/ExtraLineItem';
 
 // The backend stores date ranges in the following format:
 // - start: string (ISO date) | undefined - The start date if known
 // - end: string (ISO date) | undefined - The end date if known
-// - type: 'firm' | 'flexible' | 'deciding' - The type of date range
 //   - firm: Dates are locked in
 //   - flexible: Primary dates set but alternatives possible
 //   - deciding: Still deciding on dates, with optional reason
@@ -70,6 +85,12 @@ interface GroupReservation {
   };
   publicNotes: string;
   privateNotes: string;
+  itineraryName?: string;
+  itineraries?: Array<{
+    id: string;
+    name: string;
+    isActive?: boolean;
+  }>;
   account?: {
     id: string;
     name: string;
@@ -82,6 +103,26 @@ interface GroupReservation {
     id: string;
     name: string;
   }>;
+  eventData?: Record<string, {
+    startDateTime: string;
+    endDateTime: string;
+    status: HotelEventOfferStatus;
+    numberOfGuests: number;
+    imageUrl: string;
+    isEventOfferPriceEnabled: boolean;
+    eventOfferPriceInCents: number;
+    venueOffers: Array<{
+      venueOfferId: string;
+      venueName: string;
+      pricingInfo: {
+        priceInCents: number;
+        pricingType: VenueOfferPricingType;
+      };
+    }>;
+    details: {
+      description: string;
+    };
+  }>;
   addOns?: Array<{
     id: string;
     name: string;
@@ -89,6 +130,8 @@ interface GroupReservation {
   extras?: Array<{
     id: string;
     name: string;
+    description?: string;
+    priceInCents: number;
   }>;
 }
 
@@ -195,7 +238,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
   const [showAccountSearch, setShowAccountSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [accountSearchValue, setAccountSearchValue] = useState("");
-  const [editingField, setEditingField] = useState<'email' | 'phone' | 'name' | 'title' | null>(null);
+  const [editingField, setEditingField] = useState<'email' | 'phone' | 'name' | 'title' | 'itinerary' | null>(null);
   const [editValue, setEditValue] = useState("");
   const [editLastName, setEditLastName] = useState("");
   const [isGroupReservationExpanded, setIsGroupReservationExpanded] = useState(false);
@@ -222,6 +265,8 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
   const [showEventsSection, setShowEventsSection] = useState(false);
   const [showAddOnsSection, setShowAddOnsSection] = useState(false);
   const [showExtrasSection, setShowExtrasSection] = useState(false);
+  const [showModifyEvent, setShowModifyEvent] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const groupReservationContentRef = useRef<HTMLDivElement>(null);
@@ -283,13 +328,15 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
     });
   };
 
-  const handleEdit = (field: 'email' | 'phone' | 'name' | 'title') => {
+  const handleEdit = (field: 'email' | 'phone' | 'name' | 'title' | 'itinerary') => {
     setEditingField(field);
     if (field === 'name') {
       setEditValue(contact?.firstName || '');
       setEditLastName(contact?.lastName || '');
     } else if (field === 'title') {
       setEditValue(reservation.title || '');
+    } else if (field === 'itinerary') {
+      setEditValue(reservation.itineraryName || 'Itinerary');
     } else {
       setEditValue(contact?.[field] || '');
     }
@@ -298,6 +345,46 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
   const handleSave = () => {
     if (editingField === 'title') {
       onReservationUpdate?.({ ...reservation, title: editValue });
+      setEditingField(null);
+      setEditValue("");
+    } else if (editingField === 'itinerary') {
+      if (!reservation.itineraries) {
+        // If no itineraries array exists, create it with the current one as active
+        const newItinerary = {
+          id: `${Date.now()}`, // Simple ID generation
+          name: `${reservation.itineraryName || 'Itinerary'} (copy)`,
+          isActive: false,
+        };
+        
+        onReservationUpdate?.({
+          ...reservation,
+          itineraries: [
+            { id: 'current', name: reservation.itineraryName || 'Itinerary', isActive: true },
+            newItinerary
+          ],
+        });
+      } else {
+        // Add new copy to existing itineraries, preserving active states
+        const newItinerary = {
+          id: `${Date.now()}`, // Simple ID generation
+          name: `${reservation.itineraryName || 'Itinerary'} (copy)`,
+          isActive: false,
+        };
+
+        // Ensure at least one itinerary is active
+        const hasActiveItinerary = reservation.itineraries.some(i => i.isActive);
+        const updatedItineraries = hasActiveItinerary 
+          ? reservation.itineraries 
+          : reservation.itineraries.map(i => ({
+              ...i,
+              isActive: i.name === reservation.itineraryName // Make current itinerary active if none are
+            }));
+        
+        onReservationUpdate?.({
+          ...reservation,
+          itineraries: [...updatedItineraries, newItinerary],
+        });
+      }
       setEditingField(null);
       setEditValue("");
     } else if (contact && editingField) {
@@ -485,6 +572,139 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
       ...reservation,
       dateRange: updatedDateRange
     });
+  };
+
+  const handleDuplicateItinerary = () => {
+    if (!reservation.itineraries) {
+      // If no itineraries array exists, create it with the current one as active
+      const currentItinerary = {
+        id: 'current',
+        name: reservation.itineraryName || 'Itinerary',
+        isActive: true
+      };
+      
+      const newItinerary = {
+        id: `${Date.now()}`,
+        name: `${reservation.itineraryName || 'Itinerary'} (copy)`,
+        isActive: false
+      };
+      
+      onReservationUpdate?.({
+        ...reservation,
+        itineraryName: newItinerary.name, // Switch to new itinerary
+        itineraries: [currentItinerary, newItinerary]
+      });
+    } else {
+      // Add new copy to existing itineraries
+      const newItinerary = {
+        id: `${Date.now()}`,
+        name: `${reservation.itineraryName || 'Itinerary'} (copy)`,
+        isActive: false
+      };
+      
+      // Keep current itinerary active, but switch to viewing the new one
+      const updatedItineraries = reservation.itineraries.map(itinerary => ({
+        ...itinerary,
+        isActive: itinerary.name === reservation.itineraryName
+      }));
+      
+      onReservationUpdate?.({
+        ...reservation,
+        itineraryName: newItinerary.name, // Switch to new itinerary
+        itineraries: [...updatedItineraries, newItinerary]
+      });
+    }
+  };
+
+  const handleAddItinerary = () => {
+    if (!reservation.itineraries) {
+      // If no itineraries array exists, create it with the current one as active and add a new one
+      const currentItinerary = {
+        id: 'current',
+        name: reservation.itineraryName || 'Itinerary',
+        isActive: true
+      };
+
+      const newItinerary = {
+        id: `${Date.now()}`,
+        name: 'Itinerary (2)',
+        isActive: false
+      };
+
+      onReservationUpdate?.({
+        ...reservation,
+        itineraryName: newItinerary.name, // Switch to new itinerary
+        itineraries: [currentItinerary, newItinerary]
+      });
+    } else {
+      // Find the highest number in existing "Itinerary (n)" names
+      const numbers = reservation.itineraries
+        .map(i => {
+          const match = i.name.match(/Itinerary \((\d+)\)/);
+          return match ? parseInt(match[1]) : 1;
+        });
+      const nextNumber = Math.max(...numbers, 1) + 1;
+
+      const newItinerary = {
+        id: `${Date.now()}`,
+        name: `Itinerary (${nextNumber})`,
+        isActive: false
+      };
+      
+      onReservationUpdate?.({
+        ...reservation,
+        itineraryName: newItinerary.name, // Switch to new itinerary
+        itineraries: [...reservation.itineraries, newItinerary]
+      });
+    }
+  };
+
+  // Helper to determine if we should show the active/set active badge
+  const shouldShowActiveBadge = () => {
+    if (!reservation.itineraries || reservation.itineraries.length <= 1) {
+      return false; // Don't show any badge for single itinerary
+    }
+    return true;
+  };
+
+  // Helper to determine if current itinerary is active
+  const isCurrentItineraryActive = () => {
+    if (!reservation.itineraries) return true; // Single itinerary case
+    if (reservation.itineraries.length === 1) return true; // Single itinerary case
+    
+    const currentItinerary = reservation.itineraries.find(i => i.name === reservation.itineraryName);
+    if (!currentItinerary) return false;
+    
+    return currentItinerary.isActive === true;
+  };
+
+  const handleSetActiveItinerary = () => {
+    if (!reservation.itineraries) return;
+    
+    // Update all itineraries to be inactive except the current one
+    const updatedItineraries = reservation.itineraries.map(itinerary => ({
+      ...itinerary,
+      isActive: itinerary.name === reservation.itineraryName
+    }));
+
+    onReservationUpdate?.({
+      ...reservation,
+      itineraries: updatedItineraries
+    });
+  };
+
+  const handleDeleteEvent = (eventId: string) => {
+    // TODO: Implement backend deletion
+    const updatedEvents = reservation.events?.filter(event => event.id !== eventId) || [];
+    const { [eventId]: deletedEvent, ...updatedEventData } = reservation.eventData || {};
+    
+    onReservationUpdate?.({
+      ...reservation,
+      events: updatedEvents,
+      eventData: updatedEventData
+    });
+    
+    setShowModifyEvent(false);
   };
 
   return (
@@ -1150,24 +1370,146 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         {/* Itinerary Section */}
         <section className="bg-white rounded-lg shadow p-6 mt-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Itinerary</h2>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-3">
+              {editingField === 'itinerary' ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={(e) => setEditValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Enter itinerary name"
+                    className="px-2 py-1 border rounded text-lg font-semibold"
+                    autoFocus
+                  />
+                  <button
+                    onClick={handleSave}
+                    className="text-green-600 hover:text-green-800 text-sm"
+                  >
+                    save
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 group">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="flex items-center gap-2 hover:text-gray-600">
+                        <span className="text-lg font-semibold">{reservation.itineraryName || 'Itinerary'}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-[200px]">
+                      {reservation.itineraries?.map((itinerary) => (
+                        <DropdownMenuItem
+                          key={itinerary.id}
+                          className="flex items-center justify-between"
+                          onSelect={() => {
+                            // TODO: Implement itinerary switch functionality
+                            onReservationUpdate?.({
+                              ...reservation,
+                              itineraryName: itinerary.name
+                            });
+                          }}
+                        >
+                          <span>{itinerary.name}</span>
+                          {itinerary.isActive && (
+                            <Badge variant="outline" className="ml-2 bg-green-100 text-green-700 border-0">
+                              Active
+                            </Badge>
+                          )}
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuItem
+                        onSelect={() => {
+                          handleEdit('itinerary');
+                          setEditValue(reservation.itineraryName || 'Itinerary');
+                        }}
+                        className="text-blue-600"
+                      >
+                        Rename
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={handleDuplicateItinerary}
+                          className="hover:text-gray-600"
+                        >
+                          <FaCopy className="text-gray-400 hover:text-gray-600 text-sm" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Duplicate</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={handleAddItinerary}
+                          className="hover:text-gray-600"
+                        >
+                          <FaPlus className="text-gray-400 hover:text-gray-600 text-sm" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Add New</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  {shouldShowActiveBadge() && (
+                    isCurrentItineraryActive() ? (
+                      <Badge variant="outline" className="ml-2 bg-green-100 text-green-700 border-0">
+                        Active
+                      </Badge>
+                    ) : (
+                      <button
+                        onClick={handleSetActiveItinerary}
+                        className="ml-2"
+                      >
+                        <Badge variant="outline" className="bg-gray-100 text-gray-700 border-0 cursor-pointer hover:bg-gray-200">
+                          Set Active
+                        </Badge>
+                      </button>
+                    )
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2 bg-white hover:bg-white border-black ml-2"
+                    onClick={() => {
+                      // TODO: Implement Kismet generation functionality
+                    }}
+                  >
+                    <img src={KISMET_LOGO_URL} alt="Kismet" className="w-4 h-4" />
+                    Generate with Kismet
+                  </Button>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
               <Button
-                className="text-sm px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 text-gray-700"
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 bg-white hover:bg-white"
                 onClick={() => {
-                  // TODO: Implement alternate itinerary functionality
+                  // TODO: Implement get link functionality
                 }}
               >
-                Add Alternate Itinerary
+                Get Link
               </Button>
               <Button
-                className="text-sm px-3 py-1 rounded border border-gray-300 bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2"
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 bg-white hover:bg-white"
                 onClick={() => {
-                  // TODO: Implement Kismet generation functionality
+                  // TODO: Implement send to host functionality
                 }}
               >
-                <img src={KISMET_LOGO_URL} alt="Kismet" className="w-4 h-4" />
-                Generate with Kismet
+                Send to Host
               </Button>
             </div>
           </div>
@@ -1216,10 +1558,10 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
                 </div>
               ) : (
                 <button 
-                  onClick={() => setShowAddOnsSection(true)}
-                  className="text-blue-600 hover:text-blue-800"
+                  className="text-gray-400 hover:text-gray-400 cursor-not-allowed flex items-center gap-1"
                 >
                   Add Add-Ons
+                  <span className="text-xs text-gray-400">(coming soon)</span>
                 </button>
               )}
             </div>
@@ -1247,7 +1589,7 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         {((reservation.rooms?.length ?? 0) > 0 || showRoomsSection) && (
           <section className="bg-white rounded-lg shadow p-6 mt-4">
             <h2 className="text-lg font-semibold mb-4">Rooms</h2>
-            <p className="text-gray-600 italic">Coming Soon</p>
+            <p className="text-gray-600 italic">Use Existing Rooms SaaS Tool</p>
           </section>
         )}
 
@@ -1255,9 +1597,171 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         {((reservation.events?.length ?? 0) > 0 || showEventsSection) && (
           <section className="bg-white rounded-lg shadow p-6 mt-4">
             <h2 className="text-lg font-semibold mb-4">Events</h2>
-            <p className="text-gray-600 italic">Coming Soon</p>
+            <div className="flex flex-wrap gap-4">
+              {reservation.events?.map((event) => {
+                // Find the full event data in the reservation
+                const eventData = reservation.eventData?.[event.id];
+                if (!eventData) return null;
+
+                const renderableEvent: RenderableItineraryEventOffer = {
+                  eventOfferId: event.id,
+                  eventOfferName: event.name,
+                  startDateTime: eventData.startDateTime,
+                  endDateTime: eventData.endDateTime,
+                  status: eventData.status as HotelEventOfferStatus,
+                  numberOfGuests: eventData.numberOfGuests,
+                  imageUrl: eventData.imageUrl,
+                  isEventOfferPriceEnabled: eventData.isEventOfferPriceEnabled,
+                  eventOfferPriceInCents: eventData.eventOfferPriceInCents,
+                  venueOffers: eventData.venueOffers.map(venue => ({
+                    ...venue,
+                    pricingInfo: {
+                      ...venue.pricingInfo,
+                      pricingType: venue.pricingInfo.pricingType as VenueOfferPricingType
+                    }
+                  })),
+                  details: eventData.details
+                };
+
+                return (
+                  <EventOfferCarouselItemSaaS
+                    key={event.id}
+                    eventOffer={renderableEvent}
+                    onClick={({ eventOfferId, section }) => {
+                      setSelectedEventId(eventOfferId);
+                      setShowModifyEvent(true);
+                    }}
+                  />
+                );
+              })}
+              <div 
+                className="flex-none w-[240px] h-[120px] cursor-pointer"
+                onClick={() => {
+                  setSelectedEventId(null);
+                  setShowModifyEvent(true);
+                }}
+              >
+                <div className="h-full flex flex-col items-center justify-center gap-2 border rounded-lg hover:bg-gray-50">
+                  <FaPlus className="h-6 w-6 text-gray-400" />
+                  <span className="text-sm text-gray-600">Add Event</span>
+                </div>
+              </div>
+            </div>
           </section>
         )}
+
+        {/* Event Offer Drawer */}
+        <ModifyEventOffer
+          open={showModifyEvent}
+          onOpenChange={setShowModifyEvent}
+          defaultOpen={!selectedEventId}
+          initialData={selectedEventId ? {
+            name: reservation.events?.find(e => e.id === selectedEventId)?.name,
+            status: reservation.eventData?.[selectedEventId]?.status,
+            startDate: reservation.eventData?.[selectedEventId]?.startDateTime ? new Date(reservation.eventData[selectedEventId].startDateTime) : undefined,
+            endDate: reservation.eventData?.[selectedEventId]?.endDateTime ? new Date(reservation.eventData[selectedEventId].endDateTime) : undefined,
+            guestCount: reservation.eventData?.[selectedEventId]?.numberOfGuests,
+            venues: reservation.eventData?.[selectedEventId]?.venueOffers.map(v => v.venueName),
+            priceInCents: reservation.eventData?.[selectedEventId]?.eventOfferPriceInCents,
+            publicNotes: reservation.eventData?.[selectedEventId]?.details.description,
+            // Add additional fields for complete event data
+            undiscountedPriceInCents: reservation.eventData?.[selectedEventId]?.venueOffers[0]?.pricingInfo.priceInCents,
+            paymentSplitType: 'SINGLE_PAYER', // Default value since it's not stored in eventData
+            visibility: 'PUBLIC' // Default value since it's not stored in eventData
+          } : {
+            // Default values for a new event
+            name: '',
+            status: HotelEventOfferStatus.PROSPECT,
+            startDate: null,
+            endDate: null,
+            guestCount: 0,
+            venues: [],
+            paymentSplitType: 'SINGLE_PAYER',
+            visibility: 'PUBLIC'
+          }}
+          onSave={(event) => {
+            if (selectedEventId) {
+              // Update existing event
+              const updatedEventData = {
+                ...reservation.eventData?.[selectedEventId],
+                eventOfferName: event.name || 'Untitled Event',
+                startDateTime: event.startDate?.toISOString() || new Date().toISOString(),
+                endDateTime: event.endDate?.toISOString() || new Date().toISOString(),
+                status: event.status || HotelEventOfferStatus.PROSPECT,
+                numberOfGuests: event.guestCount || 0,
+                imageUrl: 'https://via.placeholder.com/300x200',
+                isEventOfferPriceEnabled: !!event.priceInCents,
+                eventOfferPriceInCents: event.priceInCents || 0,
+                venueOffers: event.venues?.map(venue => ({
+                  venueOfferId: `venue-${Date.now()}-${venue}`,
+                  venueName: venue,
+                  pricingInfo: {
+                    priceInCents: event.priceInCents || 0,
+                    pricingType: VenueOfferPricingType.FIXED_COST
+                  }
+                })) || [],
+                details: {
+                  description: event.publicNotes || ''
+                }
+              };
+
+              onReservationUpdate?.({
+                ...reservation,
+                events: reservation.events?.map(e => 
+                  e.id === selectedEventId 
+                    ? { ...e, name: event.name || 'Untitled Event' }
+                    : e
+                ) || [],
+                eventData: {
+                  ...(reservation.eventData || {}),
+                  [selectedEventId]: updatedEventData
+                }
+              });
+            } else {
+              // Create a new event with a unique ID
+              const eventId = `event-${Date.now()}`;
+
+              // Create the full event data
+              const eventData = {
+                eventOfferName: event.name || 'Untitled Event',
+                startDateTime: event.startDate?.toISOString() || new Date().toISOString(),
+                endDateTime: event.endDate?.toISOString() || new Date().toISOString(),
+                status: event.status || HotelEventOfferStatus.PROSPECT,
+                numberOfGuests: event.guestCount || 0,
+                imageUrl: 'https://via.placeholder.com/300x200',
+                isEventOfferPriceEnabled: !!event.priceInCents,
+                eventOfferPriceInCents: event.priceInCents || 0,
+                venueOffers: event.venues?.map(venue => ({
+                  venueOfferId: `venue-${Date.now()}-${venue}`,
+                  venueName: venue,
+                  pricingInfo: {
+                    priceInCents: event.priceInCents || 0,
+                    pricingType: VenueOfferPricingType.FIXED_COST
+                  }
+                })) || [],
+                details: {
+                  description: event.publicNotes || ''
+                }
+              };
+
+              // Update the reservation with both the event reference and full data
+              onReservationUpdate?.({
+                ...reservation,
+                events: [...(reservation.events || []), {
+                  id: eventId,
+                  name: event.name || 'New Event'
+                }],
+                eventData: {
+                  ...(reservation.eventData || {}),
+                  [eventId]: eventData
+                }
+              });
+            }
+
+            setShowModifyEvent(false);
+          }}
+          onDelete={selectedEventId ? () => handleDeleteEvent(selectedEventId) : undefined}
+        />
 
         {/* Add-Ons Section */}
         {((reservation.addOns?.length ?? 0) > 0 || showAddOnsSection) && (
@@ -1271,9 +1775,97 @@ const UserSessionBody: React.FC<UserSessionBodyProps> = ({
         {((reservation.extras?.length ?? 0) > 0 || showExtrasSection) && (
           <section className="bg-white rounded-lg shadow p-6 mt-4">
             <h2 className="text-lg font-semibold mb-4">Extras</h2>
-            <p className="text-gray-600 italic">Coming Soon</p>
+            <div className="space-y-4">
+              {/* List existing extras */}
+              {reservation.extras?.map((extra) => (
+                <ExtraLineItem
+                  key={extra.id}
+                  name={extra.name}
+                  description={extra.description}
+                  priceInCents={extra.priceInCents}
+                  onDelete={() => {
+                    onReservationUpdate?.({
+                      ...reservation,
+                      extras: reservation.extras?.filter(e => e.id !== extra.id)
+                    });
+                  }}
+                />
+              ))}
+
+              {/* Add new extra form */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const form = e.target as HTMLFormElement;
+                  const nameInput = form.elements.namedItem('extraName') as HTMLInputElement;
+                  const descriptionInput = form.elements.namedItem('extraDescription') as HTMLInputElement;
+                  const priceInput = form.elements.namedItem('extraPrice') as HTMLInputElement;
+                  
+                  if (nameInput.value && priceInput.value) {
+                    const newExtra = {
+                      id: `extra-${Date.now()}`,
+                      name: nameInput.value,
+                      description: descriptionInput.value || undefined,
+                      priceInCents: Math.max(0, Math.round(parseFloat(priceInput.value) * 100))
+                    };
+
+                    onReservationUpdate?.({
+                      ...reservation,
+                      extras: [...(reservation.extras || []), newExtra]
+                    });
+
+                    // Reset form
+                    form.reset();
+                  }
+                }}
+                className="space-y-3"
+              >
+                <div className="flex gap-4">
+                  <input
+                    type="text"
+                    name="extraName"
+                    placeholder="Name"
+                    className="flex-grow px-3 py-2 border rounded text-sm"
+                    required
+                  />
+                  <div className="relative w-32">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2">$</span>
+                    <input
+                      type="number"
+                      name="extraPrice"
+                      placeholder="0.00"
+                      step="0.01"
+                      min="0"
+                      className="w-full pl-7 pr-3 py-2 border rounded text-sm"
+                      defaultValue="0.00"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <input
+                    type="text"
+                    name="extraDescription"
+                    placeholder="Description (optional)"
+                    className="flex-grow px-3 py-2 border rounded text-sm"
+                  />
+                  <Button type="submit" variant="outline" size="sm" className="w-32">
+                    Add Extra
+                  </Button>
+                </div>
+              </form>
+            </div>
           </section>
         )}
+
+        <div className="mt-4">
+          <hr className="border-gray-200" />
+
+          {/* Financials Section */}
+          <section className="bg-white rounded-lg shadow p-6 mt-4">
+            <h2 className="text-lg font-semibold mb-4">Financials</h2>
+          </section>
+        </div>
       </div>
     </div>
   );

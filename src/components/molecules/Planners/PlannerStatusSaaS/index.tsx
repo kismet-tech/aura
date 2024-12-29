@@ -1,18 +1,16 @@
 import React from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-
-
-export type EventStatus = 'PROSPECT' | 'TENTATIVE' | 'DEFINITIVE' | 'CLOSED' | 'LOST' | 'WAITLISTED';
+import { HotelEventOfferStatus } from "@kismet_ai/foundation";
 
 export interface PlannerStatusProps {
-  initialStatus?: EventStatus;
-  onChange?: (status: EventStatus) => void;
+  initialStatus?: HotelEventOfferStatus;
+  onChange?: (status: HotelEventOfferStatus) => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-const STATUS_COLORS: Record<EventStatus, { bg: string; text: string }> = {
+const STATUS_COLORS: Record<HotelEventOfferStatus, { bg: string; text: string }> = {
   PROSPECT: { bg: 'bg-blue-100', text: 'text-blue-700' },
   TENTATIVE: { bg: 'bg-yellow-100', text: 'text-yellow-700' },
   DEFINITIVE: { bg: 'bg-green-100', text: 'text-green-700' },
@@ -22,13 +20,13 @@ const STATUS_COLORS: Record<EventStatus, { bg: string; text: string }> = {
 };
 
 export const PlannerStatus: React.FC<PlannerStatusProps> = ({
-  initialStatus = 'PROSPECT',
+  initialStatus = HotelEventOfferStatus.PROSPECT,
   onChange,
   open: controlledOpen,
   onOpenChange
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(controlledOpen ?? true);
-  const [status, setStatus] = React.useState<EventStatus>(initialStatus);
+  const [status, setStatus] = React.useState<HotelEventOfferStatus>(initialStatus);
 
   React.useEffect(() => {
     if (controlledOpen !== undefined) {
@@ -41,7 +39,7 @@ export const PlannerStatus: React.FC<PlannerStatusProps> = ({
     onOpenChange?.(newExpanded);
   };
 
-  const handleStatusChange = (newStatus: EventStatus) => {
+  const handleStatusChange = (newStatus: HotelEventOfferStatus) => {
     setStatus(newStatus);
     onChange?.(newStatus);
   };
@@ -61,7 +59,10 @@ export const PlannerStatus: React.FC<PlannerStatusProps> = ({
     <div className="space-y-4">
       <div 
         className="flex flex-col cursor-pointer"
-        onClick={() => handleExpandedChange(!isExpanded)}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleExpandedChange(!isExpanded);
+        }}
       >
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium text-gray-900">Status:</h3>
@@ -93,12 +94,12 @@ export const PlannerStatus: React.FC<PlannerStatusProps> = ({
               key={statusKey}
               variant="outline"
               className={`
-                ${STATUS_COLORS[statusKey as EventStatus].bg} 
-                ${STATUS_COLORS[statusKey as EventStatus].text} 
+                ${STATUS_COLORS[statusKey as HotelEventOfferStatus].bg} 
+                ${STATUS_COLORS[statusKey as HotelEventOfferStatus].text} 
                 border-0 cursor-pointer
                 ${status === statusKey ? 'ring-2 ring-offset-2' : ''}
               `}
-              onClick={() => handleStatusChange(statusKey as EventStatus)}
+              onClick={() => handleStatusChange(statusKey as HotelEventOfferStatus)}
             >
               {statusKey.charAt(0).toUpperCase() + statusKey.slice(1).toLowerCase()}
             </Badge>

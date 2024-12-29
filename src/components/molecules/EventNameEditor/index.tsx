@@ -19,17 +19,28 @@ export const EventNameEditor: React.FC<EventNameEditorProps> = ({
     onChange?.(name);
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    setName(newName);
+    onChange?.(newName);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+    onChange?.(name);
+  };
+
   if (isEditing) {
     return (
       <form onSubmit={handleSubmit} className="mb-6">
         <input
           type="text"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleNameChange}
           className="text-2xl font-semibold w-full border-b border-gray-200 focus:border-gray-900 focus:outline-none pb-1"
           placeholder="Enter event name"
           autoFocus
-          onBlur={() => setIsEditing(false)}
+          onBlur={handleBlur}
         />
       </form>
     );

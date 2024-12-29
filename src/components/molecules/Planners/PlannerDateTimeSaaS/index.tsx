@@ -1,5 +1,5 @@
 import React from 'react';
-import { format, addMinutes, subMinutes } from 'date-fns';
+import { format, addMinutes, subMinutes, parse, set } from 'date-fns';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export interface PlannerDateTimeProps {
@@ -37,7 +37,7 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
   initialTeardownMinutes = null,
   onChange,
   minDate = new Date(),
-  maxDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+  maxDate = new Date(new Date().setFullYear(new Date().getFullYear() + 10)),
   open: controlledOpen,
   onOpenChange
 }) => {
@@ -63,7 +63,7 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
   const summaryText = React.useMemo(() => {
     if (!startDate || !endDate) return 'No date/time selected';
     const dateStr = format(startDate, 'EEEE, MMMM d');
-    const timeStr = `${format(startDate, 'h')}-${format(endDate, 'ha').toLowerCase()}`;
+    const timeStr = `${format(startDate, 'h:mm a')}-${format(endDate, 'h:mm a')}`;
     return `${dateStr}, ${timeStr}`;
   }, [startDate, endDate]);
 
@@ -81,7 +81,13 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
   // Format date for input value
   const formatDateForInput = (date: Date | null) => {
     if (!date) return '';
-    return format(date, "yyyy-MM-dd'T'HH:mm");
+    return format(date, 'yyyy-MM-dd');
+  };
+
+  // Format time for input value
+  const formatTimeForInput = (date: Date | null) => {
+    if (!date) return '';
+    return format(date, 'HH:mm');
   };
 
   // Validate dates
@@ -100,16 +106,67 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
       return false;
     }
     if (maxDate && effectiveEndDate > maxDate) {
-      setError('End time (including teardown) cannot be more than a year in the future');
+      setError('End time (including teardown) cannot be more than ten years in the future');
       return false;
     }
     setError('');
     return true;
   };
 
-  // Handle start date change
-  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newStartDate = e.target.value ? new Date(e.target.value) : null;
+  // Handle date change
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dateStr = e.target.value;
+    if (!dateStr) {
+      setStartDate(null);
+      setEndDate(null);
+      onChange?.({ 
+        startDate: null, 
+        endDate: null,
+        setupMinutes,
+        teardownMinutes
+      });
+      return;
+    }
+
+    const newDate = parse(dateStr, 'yyyy-MM-dd', new Date());
+    const newStartDate = startDate ? 
+      set(newDate, { 
+        hours: startDate.getHours(), 
+        minutes: startDate.getMinutes() 
+      }) : 
+      set(newDate, { hours: 9, minutes: 0 });
+    
+    const newEndDate = endDate ? 
+      set(newDate, { 
+        hours: endDate.getHours(), 
+        minutes: endDate.getMinutes() 
+      }) : 
+      set(newDate, { hours: 17, minutes: 0 });
+
+    if (validateDates(newStartDate, newEndDate)) {
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      onChange?.({ 
+        startDate: newStartDate, 
+        endDate: newEndDate,
+        setupMinutes,
+        teardownMinutes,
+        setupStartDate: newStartDate && setupMinutes && setupMinutes > 0 ? subMinutes(newStartDate, setupMinutes) : undefined,
+        teardownEndDate: newEndDate && teardownMinutes && teardownMinutes > 0 ? addMinutes(newEndDate, teardownMinutes) : undefined
+      });
+    }
+  };
+
+  // Handle start time change
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!startDate) return;
+    
+    const timeStr = e.target.value;
+    if (!timeStr) return;
+
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const newStartDate = set(startDate, { hours, minutes });
+    
     if (validateDates(newStartDate, endDate)) {
       setStartDate(newStartDate);
       onChange?.({ 
@@ -123,9 +180,16 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
     }
   };
 
-  // Handle end date change
-  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newEndDate = e.target.value ? new Date(e.target.value) : null;
+  // Handle end time change
+  const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!endDate) return;
+    
+    const timeStr = e.target.value;
+    if (!timeStr) return;
+
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const newEndDate = set(endDate, { hours, minutes });
+    
     if (validateDates(startDate, newEndDate)) {
       setEndDate(newEndDate);
       onChange?.({ 
@@ -186,7 +250,10 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
     <div className="space-y-4">
       <div 
         className="flex flex-col cursor-pointer"
-        onClick={() => handleExpandedChange(!isExpanded)}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleExpandedChange(!isExpanded);
+        }}
       >
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium text-gray-900">Date/Time:</h3>
@@ -209,34 +276,48 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
       {isExpanded && (
         <>
           <div className="grid grid-cols-1 gap-4">
-            {/* Event Start */}
+            {/* Event Date */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                Event Start
+                Event Date
               </label>
               <input
-                type="datetime-local"
+                type="date"
                 value={formatDateForInput(startDate)}
-                onChange={handleStartDateChange}
+                onChange={handleDateChange}
                 min={formatDateForInput(minDate)}
                 max={formatDateForInput(maxDate)}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
-            {/* Event End */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Event End
-              </label>
-              <input
-                type="datetime-local"
-                value={formatDateForInput(endDate)}
-                onChange={handleEndDateChange}
-                min={formatDateForInput(startDate || minDate)}
-                max={formatDateForInput(maxDate)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
+            {/* Event Times */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Start Time */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Start Time
+                </label>
+                <input
+                  type="time"
+                  value={formatTimeForInput(startDate)}
+                  onChange={handleStartTimeChange}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+
+              {/* End Time */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  End Time
+                </label>
+                <input
+                  type="time"
+                  value={formatTimeForInput(endDate)}
+                  onChange={handleEndTimeChange}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
             </div>
 
             {/* Setup and Teardown Times */}
@@ -256,7 +337,7 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
                 />
                 {setupStartDate && (
                   <div className="text-sm text-gray-500">
-                    Setup starts: {format(setupStartDate, 'HH:mm')}
+                    Setup starts: {format(setupStartDate, 'h:mm a')}
                   </div>
                 )}
               </div>
@@ -276,7 +357,7 @@ export const PlannerDateTime: React.FC<PlannerDateTimeProps> = ({
                 />
                 {teardownEndDate && (
                   <div className="text-sm text-gray-500">
-                    Teardown ends: {format(teardownEndDate, 'HH:mm')}
+                    Teardown ends: {format(teardownEndDate, 'h:mm a')}
                   </div>
                 )}
               </div>

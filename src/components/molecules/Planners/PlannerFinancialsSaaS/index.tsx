@@ -208,7 +208,10 @@ export const PlannerFinancials: React.FC<PlannerFinancialsProps> = ({
     <div className="space-y-4">
       <div 
         className="flex flex-col cursor-pointer"
-        onClick={() => handleExpandedChange(!isExpanded)}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleExpandedChange(!isExpanded);
+        }}
       >
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium text-gray-900">Financials:</h3>

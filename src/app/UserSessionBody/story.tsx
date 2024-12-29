@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import UserSessionBody from './page';
 import { useArgs } from '@storybook/preview-api';
+import { HotelEventOfferStatus, VenueOfferPricingType, RenderableItineraryEventOffer } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof UserSessionBody> = {
   title: 'Pages/UserSessionBody',
@@ -127,6 +128,105 @@ const meta: Meta<typeof UserSessionBody> = {
 export default meta;
 type Story = StoryObj<typeof UserSessionBody>;
 
+const sampleEvents = [
+  {
+    id: "event-123",
+    name: "Opening Keynote",
+    eventOfferName: "Opening Keynote"
+  },
+  {
+    id: "event-124",
+    name: "Networking Reception",
+    eventOfferName: "Networking Reception"
+  }
+];
+
+type EventDataType = {
+  startDateTime: string;
+  endDateTime: string;
+  status: HotelEventOfferStatus;
+  numberOfGuests: number;
+  imageUrl: string;
+  isEventOfferPriceEnabled: boolean;
+  eventOfferPriceInCents: number;
+  eventOfferName: string;
+  venueOffers: Array<{
+    venueOfferId: string;
+    venueName: string;
+    pricingInfo: {
+      priceInCents: number;
+      pricingType: VenueOfferPricingType;
+    };
+  }>;
+  details: {
+    description: string;
+  };
+};
+
+const sampleEventData: Record<string, EventDataType> = {
+  "event-123": {
+    startDateTime: "2024-07-15T09:00:00Z",
+    endDateTime: "2024-07-15T12:00:00Z",
+    status: HotelEventOfferStatus.PROSPECT,
+    numberOfGuests: 500,
+    imageUrl: "https://via.placeholder.com/300x200",
+    isEventOfferPriceEnabled: true,
+    eventOfferPriceInCents: 250000,
+    eventOfferName: "Opening Keynote",
+    venueOffers: [
+      {
+        venueOfferId: "venue-1",
+        venueName: "Grand Ballroom",
+        pricingInfo: {
+          priceInCents: 250000,
+          pricingType: VenueOfferPricingType.FIXED_COST
+        }
+      }
+    ],
+    details: {
+      description: "Opening keynote session with industry leaders"
+    }
+  },
+  "event-124": {
+    startDateTime: "2024-07-15T18:00:00Z",
+    endDateTime: "2024-07-15T21:00:00Z",
+    status: HotelEventOfferStatus.PROSPECT,
+    numberOfGuests: 300,
+    imageUrl: "https://via.placeholder.com/300x200",
+    isEventOfferPriceEnabled: true,
+    eventOfferPriceInCents: 150000,
+    eventOfferName: "Networking Reception",
+    venueOffers: [
+      {
+        venueOfferId: "venue-2",
+        venueName: "Garden Terrace",
+        pricingInfo: {
+          priceInCents: 150000,
+          pricingType: VenueOfferPricingType.FIXED_COST
+        }
+      }
+    ],
+    details: {
+      description: "Evening networking reception with refreshments"
+    }
+  }
+};
+
+// Transform eventData to match ModifyEventOffer's expected format
+const transformEventData = (eventId: string, data: EventDataType) => ({
+  name: data.eventOfferName,
+  status: data.status,
+  startDate: new Date(data.startDateTime),
+  endDate: new Date(data.endDateTime),
+  guestCount: data.numberOfGuests,
+  venues: data.venueOffers.map((v: { venueName: string }) => v.venueName),
+  priceInCents: data.eventOfferPriceInCents,
+  undiscountedPriceInCents: data.venueOffers[0]?.pricingInfo.priceInCents,
+  paymentSplitType: 'SINGLE_PAYER' as const,
+  visibility: 'PUBLIC' as const,
+  publicNotes: data.details.description,
+});
+
 const defaultData = {
   reservation: {
     title: "Summer Conference 2024",
@@ -149,6 +249,12 @@ const defaultData = {
       id: "tc123",
       name: "TechCorp International",
     },
+    events: sampleEvents,
+    eventData: sampleEventData,
+    getEventInitialData: (eventId: string) => {
+      const data = sampleEventData[eventId];
+      return data ? transformEventData(eventId, data) : undefined;
+    }
   },
   contact: {
     firstName: "Michael",
@@ -248,119 +354,19 @@ export const NoDateRange: Story = {
     reservation: {
       ...defaultData.reservation,
       dateRange: {
-        type: 'flexible',
+        type: "flexible" as const,
       },
     },
   },
 };
 
-export const MinimalContact: Story = {
-  args: {
-    ...defaultData,
-    contact: {
-      firstName: "Jane",
-      lastName: "Smith",
-      imageUrl: "https://i.pravatar.cc/300?u=jane_smith",
-      email: "jane.smith@example.com",
-    },
-  },
-};
-
-export const FromScratch: Story = {
-  args: {
-    reservation: {
-      title: "",
-      status: "pending",
-      leadScore: 0,
-      qualificationStatus: 'pending',
-      intentScore: 0,
-      assignedSalesAgent: {
-        name: "Unassigned",
-        id: "",
-      },
-      publicNotes: "",
-      privateNotes: "",
-      isTransient: false,
-    },
-    existingContacts: defaultData.existingContacts,
-  },
-};
-
-export const WithoutAccount: Story = {
+export const NoEvents: Story = {
   args: {
     ...defaultData,
     reservation: {
       ...defaultData.reservation,
-      account: undefined,
-    },
-  },
-};
-
-export const WithTripleseatIntegration: Story = {
-  args: {
-    ...defaultData,
-    reservation: {
-      ...defaultData.reservation,
-      isLinkedTripleseat: true,
-      tripleseatUrl: 'https://tripleseat.com/events/123456',
-    },
-  },
-};
-
-export const TransientBooking: Story = {
-  args: {
-    ...defaultData,
-    reservation: {
-      ...defaultData.reservation,
-      isTransient: true,
-      title: "Transient Stay Example",
-    },
-  },
-};
-
-export const FlexibleDates: Story = {
-  args: {
-    ...defaultData,
-    reservation: {
-      ...defaultData.reservation,
-      dateRange: {
-        start: "2024-07-15",
-        end: "2024-07-20",
-        type: "flexible",
-        alternativeDates: [
-          {
-            start: "2024-08-12",
-            end: "2024-08-17",
-          },
-          {
-            start: "2024-09-09",
-            end: "2024-09-14",
-          }
-        ],
-      },
-    },
-  },
-};
-
-export const StillDecidingDates: Story = {
-  args: {
-    ...defaultData,
-    reservation: {
-      ...defaultData.reservation,
-      dateRange: {
-        type: 'deciding',
-        decidingReason: 'Budget constraints and venue availability need to be confirmed with stakeholders',
-      },
-    },
-  },
-};
-
-export const WithItinerary: Story = {
-  args: {
-    ...defaultData,
-    reservation: {
-      ...defaultData.reservation,
-      // Add any specific itinerary-related fields here when they're implemented
+      events: [],
+      eventData: {},
     },
   },
 };

@@ -29,6 +29,16 @@ export function EventOfferCarouselItemSaaS({
   const startDate = new Date(eventOffer.startDateTime);
   const endDate = new Date(eventOffer.endDateTime);
 
+  // Track the current event ID to ensure we're handling the right event
+  const currentEventId = React.useRef(eventOffer.eventOfferId);
+  const isAnimating = React.useRef(false);
+  const lastClickTime = React.useRef<number>(0);
+
+  // Update currentEventId if eventOffer changes
+  React.useEffect(() => {
+    currentEventId.current = eventOffer.eventOfferId;
+  }, [eventOffer.eventOfferId]);
+
   const formatDateTime = (start: Date, end: Date) => {
     const formatDate = (date: Date) => {
       return date.toLocaleDateString("en-US", {
@@ -83,12 +93,36 @@ export function EventOfferCarouselItemSaaS({
     section?: 'date' | 'venue' | 'guests' | 'price' | 'details'
   ) => {
     e.stopPropagation();
-    onClick({ eventOfferId: eventOffer.eventOfferId, section });
+    
+    // Prevent double clicks
+    const now = Date.now();
+    if (now - lastClickTime.current < 300) {
+      return;
+    }
+    lastClickTime.current = now;
+
+    // If we're animating, don't process the click
+    if (isAnimating.current) {
+      return;
+    }
+
+    // Capture the current event ID at click time
+    const eventId = currentEventId.current;
+    onClick({ eventOfferId: eventId, section });
+  };
+
+  const handleExpandClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    isAnimating.current = true;
+    setIsExpanded(!isExpanded);
+    setTimeout(() => {
+      isAnimating.current = false;
+    }, 300); // Match the animation duration
   };
 
   return (
     <div
-      className={styles.container}
+      className={`${styles.container} w-[240px]`}
       onClick={(e) => handleClick(e)}
     >
       <div className={styles.imageContainer}>
@@ -111,10 +145,7 @@ export function EventOfferCarouselItemSaaS({
               isExpanded ? styles.chevronExpanded : ""
             }`}
             strokeWidth={1.5}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsExpanded(!isExpanded);
-            }}
+            onClick={handleExpandClick}
           />
         </div>
 
