@@ -10,15 +10,21 @@ import {
 } from "lucide-react";
 import styles from "./styles.module.css";
 
-export interface EventOfferCarouselItemProps {
+export interface EventOfferCarouselItemSaaSProps {
   eventOffer: RenderableItineraryEventOffer;
-  onClick: ({ eventOfferId }: { eventOfferId: string }) => void;
+  onClick: ({ 
+    eventOfferId, 
+    section 
+  }: { 
+    eventOfferId: string;
+    section?: 'date' | 'venue' | 'guests' | 'price' | 'details';
+  }) => void;
 }
 
-export function EventOfferCarouselItem({
+export function EventOfferCarouselItemSaaS({
   eventOffer,
   onClick,
-}: EventOfferCarouselItemProps) {
+}: EventOfferCarouselItemSaaSProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const startDate = new Date(eventOffer.startDateTime);
   const endDate = new Date(eventOffer.endDateTime);
@@ -72,10 +78,18 @@ export function EventOfferCarouselItem({
       .join(", ");
   };
 
+  const handleClick = (
+    e: React.MouseEvent,
+    section?: 'date' | 'venue' | 'guests' | 'price' | 'details'
+  ) => {
+    e.stopPropagation();
+    onClick({ eventOfferId: eventOffer.eventOfferId, section });
+  };
+
   return (
     <div
       className={styles.container}
-      onClick={() => onClick({ eventOfferId: eventOffer.eventOfferId })}
+      onClick={(e) => handleClick(e)}
     >
       <div className={styles.imageContainer}>
         <img
@@ -105,7 +119,10 @@ export function EventOfferCarouselItem({
         </div>
 
         <div className={styles.detailsContainer}>
-          <div className={styles.detailRow}>
+          <div 
+            className={styles.detailRow}
+            onClick={(e) => handleClick(e, 'date')}
+          >
             <CalendarDaysIcon className={styles.detailIcon} strokeWidth={1.5} />
             <span className={styles.detailText}>
               {formatDateTime(startDate, endDate)}
@@ -117,21 +134,30 @@ export function EventOfferCarouselItem({
               isExpanded ? styles.expanded : ""
             }`}
           >
-            <div className={styles.detailRow}>
+            <div 
+              className={styles.detailRow}
+              onClick={(e) => handleClick(e, 'venue')}
+            >
               <HomeIcon className={styles.detailIcon} strokeWidth={1.5} />
               <span className={styles.detailText}>
                 {getVenueNames(eventOffer)}
               </span>
             </div>
 
-            <div className={styles.detailRow}>
+            <div 
+              className={styles.detailRow}
+              onClick={(e) => handleClick(e, 'guests')}
+            >
               <Users2Icon className={styles.detailIcon} strokeWidth={1.5} />
               <span className={styles.detailText}>
                 {eventOffer.numberOfGuests} guests
               </span>
             </div>
 
-            <div className={styles.detailRow}>
+            <div 
+              className={styles.detailRow}
+              onClick={(e) => handleClick(e, 'price')}
+            >
               <HandCoins className={styles.detailIcon} strokeWidth={1.5} />
               <span className={styles.detailText}>
                 {eventOffer.isEventOfferPriceEnabled
@@ -141,7 +167,10 @@ export function EventOfferCarouselItem({
             </div>
 
             {(eventOffer.details as any).description && (
-              <div className={styles.detailRow}>
+              <div 
+                className={styles.detailRow}
+                onClick={(e) => handleClick(e, 'details')}
+              >
                 <FileTextIcon className={styles.detailIcon} strokeWidth={1.5} />
                 <span className={styles.detailText}>Details</span>
               </div>
