@@ -1,9 +1,12 @@
 import React from "react";
-import { BifrostGroupBookingCheckoutCart, RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
+import {
+  BifrostGroupBookingCheckoutCart,
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
 import { BifrostGroupBookingSheetSequenceCartContent } from "../../components/BifrostGroupBookingSheetSequenceCartContent";
 import { BifrostGroupBookingSheetSequenceStage } from "../..";
 
-interface BifrostGroupBookingSheetSequenceCartStageProps {
+export interface BifrostGroupBookingSheetSequenceCartStageProps {
   setLocalStage: (stage: BifrostGroupBookingSheetSequenceStage) => void;
   cart: BifrostGroupBookingCheckoutCart;
   selectedRoom?: RenderableItineraryHotelRoomOffer | null;

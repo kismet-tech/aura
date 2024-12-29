@@ -1,20 +1,25 @@
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
-import * as PopoverPrimitive from "@radix-ui/react-popover"
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-import { cn } from "../../lib/utils"
-import { Popover, PopoverContent, PopoverTrigger } from "../shadcn/popover"
-import { Button } from "../shadcn/button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./command"
-
+import { cn } from "../../lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "../shadcn/popover";
+import { Button } from "../shadcn/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "./command";
 
 interface ComboboxProps {
-  options: { value: string; label: string }[]
-  value?: string
-  onValueChange?: (value: string) => void
-  placeholder?: string
-  emptyText?: string
-  searchPlaceholder?: string
+  options: { value: string; label: string }[];
+  value?: string;
+  onValueChange?: (value: string) => void;
+  placeholder?: string;
+  emptyText?: string;
+  searchPlaceholder?: string;
 }
 
 export function Combobox({
@@ -25,7 +30,7 @@ export function Combobox({
   emptyText = "No results found.",
   searchPlaceholder = "Search...",
 }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -51,9 +56,9 @@ export function Combobox({
               <CommandItem
                 key={option.value}
                 value={option.value}
-                onSelect={(currentValue) => {
-                  onValueChange?.(currentValue === value ? "" : currentValue)
-                  setOpen(false)
+                onSelect={(currentValue: any) => {
+                  onValueChange?.(currentValue === value ? "" : currentValue);
+                  setOpen(false);
                 }}
               >
                 <Check
@@ -69,5 +74,5 @@ export function Combobox({
         </Command>
       </PopoverContent>
     </Popover>
-  )
-} 
+  );
+}
