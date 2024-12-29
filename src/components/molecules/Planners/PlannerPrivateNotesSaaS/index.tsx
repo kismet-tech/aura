@@ -5,6 +5,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/shadcn/pop
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/shadcn/avatar";
 import { Button } from "@/components/shadcn/button";
 
+const flashKeyframes = `
+  @keyframes flash {
+    0%, 100% { background-color: transparent; }
+    50% { background-color: rgba(239, 68, 68, 0.1); }
+  }
+`;
+
 export interface User {
   id: string;
   name: string;
@@ -32,8 +39,14 @@ export const PlannerPrivateNotes: React.FC<PlannerPrivateNotesProps> = ({
   const [showMentions, setShowMentions] = React.useState(false);
   const [mentionSearch, setMentionSearch] = React.useState('');
   const [cursorPosition, setCursorPosition] = React.useState(0);
+  const [hasNewNote, setHasNewNote] = React.useState(false);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [draftNote, setDraftNote] = React.useState('');
+
+  // Calculate note count
+  const noteCount = React.useMemo(() => {
+    return notes.split('\n').filter(note => note.trim()).length;
+  }, [notes]);
 
   React.useEffect(() => {
     if (controlledOpen !== undefined) {
@@ -143,6 +156,8 @@ export const PlannerPrivateNotes: React.FC<PlannerPrivateNotesProps> = ({
     const newNotes = notes ? `${notes}\n${draftNote}` : draftNote;
     setNotes(newNotes);
     setDraftNote('');
+    setHasNewNote(true);
+    setTimeout(() => setHasNewNote(false), 2000);
     
     const mentionedUsers = extractMentionedUsers(newNotes);
     onChange?.(newNotes, mentionedUsers);
@@ -156,13 +171,19 @@ export const PlannerPrivateNotes: React.FC<PlannerPrivateNotesProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className={`space-y-4 ${hasNewNote ? 'animate-flash' : ''}`}>
+      <style>{flashKeyframes}</style>
       <div 
         className="flex flex-col cursor-pointer"
         onClick={() => handleExpandedChange(!isExpanded)}
       >
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium text-gray-900">Private Notes:</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-medium text-gray-900">Private Notes</h3>
+            <span className="text-sm text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+              {noteCount}
+            </span>
+          </div>
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600">{isExpanded ? 'close' : 'edit'}</span>
             {isExpanded ? (
@@ -185,6 +206,19 @@ export const PlannerPrivateNotes: React.FC<PlannerPrivateNotesProps> = ({
 
       {isExpanded && (
         <div className="space-y-4">
+          {notes && (
+            <div className="space-y-2 p-3 bg-gray-50 rounded-md">
+              {notes.split('\n').map((note, index) => (
+                <div key={index} className="flex items-start gap-2">
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage src={users[0]?.avatarUrl} alt={users[0]?.name} />
+                    <AvatarFallback>{users[0]?.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm text-gray-600">{note}</span>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="relative">
             <div className="flex items-start gap-2">
               <Avatar className="h-6 w-6">
@@ -246,20 +280,6 @@ export const PlannerPrivateNotes: React.FC<PlannerPrivateNotesProps> = ({
               </div>
             )}
           </div>
-        </div>
-      )}
-
-      {notes && (
-        <div className="space-y-2 p-3 bg-gray-50 rounded-md">
-          {notes.split('\n').map((note, index) => (
-            <div key={index} className="flex items-start gap-2">
-              <Avatar className="h-6 w-6">
-                <AvatarImage src={users[0]?.avatarUrl} alt={users[0]?.name} />
-                <AvatarFallback>{users[0]?.name?.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <span className="text-sm text-gray-600">{note}</span>
-            </div>
-          ))}
         </div>
       )}
     </div>

@@ -10,10 +10,39 @@ const meta: Meta<typeof UserSessionBody> = {
     layout: 'fullscreen',
   },
   render: function Render(args) {
-    const [{ contact }, updateArgs] = useArgs();
+    const [{ contact, reservation }, updateArgs] = useArgs();
 
     const handleContactUpdate = (updatedContact: NonNullable<typeof contact>) => {
       updateArgs({ contact: updatedContact });
+    };
+
+    const handleReservationUpdate = (updatedReservation: typeof reservation) => {
+      updateArgs({ reservation: updatedReservation });
+    };
+
+    const handleAccountSelect = (accountId: string) => {
+      const selectedAccount = defaultData.existingAccounts.find(a => a.id === accountId);
+      if (selectedAccount) {
+        updateArgs({
+          reservation: {
+            ...reservation,
+            account: selectedAccount
+          }
+        });
+      }
+    };
+
+    const handleCreateAccount = (accountName: string) => {
+      const newAccount = {
+        id: `new-${Date.now()}`,
+        name: accountName,
+      };
+      updateArgs({
+        reservation: {
+          ...reservation,
+          account: newAccount
+        }
+      });
     };
 
     const handleHostSelect = (contactId: string) => {
@@ -64,6 +93,31 @@ const meta: Meta<typeof UserSessionBody> = {
           onHostSelect={handleHostSelect}
           onCreateHost={handleCreateHost}
           onContactUpdate={handleContactUpdate}
+          onReservationUpdate={handleReservationUpdate}
+          onAccountSelect={handleAccountSelect}
+          onCreateAccount={handleCreateAccount}
+          onSalesAgentSelect={(agentId) => {
+            const selectedAgent = defaultData.salesAgents.find(a => a.id === agentId);
+            if (selectedAgent) {
+              updateArgs({
+                reservation: {
+                  ...reservation,
+                  assignedSalesAgent: {
+                    id: selectedAgent.id,
+                    name: selectedAgent.name,
+                  },
+                },
+              });
+            }
+          }}
+          currentUser={{
+            id: "1",
+            name: "Sarah Johnson",
+            email: "sarah.j@example.com",
+            avatarUrl: "https://i.pravatar.cc/300?u=sarah.j@example.com"
+          }}
+          existingAccounts={defaultData.existingAccounts}
+          salesAgents={defaultData.salesAgents}
         />
       </div>
     );
@@ -80,9 +134,10 @@ const defaultData = {
     dateRange: {
       start: "2024-07-15",
       end: "2024-07-20",
+      type: "firm" as const,
     },
-    leadScore: 85,
-    isQualified: true,
+    leadScore: 3,
+    qualificationStatus: 'qualified' as const,
     intentScore: 90,
     assignedSalesAgent: {
       name: "Sarah Johnson",
@@ -90,6 +145,10 @@ const defaultData = {
     },
     publicNotes: "Large tech conference with specific AV requirements. Attendees coming from multiple countries.",
     privateNotes: "VIP client - ensure premium service. Previous successful events in 2022 and 2023.",
+    account: {
+      id: "tc123",
+      name: "TechCorp International",
+    },
   },
   contact: {
     firstName: "Michael",
@@ -130,6 +189,40 @@ const defaultData = {
       phone: "+1 (555) 345-6789",
     },
   ],
+  existingAccounts: [
+    {
+      id: "tc123",
+      name: "TechCorp International",
+    },
+    {
+      id: "gc456",
+      name: "Global Conferences Ltd",
+    },
+    {
+      id: "ie789",
+      name: "Innovation Events Co",
+    },
+  ],
+  salesAgents: [
+    {
+      id: "sj123",
+      name: "Sarah Johnson",
+      email: "sarah.j@example.com",
+      avatarUrl: "https://i.pravatar.cc/300?u=sarah.j@example.com",
+    },
+    {
+      id: "mk456",
+      name: "Mike Kim",
+      email: "mike.k@example.com",
+      avatarUrl: "https://i.pravatar.cc/300?u=mike.k@example.com",
+    },
+    {
+      id: "al789",
+      name: "Amy Lee",
+      email: "amy.l@example.com",
+      avatarUrl: "https://i.pravatar.cc/300?u=amy.l@example.com",
+    },
+  ],
 };
 
 export const Default: Story = {
@@ -142,22 +235,21 @@ export const PendingReservation: Story = {
     reservation: {
       ...defaultData.reservation,
       status: "pending",
-      leadScore: 60,
-      isQualified: false,
+      leadScore: 2,
+      qualificationStatus: 'pending',
       intentScore: 45,
     },
   },
 };
 
-export const CancelledReservation: Story = {
+export const NoDateRange: Story = {
   args: {
     ...defaultData,
     reservation: {
       ...defaultData.reservation,
-      status: "cancelled",
-      leadScore: 0,
-      isQualified: false,
-      intentScore: 0,
+      dateRange: {
+        type: 'flexible',
+      },
     },
   },
 };
@@ -180,7 +272,7 @@ export const FromScratch: Story = {
       title: "",
       status: "pending",
       leadScore: 0,
-      isQualified: false,
+      qualificationStatus: 'pending',
       intentScore: 0,
       assignedSalesAgent: {
         name: "Unassigned",
@@ -188,7 +280,90 @@ export const FromScratch: Story = {
       },
       publicNotes: "",
       privateNotes: "",
+      isTransient: false,
     },
     existingContacts: defaultData.existingContacts,
   },
-}; 
+};
+
+export const WithoutAccount: Story = {
+  args: {
+    ...defaultData,
+    reservation: {
+      ...defaultData.reservation,
+      account: undefined,
+    },
+  },
+};
+
+export const WithTripleseatIntegration: Story = {
+  args: {
+    ...defaultData,
+    reservation: {
+      ...defaultData.reservation,
+      isLinkedTripleseat: true,
+      tripleseatUrl: 'https://tripleseat.com/events/123456',
+    },
+  },
+};
+
+export const TransientBooking: Story = {
+  args: {
+    ...defaultData,
+    reservation: {
+      ...defaultData.reservation,
+      isTransient: true,
+      title: "Transient Stay Example",
+    },
+  },
+};
+
+export const FlexibleDates: Story = {
+  args: {
+    ...defaultData,
+    reservation: {
+      ...defaultData.reservation,
+      dateRange: {
+        start: "2024-07-15",
+        end: "2024-07-20",
+        type: "flexible",
+        alternativeDates: [
+          {
+            start: "2024-08-12",
+            end: "2024-08-17",
+          },
+          {
+            start: "2024-09-09",
+            end: "2024-09-14",
+          }
+        ],
+      },
+    },
+  },
+};
+
+export const StillDecidingDates: Story = {
+  args: {
+    ...defaultData,
+    reservation: {
+      ...defaultData.reservation,
+      dateRange: {
+        type: 'deciding',
+        decidingReason: 'Budget constraints and venue availability need to be confirmed with stakeholders',
+      },
+    },
+  },
+};
+
+export const WithItinerary: Story = {
+  args: {
+    ...defaultData,
+    reservation: {
+      ...defaultData.reservation,
+      // Add any specific itinerary-related fields here when they're implemented
+    },
+  },
+};
+
+// Update the default data to ensure the Kismet logo is available
+const KISMET_LOGO_URL = 'https://storage.googleapis.com/kismet-assets/logoKismet.png'; 
