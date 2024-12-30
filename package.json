@@ -1,6 +1,6 @@
 {
   "name": "@kismet_ai/aura",
-  "version": "1.0.181",
+  "version": "1.0.183",
   "scripts": {
     "clean": "rm -rf dist && rm -rf .cache",
     "build": "tsc -b",
