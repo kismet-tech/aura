@@ -1,16 +1,16 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { PlannerStatus } from './index';
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { PlannerStatus } from "./index";
 
-const meta = {
-  title: 'Molecules/Planners/PlannerStatus',
+const meta: Meta<typeof PlannerStatus> = {
+  title: "Molecules/Planners/PlannerStatus",
   component: PlannerStatus,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '400px', padding: '2rem' }}>
+      <div style={{ width: "400px", padding: "2rem" }}>
         <Story />
       </div>
     ),
@@ -26,6 +26,6 @@ export const Default: Story = {
 
 export const WithInitialStatus: Story = {
   args: {
-    initialStatus: 'DEFINITIVE',
+    initialStatus: "DEFINITIVE",
   },
-}; 
+};

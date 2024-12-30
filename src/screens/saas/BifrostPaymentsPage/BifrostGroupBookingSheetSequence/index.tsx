@@ -1,14 +1,15 @@
+import React, { useState, useEffect } from "react";
 import { SheetContent } from "@/components/shadcn/sheet";
-import React, { useState } from "react";
-import { BifrostGroupBookingSheetSequenceCartStage } from "./stages/BifrostGroupBookingSheetSequenceCartStage";
-import { BifrostGroupBookingSheetSequenceSummaryStage } from "./stages/BifrostGroupBookingSheetSequenceSummaryStage";
-import { BifrostGroupBookingSheetSequenceCheckoutStage } from "./stages/BifrostGroupBookingSheetSequenceCheckoutStage";
-import { BifrostGroupBookingSheetSequenceHeader } from "./components/BifrostGroupBookingSheetSequenceHeader";
-import { BifrostGroupBookingSheetSequenceFooter } from "./components/BifrostGroupBookingSheetSequenceFooter";
 import {
   BifrostGroupBookingCheckoutCart,
   BifrostGroupBookingCheckoutSessionSummary,
+  RenderableItineraryHotelRoomOffer,
 } from "@kismet_ai/foundation";
+import { BifrostGroupBookingSheetSequenceCartStage } from "./stages/BifrostGroupBookingSheetSequenceCartStage";
+import { BifrostGroupBookingSheetSequenceSummaryStage } from "./stages/BifrostGroupBookingSheetSequenceSummaryStage";
+import { BifrostGroupBookingSheetSequenceCheckoutStage } from "./stages/BifrostGroupBookingSheetSequenceCheckoutStage";
+import { BifrostGroupBookingSheetSequenceFooter } from "./components/BifrostGroupBookingSheetSequenceFooter";
+import { BifrostGroupBookingSheetSequenceHeader } from "./components/BifrostGroupBookingSheetSequenceHeader";
 
 export enum BifrostGroupBookingSheetSequenceStage {
   CART = "CART",
@@ -16,11 +17,12 @@ export enum BifrostGroupBookingSheetSequenceStage {
   CHECKOUT = "CHECKOUT",
 }
 
-export interface BifrostGroupBookingSheetSequenceProps {
+interface BifrostGroupBookingSheetSequenceProps {
   stage?: BifrostGroupBookingSheetSequenceStage;
   cart: BifrostGroupBookingCheckoutCart;
   getStripePaymentIntent: ({}: {}) => Promise<{ clientSecret: string }>;
   checkoutSessionSummary: BifrostGroupBookingCheckoutSessionSummary;
+  selectedRoom?: RenderableItineraryHotelRoomOffer | null;
 }
 
 export function BifrostGroupBookingSheetSequence({
@@ -28,13 +30,22 @@ export function BifrostGroupBookingSheetSequence({
   cart,
   getStripePaymentIntent,
   checkoutSessionSummary,
+  selectedRoom,
 }: BifrostGroupBookingSheetSequenceProps) {
   const [localStage, setLocalStage] = useState(
     stage || BifrostGroupBookingSheetSequenceStage.CART
   );
   const [isValid, setIsValid] = useState(true);
 
+
+  useEffect(() => {
+    if (selectedRoom) {
+      setLocalStage(BifrostGroupBookingSheetSequenceStage.CART);
+    }
+  }, [selectedRoom]);
+
   const itineraryName = "Smith Wedding";
+
 
   const getStageTitle = (stage: BifrostGroupBookingSheetSequenceStage) => {
     switch (stage) {
@@ -61,6 +72,7 @@ export function BifrostGroupBookingSheetSequence({
       <BifrostGroupBookingSheetSequenceCartStage
         setLocalStage={setLocalStage}
         cart={cart}
+        selectedRoom={selectedRoom}
       />
     );
   } else if (localStage === BifrostGroupBookingSheetSequenceStage.SUMMARY) {
@@ -78,56 +90,19 @@ export function BifrostGroupBookingSheetSequence({
   }
 
   return (
-    <SheetContent>
-      {/* 
-        Main container using flex layout:
-        - flex-col: Stack children vertically
-        - h-full: Take up full height of sheet
-      */}
-      <div className="flex flex-col h-full">
-        {/* 
-          Header Component:
-          - Fixed at top
-          - Shows current stage title
-          - Handles back navigation between stages
-          - Extends edge-to-edge with negative margins
-        */}
-        <BifrostGroupBookingSheetSequenceHeader
-          title={getStageTitle(localStage)}
-          onClickBack={() => {
-            if (localStage === BifrostGroupBookingSheetSequenceStage.SUMMARY) {
-              setLocalStage(BifrostGroupBookingSheetSequenceStage.CART);
-            } else if (
-              localStage === BifrostGroupBookingSheetSequenceStage.CHECKOUT
-            ) {
-              setLocalStage(BifrostGroupBookingSheetSequenceStage.SUMMARY);
-            }
-          }}
-        />
-
-        {/* 
-          Content Area:
-          - flex-1: Takes up remaining space between header and footer
-          - overflow-auto: Enables scrolling if content is too tall
-          - pt-5: Adds spacing below header
-        */}
-        <div className="flex-1 overflow-auto pt-5">{renderedStage}</div>
-
-        {/* 
-          Footer Component:
-          - Fixed at bottom
-          - Shows total amount (only in SUMMARY and CHECKOUT stages)
-          - Contains action button (Continue/Checkout)
-          - Extends edge-to-edge with negative margins
-          - Button takes up 50% width on right side
-        */}
-        <BifrostGroupBookingSheetSequenceFooter
-          onClickContinue={handleContinue}
-          isValid={isValid}
-          currentStage={localStage}
-          cart={cart}
-        />
+    <SheetContent className="w-[600px] sm:w-[540px] p-0">
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold">{getStageTitle(localStage)}</h2>
+        </div>
+        {renderedStage}
       </div>
+      <BifrostGroupBookingSheetSequenceFooter
+        cart={cart}
+        onClickContinue={handleContinue}
+        isValid={isValid}
+        currentStage={localStage}
+      />
     </SheetContent>
   );
 }

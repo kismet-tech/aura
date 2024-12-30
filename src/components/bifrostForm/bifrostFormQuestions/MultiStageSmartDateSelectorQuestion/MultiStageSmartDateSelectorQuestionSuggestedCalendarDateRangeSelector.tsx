@@ -1,11 +1,11 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/shadcn/toggle-group";
-import { renderCalendarDateRange } from "@/utilities/dates/render/renderCalendarDateRange";
-import { RenderedCalendarDateRangeJoinFormat } from "@/utilities/dates/render/RenderedCalendarDateRangeJoinFormat";
 import {
   CalendarDateRange,
+  renderCalendarDateRange,
   RenderedCalendarDateFormat,
+  RenderedCalendarDateRangeJoinFormat,
 } from "@kismet_ai/foundation";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 
 export interface MultiStageSmartDateSelectorQuestionSuggestedCalendarDateRangeSelectorProps {
   suggestedCalendarDateRanges?: CalendarDateRange[];

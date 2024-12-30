@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaPencilAlt } from 'react-icons/fa';
-import Modal from 'react-modal';
+import React, { useState } from "react";
+import {
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaPencilAlt,
+} from "react-icons/fa";
+import Modal from "react-modal";
+import { ComponentType } from "react";
+
+const ReactModal = Modal as unknown as ComponentType<ReactModal["props"]>;
 
 export interface ContactInfo {
   phone?: string;
@@ -16,7 +24,7 @@ export interface ContactContactInfoProps {
 
 export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
   info,
-  className = '',
+  className = "",
   onEdit,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +57,10 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
         {info.phone && (
           <div className="flex items-center gap-2 text-sm">
             <FaPhone className="text-gray-500" />
-            <a href={`tel:${info.phone}`} className="text-gray-700 hover:text-blue-500">
+            <a
+              href={`tel:${info.phone}`}
+              className="text-gray-700 hover:text-blue-500"
+            >
               {info.phone}
             </a>
           </div>
@@ -57,7 +68,10 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
         {info.email && (
           <div className="flex items-center gap-2 text-sm">
             <FaEnvelope className="text-gray-500" />
-            <a href={`mailto:${info.email}`} className="text-gray-700 hover:text-blue-500">
+            <a
+              href={`mailto:${info.email}`}
+              className="text-gray-700 hover:text-blue-500"
+            >
               {info.email}
             </a>
           </div>
@@ -65,8 +79,10 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
         {info.address && (
           <div className="flex items-center gap-2 text-sm">
             <FaMapMarkerAlt className="text-gray-500" />
-            <a 
-              href={`https://maps.google.com/?q=${encodeURIComponent(info.address)}`}
+            <a
+              href={`https://maps.google.com/?q=${encodeURIComponent(
+                info.address
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-700 hover:text-blue-500"
@@ -77,7 +93,7 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
         )}
       </div>
 
-      <Modal
+      <ReactModal
         isOpen={isModalOpen}
         onRequestClose={handleCancel}
         className="max-w-md mx-auto mt-20 bg-white p-6 rounded-lg shadow-xl"
@@ -113,8 +129,10 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
                 <FaPhone className="text-gray-500" />
                 <input
                   type="tel"
-                  value={editedInfo.phone || ''}
-                  onChange={(e) => setEditedInfo({ ...editedInfo, phone: e.target.value })}
+                  value={editedInfo.phone || ""}
+                  onChange={(e) =>
+                    setEditedInfo({ ...editedInfo, phone: e.target.value })
+                  }
                   className="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="+1 (555) 123-4567"
                 />
@@ -127,8 +145,10 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
                 <FaEnvelope className="text-gray-500" />
                 <input
                   type="email"
-                  value={editedInfo.email || ''}
-                  onChange={(e) => setEditedInfo({ ...editedInfo, email: e.target.value })}
+                  value={editedInfo.email || ""}
+                  onChange={(e) =>
+                    setEditedInfo({ ...editedInfo, email: e.target.value })
+                  }
                   className="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="example@email.com"
                 />
@@ -136,13 +156,17 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Address</label>
+              <label className="text-sm font-medium text-gray-700">
+                Address
+              </label>
               <div className="flex items-center gap-2">
                 <FaMapMarkerAlt className="text-gray-500" />
                 <input
                   type="text"
-                  value={editedInfo.address || ''}
-                  onChange={(e) => setEditedInfo({ ...editedInfo, address: e.target.value })}
+                  value={editedInfo.address || ""}
+                  onChange={(e) =>
+                    setEditedInfo({ ...editedInfo, address: e.target.value })
+                  }
                   className="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="123 Main St, City, State ZIP"
                 />
@@ -165,7 +189,7 @@ export const ContactContactInfo: React.FC<ContactContactInfoProps> = ({
             </button>
           </div>
         </div>
-      </Modal>
+      </ReactModal>
     </>
   );
-}; 
+};

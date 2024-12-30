@@ -1,6 +1,8 @@
 import { KismetSectionHeader } from "@/components/atoms/KismetSectionHeader";
-import { RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
-import { renderDiscount } from "@/utilities/entities/itineraryOffer/renderDiscount";
+import {
+  RenderableItineraryHotelRoomOffer,
+  renderDiscount,
+} from "@kismet_ai/foundation";
 import React from "react";
 
 export interface ItineraryOfferRoomEditorRoomDetailsProps {

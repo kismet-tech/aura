@@ -22,13 +22,17 @@ const mockRoom = {
   hotelRoomOfferId: "1",
   hotelRoomName: "Deluxe King Room",
   hotelRoomDescription: "A spacious room with a king-sized bed",
-  verboseHotelRoomDescription: "Luxurious room featuring a king-sized bed, modern amenities, and city views",
+  verboseHotelRoomDescription:
+    "Luxurious room featuring a king-sized bed, modern amenities, and city views",
   offerPriceInCents: 20000,
   listPriceInCents: 25000,
   countOffered: 2,
   countAvailable: 5,
-  heroImageUrl: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3",
-  hotelRoomImageUrls: ["https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3"],
+  heroImageUrl:
+    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3",
+  hotelRoomImageUrls: [
+    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3",
+  ],
   hotelRoomId: "room-1",
 };
 
@@ -53,8 +57,8 @@ const mockCheckoutSessionSummary = {
 
 export const Default: Story = {
   args: {
-    selectedRoom: mockRoom,
+    selectedRoom: mockRoom as any,
     checkoutSessionSummary: mockCheckoutSessionSummary,
     onAddToCart: () => console.log("Add to cart clicked"),
   },
-}; 
+};

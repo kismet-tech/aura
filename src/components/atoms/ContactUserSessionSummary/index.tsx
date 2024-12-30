@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
+import React, { useState } from "react";
+import Modal from "react-modal";
+import { ComponentType } from "react";
+
+const ReactModal = Modal as unknown as ComponentType<ReactModal["props"]>;
 
 // Backend Note:
 // These fields should link to their respective entities in the backend:
@@ -11,10 +14,10 @@ import Modal from 'react-modal';
 // 2. Set up API endpoints for fetching detailed information
 // 3. Handle navigation/routing to the appropriate views
 export interface HotelSession {
-  title: string;      // Links to Session
-  date: string;       // Links to SessionDate (ISO format: YYYY-MM-DD)
+  title: string; // Links to Session
+  date: string; // Links to SessionDate (ISO format: YYYY-MM-DD)
   roomCount: number;
-  events: string[];   // Each links to SessionEvent
+  events: string[]; // Each links to SessionEvent
   revenue: string;
   isPast?: boolean;
   // Backend will need to provide these IDs:
@@ -33,17 +36,12 @@ export interface ContactUserSessionSummaryProps {
   onEventClick?: (eventId: string) => void;
 }
 
-const FullTable: React.FC<{ 
-  sessions: HotelSession[],
-  onSessionClick?: (sessionId: string) => void,
-  onDateClick?: (sessionDateId: string) => void,
-  onEventClick?: (eventId: string) => void,
-}> = ({ 
-  sessions,
-  onSessionClick,
-  onDateClick,
-  onEventClick,
-}) => (
+const FullTable: React.FC<{
+  sessions: HotelSession[];
+  onSessionClick?: (sessionId: string) => void;
+  onDateClick?: (sessionDateId: string) => void;
+  onEventClick?: (eventId: string) => void;
+}> = ({ sessions, onSessionClick, onDateClick, onEventClick }) => (
   <table className="w-full">
     <thead>
       <tr className="text-left text-gray-600 border-b">
@@ -56,42 +54,48 @@ const FullTable: React.FC<{
     </thead>
     <tbody className="divide-y">
       {sessions.map((session, index) => (
-        <tr 
+        <tr
           key={`${session.title}-${index}`}
-          className={`${session.isPast ? 'text-gray-500' : 'text-gray-900'}`}
+          className={`${session.isPast ? "text-gray-500" : "text-gray-900"}`}
         >
           <td className="py-2">
             {session.sessionId ? (
-              <button 
+              <button
                 onClick={() => onSessionClick?.(session.sessionId!)}
                 className="hover:text-blue-500 cursor-pointer text-left"
               >
                 {session.title}
               </button>
-            ) : session.title}
+            ) : (
+              session.title
+            )}
           </td>
           <td className="py-2">
             {session.sessionDateId ? (
-              <button 
+              <button
                 onClick={() => onDateClick?.(session.sessionDateId!)}
                 className="hover:text-blue-500 cursor-pointer"
               >
                 {new Date(session.date).toLocaleDateString()}
               </button>
-            ) : new Date(session.date).toLocaleDateString()}
+            ) : (
+              new Date(session.date).toLocaleDateString()
+            )}
           </td>
           <td className="py-2 text-center">{session.roomCount}</td>
           <td className="py-2">
             {session.events.map((event, i) => (
               <span key={i} className="inline-block mr-2">
                 {session.eventIds?.[i] ? (
-                  <button 
+                  <button
                     onClick={() => onEventClick?.(session.eventIds![i])}
                     className="hover:text-blue-500 cursor-pointer"
                   >
                     {event}
                   </button>
-                ) : event}
+                ) : (
+                  event
+                )}
               </span>
             ))}
           </td>
@@ -102,9 +106,11 @@ const FullTable: React.FC<{
   </table>
 );
 
-export const ContactUserSessionSummary: React.FC<ContactUserSessionSummaryProps> = ({
+export const ContactUserSessionSummary: React.FC<
+  ContactUserSessionSummaryProps
+> = ({
   sessions = [],
-  className = '',
+  className = "",
   collapsed = false,
   onSessionClick,
   onDateClick,
@@ -135,13 +141,19 @@ export const ContactUserSessionSummary: React.FC<ContactUserSessionSummaryProps>
             </thead>
             <tbody className="divide-y">
               {sortedSessions.map((session, index) => (
-                <tr 
+                <tr
                   key={`${session.title}-${index}`}
-                  className={`${session.isPast ? 'text-gray-500' : 'text-gray-900'}`}
+                  className={`${
+                    session.isPast ? "text-gray-500" : "text-gray-900"
+                  }`}
                 >
-                  <td className="py-2">{new Date(session.date).toLocaleDateString()}</td>
+                  <td className="py-2">
+                    {new Date(session.date).toLocaleDateString()}
+                  </td>
                   <td className="py-2 text-center">{session.roomCount}</td>
-                  <td className="py-2 text-right pr-8">{session.events.length}</td>
+                  <td className="py-2 text-right pr-8">
+                    {session.events.length}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -166,7 +178,7 @@ export const ContactUserSessionSummary: React.FC<ContactUserSessionSummaryProps>
             </svg>
           </button>
         </div>
-        <Modal
+        <ReactModal
           isOpen={isModalOpen}
           onRequestClose={() => setIsModalOpen(false)}
           className="max-w-4xl mx-auto mt-20 bg-white p-6 rounded-lg shadow-xl"
@@ -193,20 +205,20 @@ export const ContactUserSessionSummary: React.FC<ContactUserSessionSummaryProps>
               </svg>
             </button>
           </div>
-          <FullTable 
+          <FullTable
             sessions={sortedSessions}
             onSessionClick={onSessionClick}
             onDateClick={onDateClick}
             onEventClick={onEventClick}
           />
-        </Modal>
+        </ReactModal>
       </>
     );
   }
 
   return (
     <div className={`text-sm ${className}`}>
-      <FullTable 
+      <FullTable
         sessions={sortedSessions}
         onSessionClick={onSessionClick}
         onDateClick={onDateClick}
@@ -214,4 +226,4 @@ export const ContactUserSessionSummary: React.FC<ContactUserSessionSummaryProps>
       />
     </div>
   );
-}; 
+};

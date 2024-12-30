@@ -19,9 +19,6 @@ export const mockCreatePaymentIntent =
         },
       });
 
-    console.log(`paymentIntent`);
-    console.log(paymentIntent);
-
     if (!paymentIntent.client_secret) {
       throw new Error("PaymentIntent has no client_secret");
     }
