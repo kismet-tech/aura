@@ -1,17 +1,11 @@
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import * as PopoverPrimitive from "@radix-ui/react-popover";
-
-import { cn } from "../../lib/utils";
-import { Popover, PopoverContent, PopoverTrigger } from "../shadcn/popover";
-import { Button } from "../shadcn/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "./command";
+import { Check, ChevronsUpDown, Command } from "lucide-react";
+import { CommandInput, CommandEmpty, CommandGroup, CommandItem } from "cmdk";
+import { Button } from "react-day-picker";
+import { Popover } from "../shadcn/popover";
+import { PopoverTrigger } from "../shadcn/popover";
+import { PopoverContent } from "../shadcn/popover";
+import { cn } from "@/lib/utils";
 
 interface ComboboxProps {
   options: { value: string; label: string }[];
@@ -36,7 +30,6 @@ export function Combobox({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
           role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
