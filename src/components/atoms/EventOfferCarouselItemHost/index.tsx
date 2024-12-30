@@ -62,12 +62,10 @@ export function EventOfferCarouselItem({
     const formatVenuePrices = (eventOffer: RenderableItineraryEventOffer) => {
         return eventOffer.venueOffers
             .map((offer) => {
-                const formattedPrice = formatPrice(offer.pricingInfo.priceInCents);
-                const fbMinimumSuffix =
-                    offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN"
-                        ? " F&B Minimum"
-                        : "";
-                return `${formattedPrice}${fbMinimumSuffix} @ ${offer.venueName}`;
+                const price = offer.pricingInfo
+                    ? `${formatPrice(offer.pricingInfo.offerPriceInCents)}${offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN" ? " F&B Minimum" : ""} @ `
+                    : "";
+                return `${price}${offer.venueName}`;
             })
             .join(", ");
     };

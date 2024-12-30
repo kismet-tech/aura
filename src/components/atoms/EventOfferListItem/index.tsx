@@ -91,12 +91,10 @@ export function EventOfferListItem({
   const formatVenuePrices = (eventOffer: RenderableItineraryEventOffer) => {
     return eventOffer.venueOffers
       .map((offer) => {
-        const formattedPrice = formatPrice(offer.pricingInfo.priceInCents);
-        const fbMinimumSuffix =
-          offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN"
-            ? " F&B Minimum"
-            : "";
-        return `${formattedPrice}${fbMinimumSuffix} @ ${offer.venueName}`;
+        const price = offer.pricingInfo
+          ? `${formatPrice(offer.pricingInfo.offerPriceInCents)}${offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN" ? " F&B Minimum" : ""} @ `
+          : "";
+        return `${price}${offer.venueName}`;
       })
       .join(", ");
   };
@@ -122,8 +120,8 @@ export function EventOfferListItem({
         onRSVP?.(status === currentRSVP ? null : status);
       }}
       className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-colors
-        ${currentRSVP === status 
-          ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' 
+        ${currentRSVP === status
+          ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
     >
       <Icon className="w-4 h-4" />
@@ -133,7 +131,7 @@ export function EventOfferListItem({
 
   return (
     <div className="border-b border-gray-200 last:border-b-0">
-      <div 
+      <div
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
         onClick={() => onClick({ eventOfferId: eventOffer.eventOfferId })}
       >
@@ -217,9 +215,8 @@ export function EventOfferListItem({
             className="p-1 hover:bg-gray-100 rounded-full"
           >
             <ChevronDown
-              className={`w-5 h-5 transform transition-transform ${
-                isExpanded ? "rotate-180" : ""
-              }`}
+              className={`w-5 h-5 transform transition-transform ${isExpanded ? "rotate-180" : ""
+                }`}
             />
           </button>
         </div>
