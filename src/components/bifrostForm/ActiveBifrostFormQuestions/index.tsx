@@ -4,7 +4,7 @@ import {
   HotelBifrostFormMetadata,
 } from "@kismet_ai/foundation";
 import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   RenderedBifrostFormQuestion,
   RenderedBifrostFormQuestionProps,
@@ -65,6 +65,10 @@ export function ActiveBifrostFormQuestions({
   suggestCalendarDateRangesFromConstraints,
   onMountBifrostFormQuestion,
 }: ActiveBifrostFormQuestionsProps) {
+  const questionIds = activeBifrostFormQuestionsWithResponses.map(
+    (q) => q.bifrostFormQuestion.bifrostFormQuestionId
+  );
+
   const [
     mapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
     setMapOfBifrostFormQuestionIdsToQuestionValiditiesAndFullfilments,
@@ -82,6 +86,8 @@ export function ActiveBifrostFormQuestions({
       4
     )}`
   );
+
+  const internalScrollRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     const updatedActiveBifrostFormQuestionIds: string[] =
@@ -178,6 +184,30 @@ export function ActiveBifrostFormQuestions({
     setBifrostFormQuestionIdsWithValidResponses,
     setBifrostFormQuestionIdsRespondedTo,
   ]);
+
+  useEffect(() => {
+    // Scroll to the last question
+    Array.from(Object.values(internalScrollRefs.current))
+      .filter(Boolean)
+      .toSorted((a, b) => {
+        if (a && b) {
+          return b.offsetTop - a.offsetTop;
+        }
+        return 0;
+      })[0]
+      ?.scrollIntoView({ behavior: "smooth", block: "end" });
+    // Ensure first scroll is completed first
+    // Use a nearest scroll to ensure the first new question is shown
+    Array.from(Object.values(internalScrollRefs.current))
+      .filter(Boolean)
+      .toSorted((a, b) => {
+        if (a && b) {
+          return a.offsetTop - b.offsetTop;
+        }
+        return 0;
+      })[0]
+      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, questionIds);
 
   const handleSetIsResponseValid = useCallback(
     ({
@@ -326,20 +356,23 @@ export function ActiveBifrostFormQuestions({
         (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
           return (
             <div
-              className="mb-1.5"
+              className="mb-1.5 scroll-m-8"
               key={
                 bifrostFormQuestionWithResponse.bifrostFormQuestion
                   .bifrostFormQuestionId
               }
-              ref={(element: HTMLDivElement | null) =>
+              ref={(element: HTMLDivElement | null) => {
                 onMountBifrostFormQuestion?.({
                   bifrostFormQuestionId:
                     bifrostFormQuestionWithResponse.bifrostFormQuestion
                       .bifrostFormQuestionId,
 
                   element,
-                })
-              }
+                });
+                internalScrollRefs.current[
+                  bifrostFormQuestionWithResponse.bifrostFormQuestion.bifrostFormQuestionId
+                ] = element;
+              }}
             >
               <MemoizedRenderedBifrostFormQuestion
                 bifrostFormMetadata={bifrostFormMetadata}

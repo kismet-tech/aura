@@ -32,8 +32,11 @@ const StoryWrapper = () => {
   return (
     <BifrostGroupBookingCheckoutBody
       availableHotelRooms={hotelRoomOffers}
-      onClickUpdateHotelRoomCountInCart={() => {}}
-    />
+      onClickUpdateHotelRoomCountInCart={() => { } } availableEventOffers={[]} onClickLogin={function (): void {
+        throw new Error("Function not implemented.");
+      } } onClickEventOffer={function ({ eventOfferId }: { eventOfferId: string; }): void {
+        throw new Error("Function not implemented.");
+      } }    />
   );
 };
 
