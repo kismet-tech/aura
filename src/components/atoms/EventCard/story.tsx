@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { EventCard } from ".";
-import { HotelEventOfferStatus, VenueOfferPricingType } from "@kismet_ai/foundation";
+import { HotelEventOfferStatus, RenderableItineraryEventOffer, VenueOfferPricingType } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof EventCard> = {
   title: "Atoms/EventCard",
@@ -14,7 +14,7 @@ const meta: Meta<typeof EventCard> = {
 export default meta;
 type Story = StoryObj<typeof EventCard>;
 
-const mockEvent = {
+const mockEvent: RenderableItineraryEventOffer = {
   eventOfferId: "123",
   eventOfferName: "Rehearsal Dinner",
   startDateTime: "2024-12-19T19:00:00Z",
@@ -24,12 +24,14 @@ const mockEvent = {
   imageUrl: "https://placehold.co/400x300",
   isEventOfferPriceEnabled: false,
   eventOfferPriceInCents: 700000,
+  eventOfferListPriceInCents: 100000,
   venueOffers: [
     {
       venueOfferId: "venue-1",
       venueName: "Grand Ballroom",
       pricingInfo: {
-        priceInCents: 700000,
+        offerPriceInCents: 700000,
+        offerListPriceInCents: 100000,
         pricingType: VenueOfferPricingType.ALT_FOOD_BEV_MIN,
       },
     },
@@ -45,6 +47,7 @@ const mockUpgradeEvent = {
   eventOfferName: "Wedding Reception",
   numberOfGuests: 100,
   eventOfferPriceInCents: 1000000,
+  eventOfferListPriceInCents: 150000,
   badgeText: "Upgrade Option",
   status: HotelEventOfferStatus.TENTATIVE,
 };

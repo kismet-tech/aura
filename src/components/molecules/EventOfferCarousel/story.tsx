@@ -24,14 +24,12 @@ const mockEventOffer: RenderableItineraryEventOffer = {
     numberOfGuests: 4,
     isEventOfferPriceEnabled: true,
     eventOfferPriceInCents: 15000,
+    eventOfferListPriceInCents: 15000,
     venueOffers: [
         {
             venueOfferId: "venue-1",
             venueName: "Sample Venue",
-            pricingInfo: {
-                priceInCents: 15000,
-                pricingType: VenueOfferPricingType.FIXED_COST,
-            },
+            pricingInfo: null,
         },
     ],
     details: {

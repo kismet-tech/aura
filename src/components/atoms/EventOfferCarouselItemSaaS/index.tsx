@@ -68,12 +68,10 @@ export function EventOfferCarouselItemSaaS({
   const formatVenuePrices = (eventOffer: RenderableItineraryEventOffer) => {
     return eventOffer.venueOffers
       .map((offer) => {
-        const formattedPrice = formatPrice(offer.pricingInfo.priceInCents);
-        const fbMinimumSuffix =
-          offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN"
-            ? " F&B Minimum"
-            : "";
-        return `${formattedPrice}${fbMinimumSuffix} @ ${offer.venueName}`;
+        const price = offer.pricingInfo
+          ? `${formatPrice(offer.pricingInfo.offerPriceInCents)}${offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN" ? " F&B Minimum" : ""} @ `
+          : "";
+        return `${price}${offer.venueName}`;
       })
       .join(", ");
   };
@@ -107,9 +105,8 @@ export function EventOfferCarouselItemSaaS({
         <div className={styles.titleRow}>
           <h3 className={styles.title}>{eventOffer.eventOfferName}</h3>
           <ChevronDownCircle
-            className={`${styles.chevron} ${
-              isExpanded ? styles.chevronExpanded : ""
-            }`}
+            className={`${styles.chevron} ${isExpanded ? styles.chevronExpanded : ""
+              }`}
             strokeWidth={1.5}
             onClick={(e) => {
               e.stopPropagation();
@@ -130,9 +127,8 @@ export function EventOfferCarouselItemSaaS({
           </div>
 
           <div
-            className={`${styles.collapsibleDetails} ${
-              isExpanded ? styles.expanded : ""
-            }`}
+            className={`${styles.collapsibleDetails} ${isExpanded ? styles.expanded : ""
+              }`}
           >
             <div 
               className={styles.detailRow}

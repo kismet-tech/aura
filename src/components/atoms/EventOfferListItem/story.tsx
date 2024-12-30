@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { EventOfferListItem } from ".";
-import { VenueOfferPricingType, HotelEventOfferStatus } from "@kismet_ai/foundation";
+import { VenueOfferPricingType, HotelEventOfferStatus, RenderableItineraryEventOffer } from "@kismet_ai/foundation";
 
 const meta: Meta<typeof EventOfferListItem> = {
   title: "Atoms/EventOfferListItem",
@@ -14,7 +14,7 @@ const meta: Meta<typeof EventOfferListItem> = {
 export default meta;
 type Story = StoryObj<typeof EventOfferListItem>;
 
-const mockEvent = {
+const mockEvent: RenderableItineraryEventOffer = {
   eventOfferId: "123",
   eventOfferName: "Rehearsal Dinner",
   startDateTime: "2024-12-19T19:00:00Z",
@@ -24,13 +24,15 @@ const mockEvent = {
   imageUrl: "https://placehold.co/400x300",
   isEventOfferPriceEnabled: false,
   eventOfferPriceInCents: 700000,
+  eventOfferListPriceInCents: 100000,
   venueOffers: [
     {
       venueOfferId: "venue-1",
       venueName: "Grand Ballroom",
       pricingInfo: {
-        priceInCents: 700000,
         pricingType: VenueOfferPricingType.ALT_FOOD_BEV_MIN,
+        offerPriceInCents: 700000,
+        offerListPriceInCents: 100000,
       },
     },
   ],
