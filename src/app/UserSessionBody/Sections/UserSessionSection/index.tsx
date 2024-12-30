@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaSearch, FaPlus, FaPencilAlt } from 'react-icons/fa';
-import { Button, type ButtonProps } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
+import { AgenticActionList } from '@/components/molecules/AgenticActionList/index';
 
 // Matching schema from prisma
 export enum UserSessionStatus {
@@ -34,7 +35,7 @@ export interface UserSession {
   hasBeenApprovedByPricingManager: boolean;
   acceptedAt?: Date;
   userSessionInitiationTimestamp: Date;
-  isKismetMade: boolean; // Indicates that Kismet is allowed to process the lead for instant booking and is acting in an agentic role
+  isAgentEnabled: boolean; // Indicates that Kismet is allowed to process the lead for instant booking and is acting in an agentic role
   
   // Foreign key relationships
   userId: string;
@@ -47,7 +48,7 @@ export interface UserSession {
 
   // Additional fields we're using in the UI but not in schema
   // TODO: Discuss with backend about adding these
-  // - Add isKismetMade: Boolean @default(false) to UserSession model
+  // - Add isAgentEnabled: Boolean @default(false) to UserSession model
   // - Consider adding dedicated title field instead of using humanReadableName
   // - Add BookingType enum and field to UserSession model
   // - Consider adding account relationship to schema
@@ -88,6 +89,7 @@ export const UserSessionSection: React.FC<UserSessionSectionProps> = ({
   const [accountSearchValue, setAccountSearchValue] = useState("");
   const [editingField, setEditingField] = useState<'title' | null>(null);
   const [editValue, setEditValue] = useState("");
+  const [showAgentModal, setShowAgentModal] = useState(false);
 
   const handleEdit = (field: 'title') => {
     setEditingField(field);
@@ -155,6 +157,25 @@ export const UserSessionSection: React.FC<UserSessionSectionProps> = ({
   const filteredAccounts = existingAccounts.filter(account => 
     account.name.toLowerCase().includes(accountSearchValue.toLowerCase())
   );
+
+  const handleAgentToggle = () => {
+    if (!reservation.isAgentEnabled) {
+      setShowAgentModal(true);
+    } else {
+      onReservationUpdate?.({
+        ...reservation,
+        isAgentEnabled: false
+      });
+    }
+  };
+
+  const handleAgentConfirm = () => {
+    onReservationUpdate?.({
+      ...reservation,
+      isAgentEnabled: true
+    });
+    setShowAgentModal(false);
+  };
 
   return (
     <section className="bg-white rounded-lg shadow p-6">
@@ -224,17 +245,14 @@ export const UserSessionSection: React.FC<UserSessionSectionProps> = ({
         </div>
         <div className="flex items-center gap-4">
           <Button
-            onClick={() => onReservationUpdate?.({
-              ...reservation,
-              isKismetMade: !reservation.isKismetMade
-            })}
+            onClick={handleAgentToggle}
             className={`text-sm ${
-              reservation.isKismetMade 
+              reservation.isAgentEnabled 
                 ? 'bg-transparent border border-green-600 text-green-600 hover:bg-green-50' 
                 : 'bg-blue-600 text-white hover:bg-blue-700'
             }`}
           >
-            {reservation.isKismetMade ? '(Made with Kismet)' : 'Make Kismet'}
+            {reservation.isAgentEnabled ? '(Agent Enabled)' : 'Enable Agent'}
           </Button>
           <div className="relative">
             {showAccountSearch && (
@@ -275,6 +293,12 @@ export const UserSessionSection: React.FC<UserSessionSectionProps> = ({
           </div>
         </div>
       </div>
+
+      <AgenticActionList
+        isOpen={showAgentModal}
+        onClose={() => setShowAgentModal(false)}
+        onConfirm={handleAgentConfirm}
+      />
     </section>
   );
 };

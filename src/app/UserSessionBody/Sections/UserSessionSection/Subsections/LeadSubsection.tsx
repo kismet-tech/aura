@@ -83,9 +83,9 @@ export interface LeadSubsectionProps {
     qualificationStatus: QualificationStatus;
     dateRange?: ReservationDateRange;
     assignedSalesAgent: SalesAgent;
-    leadScore: number;
-    intentScore: number;
-    intentMetrics?: IntentMetrics;
+  leadScore: number;
+  intentScore: number;
+  intentMetrics?: IntentMetrics;
     publicNotes: Note[];
     privateNotes: Note[];
   };
@@ -336,8 +336,8 @@ export const LeadSubsection: React.FC<LeadSubsectionProps> = ({
       >
         <div className="space-y-4">
           {/* Row 1: Status and Qualified */}
-          <div className="grid grid-cols-2 gap-6">
-            <div className="flex items-center">
+    <div className="grid grid-cols-2 gap-6">
+      <div className="flex items-center">
               <span className="text-gray-600 w-32">Status:</span>
               <button
                 onClick={() => setIsStatusModalOpen(true)}
@@ -350,31 +350,15 @@ export const LeadSubsection: React.FC<LeadSubsectionProps> = ({
                   {getDisplayStatus(reservation.status)}
                 </Badge>
               </button>
-            </div>
-            <div className="flex items-center">
+      </div>
+      <div className="flex items-center">
               <span className="text-gray-600 w-32">Qualified:</span>
-              <button
-                onClick={() => {
-                  const nextStatus = {
-                    [QualificationStatus.PENDING]: QualificationStatus.QUALIFIED,
-                    [QualificationStatus.QUALIFIED]: QualificationStatus.NOT_QUALIFIED,
-                    [QualificationStatus.NOT_QUALIFIED]: QualificationStatus.PENDING,
-                  }[reservation.qualificationStatus];
-                  
-                  onReservationUpdate({
-                    ...reservation,
-                    qualificationStatus: nextStatus,
-                  });
-                }}
-                className="focus:outline-none"
+              <Badge 
+                variant="outline" 
+                className={`${QUALIFICATION_COLORS[reservation.qualificationStatus].bg} ${QUALIFICATION_COLORS[reservation.qualificationStatus].text} border-0 capitalize`}
               >
-                <Badge 
-                  variant="outline" 
-                  className={`${QUALIFICATION_COLORS[reservation.qualificationStatus].bg} ${QUALIFICATION_COLORS[reservation.qualificationStatus].text} border-0 capitalize`}
-                >
-                  {reservation.qualificationStatus.replace('_', ' ')}
-                </Badge>
-              </button>
+                {reservation.qualificationStatus.replace('_', ' ')}
+              </Badge>
             </div>
           </div>
 
@@ -576,10 +560,10 @@ export const LeadSubsection: React.FC<LeadSubsectionProps> = ({
                         </div>
                       </button>
                     ))}
-                  </div>
+                </div>
                 </div>
               )}
-            </div>
+                </div>
           </div>
 
           {/* Row 4: Lead Score and Intent Score */}
@@ -612,12 +596,12 @@ export const LeadSubsection: React.FC<LeadSubsectionProps> = ({
                           <li>• Researched hotel details</li>
                         )}
                       </ul>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          </div>
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    </div>
         </div>
 
         {/* Notes Section */}

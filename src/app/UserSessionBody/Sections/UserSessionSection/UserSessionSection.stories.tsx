@@ -41,7 +41,7 @@ const baseReservation = {
   userSessionTags: [],
   guestUsers: [],
   title: '',
-  isKismetMade: false // Default to false for most stories
+  isAgentEnabled: false // Default to false for most stories
 };
 
 // Wrapper component to handle state
