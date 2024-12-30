@@ -1,16 +1,16 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { PlannerGuests } from './index';
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { PlannerGuests } from "./index";
 
-const meta = {
-  title: 'Molecules/Planners/PlannerGuests',
+const meta: Meta<typeof PlannerGuests> = {
+  title: "Molecules/Planners/PlannerGuests",
   component: PlannerGuests,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '400px', padding: '2rem' }}>
+      <div style={{ width: "400px", padding: "2rem" }}>
         <Story />
       </div>
     ),
@@ -36,4 +36,4 @@ export const WithCustomLimits: Story = {
     minGuests: 10,
     maxGuests: 500,
   },
-}; 
+};

@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2023",
+    "target": "esnext",
     "jsx": "react",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist",
@@ -14,12 +14,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

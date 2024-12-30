@@ -187,7 +187,7 @@ export function ActiveBifrostFormQuestions({
 
   useEffect(() => {
     // Scroll to the last question
-    Object.values(internalScrollRefs.current)
+    Array.from(Object.values(internalScrollRefs.current))
       .filter(Boolean)
       .toSorted((a, b) => {
         if (a && b) {
@@ -196,13 +196,9 @@ export function ActiveBifrostFormQuestions({
         return 0;
       })[0]
       ?.scrollIntoView({ behavior: "smooth", block: "end" });
-    console.log(
-      "aabaa",
-      Object.values(internalScrollRefs.current).filter(Boolean)[0]
-    );
     // Ensure first scroll is completed first
     // Use a nearest scroll to ensure the first new question is shown
-    Object.values(internalScrollRefs.current)
+    Array.from(Object.values(internalScrollRefs.current))
       .filter(Boolean)
       .toSorted((a, b) => {
         if (a && b) {
