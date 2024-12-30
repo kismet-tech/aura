@@ -25,6 +25,62 @@ export interface ContactHoverCardProps {
   onContactInfoEdit?: (updatedInfo: ContactInfo) => void;
 }
 
+// Styled Components
+const HoverableContent = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex flex-col gap-4">
+    {children}
+  </div>
+);
+
+const TriggerContainer = ({ hasHoverCard, children }: { hasHoverCard: boolean, children: React.ReactNode }) => (
+  <div className={`flex items-center gap-2 ${hasHoverCard ? 'cursor-pointer' : 'cursor-default'}`}>
+    {children}
+  </div>
+);
+
+const HeaderSection = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex items-start gap-4">
+    {children}
+  </div>
+);
+
+const HeaderInfo = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex flex-col flex-1">
+    {children}
+  </div>
+);
+
+const ContactInfoButton = ({ 
+  isEditable, 
+  onMouseEnter, 
+  onMouseLeave, 
+  onClick 
+}: { 
+  isEditable: boolean, 
+  onMouseEnter: () => void, 
+  onMouseLeave: () => void, 
+  onClick: () => void 
+}) => (
+  <button
+    className={`p-1 ${isEditable ? 'text-blue-500' : 'text-gray-500 hover:text-gray-700'}`}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    onClick={onClick}
+  >
+    <FaAddressCard size={20} />
+  </button>
+);
+
+const ContactInfoPopover = ({ children }: { children: React.ReactNode }) => (
+  <div className="absolute right-0 top-8 z-50 bg-white p-4 rounded-lg shadow-lg border min-w-[200px]">
+    {children}
+  </div>
+);
+
+const SectionHeader = ({ children }: { children: React.ReactNode }) => (
+  <div className="text-sm font-medium text-gray-600">{children}</div>
+);
+
 export const ContactHoverCard: React.FC<ContactHoverCardProps> = ({
   firstName,
   lastName,
@@ -71,7 +127,7 @@ export const ContactHoverCard: React.FC<ContactHoverCardProps> = ({
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <div className={`flex items-center gap-2 ${hasHoverCard ? 'cursor-pointer' : 'cursor-default'}`}>
+        <TriggerContainer hasHoverCard={hasHoverCard}>
           <ContactAvatar 
             firstName={firstName} 
             lastName={lastName} 
@@ -80,12 +136,12 @@ export const ContactHoverCard: React.FC<ContactHoverCardProps> = ({
             dataSources={dataSources}
           />
           <ContactName firstName={firstName} lastName={lastName} />
-        </div>
+        </TriggerContainer>
       </HoverCardTrigger>
       {hasHoverCard && (
         <HoverCardContent className="w-80 bg-white p-4 rounded-lg shadow-lg border">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-start gap-4">
+          <HoverableContent>
+            <HeaderSection>
               <ContactAvatar 
                 firstName={firstName} 
                 lastName={lastName} 
@@ -93,35 +149,33 @@ export const ContactHoverCard: React.FC<ContactHoverCardProps> = ({
                 imageUrl={imageUrl} 
                 dataSources={dataSources}
               />
-              <div className="flex flex-col flex-1">
+              <HeaderInfo>
                 <ContactName firstName={firstName} lastName={lastName} />
                 <ContactData sources={dataSources} />
-              </div>
+              </HeaderInfo>
               <div className="relative">
-                <button
-                  className={`p-1 ${isContactInfoEditable ? 'text-blue-500' : 'text-gray-500 hover:text-gray-700'}`}
+                <ContactInfoButton
+                  isEditable={isContactInfoEditable}
                   onMouseEnter={handleContactInfoMouseEnter}
                   onMouseLeave={handleContactInfoMouseLeave}
                   onClick={handleContactInfoClick}
-                >
-                  <FaAddressCard size={20} />
-                </button>
+                />
                 {showContactInfo && (
-                  <div className="absolute right-0 top-8 z-50 bg-white p-4 rounded-lg shadow-lg border min-w-[200px]">
+                  <ContactInfoPopover>
                     <ContactContactInfo 
                       info={contactInfo}
                       onEdit={isContactInfoEditable ? handleContactInfoEdit : undefined}
                     />
-                  </div>
+                  </ContactInfoPopover>
                 )}
               </div>
-            </div>
+            </HeaderSection>
             {bio && (
               <ContactBio bio={bio} onEdit={onBioEdit} />
             )}
             {sessions.length > 0 && (
               <>
-                <div className="text-sm font-medium text-gray-600">Past & Future Business</div>
+                <SectionHeader>Past & Future Business</SectionHeader>
                 <ContactUserSessionSummary 
                   sessions={sessions}
                   collapsed={true}
@@ -131,7 +185,7 @@ export const ContactHoverCard: React.FC<ContactHoverCardProps> = ({
                 />
               </>
             )}
-          </div>
+          </HoverableContent>
         </HoverCardContent>
       )}
     </HoverCard>
