@@ -106,6 +106,10 @@ export function RoomCard({ room, onUpdateCount, variant, className = "", onClick
      *    - isContracted: boolean
      *    - initialBlockSize: number
      *    - remainingBlockSize: number
+     * 
+     * REMEMBER: isContacted = false means that the payments page should DEFAULT to 
+     * host view (e.g., show the price, nothing hidden, checkoutSequence blocks rooms)
+     * 
      */
  
     if (variant === "host") {
