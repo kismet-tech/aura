@@ -6,7 +6,6 @@ import {
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryEventOffer,
   HotelEventOfferStatus,
-  VenueOfferPricingType,
 } from "@kismet_ai/foundation";
 import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";

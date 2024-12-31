@@ -92,7 +92,7 @@ export function MultiStageReasonForTravelQuestionWebsiteUrlInput({
           value={value}
         />
 
-        <button
+        {/* <button
           type="button"
           className={`ml-2 p-2 border border-black rounded-[12px] ${
             isLocallyValid ? "bg-black text-white" : "bg-transparent text-black"
@@ -107,7 +107,7 @@ export function MultiStageReasonForTravelQuestionWebsiteUrlInput({
           }`}
         >
           ✕
-        </button>
+        </button> */}
       </div>
 
       <div className="gap-8">

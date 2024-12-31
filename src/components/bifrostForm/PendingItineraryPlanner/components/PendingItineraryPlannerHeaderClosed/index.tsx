@@ -28,43 +28,73 @@ export function PendingItineraryPlannerHeaderClosed({
     renderablePendingItinerary.countOfHotelRoomsInItinerary > 0
   ) {
     roomsIndicator = (
-      <span className="underline cursor-pointer text-xs truncate">
+      <span className="cursor-pointer text-xs truncate">
         {renderablePendingItinerary.countOfHotelRoomsInItinerary} rooms
       </span>
     );
   } else {
     if (renderablePendingItinerary.countOfGuestsParticipatingInItinerary) {
       roomsIndicator = (
-        <span className="underline cursor-pointer text-xs truncate">
+        <span className="cursor-pointer text-xs truncate">
           {renderablePendingItinerary.countOfGuestsParticipatingInItinerary}{" "}
           guests
         </span>
       );
     } else {
       roomsIndicator = (
-        <span className="underline cursor-pointer text-xs truncate">rooms</span>
+        <span className="cursor-pointer text-xs truncate">rooms</span>
       );
     }
   }
 
   let datesIndicator: JSX.Element;
-  if (renderablePendingItinerary.calendarDateRangeInItinerary) {
-    datesIndicator = (
-      <span className="underline cursor-pointer text-xs truncate">
-        {renderCalendarDateRange({
-          calendarDateRange:
-            renderablePendingItinerary.calendarDateRangeInItinerary,
-          renderedCalendarDateFormat:
-            RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
-          renderedCalendarDateRangeJoinFormat:
-            RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
-          collapseStrategy: {
-            collapseSameDay: true,
-            collapseSameMonth: false,
-          },
-        })}
-      </span>
-    );
+  if (
+    renderablePendingItinerary.calendarDateRangesInItinerary &&
+    renderablePendingItinerary.calendarDateRangesInItinerary.length > 0
+  ) {
+    if (renderablePendingItinerary.calendarDateRangesInItinerary.length === 1) {
+      datesIndicator = (
+        <span className="underline cursor-pointer text-xs truncate">
+          {renderCalendarDateRange({
+            calendarDateRange:
+              renderablePendingItinerary.calendarDateRangesInItinerary[0],
+            renderedCalendarDateFormat:
+              RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
+            renderedCalendarDateRangeJoinFormat:
+              RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+            collapseStrategy: {
+              collapseSameDay: true,
+              collapseSameMonth: false,
+            },
+          })}
+        </span>
+      );
+    } else {
+      datesIndicator = (
+        <span className="underline cursor-pointer text-xs truncate">
+          {"still deciding, "}
+          {renderablePendingItinerary.calendarDateRangesInItinerary.map(
+            (calendarDateRangeInItinerary) => {
+              return (
+                <>
+                  {renderCalendarDateRange({
+                    calendarDateRange: calendarDateRangeInItinerary,
+                    renderedCalendarDateFormat:
+                      RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
+                    renderedCalendarDateRangeJoinFormat:
+                      RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+                    collapseStrategy: {
+                      collapseSameDay: true,
+                      collapseSameMonth: false,
+                    },
+                  })}
+                </>
+              );
+            }
+          )}
+        </span>
+      );
+    }
   } else {
     datesIndicator = (
       <span className="underline cursor-pointer text-xs truncate">dates</span>
@@ -119,7 +149,7 @@ export function PendingItineraryPlannerHeaderClosed({
             <div className="flex-shrink-0">
               <ConciergeBell className="w-5 h-5" strokeWidth={1.5} />
             </div>
-            <span className="underline cursor-pointer">details</span>
+            <span className="cursor-pointer">details</span>
           </div>
         </div>
       </div>
