@@ -31,14 +31,12 @@ const mockEventOffers: RenderableItineraryEventOffer[] = [
     imageUrl: "https://placehold.co/300x200",
     isEventOfferPriceEnabled: true,
     eventOfferPriceInCents: 700000,
+    eventOfferListPriceInCents: 700000,
     venueOffers: [
       {
         venueOfferId: "venue-1",
         venueName: "Grand Ballroom",
-        pricingInfo: {
-          pricingType: VenueOfferPricingType.ALT_FOOD_BEV_MIN,
-          priceInCents: 700000,
-        },
+        pricingInfo: null,
       },
     ],
     details: {

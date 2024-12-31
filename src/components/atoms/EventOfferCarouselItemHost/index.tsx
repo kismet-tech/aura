@@ -23,55 +23,6 @@ export function EventOfferCarouselItem({
   const startDate = new Date(eventOffer.startDateTime);
   const endDate = new Date(eventOffer.endDateTime);
 
-  const formatDateTime = (start: Date, end: Date) => {
-    const formatDate = (date: Date) => {
-      return date.toLocaleDateString("en-US", {
-        month: "numeric",
-        day: "numeric",
-      });
-    };
-
-    const formatTime = (date: Date) => {
-      const timeStr = date
-        .toLocaleTimeString("en-US", {
-          hour: "numeric",
-          hour12: true,
-        })
-        .toLowerCase();
-      return timeStr.replace(" ", "");
-    };
-
-    return `${formatDate(start)}, ${formatTime(start)}-${formatTime(end)}`;
-  };
-
-  const formatPrice = (priceInCents: number) => {
-    const formatted = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(priceInCents / 100);
-
-    // Remove .00 if present
-    return formatted.replace(".00", "");
-  };
-
-  const getVenueNames = (eventOffer: RenderableItineraryEventOffer) => {
-    return eventOffer.venueOffers.map((offer) => offer.venueName).join(", ");
-  };
-
-  const formatVenuePrices = (eventOffer: RenderableItineraryEventOffer) => {
-    return eventOffer.venueOffers
-      .map((offer) => {
-        const formattedPrice = formatPrice(offer.pricingInfo.priceInCents);
-        const fbMinimumSuffix =
-          offer.pricingInfo.pricingType === "ALT_FOOD_BEV_MIN"
-            ? " F&B Minimum"
-            : "";
-        return `${formattedPrice}${fbMinimumSuffix} @ ${offer.venueName}`;
-      })
-      .join(", ");
-  };
-
   return (
     <>
       <style>{`
@@ -218,9 +169,7 @@ export function EventOfferCarouselItem({
                 className={styles.detailIcon}
                 strokeWidth={1.5}
               />
-              <span className={styles.detailText}>
-                {formatDateTime(startDate, endDate)}
-              </span>
+              <span className={styles.detailText}></span>
             </div>
 
             <div
@@ -230,9 +179,7 @@ export function EventOfferCarouselItem({
             >
               <div className={styles.detailRow}>
                 <HomeIcon className={styles.detailIcon} strokeWidth={1.5} />
-                <span className={styles.detailText}>
-                  {getVenueNames(eventOffer)}
-                </span>
+                <span className={styles.detailText}></span>
               </div>
 
               <div className={styles.detailRow}>
@@ -246,8 +193,8 @@ export function EventOfferCarouselItem({
                 <HandCoins className={styles.detailIcon} strokeWidth={1.5} />
                 <span className={styles.detailText}>
                   {eventOffer.isEventOfferPriceEnabled
-                    ? formatPrice(eventOffer.eventOfferPriceInCents)
-                    : formatVenuePrices(eventOffer)}
+                    ? eventOffer.eventOfferPriceInCents
+                    : ""}
                 </span>
               </div>
 
