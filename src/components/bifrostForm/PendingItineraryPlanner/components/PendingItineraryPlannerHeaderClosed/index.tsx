@@ -54,7 +54,7 @@ export function PendingItineraryPlannerHeaderClosed({
   ) {
     if (renderablePendingItinerary.calendarDateRangesInItinerary.length === 1) {
       datesIndicator = (
-        <span className="underline cursor-pointer text-xs truncate">
+        <span className="cursor-pointer text-xs truncate">
           {renderCalendarDateRange({
             calendarDateRange:
               renderablePendingItinerary.calendarDateRangesInItinerary[0],
@@ -71,7 +71,7 @@ export function PendingItineraryPlannerHeaderClosed({
       );
     } else {
       datesIndicator = (
-        <span className="underline cursor-pointer text-xs truncate">
+        <span className="cursor-pointer text-xs truncate">
           {"still deciding, "}
           {renderablePendingItinerary.calendarDateRangesInItinerary.map(
             (calendarDateRangeInItinerary) => {
@@ -97,7 +97,7 @@ export function PendingItineraryPlannerHeaderClosed({
     }
   } else {
     datesIndicator = (
-      <span className="underline cursor-pointer text-xs truncate">dates</span>
+      <span className="cursor-pointer text-xs truncate">dates</span>
     );
   }
 

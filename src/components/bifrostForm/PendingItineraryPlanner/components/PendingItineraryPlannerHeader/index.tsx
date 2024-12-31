@@ -25,11 +25,11 @@ export function PendingItineraryPlannerHeader({
         <span className="">
           {renderablePendingItinerary.countOfHotelRoomsInItinerary}
         </span>{" "}
-        <span className="underline cursor-pointer">choose</span>
+        <span className="cursor-pointer">choose</span>
       </span>
     );
   } else {
-    roomsIndicator = <span className="underline cursor-pointer">choose</span>;
+    roomsIndicator = <span className="cursor-pointer">choose</span>;
   }
 
   let datesIndicator: JSX.Element;
@@ -39,7 +39,7 @@ export function PendingItineraryPlannerHeader({
   ) {
     if (renderablePendingItinerary.calendarDateRangesInItinerary.length === 1) {
       datesIndicator = (
-        <span className="underline cursor-pointer">
+        <span className="cursor-pointer">
           {renderCalendarDateRange({
             calendarDateRange:
               renderablePendingItinerary.calendarDateRangesInItinerary[0],
@@ -56,7 +56,7 @@ export function PendingItineraryPlannerHeader({
       );
     } else {
       datesIndicator = (
-        <span className="underline cursor-pointer">
+        <span className="cursor-pointer">
           {"still deciding, "}
           {renderablePendingItinerary.calendarDateRangesInItinerary.map(
             (calendarDateRangeInItinerary) => {
