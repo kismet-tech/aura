@@ -91,6 +91,38 @@ export function RoomCard({ room, onUpdateCount, variant, className = "", onClick
       );
     }
 
+    /**
+     * TODO: Backend Implementation Note
+     * 
+     * For the host view, room.countAvailable should represent:
+     * - Before contract: Total number of rooms of this type available
+     * - After contract: Number of rooms remaining in the block
+     * 
+     * This likely requires:
+     * 1. Tracking when a block becomes contracted
+     * 2. Storing the initial block size
+     * 3. Tracking allocations/bookings against the block
+     * 4. Updating RenderableItineraryHotelRoomOffer to include:
+     *    - isContracted: boolean
+     *    - initialBlockSize: number
+     *    - remainingBlockSize: number
+     */
+ 
+    if (variant === "host") {
+      return (
+        <div className="absolute top-2 left-2 flex gap-2">
+          <span className="bg-white rounded-full px-2 py-1 text-sm">
+            {room.countAvailable} in block
+          </span>
+          {room.badgeText && (
+            <span className="bg-white rounded-full px-2 py-1 text-sm">
+              {room.badgeText.slice(0, 22)}
+            </span>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className="absolute top-2 left-2 flex gap-2">
         {(room.countOffered || 0) > 0 && (
