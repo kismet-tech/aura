@@ -8,6 +8,7 @@ import React from "react";
 import { MultiStageReasonForTravelQuestionReasonForTravelCategorySelector } from "./MultiStageReasonForTravelQuestionReasonForTravelCategorySelector";
 import { MultiStageReasonForTravelQuestionCompanyNameInput } from "./MultiStageReasonForTravelQuestionCompanyNameInput";
 import { MultiStageReasonForTravelQuestionWebsiteUrlInput } from "./MultiStageReasonForTravelQuestionWebsiteUrlInput";
+import { MultiStageReasonForTravelQuestionBudgetInput } from "./MultiStageReasonForTravelQuestionBudgetInput";
 
 export interface MultiStageReasonForTravelQuestionProps {
   renderableMultiStageReasonForTravelBifrostFormQuestion: RenderableMultiStageReasonForTravelBifrostFormQuestion;
@@ -134,11 +135,50 @@ export function MultiStageReasonForTravelQuestion({
       <></>
     );
 
+  const budgetQuestion: React.JSX.Element =
+    value.reasonForTravel ===
+      ReservedBifrostReasonForTravelOptionValues.BUSINESS &&
+    value.companyName &&
+    value.companyName.length > 0 ? (
+      <MultiStageReasonForTravelQuestionBudgetInput
+        value={value.budgetInCents}
+        setValue={({ updatedValue }: { updatedValue: number | undefined }) => {
+          setValue({
+            updatedValue: {
+              ...value,
+              budgetInCents: updatedValue,
+            },
+          });
+        }}
+        setIsResponseValid={({
+          isResponseValid,
+        }: {
+          isResponseValid: boolean;
+        }) => {
+          setIsResponseValid({
+            isResponseValid,
+          });
+        }}
+        setHasQuestionBeenRespondedTo={({
+          hasQuestionBeenRespondedTo,
+        }: {
+          hasQuestionBeenRespondedTo: boolean;
+        }) => {
+          setHasQuestionBeenRespondedTo({
+            hasQuestionBeenRespondedTo,
+          });
+        }}
+      />
+    ) : (
+      <></>
+    );
+
   return (
     <div>
       <div>{reasonForTravelCategoryQuestion}</div>
       <div>{companyNameQuestion}</div>
       <div>{websiteUrlQuestion}</div>
+      <div>{budgetQuestion}</div>
     </div>
   );
 }

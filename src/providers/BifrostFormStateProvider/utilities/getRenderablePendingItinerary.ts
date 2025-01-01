@@ -77,11 +77,6 @@ export const getRenderablePendingItinerary = ({
       ? parseInt(maybeCountOfGuestsParticipatingInItineraryString)
       : undefined;
 
-  console.log(
-    "getRenderablePendingItinerary bifrostFormQuestionsWithResponses",
-    JSON.stringify(bifrostFormQuestionsWithResponses, null, 4)
-  );
-
   const maybeCalendarDateRangeQuestionWithResponse =
     bifrostFormQuestionsWithResponses.find(
       (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
@@ -111,6 +106,15 @@ export const getRenderablePendingItinerary = ({
 
   const itineraryImageUrl: string =
     "https://plus.unsplash.com/premium_photo-1661879252375-7c1db1932572?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aG90ZWwlMjByb29tfGVufDB8fDB8fHww";
+
+  console.log(
+    "countOfHotelRoomsInItinerary",
+    JSON.stringify(countOfHotelRoomsInItinerary, null, 4)
+  );
+  console.log(
+    "countOfGuestsParticipatingInItinerary",
+    JSON.stringify(countOfGuestsParticipatingInItinerary, null, 4)
+  );
 
   const renderablePendingItinerary: RenderablePendingItinerary = {
     itineraryName: `${guestFirstName}'s Itinerary`,

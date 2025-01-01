@@ -72,11 +72,12 @@ export function PendingItineraryPlannerHeaderClosed({
     } else {
       datesIndicator = (
         <span className="cursor-pointer text-xs truncate">
-          {"still deciding, "}
+          {"still deciding"}
           {renderablePendingItinerary.calendarDateRangesInItinerary.map(
             (calendarDateRangeInItinerary) => {
               return (
                 <>
+                  <br />
                   {renderCalendarDateRange({
                     calendarDateRange: calendarDateRangeInItinerary,
                     renderedCalendarDateFormat:

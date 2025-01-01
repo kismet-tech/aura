@@ -32,6 +32,18 @@ export function PendingItineraryPlannerHeader({
     roomsIndicator = <span className="cursor-pointer">choose</span>;
   }
 
+  let guestCountIndicator: JSX.Element;
+  if (renderablePendingItinerary.countOfGuestsParticipatingInItinerary) {
+    guestCountIndicator = (
+      <span className="cursor-pointer">
+        {renderablePendingItinerary.countOfGuestsParticipatingInItinerary}{" "}
+        guests
+      </span>
+    );
+  } else {
+    guestCountIndicator = <span className="cursor-pointer">guests</span>;
+  }
+
   let datesIndicator: JSX.Element;
   if (
     renderablePendingItinerary.calendarDateRangesInItinerary &&
@@ -39,7 +51,7 @@ export function PendingItineraryPlannerHeader({
   ) {
     if (renderablePendingItinerary.calendarDateRangesInItinerary.length === 1) {
       datesIndicator = (
-        <span className="cursor-pointer">
+        <span className="cursor-pointer text-xs truncate">
           {renderCalendarDateRange({
             calendarDateRange:
               renderablePendingItinerary.calendarDateRangesInItinerary[0],
@@ -56,12 +68,13 @@ export function PendingItineraryPlannerHeader({
       );
     } else {
       datesIndicator = (
-        <span className="cursor-pointer">
-          {"still deciding, "}
+        <span className="cursor-pointer text-xs truncate">
+          {"still deciding"}
           {renderablePendingItinerary.calendarDateRangesInItinerary.map(
             (calendarDateRangeInItinerary) => {
               return (
                 <>
+                  <br />
                   {renderCalendarDateRange({
                     calendarDateRange: calendarDateRangeInItinerary,
                     renderedCalendarDateFormat:
@@ -81,7 +94,9 @@ export function PendingItineraryPlannerHeader({
       );
     }
   } else {
-    datesIndicator = <span className="cursor-pointer">select dates</span>;
+    datesIndicator = (
+      <span className="cursor-pointer text-xs truncate">dates</span>
+    );
   }
 
   return (
@@ -110,7 +125,7 @@ export function PendingItineraryPlannerHeader({
                   <div className="mr-2">
                     <UsersRound className="w-5 h-5" strokeWidth={1.5} />
                   </div>
-                  <span className="cursor-pointer">guests</span>
+                  {guestCountIndicator}
                 </div>
               </div>
             </div>
