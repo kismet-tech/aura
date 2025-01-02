@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { QualificationStatusHoverCard, type QualificationDetails } from './index';
-import { Badge } from '@/components/ui/badge';
+import { QualificationStatusHoverCard, QualificationStatusBadge, type QualificationDetails } from './index';
 import * as HoverCard from '@radix-ui/react-hover-card';
 
 type ComponentType = typeof QualificationStatusHoverCard;
@@ -104,12 +103,7 @@ export const Pending: Story = {
         }
       ]
     }}>
-      <Badge 
-        variant="outline" 
-        className="cursor-pointer transition-colors hover:bg-yellow-50 hover:border-yellow-200 px-4 py-1.5 text-sm font-medium"
-      >
-        PENDING
-      </Badge>
+      <QualificationStatusBadge status="PENDING" />
     </HoverableCard>
   )
 };
@@ -137,12 +131,7 @@ export const InitiallyQualified: Story = {
         { name: 'Wedding Ceremony & Reception', capacity: 100 }
       ]
     }}>
-      <Badge 
-        variant="outline" 
-        className="bg-green-50 text-green-700 border-green-200 cursor-pointer transition-colors hover:bg-green-100 hover:border-green-300 px-4 py-1.5 text-sm font-medium"
-      >
-        QUALIFIED
-      </Badge>
+      <QualificationStatusBadge status="QUALIFIED" />
     </HoverableCard>
   )
 };
@@ -173,12 +162,7 @@ export const WeddingWeekendIncomplete: Story = {
         { name: 'Welcome Reception', capacity: 200 }
       ]
     }}>
-      <Badge 
-        variant="outline" 
-        className="cursor-pointer transition-colors hover:bg-yellow-50 hover:border-yellow-200 px-4 py-1.5 text-sm font-medium"
-      >
-        PENDING
-      </Badge>
+      <QualificationStatusBadge status="PENDING" />
     </HoverableCard>
   )
 };
@@ -215,12 +199,7 @@ export const WeddingWeekendConstraints: Story = {
         { name: 'Reception Dinner & Dancing', capacity: 200 }
       ]
     }}>
-      <Badge 
-        variant="destructive" 
-        className="cursor-pointer transition-colors hover:bg-red-500 px-4 py-1.5 text-sm font-medium"
-      >
-        NOT QUALIFIED
-      </Badge>
+      <QualificationStatusBadge status="NOT_QUALIFIED" />
     </HoverableCard>
   )
 };
@@ -252,12 +231,7 @@ export const WeddingWeekendQualified: Story = {
         { name: 'Wedding Ceremony', capacity: 150 }
       ]
     }}>
-      <Badge 
-        variant="outline" 
-        className="bg-green-50 text-green-700 border-green-200 cursor-pointer transition-colors hover:bg-green-100 hover:border-green-300 px-4 py-1.5 text-sm font-medium"
-      >
-        QUALIFIED
-      </Badge>
+      <QualificationStatusBadge status="QUALIFIED" />
     </HoverableCard>
   )
 }; 

@@ -20,21 +20,19 @@ export function DescriptionAccordion({
 
   return (
     <div>
-      <div
-        ref={contentRef}
-        style={{
-          height: isExpanded ? `${contentHeight}px` : "24px",
-          overflow: "hidden",
-          transition: "height 0.5s ease",
-        }}
-      >
-        {renderableItineraryHotelRoomOffer.hotelRoomDescription}
-      </div>
+      {isExpanded && (
+        <div
+          ref={contentRef}
+          className="text-gray-600 mb-2"
+        >
+          {renderableItineraryHotelRoomOffer.hotelRoomDescription}
+        </div>
+      )}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="text-black hover:underline mt-2"
+        className="text-gray-600 hover:text-gray-900 hover:underline text-sm"
       >
-        {isExpanded ? "Show less <<" : "Show more >>"}
+        {isExpanded ? "Hide Details <<" : "See Details >>"}
       </button>
     </div>
   );

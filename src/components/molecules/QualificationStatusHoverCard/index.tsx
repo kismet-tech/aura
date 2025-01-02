@@ -1,8 +1,59 @@
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, UsersRoundIcon, DoorOpenIcon, XCircle, AlertCircle, Mail, CheckCircle2 } from 'lucide-react';
+import * as HoverCard from '@radix-ui/react-hover-card';
 
 const KISMET_LOGO_URL = 'https://storage.googleapis.com/kismet-assets/logoKismet.png';
+
+// Styled Components
+const HoverCardContainer = ({ children }: { children: React.ReactNode }) => (
+  <div className="space-y-4">{children}</div>
+);
+
+const Section = ({ children, hasBorder = false }: { children: React.ReactNode, hasBorder?: boolean }) => (
+  <div className={`space-y-2.5 ${hasBorder ? 'pb-4 border-b border-slate-100' : ''}`}>{children}</div>
+);
+
+const HeaderRow = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex items-center gap-2">{children}</div>
+);
+
+const Title = ({ children }: { children: React.ReactNode }) => (
+  <span className="text-sm font-medium text-slate-900 truncate flex-1">{children}</span>
+);
+
+const BadgeContainer = ({ children }: { children: React.ReactNode }) => (
+  <div className="w-[90px] flex justify-end">{children}</div>
+);
+
+const KismetHeader = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex items-center gap-2">
+    <img src={KISMET_LOGO_URL} alt="Kismet Logo" className="h-4 w-4 object-contain" />
+    <h4 className="text-sm font-semibold text-slate-900">{children}</h4>
+  </div>
+);
+
+const ActionsList = ({ children }: { children: React.ReactNode }) => (
+  <div className="space-y-1.5">{children}</div>
+);
+
+const ActionItem = ({ icon, children }: { icon: React.ReactNode, children: React.ReactNode }) => (
+  <div className="flex items-center gap-2 text-sm text-slate-600">
+    {icon}
+    {children}
+  </div>
+);
+
+const ActionLink = ({ href, children }: { href: string, children: React.ReactNode }) => (
+  <a 
+    href={href} 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="hover:text-slate-900 hover:underline"
+  >
+    {children}
+  </a>
+);
 
 export interface QualificationDetails {
   status: 'QUALIFIED' | 'NOT_QUALIFIED' | 'PENDING';
@@ -56,6 +107,17 @@ const getStatusColor = (status: QualificationDetails['status']) => {
   }
 };
 
+export const QualificationStatusBadge: React.FC<{ status: QualificationDetails['status'] }> = ({ status }) => {
+  return (
+    <Badge 
+      variant={status === 'NOT_QUALIFIED' ? 'destructive' : 'outline'}
+      className={`${getStatusColor(status)} px-4 py-1.5 text-sm font-medium pointer-events-none`}
+    >
+      {status.replace('_', ' ')}
+    </Badge>
+  );
+};
+
 export const QualificationStatusHoverCard: React.FC<QualificationStatusHoverCardProps> = ({
   details
 }) => {
@@ -80,52 +142,40 @@ export const QualificationStatusHoverCard: React.FC<QualificationStatusHoverCard
   const hasEventDetails = details.eventSpace && details.eventCapacity !== undefined;
 
   return (
-    <div className="space-y-5">
-      {/* Status and Reason */}
-      <div className="space-y-2.5 pb-4 border-b border-slate-100">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-slate-900 truncate flex-1">{details.title}</span>
-          <div className="w-[90px] flex justify-end">
+    <HoverCardContainer>
+      <Section hasBorder>
+        <HeaderRow>
+          <Title>{details.title}</Title>
+          <BadgeContainer>
             <Badge className={`${getStatusColor(details.status)} px-1.5 py-0.5 text-[10px] font-medium shrink-0 pointer-events-none`}>
               {details.status.replace('_', ' ')}
             </Badge>
-          </div>
-        </div>
+          </BadgeContainer>
+        </HeaderRow>
         {details.actions.length > 0 && (
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <img src={KISMET_LOGO_URL} alt="Kismet Logo" className="h-4 w-4 object-contain" />
-              <h4 className="text-sm font-semibold text-slate-900">Kismet AI</h4>
-            </div>
-            <div className="space-y-1.5">
+            <KismetHeader>Kismet AI</KismetHeader>
+            <ActionsList>
               {details.actions.map((action, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm text-slate-600">
-                  <Mail className="h-4 w-4 text-slate-400 shrink-0" />
+                <ActionItem key={index} icon={<Mail className="h-4 w-4 text-slate-400 shrink-0" />}>
                   {action.emailLink ? (
-                    <a 
-                      href={action.emailLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="hover:text-slate-900 hover:underline"
-                    >
-                      {action.text}
-                    </a>
+                    <ActionLink href={action.emailLink}>{action.text}</ActionLink>
                   ) : (
                     <span>{action.text}</span>
                   )}
-                </div>
+                </ActionItem>
               ))}
-            </div>
+            </ActionsList>
           </div>
         )}
         {details.reason && (
           <p className="text-sm text-slate-600 leading-relaxed">{details.reason}</p>
         )}
-      </div>
+      </Section>
 
       {/* Request Details - Only show if we have details */}
       {hasRequestDetails && (
-        <div className="space-y-4">
+        <Section>
           <h4 className="text-sm font-semibold text-slate-900">Request Details</h4>
           
           {/* Dates */}
@@ -177,12 +227,12 @@ export const QualificationStatusHoverCard: React.FC<QualificationStatusHoverCard
               </div>
             </div>
           )}
-        </div>
+        </Section>
       )}
 
       {/* Availability Confirmation for Qualified */}
       {details.status === 'QUALIFIED' && (
-        <div className="space-y-2.5">
+        <Section>
           <h4 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-green-500" />
             Availability Confirmed
@@ -201,12 +251,12 @@ export const QualificationStatusHoverCard: React.FC<QualificationStatusHoverCard
               </li>
             )}
           </ul>
-        </div>
+        </Section>
       )}
 
       {/* Availability Issues for Not Qualified */}
       {details.status === 'NOT_QUALIFIED' && (
-        <div className="space-y-2.5">
+        <Section>
           <h4 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
             <XCircle className="h-4 w-4 text-red-500" />
             Availability Issues
@@ -225,12 +275,12 @@ export const QualificationStatusHoverCard: React.FC<QualificationStatusHoverCard
               </li>
             )}
           </ul>
-        </div>
+        </Section>
       )}
 
       {/* Missing Info for Pending */}
       {details.status === 'PENDING' && details.missingInfo && details.missingInfo.length > 0 && (
-        <div className="space-y-2.5">
+        <Section>
           <h4 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
             <AlertCircle className="h-4 w-4 text-yellow-500" />
             Missing Information
@@ -243,8 +293,8 @@ export const QualificationStatusHoverCard: React.FC<QualificationStatusHoverCard
               </li>
             ))}
           </ul>
-        </div>
+        </Section>
       )}
-    </div>
+    </HoverCardContainer>
   );
 }; 
