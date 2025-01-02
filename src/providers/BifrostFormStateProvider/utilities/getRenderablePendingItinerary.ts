@@ -3,7 +3,11 @@ import {
   mockRenderableSplitTextInputBifrostFormQuestionOne,
   mockRenderableSplitTextInputBifrostFormQuestionTwo,
 } from "@/mockData/bifrost/bifrostFormQuestions/mockRenderableBifrostFormQuestions";
-import { BifrostFormQuestionWithResponse } from "@kismet_ai/foundation";
+import {
+  BifrostFormQuestionMultiStageSmartDateResponseValue,
+  BifrostFormQuestionWithMultiStageSmartDateResponse,
+  BifrostFormQuestionWithResponse,
+} from "@kismet_ai/foundation";
 import { ReservedBifrostFormQuestionIds } from "@kismet_ai/foundation";
 import {
   CalendarDateRange,
@@ -78,33 +82,46 @@ export const getRenderablePendingItinerary = ({
       (bifrostFormQuestionWithResponse: BifrostFormQuestionWithResponse) => {
         return (
           bifrostFormQuestionWithResponse.bifrostFormQuestion
-            .bifrostFormQuestionId === ReservedBifrostFormQuestionIds.DATES
+            .bifrostFormQuestionId ===
+          ReservedBifrostFormQuestionIds.CALENDAR_DATES
         );
       }
-    );
+    ) as BifrostFormQuestionWithMultiStageSmartDateResponse | undefined;
 
-  const pendingCalendarDateRangeInItinerary:
-    | PendingCalendarDateRange
-    | undefined = maybeCalendarDateRangeQuestionWithResponse
-    ? (maybeCalendarDateRangeQuestionWithResponse.responseData
-        .responseValue as PendingCalendarDateRange)
+  const maybeBifrostDatesResponse:
+    | BifrostFormQuestionMultiStageSmartDateResponseValue
+    | undefined =
+    maybeCalendarDateRangeQuestionWithResponse?.responseData.responseValue;
+
+  const calendarDateRangesInItinerary = maybeBifrostDatesResponse
+    ? (maybeBifrostDatesResponse.calendarDateRanges?.filter(
+        (calendarDateRange) => {
+          return (
+            calendarDateRange.startCalendarDate &&
+            calendarDateRange.endCalendarDate
+          );
+        }
+      ) as CalendarDateRange[])
     : undefined;
-
-  const calendarDateRangeInItinerary =
-    pendingCalendarDateRangeInItinerary?.startCalendarDate &&
-    pendingCalendarDateRangeInItinerary?.endCalendarDate
-      ? (pendingCalendarDateRangeInItinerary as CalendarDateRange)
-      : undefined;
 
   const itineraryImageUrl: string =
     "https://plus.unsplash.com/premium_photo-1661879252375-7c1db1932572?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aG90ZWwlMjByb29tfGVufDB8fDB8fHww";
+
+  console.log(
+    "countOfHotelRoomsInItinerary",
+    JSON.stringify(countOfHotelRoomsInItinerary, null, 4)
+  );
+  console.log(
+    "countOfGuestsParticipatingInItinerary",
+    JSON.stringify(countOfGuestsParticipatingInItinerary, null, 4)
+  );
 
   const renderablePendingItinerary: RenderablePendingItinerary = {
     itineraryName: `${guestFirstName}'s Itinerary`,
     guestFirstName,
     countOfHotelRoomsInItinerary,
     countOfGuestsParticipatingInItinerary,
-    calendarDateRangeInItinerary,
+    calendarDateRangesInItinerary,
     itineraryImageUrl,
   };
 

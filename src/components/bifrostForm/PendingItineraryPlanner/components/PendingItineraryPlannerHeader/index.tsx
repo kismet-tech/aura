@@ -25,34 +25,77 @@ export function PendingItineraryPlannerHeader({
         <span className="">
           {renderablePendingItinerary.countOfHotelRoomsInItinerary}
         </span>{" "}
-        <span className="underline cursor-pointer">choose</span>
+        <span className="cursor-pointer">choose</span>
       </span>
     );
   } else {
-    roomsIndicator = <span className="underline cursor-pointer">choose</span>;
+    roomsIndicator = <span className="cursor-pointer">choose</span>;
+  }
+
+  let guestCountIndicator: JSX.Element;
+  if (renderablePendingItinerary.countOfGuestsParticipatingInItinerary) {
+    guestCountIndicator = (
+      <span className="cursor-pointer">
+        {renderablePendingItinerary.countOfGuestsParticipatingInItinerary}{" "}
+        guests
+      </span>
+    );
+  } else {
+    guestCountIndicator = <span className="cursor-pointer">guests</span>;
   }
 
   let datesIndicator: JSX.Element;
-  if (renderablePendingItinerary.calendarDateRangeInItinerary) {
-    datesIndicator = (
-      <span className="underline cursor-pointer">
-        {renderCalendarDateRange({
-          calendarDateRange:
-            renderablePendingItinerary.calendarDateRangeInItinerary,
-          renderedCalendarDateFormat:
-            RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
-          renderedCalendarDateRangeJoinFormat:
-            RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
-          collapseStrategy: {
-            collapseSameDay: true,
-            collapseSameMonth: false,
-          },
-        })}
-      </span>
-    );
+  if (
+    renderablePendingItinerary.calendarDateRangesInItinerary &&
+    renderablePendingItinerary.calendarDateRangesInItinerary.length > 0
+  ) {
+    if (renderablePendingItinerary.calendarDateRangesInItinerary.length === 1) {
+      datesIndicator = (
+        <span className="cursor-pointer text-xs truncate">
+          {renderCalendarDateRange({
+            calendarDateRange:
+              renderablePendingItinerary.calendarDateRangesInItinerary[0],
+            renderedCalendarDateFormat:
+              RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
+            renderedCalendarDateRangeJoinFormat:
+              RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+            collapseStrategy: {
+              collapseSameDay: true,
+              collapseSameMonth: false,
+            },
+          })}
+        </span>
+      );
+    } else {
+      datesIndicator = (
+        <span className="cursor-pointer text-xs truncate">
+          {"still deciding"}
+          {renderablePendingItinerary.calendarDateRangesInItinerary.map(
+            (calendarDateRangeInItinerary) => {
+              return (
+                <>
+                  <br />
+                  {renderCalendarDateRange({
+                    calendarDateRange: calendarDateRangeInItinerary,
+                    renderedCalendarDateFormat:
+                      RenderedCalendarDateFormat.MM_SLASH_DD_SLASH_YY,
+                    renderedCalendarDateRangeJoinFormat:
+                      RenderedCalendarDateRangeJoinFormat.SPACE_DASH_SPACE,
+                    collapseStrategy: {
+                      collapseSameDay: true,
+                      collapseSameMonth: false,
+                    },
+                  })}
+                </>
+              );
+            }
+          )}
+        </span>
+      );
+    }
   } else {
     datesIndicator = (
-      <span className="underline cursor-pointer">select dates</span>
+      <span className="cursor-pointer text-xs truncate">dates</span>
     );
   }
 
@@ -82,7 +125,7 @@ export function PendingItineraryPlannerHeader({
                   <div className="mr-2">
                     <UsersRound className="w-5 h-5" strokeWidth={1.5} />
                   </div>
-                  <span className="underline cursor-pointer">guests</span>
+                  {guestCountIndicator}
                 </div>
               </div>
             </div>
@@ -96,7 +139,7 @@ export function PendingItineraryPlannerHeader({
               <div className="mr-2">
                 <ConciergeBell className="w-5 h-5" strokeWidth={1.5} />
               </div>
-              <span className="underline cursor-pointer">details</span>
+              <span className="cursor-pointer">details</span>
             </div>
           </div>
         </div>

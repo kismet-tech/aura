@@ -15,15 +15,16 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
-  useEffect(() => {
-    const styles = document.styleSheets;
-    const hasDayPicker = Array.from(styles).some((sheet) =>
-      Array.from(sheet.cssRules).some((rule) =>
-        (rule as any).selectorText?.includes("rdp")
-      )
-    );
-    console.log("DayPicker styles loaded:", hasDayPicker);
-  }, []);
+  // useEffect(() => {
+  //   const styles = document.styleSheets;
+  //   const hasDayPicker = Array.from(styles).some((sheet) =>
+  //   //   Array.from(sheet.cssRules).some((rule) =>
+  //   //     (rule as any).selectorText?.includes("rdp")
+  //   //   )
+  //   // );
+  //   // console.log("DayPicker styles loaded:", hasDayPicker);
+  //   false
+  // }, []);
 
   return (
     <DayPicker

@@ -1,6 +1,13 @@
 import React from "react";
-import { BifrostGroupBookingCheckoutSessionSummary, RenderableItineraryHotelRoomOffer } from "@kismet_ai/foundation";
-import { SheetContent, SheetHeader, SheetTitle } from "@/components/shadcn/sheet";
+import {
+  BifrostGroupBookingCheckoutSessionSummary,
+  RenderableItineraryHotelRoomOffer,
+} from "@kismet_ai/foundation";
+import {
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/shadcn/sheet";
 import { Button } from "@/components/shadcn/button";
 import { BifrostSelectRoomAttendee } from "../components/BifrostSelectRoomAttendee";
 
@@ -28,16 +35,15 @@ export function BifrostBookingSequenceAttendee({
           quantity={selectedRoom.countOffered}
           imageUrl={selectedRoom.heroImageUrl}
           checkoutSessionSummary={checkoutSessionSummary}
+          roomsInCart={selectedRoom.countOffered}
+          hotelRoomDescription={selectedRoom.hotelRoomDescription}
         />
       </div>
       <div className="mt-6 flex justify-center">
-        <Button 
-          onClick={onAddToCart}
-          className="w-full"
-        >
+        <Button onClick={onAddToCart} className="w-full">
           Add to Cart
         </Button>
       </div>
     </SheetContent>
   );
-} 
+}

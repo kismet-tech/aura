@@ -67,8 +67,11 @@ export function BifrostGroupBookingCheckoutRootPage({
   getStripePaymentIntent,
 }: BifrostGroupBookingCheckoutRootPageProps) {
   const [isGroupBookingSheetOpen, setIsGroupBookingSheetOpen] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState<RenderableItineraryHotelRoomOffer | null>(null);
-  const [currentRSVP, setCurrentRSVP] = useState<"yes" | "no" | "maybe" | null>(null);
+  const [selectedRoom, setSelectedRoom] =
+    useState<RenderableItineraryHotelRoomOffer | null>(null);
+  const [currentRSVP, setCurrentRSVP] = useState<"yes" | "no" | "maybe" | null>(
+    null
+  );
   const [currentPage, setCurrentPage] = useState<PageView>("overview");
 
   const handleRoomClick = (room: RenderableItineraryHotelRoomOffer) => {
@@ -95,7 +98,9 @@ export function BifrostGroupBookingCheckoutRootPage({
       renderedCheckoutButton = (
         <div className="sticky bottom-5 right-0 flex justify-end z-50">
           <Button
-            onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            onClick={(
+              event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+            ) => {
               event.preventDefault();
               onClickCheckout();
             }}
@@ -109,7 +114,9 @@ export function BifrostGroupBookingCheckoutRootPage({
       renderedCheckoutButton = (
         <div className="sticky bottom-5 right-0 flex justify-end z-50">
           <Button
-            onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            onClick={(
+              event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+            ) => {
               event.preventDefault();
               setIsGroupBookingSheetOpen(true);
             }}
@@ -165,7 +172,17 @@ export function BifrostGroupBookingCheckoutRootPage({
               )}
             </div>
             <div className="text-center mt-2 font-palatino">
-              {checkoutSessionSummary ? (
+              {checkoutSessionSummary &&
+              checkoutSessionSummary.groupBookingCheckoutSessionCalendarDateRange &&
+              checkoutSessionSummary
+                .groupBookingCheckoutSessionCalendarDateRange
+                .startCalendarDate &&
+              checkoutSessionSummary
+                .groupBookingCheckoutSessionCalendarDateRange.startCalendarDate
+                .year &&
+              checkoutSessionSummary
+                .groupBookingCheckoutSessionCalendarDateRange
+                .endCalendarDate ? (
                 renderCalendarDateRange({
                   calendarDateRange:
                     checkoutSessionSummary.groupBookingCheckoutSessionCalendarDateRange,
@@ -203,7 +220,9 @@ export function BifrostGroupBookingCheckoutRootPage({
                 variant={variant}
                 isLoggedIn={!!authenticatedGuestUser}
                 onClickLogin={onClickLogin}
-                onClickUpdateHotelRoomCountInCart={onClickUpdateHotelRoomCountInCart}
+                onClickUpdateHotelRoomCountInCart={
+                  onClickUpdateHotelRoomCountInCart
+                }
                 onClickEventOffer={onClickEventOffer}
                 onEventRSVP={onEventRSVP}
                 currentRSVP={currentRSVP}
@@ -231,9 +250,7 @@ export function BifrostGroupBookingCheckoutRootPage({
           onClickRoomBlock={() => setCurrentPage("room-block")}
           onClickSettings={() => setCurrentPage("settings")}
         />
-        <div className="mt-5 w-3/4 mx-auto relative">
-          {renderPage()}
-        </div>
+        <div className="mt-5 w-3/4 mx-auto relative">{renderPage()}</div>
       </div>
       <footer className="bg-white bg-opacity-0 border-t border-black w-full p-2 flex justify-end">
         <div className="transform scale-75 pb-">

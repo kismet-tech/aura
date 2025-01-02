@@ -6,7 +6,6 @@ import {
   RenderableItineraryHotelRoomOffer,
   RenderableItineraryEventOffer,
   HotelEventOfferStatus,
-  VenueOfferPricingType,
 } from "@kismet_ai/foundation";
 import { mockBifrostGroupBookingCheckoutCartOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutCart/mockBifrostGroupBookingCheckoutCarts";
 import { mockBifrostGroupBookingCheckoutSessionSummaryOne } from "@kismet_ai/foundation/dist/models/saas/groups/BifrostGroupBookingCheckoutSessionSummary/mockBifrostGroupBookingCheckoutSessionSummaries";
@@ -40,7 +39,8 @@ const mockEventOffers: RenderableItineraryEventOffer[] = [
       },
     ],
     details: {
-      description: "Join us for an elegant rehearsal dinner in the Grand Ballroom",
+      description:
+        "Join us for an elegant rehearsal dinner in the Grand Ballroom",
     },
   },
 ];
@@ -70,13 +70,19 @@ const createStoryWrapper = (variant: "host" | "attendee" | "saas") => () => {
 
   const [authenticatedGuestUser, setAuthenticatedGuestUser] = useState<
     AuthenticatedGuestUser | undefined
-  >(variant === "attendee" ? undefined : {
-    firstName: "Julian",
-    lastName: "Trajanson",
-    userId: "trajanson",
-  });
+  >(
+    variant === "attendee"
+      ? undefined
+      : {
+          firstName: "Julian",
+          lastName: "Trajanson",
+          userId: "trajanson",
+        }
+  );
 
-  const [currentRSVP, setCurrentRSVP] = useState<"yes" | "no" | "maybe" | null>(null);
+  const [currentRSVP, setCurrentRSVP] = useState<"yes" | "no" | "maybe" | null>(
+    null
+  );
 
   return (
     <BifrostGroupBookingCheckoutRootPage
@@ -195,7 +201,9 @@ export const AttendeeViewLoggedIn: Story = {
       userId: "trajanson",
     });
 
-    const [currentRSVP, setCurrentRSVP] = useState<"yes" | "no" | "maybe" | null>(null);
+    const [currentRSVP, setCurrentRSVP] = useState<
+      "yes" | "no" | "maybe" | null
+    >(null);
 
     return (
       <BifrostGroupBookingCheckoutRootPage
@@ -203,7 +211,9 @@ export const AttendeeViewLoggedIn: Story = {
           console.log("Login clicked (user already logged in)");
         }}
         authenticatedGuestUser={authenticatedGuestUser}
-        checkoutSessionSummary={mockBifrostGroupBookingCheckoutSessionSummaryOne}
+        checkoutSessionSummary={
+          mockBifrostGroupBookingCheckoutSessionSummaryOne
+        }
         cart={cart}
         availableHotelRooms={hotelRoomOffers}
         availableEventOffers={mockEventOffers}

@@ -41,20 +41,26 @@ const formatPhoneNumber = ({
 }): string => {
   const digitsOnly = filterPhoneNumberToDigits({ phoneNumber });
 
-  if (digitsOnly.length > 0) {
-    return digitsOnly.replace(
-      /(\d{0,3})(\d{0,3})(\d{0,4})/,
-      (_match, p1, p2, p3) => {
-        let result = "";
-        if (p1) result += `(${p1}`;
-        if (p1 && p1.length === 3) result += `)`;
-        if (p2) result += `-${p2}`;
-        if (p3) result += `-${p3}`;
-        return result;
-      }
-    );
+  // If no digits, return empty string
+  if (!digitsOnly) return "";
+
+  // If the user has typed 3 or fewer digits, just return them
+  if (digitsOnly.length <= 3) {
+    return digitsOnly;
   }
-  return "";
+
+  // Otherwise, format the string using parentheses and dashes
+  return digitsOnly.replace(
+    /(\d{0,3})(\d{0,3})(\d{0,4})/,
+    (_match, p1, p2, p3) => {
+      let result = "";
+      if (p1) result += `(${p1}`;
+      if (p1 && p1.length === 3) result += `)`;
+      if (p2) result += `-${p2}`;
+      if (p3) result += `-${p3}`;
+      return result;
+    }
+  );
 };
 
 export function PhoneInputBifrostFormQuestion({
@@ -64,6 +70,8 @@ export function PhoneInputBifrostFormQuestion({
   setIsResponseValid,
   setHasQuestionBeenRespondedTo,
 }: PhoneInputBifrostFormQuestionProps) {
+  console.log(`value: ${value}`);
+
   const inputId: string = `PhoneInputBifrostFormQuestion_${renderablePhoneInputBifrostFormQuestion.bifrostFormQuestionId}`;
 
   const [localValue, setLocalValue] = useState<string>("");

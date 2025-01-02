@@ -363,18 +363,20 @@ export const BookingDrawer: React.FC<BookingDrawerProps> = ({
                   completedData.bifrostItinerarySummary?.title ||
                   "Your Confirmed Itinerary",
                 countOfHotelRoomsInItinerary: 1,
-                calendarDateRangeInItinerary: {
-                  startCalendarDate: {
-                    year: parseInt(startYear),
-                    month: parseInt(startMonth),
-                    day: parseInt(startDay),
+                calendarDateRangesInItinerary: [
+                  {
+                    startCalendarDate: {
+                      year: parseInt(startYear),
+                      month: parseInt(startMonth),
+                      day: parseInt(startDay),
+                    },
+                    endCalendarDate: {
+                      year: parseInt(endYear),
+                      month: parseInt(endMonth),
+                      day: parseInt(endDay),
+                    },
                   },
-                  endCalendarDate: {
-                    year: parseInt(endYear),
-                    month: parseInt(endMonth),
-                    day: parseInt(endDay),
-                  },
-                },
+                ],
                 itineraryImageUrl:
                   completedData.imageUrl ||
                   "https://www.bestambiance.com/wp-content/uploads/2022/09/cwo4c5et7jyz-aspect-ratio-800-800.jpg",

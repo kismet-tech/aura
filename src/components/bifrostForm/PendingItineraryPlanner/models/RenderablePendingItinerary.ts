@@ -4,7 +4,7 @@ export interface RenderablePendingItinerary {
   itineraryName: string;
   countOfHotelRoomsInItinerary?: number;
   countOfGuestsParticipatingInItinerary?: number;
-  calendarDateRangeInItinerary?: CalendarDateRange;
+  calendarDateRangesInItinerary?: CalendarDateRange[];
   itineraryImageUrl: string;
 
   guestFirstName: string;

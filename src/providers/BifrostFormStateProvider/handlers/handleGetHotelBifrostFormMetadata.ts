@@ -30,7 +30,7 @@ export const handleGetHotelBifrostFormMetadata =
       [];
     let isEnabled: boolean = false;
 
-    if (hostname.includes("knollcroft")) {
+    if (hostname.includes("theknollcroft")) {
       // hotelId = "mews-grand-hotel";
 
       isEnabled = true;
@@ -82,6 +82,14 @@ export const handleGetHotelBifrostFormMetadata =
         renderableSelectorBifrostFormQuestionAskingLocationWithResponse
       );
       assignedSalesAgentName = "Matt";
+    } else if (hostname.includes("knollcroft")) {
+      console.log(`KNOLLCROFT VERSION LOADED`);
+
+      isEnabled = true;
+      hotelId = "knollcroft";
+      hotelName = "Knollcroft";
+
+      assignedSalesAgentName = "Jason";
     } else if (hostname.includes("theneighborhoodhotel")) {
       isEnabled = true;
       hotelId = "nbhd";

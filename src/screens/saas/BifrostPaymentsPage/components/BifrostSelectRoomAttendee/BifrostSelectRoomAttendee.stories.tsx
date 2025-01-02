@@ -1,12 +1,12 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { BifrostSelectRoomAttendee } from './index';
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { BifrostSelectRoomAttendee } from "./index";
 
-const meta = {
-  title: 'Screens/BifrostPaymentsPage/BifrostSelectRoomAttendee',
+export const meta: Meta<typeof BifrostSelectRoomAttendee> = {
+  title: "Screens/BifrostPaymentsPage/BifrostSelectRoomAttendee",
   component: BifrostSelectRoomAttendee,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   decorators: [
     (Story) => (
@@ -24,7 +24,7 @@ const mockImages = [
   "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&h=600",
   "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&h=600",
   "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&h=600",
-  "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&h=600"
+  "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&h=600",
 ];
 
 const mockRoomDetails = {
@@ -34,16 +34,17 @@ const mockRoomDetails = {
   offerPriceInCents: 29900,
   listPriceInCents: 39900,
   hotelRoomName: "Deluxe Ocean View",
-  hotelRoomDescription: "Experience luxury in our Deluxe Ocean View room. Wake up to breathtaking ocean vistas from your private balcony. The room features a king-size bed, marble bathroom with deep soaking tub, high-speed WiFi, and a dedicated workspace.",
+  hotelRoomDescription:
+    "Experience luxury in our Deluxe Ocean View room. Wake up to breathtaking ocean vistas from your private balcony. The room features a king-size bed, marble bathroom with deep soaking tub, high-speed WiFi, and a dedicated workspace.",
   calendarDateRange: {
     startCalendarDate: { year: 2024, month: 6, day: 15 },
-    endCalendarDate: { year: 2024, month: 6, day: 17 }
+    endCalendarDate: { year: 2024, month: 6, day: 17 },
   },
   heroImageUrl: mockImages[0],
   hotelRoomImageUrls: mockImages,
   runOfHouseDetails: {
-    isRunOfHouse: false
-  }
+    isRunOfHouse: false,
+  },
 };
 
 const mockCheckoutSession = {
@@ -52,8 +53,8 @@ const mockCheckoutSession = {
   groupBookingCheckoutSessionTitle: "Summer Group Booking",
   groupBookingCheckoutSessionCalendarDateRange: {
     startCalendarDate: { year: 2024, month: 6, day: 15 },
-    endCalendarDate: { year: 2024, month: 6, day: 17 }
-  }
+    endCalendarDate: { year: 2024, month: 6, day: 17 },
+  },
 };
 
 export const Default: Story = {
@@ -65,8 +66,8 @@ export const Default: Story = {
     imageUrl: mockImages[0],
     images: mockImages,
     roomsInCart: 0,
-    hotelRoomDescription: mockRoomDetails.hotelRoomDescription
-  }
+    hotelRoomDescription: mockRoomDetails.hotelRoomDescription,
+  },
 };
 
 export const WithDiscount: Story = {
@@ -74,8 +75,8 @@ export const WithDiscount: Story = {
     ...Default.args,
     price: 299,
     originalPrice: 399,
-    roomsInCart: 2
-  }
+    roomsInCart: 2,
+  },
 };
 
 export const NoDiscount: Story = {
@@ -83,20 +84,20 @@ export const NoDiscount: Story = {
     ...Default.args,
     price: 399,
     originalPrice: 399,
-    roomsInCart: 0
-  }
+    roomsInCart: 0,
+  },
 };
 
 export const WithDates: Story = {
   args: {
     ...Default.args,
-    checkoutSessionSummary: mockCheckoutSession
-  }
+    checkoutSessionSummary: mockCheckoutSession,
+  },
 };
 
 export const SingleImage: Story = {
   args: {
     ...Default.args,
-    images: [mockImages[0]]
-  }
-}; 
+    images: [mockImages[0]],
+  },
+};
