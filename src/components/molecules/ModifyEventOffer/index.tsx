@@ -1,9 +1,9 @@
 import React from 'react';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 import { EventNameEditor } from '@/components/molecules/EventNameEditor';
-import { PlannerStatus, EventStatus } from '@/components/molecules/Planners/PlannerStatusSaaS';
+import { PlannerStatus, EventStatus } from '../Planners/PlannerStatusSaaS';
 import { PlannerDateTime } from '@/components/molecules/Planners/PlannerDateTimeSaaS';
-import { PlannerHost, VisibilityType, PaymentSplitType } from '@/components/molecules/Planners/PlannerHostSaaS';
+import { PlannerHost, VisibilityType, PaymentSplitType } from '../Planners/PlannerHostSaaS';
 import { PlannerGuests } from '@/components/molecules/Planners/PlannerGuestsSaaS';
 import { PlannerVenue } from '@/components/molecules/Planners/PlannerVenueSaaS';
 import { PlannerFinancials } from '@/components/molecules/Planners/PlannerFinancialsSaaS';
@@ -87,7 +87,7 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
                   initialStatus={data.status}
                   onChange={(value) => handleChange('status', value)}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
                 <PlannerDateTime
                   initialStartDate={data.startDate}
@@ -97,7 +97,7 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
                     handleChange('endDate', dates.endDate);
                   }}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
                 <PlannerHost
                   initialVisibility={data.visibility}
@@ -107,20 +107,20 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
                     handleChange('paymentSplitType', values.paymentSplitType);
                   }}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
                 <PlannerGuests
                   initialGuestCount={data.guestCount}
                   onChange={(value) => handleChange('guestCount', value)}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
                 <PlannerVenue
                   guestCount={data.guestCount || 0}
                   initialVenues={data.venues}
                   onChange={(venues) => handleChange('venues', venues)}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
                 <PlannerFinancials
                   initialPriceInCents={data.priceInCents}
@@ -135,19 +135,19 @@ export const ModifyEventOffer: React.FC<ModifyEventOfferProps> = ({
                     handleChange('altFoodBevPriceInCents', values.altFoodBevPriceInCents);
                   }}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
                 <PlannerPublicNotes
                   initialNotes={data.publicNotes}
                   onChange={(value) => handleChange('publicNotes', value)}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
                 <PlannerPrivateNotes
                   initialNotes={data.privateNotes}
                   onChange={(value) => handleChange('privateNotes', value)}
                   open={defaultOpen}
-                  onOpenChange={(open) => {}}
+                  onOpenChange={(open) => { }}
                 />
               </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pencil } from 'lucide-react';
 
 interface EventNameEditorProps {
@@ -13,25 +13,33 @@ export const EventNameEditor: React.FC<EventNameEditorProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(initialName);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    setName(initialName);
+  }, [initialName]);
+
+  const handleBlur = () => {
+    console.log("On Blur Event Triggered!");
     setIsEditing(false);
     onChange?.(name);
   };
 
   if (isEditing) {
     return (
-      <form onSubmit={handleSubmit} className="mb-6">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="text-2xl font-semibold w-full border-b border-gray-200 focus:border-gray-900 focus:outline-none pb-1"
-          placeholder="Enter event name"
-          autoFocus
-          onBlur={() => setIsEditing(false)}
-        />
-      </form>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="text-2xl font-semibold w-full border-b border-gray-200 focus:border-gray-900 focus:outline-none pb-1 mb-6"
+        placeholder="Enter event name"
+        autoFocus
+        onBlur={handleBlur}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            handleBlur();
+          }
+        }}
+      />
     );
   }
 
