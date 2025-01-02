@@ -18,7 +18,6 @@ export const EventNameEditor: React.FC<EventNameEditorProps> = ({
   }, [initialName]);
 
   const handleBlur = () => {
-    console.log("On Blur Event Triggered!");
     setIsEditing(false);
     onChange?.(name);
   };
